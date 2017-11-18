@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BEB82D31-C638-420B-B388-F79D599F2A3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.OfficerFlake.Libraries.UnitsOfMeasurement</RootNamespace>
+    <AssemblyName>Com.OfficerFlake.Libraries.UnitsOfMeasurement</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Angle.cs" />
+    <Compile Include="Angle\Gradian.cs" />
+    <Compile Include="Angle\Radian.cs" />
+    <Compile Include="Pressure.cs" />
+    <Compile Include="Power\FootPoundsPerMinute.cs" />
+    <Compile Include="Power\BTUsPerMinute.cs" />
+    <Compile Include="Power\USHorsepower.cs" />
+    <Compile Include="Power\Kilowatt.cs" />
+    <Compile Include="Power\Watt.cs" />
+    <Compile Include="Power.cs" />
+    <Compile Include="Angle\Degree.cs" />
+    <Compile Include="Pressure\PoundsPerSquareInch.cs" />
+    <Compile Include="Pressure\Pascal.cs" />
+    <Compile Include="Pressure\MillimetersOfMercury.cs" />
+    <Compile Include="Pressure\Kilopascal.cs" />
+    <Compile Include="Pressure\Bar.cs" />
+    <Compile Include="Pressure\Atmosphere.cs" />
+    <Compile Include="Speeds\MachAtSeaLevel.cs" />
+    <Compile Include="Speeds\Knots.cs" />
+    <Compile Include="Speeds\MilesPerHour.cs" />
+    <Compile Include="Speeds\FeetPerSecond.cs" />
+    <Compile Include="Speeds\KilometersPerHour.cs" />
+    <Compile Include="Speeds\MetersPerSecond.cs" />
+    <Compile Include="Speeds\CentimetersPerSecond.cs" />
+    <Compile Include="Speeds\MillimetersPerSecond.cs" />
+    <Compile Include="Speed.cs" />
+    <Compile Include="Area.cs" />
+    <Compile Include="Area\SquareCentimeter.cs" />
+    <Compile Include="Area\Hectare.cs" />
+    <Compile Include="Area\SquareKilometer.cs" />
+    <Compile Include="Area\SquareInch.cs" />
+    <Compile Include="Area\SquareFoot.cs" />
+    <Compile Include="Area\SquareMile.cs" />
+    <Compile Include="Area\Acre.cs" />
+    <Compile Include="Area\SquareYard.cs" />
+    <Compile Include="Area\SquareMillimeter.cs" />
+    <Compile Include="Energy.cs" />
+    <Compile Include="Energy\BritishThermalUnits.cs" />
+    <Compile Include="Energy\Joule.cs" />
+    <Compile Include="Energy\FoodCalories.cs" />
+    <Compile Include="Energy\FootPounds.cs" />
+    <Compile Include="Area\SquareMeter.cs" />
+    <Compile Include="Energy\ThermalCalorie.cs" />
+    <Compile Include="Energy\ElectronVolt.cs" />
+    <Compile Include="Energy\Kilojoule.cs" />
+    <Compile Include="Temperature.cs" />
+    <Compile Include="Mass.cs" />
+    <Compile Include="Mass\UKLongTon.cs" />
+    <Compile Include="Mass\USShortTon.cs" />
+    <Compile Include="Mass\Stone.cs" />
+    <Compile Include="Mass\Pound.cs" />
+    <Compile Include="Mass\Ounce.cs" />
+    <Compile Include="Mass\Hectogram.cs" />
+    <Compile Include="Mass\Decagram.cs" />
+    <Compile Include="Mass\Gram.cs" />
+    <Compile Include="Mass\Decigram.cs" />
+    <Compile Include="Mass\Centigram.cs" />
+    <Compile Include="Mass\Carat.cs" />
+    <Compile Include="Mass\MetricTonne.cs" />
+    <Compile Include="Mass\Milligram.cs" />
+    <Compile Include="Temperature\Fahrenheit.cs" />
+    <Compile Include="Temperature\Kelvin.cs" />
+    <Compile Include="Temperature\Celcius.cs" />
+    <Compile Include="Time.cs" />
+    <Compile Include="Volume\CubicFoot.cs" />
+    <Compile Include="Mass\Kilogram.cs" />
+    <Compile Include="Volume\UK\FluidOunce.cs" />
+    <Compile Include="Volume\UK\Gallon.cs" />
+    <Compile Include="Volume\UK\Pint.cs" />
+    <Compile Include="Volume\UK\Quart.cs" />
+    <Compile Include="Volume\UK\TableSpoon.cs" />
+    <Compile Include="Volume\UK\TeaSpoon.cs" />
+    <Compile Include="Volume\US\Gallon.cs" />
+    <Compile Include="Volume\US\Quart.cs" />
+    <Compile Include="Volume\US\Pint.cs" />
+    <Compile Include="Volume\US\Cup.cs" />
+    <Compile Include="Volume\US\TableSpoon.cs" />
+    <Compile Include="Volume\US\TeaSpoon.cs" />
+    <Compile Include="Volume\CubicYard.cs" />
+    <Compile Include="Volume\CubicMeter.cs" />
+    <Compile Include="Volume\CubicCentimeter.cs" />
+    <Compile Include="Volume\CubicInch.cs" />
+    <Compile Include="Volume\Millilitre.cs" />
+    <Compile Include="Volume\Litre.cs" />
+    <Compile Include="Volume.cs" />
+    <Compile Include="Length.cs" />
+    <Compile Include="Length\Centimeter.cs" />
+    <Compile Include="Length\Foot.cs" />
+    <Compile Include="Length\NauticalMile.cs" />
+    <Compile Include="Length\Mile.cs" />
+    <Compile Include="Length\Yard.cs" />
+    <Compile Include="Length\Kilometer.cs" />
+    <Compile Include="Length\Inch.cs" />
+    <Compile Include="Length\Microns.cs" />
+    <Compile Include="Length\Nanometer.cs" />
+    <Compile Include="Length\Millimeter.cs" />
+    <Compile Include="Length\Meter.cs" />
+    <Compile Include="_Measurement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Extensions\Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

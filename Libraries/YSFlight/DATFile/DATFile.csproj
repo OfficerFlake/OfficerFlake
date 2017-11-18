@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{183CC3FE-296E-4518-82E3-AD59B6D092B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.Files.DAT</RootNamespace>
+    <AssemblyName>Com.OfficerFlake.Libraries.YSFlight.Files.DAT</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAT_Properties\CLDECAY2.cs" />
+    <Compile Include="DAT_Properties\CLDECAY1.cs" />
+    <Compile Include="DAT_Properties\INITAAMM.cs" />
+    <Compile Include="DAT_Properties\MAXNAAMM.cs" />
+    <Compile Include="DAT_Properties\PSTMPWR2.cs" />
+    <Compile Include="DAT_Properties\PSTMPWR1.cs" />
+    <Compile Include="DAT_Properties\PSTMSPD2.cs" />
+    <Compile Include="DAT_Properties\PSTMSPD1.cs" />
+    <Compile Include="DAT_Properties\FLATCLR2.cs" />
+    <Compile Include="DAT_Properties\FLATCLR1.cs" />
+    <Compile Include="DAT_Properties\MAXCDAOA.cs" />
+    <Compile Include="DAT_Properties\VRGMNOSE.cs" />
+    <Compile Include="DAT_Properties\COCKPITA.cs" />
+    <Compile Include="DAT_Properties\BOMBSLOT.cs" />
+    <Compile Include="DAT_Properties\CKPITHUD.cs" />
+    <Compile Include="DAT_Properties\CKPITIST.cs" />
+    <Compile Include="DAT_Properties\LOOKOFST.cs" />
+    <Compile Include="DAT_Properties\INITRCKT.cs" />
+    <Compile Include="DAT_Properties\INITBOMB.cs" />
+    <Compile Include="DAT_Properties\INITIAGM.cs" />
+    <Compile Include="DAT_Properties\INITIAAM.cs" />
+    <Compile Include="DAT_Properties\MAXNMRKT.cs" />
+    <Compile Include="DAT_Properties\MAXNBOMB.cs" />
+    <Compile Include="DAT_Properties\MAXNMAGM.cs" />
+    <Compile Include="DAT_Properties\MAXNMAAM.cs" />
+    <Compile Include="DAT_Properties\RKTSLOT_.cs" />
+    <Compile Include="DAT_Properties\AGMSLOT_.cs" />
+    <Compile Include="DAT_Properties\AAMSLOT_.cs" />
+    <Compile Include="DAT_Properties\AUTOCALC.cs" />
+    <Compile Include="DAT_Properties\ISPNLHUD.cs" />
+    <Compile Include="DAT_Properties\ATTITUDE.cs" />
+    <Compile Include="DAT_Properties\PROPVMIN.cs" />
+    <Compile Include="DAT_Properties\PROPEFCY.cs" />
+    <Compile Include="DAT_Properties\FLAREPOS.cs" />
+    <Compile Include="DAT_Properties\AIRCLASS.cs" />
+    <Compile Include="DAT_Properties\MAXNMFLR .cs" />
+    <Compile Include="DAT_Properties\REFAOALD.cs" />
+    <Compile Include="DAT_Properties\REFTHRLD.cs" />
+    <Compile Include="DAT_Properties\REFTCRUS.cs" />
+    <Compile Include="DAT_Properties\REFACRUS.cs" />
+    <Compile Include="DAT_Properties\REFLNRWY.cs" />
+    <Compile Include="DAT_Properties\REFVLAND.cs" />
+    <Compile Include="DAT_Properties\REFVCRUS.cs" />
+    <Compile Include="DAT_Properties\RADARCRS.cs" />
+    <Compile Include="DAT_Properties\BMBAYRCS.cs" />
+    <Compile Include="DAT_Properties\BOMINBAY.cs" />
+    <Compile Include="DAT_Properties\PROPELLR.cs" />
+    <Compile Include="DAT_Properties\POSITION.cs" />
+    <Compile Include="DAT_Properties\TURRETGD.cs" />
+    <Compile Include="DAT_Properties\TURRETAR.cs" />
+    <Compile Include="DAT_Properties\TURRETHD.cs" />
+    <Compile Include="DAT_Properties\TURRETAM.cs" />
+    <Compile Include="DAT_Properties\TURRETCT.cs" />
+    <Compile Include="DAT_Properties\TURRETRG.cs" />
+    <Compile Include="DAT_Properties\TURRETNM.cs" />
+    <Compile Include="DAT_Properties\TURRETIV.cs" />
+    <Compile Include="DAT_Properties\TURRETPT.cs" />
+    <Compile Include="DAT_Properties\LOADWEPN.cs" />
+    <Compile Include="DAT_Types\DAT_Angle3.cs" />
+    <Compile Include="DAT_Types\DAT_Power.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedLength.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedString.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedTimeSpan.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedInt32.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedAngle3.cs" />
+    <Compile Include="DAT_Types\DAT_DescriptiveOrientation3.cs" />
+    <Compile Include="DAT_Types\DAT_Hardpoint.cs" />
+    <Compile Include="DAT_Types\DAT_Orientation3.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedOrientation3.cs" />
+    <Compile Include="DAT_Types\DAT_Singles.cs" />
+    <Compile Include="DAT_Types\DAT_Speed.cs" />
+    <Compile Include="DAT_Types\DAT_Area.cs" />
+    <Compile Include="DAT_Types\DAT_Angle.cs" />
+    <Compile Include="DAT_Types\DAT_Null.cs" />
+    <Compile Include="DAT_Types\DAT_Vector.cs" />
+    <Compile Include="DAT_Types\DAT_Mass.cs" />
+    <Compile Include="DAT_Types\DAT_Bytes.cs" />
+    <Compile Include="DAT_Types\DAT_Int32.cs" />
+    <Compile Include="DAT_Types\DAT_Single.cs" />
+    <Compile Include="DAT_Types\DAT_String.cs" />
+    <Compile Include="DAT_Types\DAT_DualVector3.cs" />
+    <Compile Include="DAT_Types\DAT_Vector3.cs" />
+    <Compile Include="DAT_Types\DAT_WeaponFile.cs" />
+    <Compile Include="DAT_Types\DAT_WeaponQuantity.cs" />
+    <Compile Include="File.cs" />
+    <Compile Include="DAT_Types\DAT_Bool.cs" />
+    <Compile Include="DAT_Types\DAT_Strings.cs" />
+    <Compile Include="DAT_Properties\AGMVISIB.cs" />
+    <Compile Include="DAT_Properties\BOMVISIB.cs" />
+    <Compile Include="DAT_Properties\TURRETPO.cs" />
+    <Compile Include="DAT_Properties\NMTURRET.cs" />
+    <Compile Include="DAT_Properties\RKTVISIB.cs" />
+    <Compile Include="DAT_Properties\AAMVISIB.cs" />
+    <Compile Include="DAT_Properties\WPNSHAPE.cs" />
+    <Compile Include="DAT_Properties\SMOKECOL.cs" />
+    <Compile Include="DAT_Properties\INITIGUN.cs" />
+    <Compile Include="DAT_Properties\SMOKEOIL.cs" />
+    <Compile Include="DAT_Properties\LMTBYHDP.cs" />
+    <Compile Include="DAT_Properties\GUNSIGHT.cs" />
+    <Compile Include="DAT_Properties\HRDPOINT.cs" />
+    <Compile Include="DAT_Properties\INITSPED.cs" />
+    <Compile Include="DAT_Properties\INITFUEL.cs" />
+    <Compile Include="DAT_Properties\CTLTHROT.cs" />
+    <Compile Include="DAT_Properties\CTLIFLAP.cs" />
+    <Compile Include="DAT_Properties\CTLINVGW.cs" />
+    <Compile Include="DAT_Properties\CTLSPOIL.cs" />
+    <Compile Include="DAT_Properties\CTLATVGW.cs" />
+    <Compile Include="DAT_Properties\CTLABRNR.cs" />
+    <Compile Include="DAT_Properties\CTLBRAKE.cs" />
+    <Compile Include="DAT_Properties\CTLLDGEA.cs" />
+    <Compile Include="DAT_Properties\CPITSTAB.cs" />
+    <Compile Include="DAT_Properties\CYAWMANE.cs" />
+    <Compile Include="DAT_Properties\CYAWSTAB.cs" />
+    <Compile Include="DAT_Properties\CROLLMAN.cs" />
+    <Compile Include="DAT_Properties\MANESPD2.cs" />
+    <Compile Include="DAT_Properties\MANESPD1.cs" />
+    <Compile Include="DAT_Properties\MXIPTSSA.cs" />
+    <Compile Include="DAT_Properties\MXIPTROL.cs" />
+    <Compile Include="DAT_Properties\MXIPTAOA.cs" />
+    <Compile Include="DAT_Properties\CPITMANE.cs" />
+    <Compile Include="DAT_Properties\INITLOAD.cs" />
+    <Compile Include="DAT_Properties\GUNPOWER.cs" />
+    <Compile Include="DAT_Properties\WEAPONCH.cs" />
+    <Compile Include="DAT_Properties\WINGAREA.cs" />
+    <Compile Include="DAT_Properties\PSTMROLL.cs" />
+    <Compile Include="DAT_Properties\PSTMYAW_.cs" />
+    <Compile Include="DAT_Properties\PSTMPTCH.cs" />
+    <Compile Include="DAT_Properties\TRSTDIR0.cs" />
+    <Compile Include="DAT_Properties\TRSTDIR1.cs" />
+    <Compile Include="DAT_Properties\TRSTVCTR.cs" />
+    <Compile Include="DAT_Properties\VGWSPED2.cs" />
+    <Compile Include="DAT_Properties\VGWSPED1.cs" />
+    <Compile Include="DAT_Properties\RETRGEAR.cs" />
+    <Compile Include="DAT_Properties\CDVARGEO.cs" />
+    <Compile Include="DAT_Properties\CLBYFLAP.cs" />
+    <Compile Include="DAT_Properties\CDBYFLAP.cs" />
+    <Compile Include="DAT_Properties\CDBYGEAR.cs" />
+    <Compile Include="DAT_Properties\CDSPOILR.cs" />
+    <Compile Include="DAT_Properties\CLVARGEO.cs" />
+    <Compile Include="DAT_Properties\VARGEOMW.cs" />
+    <Compile Include="DAT_Properties\HASSPOIL.cs" />
+    <Compile Include="DAT_Properties\CRITAOAM.cs" />
+    <Compile Include="DAT_Properties\MAXSPEED.cs" />
+    <Compile Include="DAT_Properties\STRENGTH.cs" />
+    <Compile Include="DAT_Properties\CRITAOAP.cs" />
+    <Compile Include="DAT_Properties\CRITSPED.cs" />
+    <Compile Include="DAT_Properties\TRIGGER2.cs" />
+    <Compile Include="DAT_Properties\TRIGGER4.cs" />
+    <Compile Include="DAT_Properties\TRIGGER3.cs" />
+    <Compile Include="DAT_Properties\TRIGGER1.cs" />
+    <Compile Include="DAT_Properties\GEARHORN.cs" />
+    <Compile Include="DAT_Properties\STALHORN.cs" />
+    <Compile Include="DAT_Properties\CATEGORY.cs" />
+    <Compile Include="DAT_Properties\ISPNLATT.cs" />
+    <Compile Include="DAT_Properties\SMOKEGEN.cs" />
+    <Compile Include="DAT_Properties\MACHNGN2.cs" />
+    <Compile Include="DAT_Properties\MACHNGN3.cs" />
+    <Compile Include="DAT_Properties\MACHNGN4.cs" />
+    <Compile Include="DAT_Properties\MACHNGN5.cs" />
+    <Compile Include="DAT_Properties\MACHNGN6.cs" />
+    <Compile Include="DAT_Properties\MACHNGN7.cs" />
+    <Compile Include="DAT_Properties\MACHNGN8.cs" />
+    <Compile Include="DAT_Properties\MACHNGUN.cs" />
+    <Compile Include="DAT_Properties\RIGHGEAR.cs" />
+    <Compile Include="DAT_Properties\GUNINTVL.cs" />
+    <Compile Include="DAT_Properties\GUNDIREC.cs" />
+    <Compile Include="DAT_Properties\HTRADIUS.cs" />
+    <Compile Include="DAT_Properties\FLAPPOSI.cs" />
+    <Compile Include="DAT_Properties\VAPORPO1.cs" />
+    <Compile Include="DAT_Properties\VAPORPO0.cs" />
+    <Compile Include="DAT_Properties\WHELGEAR.cs" />
+    <Compile Include="DAT_Properties\ARRESTER.cs" />
+    <Compile Include="DAT_Properties\LEFTGEAR.cs" />
+    <Compile Include="DAT_Properties\SCRNCNTR.cs" />
+    <Compile Include="DAT_Properties\ISPNLPOS.cs" />
+    <Compile Include="DAT_Properties\EXCAMERA.cs" />
+    <Compile Include="DAT_Properties\FUELMILI.cs" />
+    <Compile Include="DAT_Properties\FUELABRN.cs" />
+    <Compile Include="DAT_Properties\COCKPITP.cs" />
+    <Compile Include="DAT_Properties\INSTPANL.cs" />
+    <Compile Include="DAT_Properties\ISPNLSCL.cs" />
+    <Compile Include="DAT_Properties\WEIGLOAD.cs" />
+    <Compile Include="DAT_Properties\WEIGFUEL.cs" />
+    <Compile Include="DAT_Properties\WEIGHCLN.cs" />
+    <Compile Include="DAT_Properties\THRSTREV.cs" />
+    <Compile Include="DAT_Properties\THRMILIT.cs" />
+    <Compile Include="DAT_Properties\THRAFTBN.cs" />
+    <Compile Include="DAT_Properties\SUBSTNAM.cs" />
+    <Compile Include="DAT_Properties\IDENTIFY.cs" />
+    <Compile Include="DAT_Properties\AFTBURNR.cs" />
+    <Compile Include="Performance.cs" />
+    <Compile Include="PropertyTypes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IO\IO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Math\CoordinateSystems\CoordinateSystems.csproj">
+      <Project>{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}</Project>
+      <Name>CoordinateSystems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Math\Equations\Equations.csproj">
+      <Project>{9d0d870c-93e5-4baa-8387-200a0cc2395d}</Project>
+      <Name>Equations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Math\Statistics\Statistics.csproj">
+      <Project>{24009F81-9D6A-48D7-B8D1-EBB599A4D260}</Project>
+      <Name>Statistics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
+      <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
+      <Name>UnitsOfMeasurement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files\CommandFile\CommandFile.csproj">
+      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
+      <Name>CommandFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YSTypes\YSTypes.csproj">
+      <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
+      <Name>YSTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,80 @@
+Vehicle
+    Data : File
+    Model : File
+    CollisionModel : File
+    Cockpit : File
+    Coarse : File
+
+    User User {}; //So can create fake vehicles for offline users - vehicles get parked?
+
+File
+    -> Variables encaspulated in property tree, variables updated onLoad, and written out onSave.
+
+User
+	YSFHQ
+		Id
+		Username
+	OYSPortal
+		FormattedString Nickname; //(implicit string without formating + like class operators)
+		Group[] Groups;
+
+	Ctor(Int ID); //Fetch data from OYSTables.
+	Ctor(); //We will populate the data ourselves, return a blank user.
+Group
+	Rank[] Ranks;
+
+Rank
+	string name;
+	int index;
+
+	class AutoPromoteTo; //When all these requirements are met, the user will be promoted to this rank!
+	class ManualPromoteTo; //Notify all subscribers that the user meets promotion requirements.
+	class AutoDemoteFrom;
+	class ManualDemoteFrom;
+		Requirement[] Requirements;
+		Rank[] NotifyRanks;
+		OYSRegisteredUser[] NotifyUsers;
+
+DATFile : File
+	private class Line
+		Command
+		Parameters
+	public class Property
+		Parameters
+
+		
+	
+private interface ICommand
+	private string[] commands;
+
+private interface IArgument
+	public object[] arguments
+
+protected interface IProperty : ICommand, IArgument
+	private string[] commands;
+	public object[] arguments;
+	
+public static class HasAfterburer : IProperty
+	private string[] commands = new string[]("HASAFTBN");
+	public string[] Commands { get {commands}};
+	private object[] arguments => new object[]{Value}
+
+	public bool Value => arguments[0];
+
+	ctor(bool value)
+	{
+		Value = value;
+	}
+
+HasAfterBurner.Value = true;
+CockpitPosition.X = 1.Meters();
+
+
+
+		
+
+
+
+		
+
+	
