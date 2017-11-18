@@ -17,6 +17,7 @@ using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
 
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
 using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
+using Com.OfficerFlake.Libraries.Databases;
 
 namespace Com.OfficerFlake.Executables.Testing
 {
@@ -39,10 +40,23 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
+			UserDB.UserObject Flake = new UserDB.UserObject();
+		    Flake.YSFHQ.Username = "UsernameGoesHere";
+		    Flake.YSFHQ.Password = "PasswordGoesHere";
+
 			consoleWindow.consoleOutput.AddMessage(new InformationMessage("&bTesting from Root!"));
 		    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aRoot test success!"));
-		    
-		    consoleWindow.consoleOutput.AddMessage(new InformationMessage(172.HexDigitAtColumn(1).ToString()));
+			consoleWindow.consoleOutput.AddMessage(new InformationMessage("----"));
+			consoleWindow.consoleOutput.AddMessage(new InformationMessage("Testing API Login (unhashed)..."));
+
+		    if (Flake.YSFHQ.TryAuthenticate())
+		    {
+			    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aLogin Success!"));
+		    }
+		    else
+		    {
+			    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&cLogin Failure!"));
+		    }
 		}
 
 		#region Old Tests

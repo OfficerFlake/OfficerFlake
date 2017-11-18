@@ -1,0 +1,11 @@
+RichTextString
+-Elements
+
+UserDB
+-UserObject
+--RichTextString Username
+--
+--int YSFHQ_id
+--IPAddress YSFHQ_ipaddress
+--
+--
