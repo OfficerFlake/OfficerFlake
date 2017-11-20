@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.RichText;
 using static Com.OfficerFlake.Libraries.Extensions.Byte;
 
 namespace Com.OfficerFlake.Libraries.Databases
@@ -16,10 +17,10 @@ namespace Com.OfficerFlake.Libraries.Databases
 	    {
 		    public class YSFHQConnectionModule
 		    {
-			    public int ID;
-			    public IPAddress IpAddress;
-			    public string Username;
-			    public string Password;
+			    public int ID = -1;
+			    public IPAddress IpAddress = IPAddress.Loopback;
+			    public string Username = "<UNKNOWN>";
+			    public string Password = "???";
 
 			    public bool TryAuthenticate()
 			    {
@@ -45,9 +46,6 @@ namespace Com.OfficerFlake.Libraries.Databases
 				    }
 				    #endregion
 
-				    //parameters.Add("username", YSFHQ.Username);
-				    //parameters.Add("password", hashedPassword);
-
 				    parameters["username"] = Username;
 				    parameters["password"] = Password;
 				    //parameters["password"] = hashedPassword;
@@ -57,6 +55,7 @@ namespace Com.OfficerFlake.Libraries.Databases
 
 				    try
 				    {
+						//NEED HTTPS otherwise will return 400.
 					    response = thisWebClient.UploadValues(
 						    "https://forum.ysfhq.com/api-login.php?apikey=X0kSNLfV78QE6sd618Mkc7I07Z87wDiIgpdvT15KgcVun2BjLjFtEyWDz1LtY5Zs",
 						    "POST", parameters);
@@ -78,6 +77,17 @@ namespace Com.OfficerFlake.Libraries.Databases
 			    }
 			}
 			public YSFHQConnectionModule YSFHQ = new YSFHQConnectionModule();
+
+		    public RichTextString Username;
+
+		    public UserObject(RichTextString _Username)
+		    {
+			    Username = _Username;
+		    }
 	    }
-    }
+
+	    public static UserObject Unknown = new UserObject("&o&4<UNKNOWN>".AsRichTextString());
+	    public static UserObject Console = new UserObject("&o&3<OpenYS Console>".AsRichTextString());
+	    public static UserObject TestUser = new UserObject("TestUser".AsRichTextString());
+	}
 }

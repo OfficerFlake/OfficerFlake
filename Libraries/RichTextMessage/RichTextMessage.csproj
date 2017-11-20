@@ -38,9 +38,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Color\Color.csproj">
       <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
       <Name>Color</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Databases\UserDB\UserDB.csproj">
+      <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
+      <Name>UserDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extensions\Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.RichTextMessages;
+using Com.OfficerFlake.Libraries.RichText;
+using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using String = System.String;
 
 namespace Com.OfficerFlake.Libraries.IO
@@ -182,7 +183,7 @@ namespace Com.OfficerFlake.Libraries.IO
                         dateSpan.Attributes.Add(dateStyle);
                         dateSpan.Contents = input.Created.InStandardForm().YYYYMMDD_hhmmss_ + ": ";
                         output.Append(dateSpan);
-                        foreach (var thisElement in input.Elements)
+                        foreach (var thisElement in input.String.Elements)
                         {
                             Style thisStyle = new Style();
                             thisStyle.Classes.Add("color" + thisElement.Color.Character);

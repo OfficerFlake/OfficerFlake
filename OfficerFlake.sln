@@ -49,7 +49,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IO", "Libraries\IO\IO.cspro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinateSystems", "Libraries\Math\CoordinateSystems\CoordinateSystems.csproj", "{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RichTextMessage", "RichTextMessage", "{121A9A3E-3D2B-4335-BA07-92C54C41230C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RichText", "RichText", "{121A9A3E-3D2B-4335-BA07-92C54C41230C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextMessage", "Libraries\RichTextMessage\RichTextMessage.csproj", "{CFA4AA58-B4D0-4B19-AF9D-D18780528320}"
 EndProject
@@ -60,6 +60,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserDB", "Libraries\Databases\UserDB\UserDB.csproj", "{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{FE19A8F9-0921-45DB-A776-7F35033041E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RichTextString", "RichTextString\RichTextString.csproj", "{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +163,7 @@ Global
 		{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B} = {312948DC-3326-4FEE-B93F-3DE8AA021093}
 		{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31} = {FE19A8F9-0921-45DB-A776-7F35033041E7}
 		{FE19A8F9-0921-45DB-A776-7F35033041E7} = {393342B8-3254-4C91-A4AB-7D80E569A552}
+		{6A513941-EF4E-46A6-92AA-85ACE6DF2B89} = {121A9A3E-3D2B-4335-BA07-92C54C41230C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

@@ -133,6 +133,45 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		    return output.ToString();
 
 	    }
+		
+		/// <summary>
+		/// Removes all formatting from a formatted System String.
+		/// </summary>
+		/// <param name="input">An internally formatted System String.</param>
+		/// <returns>An Unformatted System String.</returns>
+	    public static string RemoveFormatting(this string input)
+	    {
+			char[] splittablechars = new[]
+{
+				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'K', 'L', 'M', 'N', 'O', 'R'
+			};
+
+			StringBuilder output = new StringBuilder();
+
+			bool isExpectingSplittableChar = false;
+			for (int i = 0; i < input.Length; i++)
+			{
+				char thisCharUpperCase = input.ToUpperInvariant()[i];
+
+				if (isExpectingSplittableChar)
+				{
+					if (splittablechars.Contains(thisCharUpperCase))
+					{
+						continue;
+					}
+					else
+					{
+						output.Append("&");
+						goto End;
+					}
+				}
+				End:
+				isExpectingSplittableChar = (thisCharUpperCase == '&');
+				if (isExpectingSplittableChar) continue;
+				output.Append(input[i]);
+			}
+			return output.ToString();
+		}
 		#endregion
 		#region Searching Shortcuts
 		/// <summary>
@@ -192,7 +231,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
         {
             if (originalString == null) throw new NullReferenceException("originalString is null!");
 
-	        if (originalString.Length >= targetSize) goto OverSize;
+	        int calculatedSize = originalString.Length - originalString.RemoveFormatting().Length;
+
+	        if (calculatedSize >= targetSize) goto OverSize;
 	        else goto UnderSize;
             
             UnderSize:

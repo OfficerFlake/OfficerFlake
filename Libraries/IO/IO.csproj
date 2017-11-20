@@ -41,6 +41,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Color\Color.csproj">
       <Project>{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}</Project>
       <Name>Color</Name>

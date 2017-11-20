@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
-using Com.OfficerFlake.Libraries.RichTextMessages;
+using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using Com.OfficerFlake.Libraries.UserInterfaces.Windows;
 using Com.OfficerFlake.Libraries.Extensions;
 
@@ -18,6 +18,7 @@ using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
 using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
 using Com.OfficerFlake.Libraries.Databases;
+using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Executables.Testing
 {
@@ -40,23 +41,23 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
-			UserDB.UserObject Flake = new UserDB.UserObject();
+			UserDB.UserObject Flake = new UserDB.UserObject("Flake".AsRichTextString());
 		    Flake.YSFHQ.Username = "UsernameGoesHere";
 		    Flake.YSFHQ.Password = "PasswordGoesHere";
 
-			consoleWindow.consoleOutput.AddMessage(new InformationMessage("&bTesting from Root!"));
-		    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aRoot test success!"));
-			consoleWindow.consoleOutput.AddMessage(new InformationMessage("----"));
-			consoleWindow.consoleOutput.AddMessage(new InformationMessage("Testing API Login (unhashed)..."));
+			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("&bTesting from Root!"));
+			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aRoot test success!"));
+			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("----"));
+			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("Testing API Login (unhashed)..."));
 
-		    if (Flake.YSFHQ.TryAuthenticate())
-		    {
-			    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aLogin Success!"));
-		    }
-		    else
-		    {
-			    consoleWindow.consoleOutput.AddMessage(new InformationMessage("&cLogin Failure!"));
-		    }
+		    //if (Flake.YSFHQ.TryAuthenticate())
+		    //{
+			   // consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aLogin Success!"));
+		    //}
+		    //else
+		    //{
+			   // consoleWindow.consoleOutput.AddMessage(new InformationMessage("&cLogin Failure!"));
+		    //}
 		}
 
 		#region Old Tests
@@ -69,7 +70,7 @@ namespace Com.OfficerFlake.Executables.Testing
             var warning = new Paragraph(new WarningMessage("Warning Warning Warning"));
             var debug = new Paragraph(new DebugMessage("Debug Debug Debug"));
             var info = new Paragraph(new InformationMessage("Info Info Info"));
-            var user = new Paragraph(new UserMessage("User User User"));
+            var user = new Paragraph(new UserMessage(UserDB.TestUser, "User User User"));
 
             test.Body.Elements.Add(crash);
             test.Body.Elements.Add(error);

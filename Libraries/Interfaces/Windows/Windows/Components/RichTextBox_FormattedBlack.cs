@@ -7,7 +7,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using Com.OfficerFlake.Libraries.RichTextMessages;
+using Com.OfficerFlake.Libraries.RichText;
+using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 
 using FlakeColors = Com.OfficerFlake.Libraries.Color;
 
@@ -16,7 +17,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 	public class RichTextBox_FormattedBlack : RichTextBox
 	{
 		public static Random RandomNumberGenerator = new Random();
-		public RichTextBox_FormattedBlack(RichTextMessage _input)
+		public RichTextBox_FormattedBlack(RichTextString _input)
 		{
 			SuspendLayout();
 
@@ -52,7 +53,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 		{
 		}
 
-		public void PopulateRTB(RichTextMessage _input)
+		public void PopulateRTB(RichTextString _input)
 		{
 			//SuspendLayout();
 
@@ -61,7 +62,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			SelectionLength = 0;
 
 			#region Populate RTB
-			foreach (RichTextMessage.MessageElement thisElement in _input.Elements)
+			foreach (RichTextString.MessageElement thisElement in _input.Elements)
 			{
 				int _SelectionStart = Text.Length;
 
@@ -108,7 +109,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			//ResumeLayout();
 		}
 
-		public void AppendRichTextElement(RichTextMessage.MessageElement thisElement)
+		public void AppendRichTextElement(RichTextString.MessageElement thisElement)
 		{
 			SelectionStart = 0;
 			SelectionLength = 0;

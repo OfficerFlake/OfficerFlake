@@ -2,12 +2,17 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries.Color;
-using Com.OfficerFlake.Libraries.RichTextMessages;
+using Com.OfficerFlake.Libraries.Databases;
+using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
+using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {
@@ -31,9 +36,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		//private bool performRichTextBoxUpdates = true;
 	    internal bool FormClosing = false;
 
+	    private const int DateSize = 8;
+	    private const int TimeSize = 6;
+	    private const int UsernameSize = 16;
+	    private const int MessageSize = 56;
+
+
 		#endregion
-	    #region Control Events
-	    private void CheckBox_ShowDate_CheckedChanged(object sender, EventArgs e)
+		#region Control Events
+		private void CheckBox_ShowDate_CheckedChanged(object sender, EventArgs e)
 	    {
 		    RepopulateRichTextBoxFromList();
 	    }
@@ -51,14 +62,30 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    }
 	    private void Button_TestOutput_Click(object sender, EventArgs e)
 	    {
-		    AddMessage(new InformationMessage("&bClicked the \"Test Output\" button!"));
-		    AddMessage(new InformationMessage("&bThere are now &e&l" + (richTextMessagesCount+1) + "&r&b messages in the output log!"));
-			AddMessage(new InformationMessage("&bSeems fine to me!"));
+		    //AddMessage(new UserMessage(UserDB.TestUser, "&bClicked the \"Test Output\" button!"));
+		    //AddMessage(new UserMessage(UserDB.TestUser, "&bThere are now &e&l" + (richTextMessagesCount+1) + "&r&b messages in the output log!"));
+			//AddMessage(new UserMessage(UserDB.TestUser, "&bSeems fine to me!"));
+
+		    AddMessage(new UserMessage(UserDB.TestUser, "&eLONG MESSAGE TEST----------------------------------------------------------------------------------------------------------------------------------------------"));
 		}
 	    #endregion
 
 		#region RichTextMessages List
-		private List<RichTextMessage> richTextMessages = new List<RichTextMessage>();
+
+	    private class RichTextMessageDictionaryItem
+	    {
+		    private static ConsoleOutput Parent;
+		    public int StartIndex;
+			public RichTextMessage Message;
+
+		    public RichTextMessageDictionaryItem(ConsoleOutput Parent, RichTextMessage thisMessage)
+		    {
+			    StartIndex = Parent.richTextBox_ConsoleOutput.Lines.Length;
+			    Message = thisMessage;
+		    }
+	    }
+
+		private List<RichTextMessageDictionaryItem> richTextMessages = new List<RichTextMessageDictionaryItem>();
 	    private int maximumMessages = 1000; //Stress tested okay to ~25,000 objects.
 	    private int richTextMessagesCount => richTextMessages.Count + incomingRichTextMessages.Count;
 
@@ -74,6 +101,64 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    incomingRichTextMessages.Enqueue(thisRichTextMessage);
 		    notifyIncomingRichTextMessages.Set();
 	    }
+
+	    public int GetIndentSize()
+	    {
+		    int output = -1; //Factor the newline seperator...
+		    if (checkBox_ShowDate.Checked) output += (DateSize+1);
+		    if (checkBox_ShowTime.Checked) output += (TimeSize+1);
+		    if (checkBox_ShowUsername.Checked) output += (UsernameSize+1);
+		    return output;
+	    }
+	    public int GetFullLineSize()
+	    {
+		    return GetIndentSize() + MessageSize + 2;
+	    }
+
+		/// <summary>
+		/// Gets the first message from the messages list, closest to this index, but always below this index. Can return null.
+		/// </summary>
+		/// <param name="Row">Minimum row number.</param>
+		/// <returns>The message object if found, otherwise null.</returns>
+	    public RichTextMessage GetMessageFromPosition(int Row)
+	    {
+		    RichTextMessage output = null;
+		    try
+		    {
+			    var output0 = richTextMessages.ToArray();
+				var output1 = output0.Where(x => x.StartIndex <= Row).ToArray();
+			    var output2 = output1.OrderByDescending(y => y.StartIndex).ToArray();
+				var output3 = output2.First();
+				var output4 = output3.Message;
+			    output = output4;
+			    return output;
+		    }
+		    catch
+		    {
+			    //not found.
+		    }
+		    return output;
+	    }
+
+	    public int GetMessageIndexFromPosition(int Row)
+	    {
+			int output = -1;
+		    try
+		    {
+			    var output0 = richTextMessages.ToArray();
+			    var output1 = output0.Where(x => x.StartIndex <= Row).ToArray();
+			    var output2 = output1.OrderByDescending(y => y.StartIndex).ToArray();
+			    var output3 = output2.First();
+			    var output4 = output3.StartIndex;
+			    output = output4;
+			    return output;
+		    }
+		    catch
+		    {
+			    //not found.
+		    }
+		    return output;
+		}
 		#endregion
 		#region RichTextBox Updating
 		private void RepopulateRichTextBoxFromList()
@@ -86,33 +171,32 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		    //redraw the entire textbox.
 			richTextBox_ConsoleOutput.Clear();
-		    foreach (RichTextMessage thisRichTextMessage in richTextMessages)
+		    foreach (RichTextMessageDictionaryItem thisRichTextMessageDictionaryItem in richTextMessages)
 		    {
-			    AppendRichTextMessageDirect(thisRichTextMessage);
+			    AppendRichTextMessageDirect(thisRichTextMessageDictionaryItem.Message);
 		    }
 	    }
 	    private void AppendRichTextMessageDirect(RichTextMessage thisRichTextMessage)
 	    {
-			RichTextMessage.MessageElement date = new RichTextMessage.MessageElement();
+			RichTextString.MessageElement date = new RichTextString.MessageElement();
 			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
 		                   thisRichTextMessage.Created.InStandardForm().MM +
 		                   thisRichTextMessage.Created.InStandardForm().DD;
 			date.Color = MinecraftColor.White;
 
-			RichTextMessage.MessageElement time = new RichTextMessage.MessageElement();
+		    RichTextString.MessageElement time = new RichTextString.MessageElement();
 			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
 			               thisRichTextMessage.Created.InStandardForm().mm +
 			               thisRichTextMessage.Created.InStandardForm().ss;
 			time.Color = MinecraftColor.DarkGray;
 
-		    RichTextMessage.MessageElement username = new RichTextMessage.MessageElement();
-		    username.Message = thisRichTextMessage.UserObject.ResizeOnRight(16, ' ');
-			username.Color = MinecraftColor.Teal;
+		    RichTextString.MessageElement[] username = thisRichTextMessage.UserObject.Username.Elements;
 
-		    RichTextMessage.MessageElement[] message = thisRichTextMessage.Elements;
+			RichTextString.MessageElement[] message = thisRichTextMessage.String.Elements;
 
 			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
-		    if (checkBox_ShowDate.Checked)
+		    int messageIndentSize = GetIndentSize();
+			if (checkBox_ShowDate.Checked)
 		    {
 			    richTextBox_ConsoleOutput.AppendRichTextElement(date);
 			    richTextBox_ConsoleOutput.AppendText(" ");
@@ -121,18 +205,101 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    {
 			    richTextBox_ConsoleOutput.AppendRichTextElement(time);
 			    richTextBox_ConsoleOutput.AppendText(" ");
-		    }
+			}
 		    if (checkBox_ShowUsername.Checked)
 		    {
-			    richTextBox_ConsoleOutput.AppendRichTextElement(username);
-		    }
+			    int totalMessageSize = 0;
+				for (int i=0; i<username.Length; i++)
+				{
+					MessageElement thisElement = username[i];
+					MessageElement currentElement;
+					#region Limit Size of total message to 16 Chars
+					int thisElementSize = thisElement.Message.Length;
+					if (totalMessageSize + thisElementSize > 16)
+					{
+						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.Color,
+							thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+						totalMessageSize += currentElement.Message.Length;
+					}
+					else
+					{
+						currentElement = thisElement;
+						totalMessageSize += currentElement.Message.Length;
+						if (i == username.Length - 1)
+						{
+							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.Color,
+								thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+						}
+					}
+					#endregion
+					richTextBox_ConsoleOutput.AppendRichTextElement(currentElement);
+				}
+			    richTextBox_ConsoleOutput.AppendText(" ");
+			}
 		    if (checkBox_ShowMessage.Checked)
 		    {
-			    foreach (RichTextMessage.MessageElement thisElement in message)
+				int fullMessageSize = message.Sum(x => x.Message.Length);
+			    int remainingCharactersToAdd = fullMessageSize;
+			    int charactersOnThisLine = 0;
+
+			    for (int i = 0; i < message.Length; i++)
 			    {
-				    richTextBox_ConsoleOutput.AppendRichTextElement(thisElement);
-			    }
-		    }
+				    MessageElement thisElement = message[i];
+				    MessageElement workingElement;
+					#region Limit Size of total message
+				    int maxLineSize = MessageSize;
+				    #region  Break the currrent element across lines if required.
+				    int sizeOfCurrentElement = thisElement.Message.Length;
+					int sizeAlreadyAdded = 0; 
+					int sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
+					if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
+				    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+				    int sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+
+					#region Keep breaking across lines...
+					while (sizeWillRemain > 0)
+				    {
+						workingElement = new MessageElement
+					    (
+						    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
+							thisElement.Color,
+						    thisElement.IsBold,
+							thisElement.IsItalic,
+							thisElement.IsUnderlined,
+							thisElement.IsObfuscated
+							);
+					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+					    charactersOnThisLine += sizeToAdd;
+						richTextBox_ConsoleOutput.AppendText("\n ");
+						richTextBox_ConsoleOutput.AppendText(new string(' ', messageIndentSize));
+					    charactersOnThisLine = 0;
+					    sizeAlreadyAdded += sizeToAdd;
+						remainingCharactersToAdd -= sizeToAdd;
+					    sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+					    sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
+					    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
+					    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+				    }
+					#endregion
+					#region Last part of the element, no need to breaklines again.
+				    workingElement = new MessageElement
+				    (
+					    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
+					    thisElement.Color,
+					    thisElement.IsBold,
+					    thisElement.IsItalic,
+					    thisElement.IsUnderlined,
+					    thisElement.IsObfuscated
+				    );
+				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+				    charactersOnThisLine += sizeToAdd;
+					remainingCharactersToAdd -= sizeToAdd;
+					#endregion
+					#endregion
+					#endregion
+				}
+			    //richTextBox_ConsoleOutput.AppendText(" ");
+			}
 		    richTextBox_ConsoleOutput.ScrollToCaret();
 		}
 	    private void AddMessageDirect(RichTextMessage thisRichTextMessage)
@@ -154,7 +321,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 				richTextMessages.RemoveAt(0);
 				#endregion
 			}
-		    richTextMessages.Add(thisRichTextMessage);
+			richTextMessages.Add(new RichTextMessageDictionaryItem(this, thisRichTextMessage));
 			AppendRichTextMessageDirect(thisRichTextMessage);
 	    }
 
@@ -201,5 +368,44 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    }
 	    }
 		#endregion
+
+		private void richTextBox_ConsoleOutput_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+			{
+				richTextBox_ConsoleOutput_MouseRightClick(sender, e);
+			}
+		}
+	    private void richTextBox_ConsoleOutput_MouseRightClick(object sendder, MouseEventArgs e)
+	    {
+		    var currentTextIndex = richTextBox_ConsoleOutput.GetCharIndexFromPosition(e.Location);
+		    var wordRegex = new Regex(@"(\w+)");
+		    var words = wordRegex.Matches(richTextBox_ConsoleOutput.Text);
+		    if (words.Count < 1) return;
+
+		    var currentWord = string.Empty;
+		    for (var i = words.Count - 1; i >= 0; i--)
+		    {
+			    if (words[i].Index <= currentTextIndex)
+			    {
+				    currentWord = words[i].Value;
+				    break;
+			    }
+		    }
+		    if (currentWord == string.Empty) return;
+		    MessageBox.Show(
+				"Mouse Row: " + GetMouseRow(currentTextIndex) + "\n\n" +
+				"Console Index: " + GetMessageIndexFromPosition(GetMouseRow(currentTextIndex)) + "\n\n" +
+				"Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedString());
+	    }
+
+	    private int GetMouseRow(int charIndex)
+	    {
+		    return charIndex/GetFullLineSize();
+	    }
+	    private int GetMouseColumn(int charIndex)
+	    {
+		    return charIndex % GetFullLineSize();
+	    }
 	}
 }

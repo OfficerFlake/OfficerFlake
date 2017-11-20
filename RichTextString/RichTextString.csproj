@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}</ProjectGuid>
+    <ProjectGuid>{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UserDB</RootNamespace>
-    <AssemblyName>UserDB</AssemblyName>
+    <RootNamespace>RichTextString</RootNamespace>
+    <AssemblyName>RichTextString</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,15 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserDB.cs" />
+    <Compile Include="RichTextString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\RichTextString\RichTextString.csproj">
-      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
-      <Name>RichTextString</Name>
+    <ProjectReference Include="..\Libraries\Color\Color.csproj">
+      <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
+      <Name>Color</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+    <ProjectReference Include="..\Libraries\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
     </ProjectReference>

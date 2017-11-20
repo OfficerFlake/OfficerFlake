@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		/// </summary>
 		/// <param name="input">Byte array to convert</param>
 		/// <returns>String of ASCII characters</returns>
-        public static string ToString(this byte[] input)
+        public static string ToSystemString(this byte[] input)
         {
             return Encoding.ASCII.GetString(input);
         }

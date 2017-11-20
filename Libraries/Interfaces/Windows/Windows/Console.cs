@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Com.OfficerFlake.Libraries.RichTextMessages;
+using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {

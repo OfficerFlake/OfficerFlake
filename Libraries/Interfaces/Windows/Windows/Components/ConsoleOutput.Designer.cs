@@ -115,6 +115,7 @@
 			this.richTextBox_ConsoleOutput.Size = new System.Drawing.Size(640, 430);
 			this.richTextBox_ConsoleOutput.TabIndex = 7;
 			this.richTextBox_ConsoleOutput.Text = "";
+			this.richTextBox_ConsoleOutput.MouseUp += new System.Windows.Forms.MouseEventHandler(this.richTextBox_ConsoleOutput_MouseUp);
 			// 
 			// ConsoleOutput
 			// 
