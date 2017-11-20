@@ -60,6 +60,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    {
 		    RepopulateRichTextBoxFromList();
 	    }
+
 	    private void Button_TestOutput_Click(object sender, EventArgs e)
 	    {
 		    //AddMessage(new UserMessage(UserDB.TestUser, "&bClicked the \"Test Output\" button!"));
@@ -68,20 +69,51 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		    AddMessage(new UserMessage(UserDB.TestUser, "&eLONG MESSAGE TEST----------------------------------------------------------------------------------------------------------------------------------------------"));
 		}
-	    #endregion
+
+	    private void richTextBox_ConsoleOutput_MouseUp(object sender, MouseEventArgs e)
+	    {
+		    if (e.Button == MouseButtons.Right)
+		    {
+			    richTextBox_ConsoleOutput_MouseRightClick(sender, e);
+		    }
+	    }
+	    private void richTextBox_ConsoleOutput_MouseRightClick(object sendder, MouseEventArgs e)
+	    {
+		    var currentTextIndex = richTextBox_ConsoleOutput.GetCharIndexFromPosition(e.Location);
+		    var wordRegex = new Regex(@"(\w+)");
+		    var words = wordRegex.Matches(richTextBox_ConsoleOutput.Text);
+		    if (words.Count < 1) return;
+
+		    var currentWord = string.Empty;
+		    for (var i = words.Count - 1; i >= 0; i--)
+		    {
+			    if (words[i].Index <= currentTextIndex)
+			    {
+				    currentWord = words[i].Value;
+				    break;
+			    }
+		    }
+		    if (currentWord == string.Empty) return;
+		    MessageBox.Show(
+			    "Mouse Row: " + GetMouseRow(currentTextIndex) + "\n\n" +
+			    "Console Index: " + GetMessageIndexFromPosition(GetMouseRow(currentTextIndex)) + "\n\n" +
+			    "Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedString());
+	    }
+		#endregion
 
 		#region RichTextMessages List
 
-	    private class RichTextMessageDictionaryItem
+		private class RichTextMessageDictionaryItem
 	    {
 		    private static ConsoleOutput Parent;
 		    public int StartIndex;
 			public RichTextMessage Message;
 
-		    public RichTextMessageDictionaryItem(ConsoleOutput Parent, RichTextMessage thisMessage)
+		    public RichTextMessageDictionaryItem(ConsoleOutput _Parent, RichTextMessage _Message)
 		    {
-			    StartIndex = Parent.richTextBox_ConsoleOutput.Lines.Length;
-			    Message = thisMessage;
+			    Parent = _Parent;
+				StartIndex = Parent.richTextBox_ConsoleOutput.Lines.Length;
+			    Message = _Message;
 		    }
 	    }
 
@@ -102,7 +134,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    notifyIncomingRichTextMessages.Set();
 	    }
 
-	    public int GetIndentSize()
+	    private int GetIndentSize()
 	    {
 		    int output = -1; //Factor the newline seperator...
 		    if (checkBox_ShowDate.Checked) output += (DateSize+1);
@@ -110,7 +142,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    if (checkBox_ShowUsername.Checked) output += (UsernameSize+1);
 		    return output;
 	    }
-	    public int GetFullLineSize()
+	    private int GetFullLineSize()
 	    {
 		    return GetIndentSize() + MessageSize + 2;
 	    }
@@ -120,7 +152,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		/// </summary>
 		/// <param name="Row">Minimum row number.</param>
 		/// <returns>The message object if found, otherwise null.</returns>
-	    public RichTextMessage GetMessageFromPosition(int Row)
+	    private RichTextMessage GetMessageFromPosition(int Row)
 	    {
 		    RichTextMessage output = null;
 		    try
@@ -139,8 +171,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    }
 		    return output;
 	    }
-
-	    public int GetMessageIndexFromPosition(int Row)
+	    private int GetMessageIndexFromPosition(int Row)
 	    {
 			int output = -1;
 		    try
@@ -159,6 +190,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    }
 		    return output;
 		}
+
+	    private int GetMouseRow(int charIndex)
+	    {
+		    return charIndex / GetFullLineSize();
+	    }
+	    private int GetMouseColumn(int charIndex)
+	    {
+		    return charIndex % GetFullLineSize();
+	    }
 		#endregion
 		#region RichTextBox Updating
 		private void RepopulateRichTextBoxFromList()
@@ -368,44 +408,5 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    }
 	    }
 		#endregion
-
-		private void richTextBox_ConsoleOutput_MouseUp(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Right)
-			{
-				richTextBox_ConsoleOutput_MouseRightClick(sender, e);
-			}
-		}
-	    private void richTextBox_ConsoleOutput_MouseRightClick(object sendder, MouseEventArgs e)
-	    {
-		    var currentTextIndex = richTextBox_ConsoleOutput.GetCharIndexFromPosition(e.Location);
-		    var wordRegex = new Regex(@"(\w+)");
-		    var words = wordRegex.Matches(richTextBox_ConsoleOutput.Text);
-		    if (words.Count < 1) return;
-
-		    var currentWord = string.Empty;
-		    for (var i = words.Count - 1; i >= 0; i--)
-		    {
-			    if (words[i].Index <= currentTextIndex)
-			    {
-				    currentWord = words[i].Value;
-				    break;
-			    }
-		    }
-		    if (currentWord == string.Empty) return;
-		    MessageBox.Show(
-				"Mouse Row: " + GetMouseRow(currentTextIndex) + "\n\n" +
-				"Console Index: " + GetMessageIndexFromPosition(GetMouseRow(currentTextIndex)) + "\n\n" +
-				"Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedString());
-	    }
-
-	    private int GetMouseRow(int charIndex)
-	    {
-		    return charIndex/GetFullLineSize();
-	    }
-	    private int GetMouseColumn(int charIndex)
-	    {
-		    return charIndex % GetFullLineSize();
-	    }
 	}
 }
