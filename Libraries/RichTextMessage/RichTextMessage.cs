@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Color;
-using Com.OfficerFlake.Libraries.Databases;
+using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.RichText
@@ -13,14 +13,14 @@ namespace Com.OfficerFlake.Libraries.RichText
     {
 		#region Properties
 		public DateTime Created { get; set; }
-		public UserDB.UserObject UserObject { get; set; }
+		public User UserObject { get; set; }
 	    public RichTextString String { get; set; }
 		#endregion
 
 	    public RichTextMessage(RichTextString input)
 	    {
 		    Created = DateTime.Now;
-			UserObject = UserDB.Unknown;
+			UserObject = Users.Unknown;
 		    String = input;
 		}
 	    public RichTextMessage(string input)
@@ -28,7 +28,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    RichTextString _string = input.AsRichTextString();
 
 			Created = DateTime.Now;
-		    UserObject = UserDB.Unknown;
+		    UserObject = Users.Unknown;
 		    String = _string;
 		}
 
@@ -111,7 +111,7 @@ namespace Com.OfficerFlake.Libraries.RichText
         public CrashMessage(string input) : base("&e&l" + input)
         {
             Type = MessageType.Crash;
-	        UserObject = UserDB.Console;
+	        UserObject = Users.Console;
 		}
     }
     public class ErrorMessage : RichTextMessage
@@ -119,7 +119,7 @@ namespace Com.OfficerFlake.Libraries.RichText
         public ErrorMessage(string input) : base(input)
         {
             Type = MessageType.Error;
-	        UserObject = UserDB.Console;
+	        UserObject = Users.Console;
 		}
     }
     public class DebugMessage : RichTextMessage
@@ -127,7 +127,7 @@ namespace Com.OfficerFlake.Libraries.RichText
         public DebugMessage(string input) : base(input)
         {
             Type = MessageType.Debug;
-	        UserObject = UserDB.Console;
+	        UserObject = Users.Console;
 		}
     }
     public class WarningMessage : RichTextMessage
@@ -135,7 +135,7 @@ namespace Com.OfficerFlake.Libraries.RichText
         public WarningMessage(string input) : base(input)
         {
             Type = MessageType.Warning;
-	        UserObject = UserDB.Console;
+	        UserObject = Users.Console;
 		}
     }
     public class InformationMessage : RichTextMessage
@@ -143,12 +143,12 @@ namespace Com.OfficerFlake.Libraries.RichText
         public InformationMessage(string input) : base("&b&o" + input)
         {
             Type = MessageType.Information;
-	        UserObject = UserDB.Console;
+	        UserObject = Users.Console;
         }
     }
     public class UserMessage : RichTextMessage
     {
-        public UserMessage(UserDB.UserObject userObject, string input) : base(input)
+        public UserMessage(User userObject, string input) : base(input)
         {
             Type = MessageType.User;
 	        UserObject = userObject;

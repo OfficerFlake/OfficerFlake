@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
             }
             public bool SetParameter(int index, string value)
             {
-				//TODO: Fix this, it's clearly wrong...
+				//TODO: Fix this, it's clearly wrong... (PRIOTITY=0)
 
 				//If Index is too high?
                 if (index < 0) index = NumberOfParameters + (index % NumberOfParameters);

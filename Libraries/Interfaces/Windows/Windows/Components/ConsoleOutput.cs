@@ -8,7 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries.Color;
-using Com.OfficerFlake.Libraries.Databases;
+using static Com.OfficerFlake.Libraries.Database;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
@@ -67,7 +67,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    //AddMessage(new UserMessage(UserDB.TestUser, "&bThere are now &e&l" + (richTextMessagesCount+1) + "&r&b messages in the output log!"));
 			//AddMessage(new UserMessage(UserDB.TestUser, "&bSeems fine to me!"));
 
-		    AddMessage(new UserMessage(UserDB.TestUser, "&eLONG MESSAGE TEST----------------------------------------------------------------------------------------------------------------------------------------------"));
+		    AddMessage(new UserMessage(Users.TestUser, "&eLONG MESSAGE TEST----------------------------------------------------------------------------------------------------------------------------------------------"));
 		}
 
 	    private void richTextBox_ConsoleOutput_MouseUp(object sender, MouseEventArgs e)
@@ -77,7 +77,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    richTextBox_ConsoleOutput_MouseRightClick(sender, e);
 		    }
 	    }
-	    private void richTextBox_ConsoleOutput_MouseRightClick(object sendder, MouseEventArgs e)
+	    private void richTextBox_ConsoleOutput_MouseRightClick(object sender, MouseEventArgs e)
 	    {
 		    var currentTextIndex = richTextBox_ConsoleOutput.GetCharIndexFromPosition(e.Location);
 		    var wordRegex = new Regex(@"(\w+)");

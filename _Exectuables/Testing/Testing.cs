@@ -17,7 +17,7 @@ using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
 
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
 using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
-using Com.OfficerFlake.Libraries.Databases;
+using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Executables.Testing
@@ -41,23 +41,20 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
-			UserDB.UserObject Flake = new UserDB.UserObject("Flake".AsRichTextString());
+			User Flake = new User("Flake".AsRichTextString());
 		    Flake.YSFHQ.Username = "UsernameGoesHere";
 		    Flake.YSFHQ.Password = "PasswordGoesHere";
 
-			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("&bTesting from Root!"));
-			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aRoot test success!"));
-			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("----"));
-			//consoleWindow.consoleOutput.AddMessage(new InformationMessage("Testing API Login (unhashed)..."));
+		    Rank consoleRank = Users.Console.GetRankInGroupOrNull(Groups.Server);
+		    Rank testUserRank = Users.TestUser.GetRankInGroupOrNull(Groups.Server);
 
-		    //if (Flake.YSFHQ.TryAuthenticate())
-		    //{
-			   // consoleWindow.consoleOutput.AddMessage(new InformationMessage("&aLogin Success!"));
-		    //}
-		    //else
-		    //{
-			   // consoleWindow.consoleOutput.AddMessage(new InformationMessage("&cLogin Failure!"));
-		    //}
+
+			consoleWindow.consoleOutput.AddMessage
+				(
+				//User.Can.Permission(User, Scope);
+				//TODO : Adjust The Format of The Command into This.  (PRIOTITY=3)
+				new InformationMessage(Users.Console.Can(testUserRank.Permissions.Ban, Users.Console).ToString())
+				);
 		}
 
 		#region Old Tests
@@ -70,7 +67,7 @@ namespace Com.OfficerFlake.Executables.Testing
             var warning = new Paragraph(new WarningMessage("Warning Warning Warning"));
             var debug = new Paragraph(new DebugMessage("Debug Debug Debug"));
             var info = new Paragraph(new InformationMessage("Info Info Info"));
-            var user = new Paragraph(new UserMessage(UserDB.TestUser, "User User User"));
+            var user = new Paragraph(new UserMessage(Users.TestUser, "User User User"));
 
             test.Body.Elements.Add(crash);
             test.Body.Elements.Add(error);

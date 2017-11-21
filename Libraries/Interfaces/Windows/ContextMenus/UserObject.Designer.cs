@@ -35,6 +35,8 @@
 			this.freezeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.banToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.permanentlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.untilToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip_UserObject.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -66,23 +68,38 @@
 			// freezeToolStripMenuItem
 			// 
 			this.freezeToolStripMenuItem.Name = "freezeToolStripMenuItem";
-			this.freezeToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.freezeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.freezeToolStripMenuItem.Text = "Freeze";
 			this.freezeToolStripMenuItem.Click += new System.EventHandler(this.freezeToolStripMenuItem_Click);
 			// 
 			// kickToolStripMenuItem
 			// 
 			this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
-			this.kickToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.kickToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.kickToolStripMenuItem.Text = "Kick";
 			this.kickToolStripMenuItem.Click += new System.EventHandler(this.kickToolStripMenuItem_Click);
 			// 
 			// banToolStripMenuItem
 			// 
+			this.banToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.permanentlyToolStripMenuItem,
+            this.untilToolStripMenuItem});
 			this.banToolStripMenuItem.Name = "banToolStripMenuItem";
-			this.banToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.banToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.banToolStripMenuItem.Text = "Ban";
 			this.banToolStripMenuItem.Click += new System.EventHandler(this.banToolStripMenuItem_Click);
+			// 
+			// permanentlyToolStripMenuItem
+			// 
+			this.permanentlyToolStripMenuItem.Name = "permanentlyToolStripMenuItem";
+			this.permanentlyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.permanentlyToolStripMenuItem.Text = "Permanently";
+			// 
+			// untilToolStripMenuItem
+			// 
+			this.untilToolStripMenuItem.Name = "untilToolStripMenuItem";
+			this.untilToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.untilToolStripMenuItem.Text = "Until...";
 			// 
 			// UserObject
 			// 
@@ -103,5 +120,7 @@
 		private System.Windows.Forms.ToolStripMenuItem kickToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem banToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem infoToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem permanentlyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem untilToolStripMenuItem;
 	}
 }

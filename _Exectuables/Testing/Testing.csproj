@@ -69,9 +69,9 @@
       <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
       <Name>Color</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Databases\UserDB\UserDB.csproj">
+    <ProjectReference Include="..\..\Libraries\Databases\UserDB\Database.csproj">
       <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
-      <Name>UserDB</Name>
+      <Name>Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
@@ -97,6 +97,10 @@
       <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
       <Name>Statistics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Permissions\Permissions\Permissions.csproj">
+      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
+      <Name>Permissions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\RichTextMessage\RichTextMessage.csproj">
       <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
       <Name>RichTextMessage</Name>
@@ -104,6 +108,10 @@
     <ProjectReference Include="..\..\Libraries\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\YSFHQ\YSFHQ.csproj">
+      <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
+      <Name>YSFHQ</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\DATFile\DATFile.csproj">
       <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
