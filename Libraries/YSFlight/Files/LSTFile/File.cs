@@ -63,7 +63,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
 
         public new void Load()
         {
-            const bool ShowLines = false;
+            bool ShowLines = false;
             base.Load();
 
             List = new List<AircraftDefinition>();
