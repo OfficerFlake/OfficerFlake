@@ -50,4 +50,18 @@ namespace Com.OfficerFlake.Libraries
 		public Permission Promote;
 		public Permission Demote;
 	}
+
+	public enum PermissionTypes
+	{
+		Mute,
+		Freeze,
+		Kick,
+		Ban,
+
+		AddToGroup,
+		RemoveFromGroup,
+
+		Promote,
+		Demote
+	}
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
 using Com.OfficerFlake.Libraries.RichText;
 
@@ -16,6 +18,9 @@ namespace Com.OfficerFlake.Libraries
 
 		    public User(RichTextString _Username)
 		    {
+				Can = new PermissionsTesting_Can(this);
+				Cannot = new PermissionsTesting_Cannot(this);
+
 			    Username = _Username;
 		    }
 
@@ -149,50 +154,199 @@ namespace Com.OfficerFlake.Libraries
 		    public List<GroupReference> Groups = new List<GroupReference>();
 			#endregion
 			#region Perissmions
-			public bool Can(Permission action, User target, Group scope = null)
-			{
-				#region Permissions maximum rank is -1, and the "Must Outrank" rule is false. Will always have permission. RETURN TRUE.
-
-				if (scope == null) scope = Database.Groups.Server;
-
-				if (action.MaximumRank <= -1 && !action.MustOutrank) return true; //permission always enabled.
-				#endregion
-
-				#region Caller is not a member of the group. RETURN FALSE.
-				Rank ActorsRank = GetRankInGroupOrNull(scope);
-				if (ActorsRank == null) return false; //not a member of the group to begin with...
-				#endregion
-				#region Permissions minimum rank must be above -1 to be enabled. RETURN FALSE.
-				if (action.MinimumRank <= -1) return false; //permission disabled.
-				#endregion
-				#region Caller doesn't outrank target. RETURN FALSE.
-				#region Set TargetRank to Minimum if not in the group.
-				Rank TargetRank = GetRankInGroupOrNull(scope);
-				if (TargetRank == null) TargetRank = scope.Ranks.OrderBy(x=>x.Index).First(); //not a member of the group to begin with...
-				#endregion
-
-				int ActorRankNumber = 0;
-				int TargetRankNumber = 0;
-
-				ActorRankNumber = ActorsRank.Index;
-				TargetRankNumber = TargetRank.Index;
-
-				bool Outranks = (ActorRankNumber > TargetRankNumber);
-				if (!Outranks) return false;
-				#endregion
-				#region Targets Rank is outside permissions scope. RETURN FALSE.
-				if (TargetRankNumber < action.MinimumRank) return false; //Target rank is below minimum allowed.
-				if (TargetRankNumber > action.MaximumRank) return false; //Target rank is above maximum allowed.
-				#endregion
-
-				#region Tested permissions and all is okay. RETURN TRUE.
-				return true;
-				#endregion
-			}
-		    public bool Cannot(Permission action, User target, Group scope = null)
+		    private class PermissionsTesting
 		    {
-			    return !Can(action, target, scope);
-		    }
+			    public PermissionsTesting(User parent)
+			    {
+				    Parent = parent;
+			    }
+
+			    public User Parent;
+
+			    private bool BaseTest(PermissionTypes permissionType, User target, Group scope = null)
+			    {
+				    #region Initialisation
+					User caller = Parent;
+
+				    Rank callerRank;
+				    Rank targetRank;
+
+				    Permission minimumPermission;
+					Permission permission;
+
+					if (scope == null) scope = Database.Groups.Server;
+					#endregion
+
+					#region Minimum Ranks Permission has "Maximum Rank" as -1, and "Must Outrank" as false, so will always have permission. RETURN TRUE.
+				    minimumPermission = scope.GetLowestRank().GetPermission(permissionType);
+					if (minimumPermission.MaximumRank <= -1 && !minimumPermission.MustOutrank) return true; //permission always enabled.
+					#endregion
+
+					#region Caller is not a member of the group. RETURN FALSE.
+				    callerRank = caller.GetRankInGroupOrNull(scope);
+				    if (callerRank == null) return false; //not a member of the group to begin with...
+					#endregion
+
+					#region Test Permissions Failed. RETURN FALSE
+					permission = callerRank.GetPermission(permissionType);
+
+					#region Permissions minimum rank must be above -1 to be enabled. RETURN FALSE.
+					if (permission.MinimumRank <= -1) return false; //permission disabled.
+					#endregion
+
+					#region Caller doesn't outrank target. RETURN FALSE.
+					#region Set TargetRank to Minimum if not in the group.
+					targetRank = target.GetRankInGroupOrNull(scope);
+				    if (targetRank == null) targetRank = scope.GetLowestRank(); //not a member of the group to begin with...
+				    #endregion
+
+				    int callerRankIndex = 0;
+				    int targetRankIndex = 0;
+
+				    callerRankIndex = callerRank.Index;
+				    targetRankIndex = targetRank.Index;
+
+				    bool Outranks = (callerRankIndex > targetRankIndex);
+				    if (!Outranks) return false;
+				    #endregion
+				    #region Targets Rank is outside permissions scope. RETURN FALSE.
+				    if (targetRankIndex < permission.MinimumRank) return false; //Target rank is below minimum allowed.
+				    if (targetRankIndex > permission.MaximumRank && permission.MaximumRank >= 0) return false; //Target rank is above maximum allowed.
+					#endregion
+					#endregion
+
+					#region Tested permissions and all is okay. RETURN TRUE.
+					return true;
+				    #endregion
+				}
+
+				public bool Mute(User target)
+			    {
+				    return BaseTest(PermissionTypes.Mute, target);
+			    }
+			    public bool Freeze(User target)
+			    {
+					return BaseTest(PermissionTypes.Freeze, target);
+				}
+			    public bool Kick(User target)
+			    {
+					return BaseTest(PermissionTypes.Kick, target);
+				}
+			    public bool Ban(User target)
+			    {
+					return BaseTest(PermissionTypes.Ban, target);
+				}
+
+			    public bool AddToGroup(User target, Group group)
+			    {
+				    return BaseTest(PermissionTypes.AddToGroup, target, group);
+				}
+			    public bool RemoveFromGroup(User target, Group group)
+			    {
+					return BaseTest(PermissionTypes.RemoveFromGroup, target, group);
+				}
+
+			    public bool Promote(User target, Group group)
+			    {
+					return BaseTest(PermissionTypes.Promote, target, group);
+				}
+			    public bool Demote(User target, Group group)
+			    {
+					return BaseTest(PermissionTypes.Demote, target, group);
+				}
+			}
+
+		    public class PermissionsTesting_Can
+		    {
+			    private PermissionsTesting Testing;
+
+			    public PermissionsTesting_Can(User parent)
+			    {
+				    Testing = new PermissionsTesting(parent);
+			    }
+
+			    public bool Mute(User target)
+			    {
+				    return Testing.Mute(target);
+			    }
+			    public bool Freeze(User target)
+			    {
+					return Testing.Freeze(target);
+				}
+			    public bool Kick(User target)
+			    {
+					return Testing.Kick(target);
+				}
+			    public bool Ban(User target)
+			    {
+					return Testing.Ban(target);
+				}
+
+			    public bool AddToGroup(User target, Group group)
+			    {
+					return Testing.AddToGroup(target, group);
+				}
+			    public bool RemoveFromGroup(User target, Group group)
+			    {
+					return Testing.RemoveFromGroup(target, group);
+				}
+
+			    public bool Promote(User target, Group group)
+			    {
+					return Testing.Promote(target, group);
+				}
+			    public bool Demote(User target, Group group)
+			    {
+					return Testing.Demote(target, group);
+				}
+			}
+		    public PermissionsTesting_Can Can;
+
+		    public class PermissionsTesting_Cannot
+		    {
+			    private PermissionsTesting Testing;
+
+			    public PermissionsTesting_Cannot(User parent)
+			    {
+				    Testing = new PermissionsTesting(parent);
+			    }
+
+			    public bool Mute(User target)
+			    {
+				    return !Testing.Mute(target);
+			    }
+			    public bool Freeze(User target)
+			    {
+				    return !Testing.Freeze(target);
+			    }
+			    public bool Kick(User target)
+			    {
+				    return !Testing.Kick(target);
+			    }
+			    public bool Ban(User target)
+			    {
+				    return !Testing.Ban(target);
+			    }
+
+			    public bool AddToGroup(User target, Group group)
+			    {
+				    return !Testing.AddToGroup(target, group);
+			    }
+			    public bool RemoveFromGroup(User target, Group group)
+			    {
+				    return !Testing.RemoveFromGroup(target, group);
+			    }
+
+			    public bool Promote(User target, Group group)
+			    {
+				    return !Testing.Promote(target, group);
+			    }
+			    public bool Demote(User target, Group group)
+			    {
+				    return !Testing.Demote(target, group);
+			    }
+			}
+		    public PermissionsTesting_Cannot Cannot;
 			#endregion
 		}
 

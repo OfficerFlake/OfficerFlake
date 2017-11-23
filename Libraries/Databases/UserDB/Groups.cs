@@ -23,6 +23,12 @@ namespace Com.OfficerFlake.Libraries
 
 		    public List<Rank> Ranks = new List<Rank>();
 		    public List<User> Members = new List<User>();
+
+		    public Rank GetLowestRank()
+		    {
+			    if (Ranks.Count <= 0) return null;
+			    return Ranks.OrderBy(x => x.Index).First();
+		    }
 	    }
 
 		public static class Groups

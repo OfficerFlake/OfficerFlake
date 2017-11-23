@@ -48,13 +48,30 @@ namespace Com.OfficerFlake.Executables.Testing
 		    Rank consoleRank = Users.Console.GetRankInGroupOrNull(Groups.Server);
 		    Rank testUserRank = Users.TestUser.GetRankInGroupOrNull(Groups.Server);
 
-
-			consoleWindow.consoleOutput.AddMessage
-				(
-				//User.Can.Permission(User, Scope);
-				//TODO : Adjust The Format of The Command into This.  (PRIOTITY=3)
-				new InformationMessage(Users.Console.Can(testUserRank.Permissions.Ban, Users.Console).ToString())
-				);
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "Can Conole Ban TestUser?"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+				new InformationMessage(
+				    Users.Console.Can.Ban(Users.TestUser).ToString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "Can TestUser Ban Console?"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    Users.TestUser.Can.Ban(Users.Console).ToString()
+			    )
+		    );
 		}
 
 		#region Old Tests

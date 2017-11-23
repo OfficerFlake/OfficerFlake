@@ -12,6 +12,44 @@ namespace Com.OfficerFlake.Libraries
 			public string Name;
 			public int Index;
 			public Permissions Permissions;
+
+			public Permission GetPermission(PermissionTypes permissionType)
+			{
+				Permission permission = null;
+				switch (permissionType)
+				{
+					case PermissionTypes.Mute:
+						permission = Permissions.Mute;
+						break;
+					case PermissionTypes.Freeze:
+						permission = Permissions.Freeze;
+						break;
+					case PermissionTypes.Kick:
+						permission = Permissions.Kick;
+						break;
+					case PermissionTypes.Ban:
+						permission = Permissions.Ban;
+						break;
+
+					case PermissionTypes.AddToGroup:
+						permission = Permissions.AddToGroup;
+						break;
+					case PermissionTypes.RemoveFromGroup:
+						permission = Permissions.RemoveFromGroup;
+						break;
+
+					case PermissionTypes.Promote:
+						permission = Permissions.Promote;
+						break;
+					case PermissionTypes.Demote:
+						permission = Permissions.Demote;
+						break;
+
+					default:
+						break;
+				}
+				return permission;
+			}
 		}
 
 		public static class Ranks
