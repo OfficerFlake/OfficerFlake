@@ -41,10 +41,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RichTextString\RichTextString.csproj">
-      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
-      <Name>RichTextString</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Color\Color.csproj">
       <Project>{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}</Project>
       <Name>Color</Name>
@@ -53,9 +49,13 @@
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RichTextMessage\RichTextMessage.csproj">
+    <ProjectReference Include="..\RichText\RichTextMessage\RichTextMessage.csproj">
       <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
       <Name>RichTextMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RichText\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

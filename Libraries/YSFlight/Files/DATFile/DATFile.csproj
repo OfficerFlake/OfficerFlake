@@ -229,35 +229,35 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+    <ProjectReference Include="..\..\..\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\IO\IO.csproj">
+    <ProjectReference Include="..\..\..\IO\IO.csproj">
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
       <Name>IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Math\CoordinateSystems\CoordinateSystems.csproj">
+    <ProjectReference Include="..\..\..\Math\CoordinateSystems\CoordinateSystems.csproj">
       <Project>{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}</Project>
       <Name>CoordinateSystems</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Math\Equations\Equations.csproj">
+    <ProjectReference Include="..\..\..\Math\Equations\Equations.csproj">
       <Project>{9d0d870c-93e5-4baa-8387-200a0cc2395d}</Project>
       <Name>Equations</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Math\Statistics\Statistics.csproj">
+    <ProjectReference Include="..\..\..\Math\Statistics\Statistics.csproj">
       <Project>{24009F81-9D6A-48D7-B8D1-EBB599A4D260}</Project>
       <Name>Statistics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
+    <ProjectReference Include="..\..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Files\CommandFile\CommandFile.csproj">
+    <ProjectReference Include="..\CommandFile\CommandFile.csproj">
       <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
       <Name>CommandFile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\YSTypes\YSTypes.csproj">
+    <ProjectReference Include="..\..\YSTypes\YSTypes.csproj">
       <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
       <Name>YSTypes</Name>
     </ProjectReference>

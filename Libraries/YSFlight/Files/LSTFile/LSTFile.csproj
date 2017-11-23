@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{19E6F0B0-3C44-4810-98D5-764B33508B1C}</ProjectGuid>
+    <ProjectGuid>{1AA42ED0-FE51-4F6F-893D-0833CCFD9D5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PermissionsInterface</RootNamespace>
-    <AssemblyName>PermissionsInterface</AssemblyName>
+    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.LSTFile</RootNamespace>
+    <AssemblyName>Com.OfficerFlake.Libraries.YSFlight.LSTFile</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,25 +32,31 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PermissionsInterface.cs" />
+    <Compile Include="File.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\RichTextString\RichTextString.csproj">
-      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
-      <Name>RichTextString</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+    <ProjectReference Include="..\..\..\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\IO\IO.csproj">
+      <Project>{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}</Project>
+      <Name>IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommandFile\CommandFile.csproj">
+      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
+      <Name>CommandFile</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

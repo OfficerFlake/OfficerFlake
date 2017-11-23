@@ -69,17 +69,21 @@
       <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
       <Name>Color</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Databases\UserDB\Database.csproj">
+    <ProjectReference Include="..\..\Libraries\Databases\Database.csproj">
       <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
       <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Databases\Permissions\Permissions\Permissions.csproj">
+      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
+      <Name>Permissions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Databases\YSFHQ\YSFHQ.csproj">
+      <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
+      <Name>YSFHQ</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Interfaces\Windows\UserInterfaces.csproj">
-      <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
-      <Name>UserInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\IO\IO.csproj">
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
@@ -97,41 +101,37 @@
       <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
       <Name>Statistics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Permissions\Permissions\Permissions.csproj">
-      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
-      <Name>Permissions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\RichTextMessage\RichTextMessage.csproj">
+    <ProjectReference Include="..\..\Libraries\RichText\RichTextMessage\RichTextMessage.csproj">
       <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
       <Name>RichTextMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\RichText\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFHQ\YSFHQ.csproj">
-      <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
-      <Name>YSFHQ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\DATFile\DATFile.csproj">
-      <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
-      <Name>DATFile</Name>
+    <ProjectReference Include="..\..\Libraries\UserInterfaces\UserInterfaces.csproj">
+      <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
+      <Name>UserInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\Files\CommandFile\CommandFile.csproj">
       <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
       <Name>CommandFile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\LSTFile\LSTFile.csproj">
+    <ProjectReference Include="..\..\Libraries\YSFlight\Files\DATFile\DATFile.csproj">
+      <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
+      <Name>DATFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\YSFlight\Files\LSTFile\LSTFile.csproj">
       <Project>{1aa42ed0-fe51-4f6f-893d-0833ccfd9d5a}</Project>
       <Name>LSTFile</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\YSTypes\YSTypes.csproj">
       <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
       <Name>YSTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\RichTextString\RichTextString.csproj">
-      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
-      <Name>RichTextString</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
