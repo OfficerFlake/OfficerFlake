@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
@@ -32,12 +34,96 @@ namespace Com.OfficerFlake.Executables.Testing
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-	        MainProgram();
+	        AppDomain currentDomain = AppDomain.CurrentDomain;
+	        currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromLibrariesFolder);
+
+			MainProgram();
 
         }
 		#endregion
 
-	    private static void MainProgram()
+		#region LoadFromLibrariesFolder
+		private static Assembly LoadFromLibrariesFolder(object sender, ResolveEventArgs args)
+		{
+			//unblock all the files first!
+			string[] FileNames = Directory.GetFiles("./Libraries/");
+			foreach (string ThisFileName in FileNames)
+			{
+				try
+				{
+					Unblock(ThisFileName);
+				}
+				catch
+				{
+				}
+			}
+
+			//This handler is called only when the common language runtime tries to bind to the assembly and fails.
+
+			//Retrieve the list of referenced assemblies in an array of AssemblyName.
+			Assembly MyAssembly, objExecutingAssembly;
+			string strTempAssmbPath = "";
+
+			try
+			{
+				objExecutingAssembly = Assembly.GetExecutingAssembly();
+				if (args.RequestingAssembly != null) objExecutingAssembly = args.RequestingAssembly;
+				AssemblyName[] arrReferencedAssmbNames = objExecutingAssembly.GetReferencedAssemblies();
+
+				//Loop through the array of referenced assembly names.
+				foreach (AssemblyName strAssmbName in arrReferencedAssmbNames)
+				{
+					//Check for the assembly names that have raised the "AssemblyResolve" event.
+					if (strAssmbName.FullName.Substring(0, strAssmbName.FullName.IndexOf(",")) == args.Name.Substring(0, args.Name.IndexOf(",")))
+					{
+						//Build the path of the assembly from where it has to be loaded.                
+						strTempAssmbPath = "./Libraries/" + args.Name.Substring(0, args.Name.IndexOf(",")) + ".dll";
+						break;
+					}
+
+				}
+
+
+				//Load the assembly from the specified path.     
+				byte[] RawBytes = File.ReadAllBytes(strTempAssmbPath);
+				MyAssembly = Assembly.Load(RawBytes);
+			}
+			catch (Exception e)
+			{
+				System.Console.ForegroundColor = ConsoleColor.White;
+				System.Console.Clear();
+				System.Console.WriteLine("Failed to Launch OYS!");
+				System.Console.WriteLine();
+				System.Console.WriteLine("Specifically, Failed to load DLL: " + args.Name.Substring(0, args.Name.IndexOf(",")));
+				System.Console.WriteLine("Are you sure ALL the .DLL's are in the ./Libraries/ Folder?");
+				System.Console.WriteLine("");
+				System.Console.WriteLine("(Exception Info Follows)");
+				System.Console.WriteLine(e.ToString());
+				System.Console.WriteLine("");
+				System.Console.ForegroundColor = ConsoleColor.Red;
+				System.Console.WriteLine("[SCROLL UP TO SEE FULL DETAILS!]");
+				while (true)
+				{
+					System.Console.ReadKey(true);
+				}
+			}
+			//Return the loaded assembly.
+			return MyAssembly;
+		}
+
+		#region Unblock File
+		[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool DeleteFile(string name);
+
+		private static bool Unblock(string fileName)
+		{
+			return DeleteFile(fileName + ":Zone.Identifier");
+		}
+		#endregion
+		#endregion
+
+		private static void MainProgram()
 	    {
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
