@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 
-namespace Com.OfficerFlake.Libraries
+namespace Com.OfficerFlake.Libraries.YSFHQ
 {
     public class YSFHQConnection
     {

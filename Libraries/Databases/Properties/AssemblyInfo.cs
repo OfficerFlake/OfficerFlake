@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UserDB")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.Database")]
+[assembly: AssemblyDescription("A class library database for managing User, Group and Rank types objects.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UserDB")]
+[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.Database")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CoordinateSystems")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.Math.CoordinateSystems")]
+[assembly: AssemblyDescription("A class library for managing Points and Vectors, and other mathematical constructs of this nature.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CoordinateSystems")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.Math.CoordinateSystems")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Com.OfficerFlake.Libraries.IO")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A class library for managing I/O streams.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Com.OfficerFlake.Libraries.IO")]

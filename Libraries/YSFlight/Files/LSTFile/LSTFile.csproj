@@ -7,14 +7,14 @@
     <ProjectGuid>{1AA42ED0-FE51-4F6F-893D-0833CCFD9D5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.LSTFile</RootNamespace>
-    <AssemblyName>Com.OfficerFlake.Libraries.YSFlight.LSTFile</AssemblyName>
+    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.Files</RootNamespace>
+    <AssemblyName>LSTFile</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

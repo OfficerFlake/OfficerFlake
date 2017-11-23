@@ -19,6 +19,7 @@ using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
 using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
 using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.RichText;
+using Com.OfficerFlake.Libraries.YSFHQ;
 
 namespace Com.OfficerFlake.Executables.Testing
 {

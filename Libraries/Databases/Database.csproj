@@ -7,14 +7,14 @@
     <ProjectGuid>{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UserDB</RootNamespace>
-    <AssemblyName>UserDB</AssemblyName>
+    <RootNamespace>Com.OfficerFlake.Libraries</RootNamespace>
+    <AssemblyName>Database</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -53,7 +53,7 @@
       <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
       <Name>RichTextString</Name>
     </ProjectReference>
-    <ProjectReference Include="Permissions\Permissions\Permissions.csproj">
+    <ProjectReference Include="Permissions\Permissions.csproj">
       <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
       <Name>Permissions</Name>
     </ProjectReference>

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.UserInterfaces.Windows")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.UserInterfaces")]
+[assembly: AssemblyDescription("A class library for creating various user interface components.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.UserInterfaces.Windows")]
+[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.UserInterfaces")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

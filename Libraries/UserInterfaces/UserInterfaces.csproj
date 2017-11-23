@@ -7,15 +7,15 @@
     <ProjectGuid>{5C04E821-5DAD-4D67-BD01-70E4ADB56E94}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Com.OfficerFlake.Libraries.UserInterfaces.Windows</RootNamespace>
-    <AssemblyName>Com.OfficerFlake.Libraries.UserInterfaces.Windows</AssemblyName>
+    <RootNamespace>Com.OfficerFlake.Libraries.UserInterfaces</RootNamespace>
+    <AssemblyName>UserInterfaces</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

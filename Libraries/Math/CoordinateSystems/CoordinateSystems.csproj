@@ -7,14 +7,14 @@
     <ProjectGuid>{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CoordinateSystems</RootNamespace>
+    <RootNamespace>Com.OfficerFlake.Libraries.Math.CoordinateSystems</RootNamespace>
     <AssemblyName>CoordinateSystems</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

@@ -39,8 +39,6 @@
 			// checkBox_ShowDate
 			// 
 			this.checkBox_ShowDate.AutoSize = true;
-			this.checkBox_ShowDate.Checked = true;
-			this.checkBox_ShowDate.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.checkBox_ShowDate.Location = new System.Drawing.Point(0, 0);
 			this.checkBox_ShowDate.Name = "checkBox_ShowDate";
 			this.checkBox_ShowDate.Size = new System.Drawing.Size(115, 17);

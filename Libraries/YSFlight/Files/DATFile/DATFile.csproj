@@ -7,14 +7,14 @@
     <ProjectGuid>{183CC3FE-296E-4518-82E3-AD59B6D092B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.Files.DAT</RootNamespace>
-    <AssemblyName>Com.OfficerFlake.Libraries.YSFlight.Files.DAT</AssemblyName>
+    <RootNamespace>Com.OfficerFlake.Libraries.YSFlight.Files</RootNamespace>
+    <AssemblyName>DATFile</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>

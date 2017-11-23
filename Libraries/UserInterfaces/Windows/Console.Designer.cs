@@ -29,11 +29,10 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Console));
-			this.consoleOutput = new Com.OfficerFlake.Libraries.UserInterfaces.Windows.ConsoleOutput();
 			this.SuspendLayout();
 			// 
 			// consoleOutput
-			// 
+			//
 			this.consoleOutput.BackColor = System.Drawing.Color.Black;
 			this.consoleOutput.ForeColor = System.Drawing.Color.White;
 			this.consoleOutput.Location = new System.Drawing.Point(0, 0);
@@ -62,6 +61,6 @@
 
 		#endregion
 
-		public ConsoleOutput consoleOutput;
+		public ConsoleOutput consoleOutput = new ConsoleOutput();
 	}
 }

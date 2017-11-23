@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
 using Com.OfficerFlake.Libraries.RichText;
+using Com.OfficerFlake.Libraries.YSFHQ;
 
 namespace Com.OfficerFlake.Libraries
 {
