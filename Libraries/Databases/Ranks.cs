@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -9,9 +10,14 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public class Rank
 		{
-			public string Name;
+			public RichTextString Name;
 			public int Index;
 			public Permissions Permissions;
+
+			public override string ToString()
+			{
+				return Name.ToUnformattedString();
+			}
 
 			public Permission GetPermission(PermissionTypes permissionType)
 			{
@@ -57,7 +63,7 @@ namespace Com.OfficerFlake.Libraries
 			#region ServerRanks
 			public static Rank ServerRankOwner = new Rank()
 			{
-				Name = "Owner",
+				Name = "Owner".AsRichTextString(),
 				Index = 4,
 				Permissions = new Permissions()
 				{
@@ -75,7 +81,7 @@ namespace Com.OfficerFlake.Libraries
 			};
 			public static Rank ServerRankAdmin = new Rank()
 			{
-				Name = "Admin",
+				Name = "Admin".AsRichTextString(),
 				Index = 3,
 				Permissions = new Permissions()
 				{
@@ -93,7 +99,7 @@ namespace Com.OfficerFlake.Libraries
 			};
 			public static Rank ServerRankModerator = new Rank()
 			{
-				Name = "Moderator",
+				Name = "Moderator".AsRichTextString(),
 				Index = 2,
 				Permissions = new Permissions()
 				{
@@ -111,7 +117,7 @@ namespace Com.OfficerFlake.Libraries
 			};
 			public static Rank ServerRankMember = new Rank()
 			{
-				Name = "Member",
+				Name = "Member".AsRichTextString(),
 				Index = 1,
 				Permissions = new Permissions()
 				{
@@ -129,7 +135,7 @@ namespace Com.OfficerFlake.Libraries
 			};
 			public static Rank ServerRankGuest = new Rank()
 			{
-				Name = "Guest",
+				Name = "Guest".AsRichTextString(),
 				Index = 0,
 				Permissions = new Permissions()
 				{

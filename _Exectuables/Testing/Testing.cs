@@ -41,7 +41,6 @@ namespace Com.OfficerFlake.Executables.Testing
 
         }
 		#endregion
-
 		#region LoadFromLibrariesFolder
 		private static Assembly LoadFromLibrariesFolder(object sender, ResolveEventArgs args)
 		{
@@ -135,28 +134,33 @@ namespace Com.OfficerFlake.Executables.Testing
 		    Rank consoleRank = Users.Console.GetRankInGroupOrNull(Groups.Server);
 		    Rank testUserRank = Users.TestUser.GetRankInGroupOrNull(Groups.Server);
 
-		    consoleWindow.consoleOutput.AddMessage
+			Users.TestUser.AddToGroup(Users.Console, Groups.Server);
+		    Users.TestUser.Promote(Users.Console, Groups.Server);
+			Users.TestUser.Promote(Users.Console, Groups.Server);
+			Users.TestUser.Promote(Users.Console, Groups.Server);
+			Users.TestUser.Promote(Users.Console, Groups.Server);
+		    Users.TestUser.Promote(Users.Console, Groups.Server);
+
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.Demote(Users.Console, Groups.Server);
+		    Users.TestUser.RemoveFromGroup(Users.Console, Groups.Server);
+
+			consoleWindow.consoleOutput.AddMessage
 		    (
 			    new InformationMessage(
-				    "Can Conole Ban TestUser?"
+				    "&aAll Tests Successful"
 			    )
 		    );
 		    consoleWindow.consoleOutput.AddMessage
 		    (
-				new InformationMessage(
-				    Users.Console.Can.Ban(Users.TestUser).ToString()
-			    )
-		    );
-		    consoleWindow.consoleOutput.AddMessage
-		    (
 			    new InformationMessage(
-				    "Can TestUser Ban Console?"
-			    )
-		    );
-		    consoleWindow.consoleOutput.AddMessage
-		    (
-			    new InformationMessage(
-				    Users.TestUser.Can.Ban(Users.Console).ToString()
+				    (Users.TestUser.GetRankInGroupOrNull(Groups.Server) ?? Groups.Server.GetHighestRank()).ToString()
 			    )
 		    );
 		}

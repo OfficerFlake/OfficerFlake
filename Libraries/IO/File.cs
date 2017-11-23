@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.IO
@@ -25,6 +26,25 @@ namespace Com.OfficerFlake.Libraries.IO
         }
 
         #region Read
+
+	    public Encoding GetEncoding()
+	    {
+			// Read the BOM
+		    var bom = new byte[4];
+		    using (var file = new FileStream(Filename, FileMode.Open, FileAccess.Read))
+		    {
+			    file.Read(bom, 0, 4);
+		    }
+
+		    // Analyze the BOM
+		    if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
+		    if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) return Encoding.UTF8;
+		    if (bom[0] == 0xff && bom[1] == 0xfe) return Encoding.Unicode; //UTF-16LE
+		    if (bom[0] == 0xfe && bom[1] == 0xff) return Encoding.BigEndianUnicode; //UTF-16BE
+		    if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
+		    return Encoding.ASCII;
+		}
+
 		/// <summary>
 		/// Will try to read all the bytes from the file, or will return null if it fails.
 		/// </summary>
@@ -62,7 +82,10 @@ namespace Com.OfficerFlake.Libraries.IO
         protected string[] ReadLines()
         {
             var bytes = ((IReadable)this).ReadAll();
-            return (bytes ?? new byte[] { }).ToString().Replace("\r","").Split('\n');
+
+
+
+            return (bytes ?? new byte[] { }).ToSystemString().Replace("\r","").Split('\n');
         }
 
 		/// <summary>

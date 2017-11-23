@@ -16,14 +16,22 @@ namespace Com.OfficerFlake.Libraries.Extensions
         }
 
 		/// <summary>
-		/// Converts an array of bytes into it's equivilent string, by joining each bytes ASCII character equivilent.
+		/// Converts an array of bytes into it's equivilent string, by joining each bytes UTF8 character equivilent.
 		/// </summary>
 		/// <param name="input">Byte array to convert</param>
-		/// <returns>String of ASCII characters</returns>
-        public static string ToSystemString(this byte[] input)
-        {
-            return Encoding.ASCII.GetString(input);
-        }
+		/// <returns>String of UTF8 characters</returns>
+        public static string ToSystemString(this byte[] input, Encoding encoding = null)
+		{
+			if (encoding == null) encoding = Encoding.UTF8;
+
+			if (encoding == Encoding.ASCII) return Encoding.ASCII.GetString(input);
+			if (encoding == Encoding.Unicode) return Encoding.Unicode.GetString(input);
+			if (encoding == Encoding.BigEndianUnicode) return Encoding.BigEndianUnicode.GetString(input);
+			if (encoding == Encoding.UTF7) return Encoding.UTF7.GetString(input);
+			if (encoding == Encoding.UTF8) return Encoding.UTF8.GetString(input);
+			if (encoding == Encoding.UTF32) return Encoding.UTF32.GetString(input);
+			return Encoding.Default.GetString(input);
+		}
 
 		/// <summary>
 		/// Converts and array of Bytes into its hexadecimal string representation, seperated by hyphens.

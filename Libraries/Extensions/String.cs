@@ -9,24 +9,24 @@ namespace Com.OfficerFlake.Libraries.Extensions
     {
 		#region Byte Array Conversions
 		/// <summary>
-		/// Converts a string into an ASCII encoded byte array.
+		/// Converts a string into an UTF8 encoded byte array.
 		/// </summary>
 		/// <param name="input">String to convert</param>
-		/// <returns>Array of ASCII bytes</returns>
+		/// <returns>Array of UTF8 bytes</returns>
 		public static byte[] ToByteArray(this string input)
         {
-            return Encoding.ASCII.GetBytes(input);
+            return Encoding.UTF8.GetBytes(input);
         }
 
 		/// <summary>
-		/// Converts a multiline string into an ASCII encoded byte array.
+		/// Converts a multiline string into an UTF8 encoded byte array.
 		/// </summary>
 		/// <param name="input">String to convert.</param>
-		/// <returns>Array of ASCII bytes.</returns>
+		/// <returns>Array of UTF8 bytes.</returns>
 		public static byte[] ToByteArray(this string[] input)
         {
             var joined = System.String.Join("\n", input);
-            return Encoding.ASCII.GetBytes(joined);
+            return Encoding.UTF8.GetBytes(joined);
         }
 		#endregion
 		#region String Cleaning

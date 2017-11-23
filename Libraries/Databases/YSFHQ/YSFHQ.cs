@@ -38,7 +38,7 @@ namespace Com.OfficerFlake.Libraries.YSFHQ
 			    return false;
 		    }
 
-		    string returnedUserID = Encoding.ASCII.GetString(response);
+		    string returnedUserID = Encoding.UTF8.GetString(response);
 
 		    int _userID = -1;
 

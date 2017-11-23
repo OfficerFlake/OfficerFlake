@@ -5,8 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.YSFHQ;
+using Microsoft.Win32;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -25,7 +27,12 @@ namespace Com.OfficerFlake.Libraries
 			    Username = _Username;
 		    }
 
-			#region History
+		    public override string ToString()
+		    {
+			    return Username.ToUnformattedString();
+		    }
+
+		    #region History
 			//Actions on User level.
 			public class ExpiringAction
 		    {
@@ -89,11 +96,17 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 
 		    #region Groups
-		    public class GroupReference
+		    public class GroupUpdate
 		    {
 			    public Group Group;
-			    public User ActionedBy;
+			    public Rank Rank;
+			    public bool IsMember;
+
+				public User ActionedBy;
+			    public DateTime ActionedTimestamp;
+
 			    public RichTextString Reason;
+
 
 			    //Actions on Group level.
 			    #region Add
@@ -108,51 +121,32 @@ namespace Com.OfficerFlake.Libraries
 				    throw new NotImplementedException();
 			    }
 			    #endregion
-
-			    //Rank
-			    #region Rank
-			    public class _RankReference
-			    {
-				    public Rank Rank;
-				    public User ActionedBy;
-				    public RichTextString Reason;
-
-				    //Actions on Rank level.
-				    #region Promote
-
-				    void Promote(User promotedBy, Rank rankToPromoteTo, DateTime timestamp, RichTextString reason)
-				    {
-					    throw new NotImplementedException();
-				    }
-
-				    #endregion
-				    #region Demote
-
-				    void Demote(User demotedBy, Rank rankToDemoteTo, DateTime timestamp, RichTextString reason)
-				    {
-					    throw new NotImplementedException();
-				    }
-
-				    #endregion
-			    }
-			    #endregion
-			    public _RankReference RankReference = null;
 		    }
 
 		    public Rank GetRankInGroupOrNull(Group target)
 		    {
-			    try
+			    GroupUpdate groupReference;
+				try
 			    {
-				    GroupReference groupReference = Groups.Where(x => x.Group == target).First();
-				    return groupReference.RankReference.Rank;
+				    groupReference = GroupHistory.Where(x => x.Group == target).OrderBy(y=>y.ActionedTimestamp).Last();
+				    return groupReference.Rank;
 			    }
 			    catch
 			    {
 				    return null;
 			    }
 		    }
+
+		    public bool IsCurrentlyInGroup(Group group)
+		    {
+			    if (GroupHistory.All(x => x.Group != group)) return false;
+			    GroupUpdate LastGroupReference = GroupHistory.Where(x => x.Group == group).OrderBy(y => y.ActionedTimestamp).Last();
+
+			    if (LastGroupReference.IsMember) return true;
+			    return false;
+		    }
 		    #endregion
-		    public List<GroupReference> Groups = new List<GroupReference>();
+		    public List<GroupUpdate> GroupHistory = new List<GroupUpdate>();
 			#endregion
 			#region Perissmions
 		    private class PermissionsTesting
@@ -349,6 +343,120 @@ namespace Com.OfficerFlake.Libraries
 			}
 		    public PermissionsTesting_Cannot Cannot;
 			#endregion
+			#region Actions
+
+		    public void Mute(User mutedBy, TimeSpan? duration = null, RichTextString reason = null)
+		    {
+				MuteHistory = new ExpiringAction(
+					mutedBy,
+					DateTime.Now,
+					DateTime.Now + (duration ?? TimeSpan.MaxValue), 
+					(reason ?? "No Reason.".AsRichTextString())
+					);
+		    }
+			public void Freeze(User frozenBy, TimeSpan? duration = null, RichTextString reason = null)
+			{
+				FreezeHistory = new ExpiringAction(frozenBy,
+					DateTime.Now,
+					DateTime.Now + (duration ?? TimeSpan.MaxValue),
+					(reason ?? "No Reason.".AsRichTextString())
+					);
+			}
+			public void Kick(User kickedBy, RichTextString reason)
+		    {
+			    KickHistory = new PermanentAction(
+					kickedBy,
+					DateTime.Now,
+					(reason ?? "No Reason.".AsRichTextString())
+					);
+		    }
+		    public void Ban(User bannedBy, TimeSpan? duration = null, RichTextString reason = null)
+		    {
+			    BanHistory = new ExpiringAction(
+					bannedBy,
+					DateTime.Now,
+					DateTime.Now + (duration ?? TimeSpan.MaxValue),
+					(reason ?? "No Reason.".AsRichTextString())
+					);
+		    }
+
+		    public void AddToGroup(User addedBy, Group group, RichTextString reason = null)
+		    {
+			    if (IsCurrentlyInGroup(group)) return; //Currently a member, no need to add again.
+				GroupHistory.Add(
+					new GroupUpdate()
+					{
+						Group = group,
+						Rank = group.GetLowestRank(),
+
+						IsMember = true,
+
+						ActionedBy = addedBy,
+						ActionedTimestamp = DateTime.Now,
+
+						Reason = (reason ?? "No Reason.".AsRichTextString())
+					}
+					);
+		    }
+		    public void RemoveFromGroup(User addedBy, Group group, RichTextString reason = null)
+		    {
+			    if (!IsCurrentlyInGroup(group)) return; //Not even in the group.
+			    GroupHistory.Add(
+				    new GroupUpdate()
+				    {
+					    Group = group,
+					    IsMember = false,
+						Rank = group.GetLowestRank(),
+
+						ActionedBy = addedBy,
+					    ActionedTimestamp = DateTime.Now,
+
+					    Reason = (reason ?? "No Reason.".AsRichTextString())
+				    }
+			    );
+		    }
+
+		    public void Promote(User promotedBy, Group group, RichTextString reason = null)
+		    {
+				if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't promote!
+			    Rank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
+			    Rank newRank = group.GetNextHigherRank(currentRank);
+
+			    GroupHistory.Add(
+				    new GroupUpdate()
+				    {
+					    Group = group,
+						Rank = newRank,
+					    IsMember = true,
+
+					    ActionedBy = promotedBy,
+					    ActionedTimestamp = DateTime.Now,
+
+					    Reason = (reason ?? "No Reason.".AsRichTextString())
+				    }
+			    );
+			}
+		    public void Demote(User demotedBy, Group group, RichTextString reason = null)
+		    {
+			    if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't promote!
+			    Rank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
+			    Rank newRank = group.GetNextLowerRank(currentRank);
+
+			    GroupHistory.Add(
+				    new GroupUpdate()
+				    {
+					    Group = group,
+					    Rank = newRank,
+					    IsMember = true,
+
+					    ActionedBy = demotedBy,
+					    ActionedTimestamp = DateTime.Now,
+
+					    Reason = (reason ?? "No Reason.".AsRichTextString())
+				    }
+			    );
+		    }
+			#endregion
 		}
 
 	    public static class Users
@@ -356,32 +464,16 @@ namespace Com.OfficerFlake.Libraries
 		    public static User Unknown = new User("&o&4<UNKNOWN>".AsRichTextString());
 		    public static User Console = new User("&o&3<OpenYS Console>".AsRichTextString())
 		    {
-			    Groups = new List<User.GroupReference>()
+			    GroupHistory = new List<User.GroupUpdate>()
 			    {
-				    new User.GroupReference()
+				    new User.GroupUpdate()
 				    {
 					    Group = Groups.Server,
-						RankReference = new User.GroupReference._RankReference()
-						{
-							Rank = Ranks.ServerRankAdmin
-						}
+						Rank = Ranks.ServerRankAdmin
 				    }
 			    }
 		    };
-		    public static User TestUser = new User("TestUser".AsRichTextString())
-		    {
-			    Groups = new List<User.GroupReference>()
-			    {
-				    new User.GroupReference()
-				    {
-					    Group = Groups.Server,
-					    RankReference = new User.GroupReference._RankReference()
-					    {
-						    Rank = Ranks.ServerRankGuest
-						}
-				    }
-			    }
-		    };
+		    public static User TestUser = new User("TestUser".AsRichTextString());
 	    }
     }
 }
