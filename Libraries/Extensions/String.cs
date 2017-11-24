@@ -43,7 +43,16 @@ namespace Com.OfficerFlake.Libraries.Extensions
             while (cleanstr.Contains("  ")) cleanstr = cleanstr.Replace("  ", " ");
             return Regex.Split(cleanstr, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
         }
-        
+
+		/// <summary>
+		/// Removes all double spaces from string.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+	    public static string RemoveDoubleSpaces(this string input)
+	    {
+			return Regex.Replace(input, " {2,}", " ");
+		}
 		/// <summary>
 		/// Shorthand call that removes trailing comment symbols from a string, and removes surrounding quotation marks if any.
 		/// </summary>
@@ -59,7 +68,6 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
             return output;
         }
-
 	    /// <summary>
 	    /// Tries to extract just the number component of a string, ready to be parsed by a TryParse command.
 	    /// 

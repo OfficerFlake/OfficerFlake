@@ -16,7 +16,6 @@ namespace Com.OfficerFlake.Libraries
     {
 	    public class User
 	    {
-			public YSFHQConnection YSFHQ = new YSFHQConnection();
 		    public RichTextString Username;
 
 		    public User(RichTextString _Username)

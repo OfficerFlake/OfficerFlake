@@ -128,8 +128,6 @@ namespace Com.OfficerFlake.Executables.Testing
 		    NewWindowThread(consoleWindow);
 
 			User Flake = new User("Flake".AsRichTextString());
-		    Flake.YSFHQ.Username = "UsernameGoesHere";
-		    Flake.YSFHQ.Password = "PasswordGoesHere";
 
 		    Rank consoleRank = Users.Console.GetRankInGroupOrNull(Groups.Server);
 		    Rank testUserRank = Users.TestUser.GetRankInGroupOrNull(Groups.Server);

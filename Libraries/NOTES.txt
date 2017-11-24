@@ -30,7 +30,6 @@ Database\
 		[Groupname]\
 			Ranks\
 				[Rankname]\
-					
 					Permissions.dat
 
 
