@@ -1,3 +1,40 @@
+Find all YSFlight Processes
+	tasklist | findstr fsmaino
+	tasklist | findstr fsmaindx
+	tasklist | findstr ysflight32_gl1
+	tasklist | findstr ysflight32_gl2
+	tasklist | findstr ysflight32_d3d9
+
+Find remote address by PID:
+	netstat -aon | findstr xxxx
+
+
+Database\
+	Users\
+		[Username]\
+			Info.dat
+				AutoID
+			Mute.dat
+			Freeze.dat
+			Kick.dat
+			Ban.dat
+			YSFHQ.dat
+			Groups\
+				Active\
+				Inactive\
+					[Groupname].dat
+						Rank
+						RankedBy
+
+	Groups\
+		[Groupname]\
+			Ranks\
+				[Rankname]\
+					
+					Permissions.dat
+
+
+
 Vehicle
     Data : File
     Model : File

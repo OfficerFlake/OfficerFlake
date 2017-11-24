@@ -136,7 +136,6 @@ namespace Com.OfficerFlake.Libraries
 				    return null;
 			    }
 		    }
-
 		    public bool IsCurrentlyInGroup(Group group)
 		    {
 			    if (GroupHistory.All(x => x.Group != group)) return false;
@@ -344,7 +343,6 @@ namespace Com.OfficerFlake.Libraries
 		    public PermissionsTesting_Cannot Cannot;
 			#endregion
 			#region Actions
-
 		    public void Mute(User mutedBy, TimeSpan? duration = null, RichTextString reason = null)
 		    {
 				MuteHistory = new ExpiringAction(
@@ -362,7 +360,7 @@ namespace Com.OfficerFlake.Libraries
 					(reason ?? "No Reason.".AsRichTextString())
 					);
 			}
-			public void Kick(User kickedBy, RichTextString reason)
+			public void Kick(User kickedBy, RichTextString reason = null)
 		    {
 			    KickHistory = new PermanentAction(
 					kickedBy,
@@ -438,7 +436,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 		    public void Demote(User demotedBy, Group group, RichTextString reason = null)
 		    {
-			    if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't promote!
+			    if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't demote!
 			    Rank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
 			    Rank newRank = group.GetNextLowerRank(currentRank);
 

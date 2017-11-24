@@ -149,6 +149,7 @@ namespace Com.OfficerFlake.Executables.Testing
 		    Users.TestUser.Demote(Users.Console, Groups.Server);
 		    Users.TestUser.Demote(Users.Console, Groups.Server);
 		    Users.TestUser.Demote(Users.Console, Groups.Server);
+
 		    Users.TestUser.RemoveFromGroup(Users.Console, Groups.Server);
 
 			consoleWindow.consoleOutput.AddMessage
