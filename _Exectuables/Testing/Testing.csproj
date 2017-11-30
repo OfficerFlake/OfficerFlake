@@ -92,6 +92,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Client\Connection\Connection.csproj">
+      <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
+      <Name>Connection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Color\Color.csproj">
       <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
       <Name>Color</Name>
@@ -99,6 +103,10 @@
     <ProjectReference Include="..\..\Libraries\Databases\Database.csproj">
       <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
       <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Databases\Permissions\Permissions.csproj">
+      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
+      <Name>Permissions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Databases\YSFHQ\YSFHQ.csproj">
       <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
@@ -123,6 +131,10 @@
     <ProjectReference Include="..\..\Libraries\Math\Statistics\Statistics.csproj">
       <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
       <Name>Statistics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Networking\Packets\Packets.csproj">
+      <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
+      <Name>Packets</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\RichText\RichTextMessage\RichTextMessage.csproj">
       <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>

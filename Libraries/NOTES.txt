@@ -1,12 +1,56 @@
-Find all YSFlight Processes
-	tasklist | findstr fsmaino
-	tasklist | findstr fsmaindx
-	tasklist | findstr ysflight32_gl1
-	tasklist | findstr ysflight32_gl2
-	tasklist | findstr ysflight32_d3d9
+//TODO
 
-Find remote address by PID:
-	netstat -aon | findstr xxxx
+ClientConnection
+	AutoResetEvent GotAPacket;
+	ManualResetEvent Shutdown;
+
+	PacketEventLoop()
+		PacketHandler(GetPacket);
+		PacketEventLoop();
+	GetPacket()
+
+Database Save/Load
+Server Implementation
+	abstract Connection
+		ConcurrentQueue<Packet> PacketsIn;
+		GetPacket()
+			Take packet from Queue.
+			Action Packet();
+		ActionPacket();
+	TCP_Connection : Connection
+		Socket TCP_Socket
+		ReceivePacketEventLoop()
+			ReceivePacketFromTCPConnection();
+				Get Size.
+				Get Data.
+				-> Packet.
+				Recall Event Loop.
+				return Packet.
+	UDP_Connection : Connection
+		int UDP_ID
+		ReceivePacketLoop()
+			ReceivePacketFromUDPConnection();
+	static UDP_Receiver
+		GetUDPPacketEventLoop()
+			GetUDPPacket
+			ID
+			Size
+			Data
+			-> Packet
+			Connections where ID==
+				PacketsIn.Enqueue(This);
+			GetUDPPacketEventLoop();
+	Packet
+		TryGetBytesOrNull(Start, End);
+		if null return default;
+
+Link Database to Server
+
+Settings
+Settings Save/Load
+Link Settings to Server
+
+
 
 
 Database\

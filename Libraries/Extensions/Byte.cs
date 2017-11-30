@@ -22,6 +22,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		/// <returns>String of UTF8 characters</returns>
         public static string ToSystemString(this byte[] input, Encoding encoding = null)
 		{
+			if (input == null) return null;
 			if (encoding == null) encoding = Encoding.UTF8;
 
 			if (encoding == Encoding.ASCII) return Encoding.ASCII.GetString(input);
@@ -42,5 +43,25 @@ namespace Com.OfficerFlake.Libraries.Extensions
         {
             return BitConverter.ToString(input);
         }
-    }
+
+	    public static bool GetBit(this byte input, int index)
+	    {
+		    if (index > 7) index = 7;
+			if (index < 0) index = 0;
+		    return ((input & (1 << index)) > 0);
+	    }
+
+	    public static byte SetBit(this byte input, int index)
+	    {
+		    if (index > 7) index = 7;
+		    if (index < 0) index = 0;
+		    return ((byte)(input | ((byte)(1 << index))));
+		}
+	    public static byte UnsetBit(this byte input, int index)
+	    {
+		    if (index > 7) index = 7;
+		    if (index < 0) index = 0;
+		    return ((byte)(input & ~((byte)(1 << index))));
+	    }
+	}
 }

@@ -239,7 +239,8 @@ namespace Com.OfficerFlake.Libraries.Extensions
         {
             if (originalString == null) throw new NullReferenceException("originalString is null!");
 
-	        int calculatedSize = originalString.Length - originalString.RemoveFormatting().Length;
+	        int calculatedSize = originalString.Length - (originalString.Length - originalString.RemoveFormatting().Length);
+	        if (calculatedSize <= 0) return "";
 
 	        if (calculatedSize >= targetSize) goto OverSize;
 	        else goto UnderSize;

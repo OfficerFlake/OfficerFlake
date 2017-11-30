@@ -15,6 +15,8 @@ using DAT = Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
 using LST = Com.OfficerFlake.Libraries.YSFlight.Files.LST;
 
 using Com.OfficerFlake.Libraries.IO.Log;
+using Com.OfficerFlake.Libraries.Networking;
+using Com.OfficerFlake.Libraries.Networking.Packets;
 using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
 
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
@@ -127,41 +129,430 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
-			User Flake = new User("Flake".AsRichTextString());
+			Type_00_Test Test = new Type_00_Test();
 
-		    Rank consoleRank = Users.Console.GetRankInGroupOrNull(Groups.Server);
-		    Rank testUserRank = Users.TestUser.GetRankInGroupOrNull(Groups.Server);
-
-			Users.TestUser.AddToGroup(Users.Console, Groups.Server);
-		    Users.TestUser.Promote(Users.Console, Groups.Server);
-			Users.TestUser.Promote(Users.Console, Groups.Server);
-			Users.TestUser.Promote(Users.Console, Groups.Server);
-			Users.TestUser.Promote(Users.Console, Groups.Server);
-		    Users.TestUser.Promote(Users.Console, Groups.Server);
-
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-		    Users.TestUser.Demote(Users.Console, Groups.Server);
-
-		    Users.TestUser.RemoveFromGroup(Users.Console, Groups.Server);
-
+			#region Bool
+			consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING BOOLEAN:"
+			    )
+		    );
+			consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Bool
+			    )
+		    );
+			consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+			consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING BOOLEAN TO &aTRUE&e:"
+			    )
+		    );
+		    Test.Bool = true;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Bool
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+			Test.Data = new byte[0];
+			#endregion
+			#region Byte
+			consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING BYTE:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Byte
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING BYTE TO &a127&e:"
+			    )
+		    );
+		    Test.Byte = 127;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Byte
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+			#endregion
+		    #region SByte
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING SBYTE:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.SByte
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING SBYTE TO &a-127&e:"
+			    )
+		    );
+		    Test.SByte = -127;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.SByte
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+			#endregion
+		    #region Int16
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING INT16:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Int16
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING INT16 TO &a-1024&e:"
+			    )
+		    );
+		    Test.Int16 = -1024;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Int16
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+			#endregion
+		    #region UInt16
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING UINT16:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.UInt16
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING UINT16 TO &a32767&e:"
+			    )
+		    );
+		    Test.Int16 = 32767;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.UInt16
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+			#endregion
+			#region Int32
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&eTESTING INT32:"
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Value: &b" + Test.Int32
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Data: &d" + Test.Data.ToHexString()
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&eCHANING INT32 TO &a-1024&e:"
+				)
+			);
+			Test.Int32 = -1024;
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Value: &b" + Test.Int32
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Data: &d" + Test.Data.ToHexString()
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Clearing Data...."
+				)
+			);
+			Test.Data = new byte[0];
+			#endregion
+			#region UInt32
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&eTESTING UINT32:"
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Value: &b" + Test.UInt32
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Data: &d" + Test.Data.ToHexString()
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&eCHANING UINT32 TO &a32767&e:"
+				)
+			);
+			Test.Int32 = 32767;
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Value: &b" + Test.UInt32
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Current Data: &d" + Test.Data.ToHexString()
+				)
+			);
+			consoleWindow.consoleOutput.AddMessage
+			(
+				new InformationMessage(
+					"&e----Clearing Data...."
+				)
+			);
+			Test.Data = new byte[0];
+			#endregion
+		    #region Single
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING SINGLE:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Single
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING SINGLE TO &a-1024.50&e:"
+			    )
+		    );
+		    Test.Single = -1024.50f;
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.Single
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+			#endregion
+		    #region String
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eTESTING STRING:"
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.String
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&eCHANING STRING TO &a\"0123456789ABCDEF$$$$\"&e (Limit 16 Char):"
+			    )
+		    );
+		    Test.String = "0123456789ABCDEF$$$$";
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Value: &b" + Test.String
+				)
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Current Data: &d" + Test.Data.ToHexString()
+			    )
+		    );
+		    consoleWindow.consoleOutput.AddMessage
+		    (
+			    new InformationMessage(
+				    "&e----Clearing Data...."
+			    )
+		    );
+		    Test.Data = new byte[0];
+		    #endregion
+			#region EndTests
 			consoleWindow.consoleOutput.AddMessage
 		    (
 			    new InformationMessage(
 				    "&aAll Tests Successful"
 			    )
 		    );
-		    consoleWindow.consoleOutput.AddMessage
-		    (
-			    new InformationMessage(
-				    (Users.TestUser.GetRankInGroupOrNull(Groups.Server) ?? Groups.Server.GetHighestRank()).ToString()
-			    )
-		    );
+			#endregion
 		}
 
 		#region Old Tests
