@@ -11,6 +11,23 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	{
 		public Type_11_FlightData() : base(11)
 		{
+			Initialise(3);
+		}
+		public Type_11_FlightData(short version)
+		{
+			Initialise(version);
+		}
+		private void Initialise(short version)
+		{
+			Version = version;
+			if (Version == 3)
+			{
+				ResizeData(93);
+			}
+			else
+			{
+				ResizeData(63);
+			}
 		}
 
 		public Single Timestamp
