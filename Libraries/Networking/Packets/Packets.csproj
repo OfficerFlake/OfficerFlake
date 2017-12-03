@@ -41,6 +41,19 @@
   <ItemGroup>
     <Compile Include="GenericPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type_17_Heartbeat.cs" />
+    <Compile Include="Type_16_PrepareSimulation.cs" />
+    <Compile Include="Type_13_RemoveAircraft.cs" />
+    <Compile Include="Type_12_Unjoin.cs" />
+    <Compile Include="Type_11_FlightData.cs" />
+    <Compile Include="Type_10_JoinDenied.cs" />
+    <Compile Include="Type_09_JoinApproved.cs" />
+    <Compile Include="Type_06_Acknowledgement.cs" />
+    <Compile Include="Type_08_JoinRequest.cs" />
+    <Compile Include="Type_07_SmokeColor.cs" />
+    <Compile Include="Type_05_EntityJoined.cs" />
+    <Compile Include="Type_04_Field.cs" />
+    <Compile Include="Type_01_Login.cs" />
     <Compile Include="Type_00_Test.cs" />
   </ItemGroup>
   <ItemGroup>

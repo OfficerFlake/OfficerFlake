@@ -49,7 +49,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			return GetBytesFromStartToEnd(start, start + length);
 		}
 
-		private void ResizeData(int newsize)
+		public void ResizeData(int newsize)
 		{
 			int oldsize = Data.Length;
 			byte[] newData = new byte[newsize];
