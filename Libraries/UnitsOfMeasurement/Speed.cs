@@ -90,7 +90,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             {
                 Debug.WriteLine("Measurement Input not successfully converted.");
                 Debug.WriteLine("----" + capInput);
-                output = new Speeds.MetersPerSecond(0);
+                output = new Speeds.MeterPerSecond(0);
                 return false;
             }
 
@@ -109,7 +109,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             if (capInput.EndsWithAny(Suffixes.MetersPerSecond))
             {
 
-                output = new Speeds.MetersPerSecond(conversion);
+                output = new Speeds.MeterPerSecond(conversion);
                 return true;
             }
             if (capInput.EndsWithAny(Suffixes.KilometersPerHour))
@@ -133,7 +133,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             if (capInput.EndsWithAny(Suffixes.Knots))
             {
 
-                output = new Speeds.Knots(conversion);
+                output = new Speeds.Knot(conversion);
                 return true;
             }
             if (capInput.EndsWithAny(Suffixes.MachAtSeaLevel))
@@ -146,7 +146,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             //Type Unrecognised.
             Debug.WriteLine("No Type for input speed conversion. Break here for details...");
             Debug.WriteLine("----" + capInput);
-            output = new Speeds.MetersPerSecond(conversion);
+            output = new Speeds.MeterPerSecond(conversion);
             return false;
 
         }

@@ -4,38 +4,38 @@
     {
         public static partial class Speeds
         {
-            public class MetersPerSecond : Speed
+            public class MeterPerSecond : Speed
             {
-                public MetersPerSecond(decimal value) : base(value, Conversion.MetersPerSecond, "M/S") { }
+                public MeterPerSecond(decimal value) : base(value, Conversion.MetersPerSecond, "M/S") { }
 
-                public static MetersPerSecond operator +(MetersPerSecond firstMeasurement, MetersPerSecond secondMeasurement)
+                public static MeterPerSecond operator +(MeterPerSecond firstMeasurement, MeterPerSecond secondMeasurement)
                 {
-                    return new MetersPerSecond((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase));
+                    return new MeterPerSecond((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase));
                 }
-                public static MetersPerSecond operator -(MetersPerSecond firstMeasurement, MetersPerSecond secondMeasurement)
+                public static MeterPerSecond operator -(MeterPerSecond firstMeasurement, MeterPerSecond secondMeasurement)
                 {
-                    return new MetersPerSecond((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase));
+                    return new MeterPerSecond((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase));
                 }
-                public static MetersPerSecond operator *(MetersPerSecond firstMeasurement, MetersPerSecond secondMeasurement)
+                public static MeterPerSecond operator *(MeterPerSecond firstMeasurement, MeterPerSecond secondMeasurement)
                 {
-                    return new MetersPerSecond((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase));
+                    return new MeterPerSecond((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase));
                 }
-                public static MetersPerSecond operator /(MetersPerSecond firstMeasurement, MetersPerSecond secondMeasurement)
+                public static MeterPerSecond operator /(MeterPerSecond firstMeasurement, MeterPerSecond secondMeasurement)
                 {
-                    return new MetersPerSecond((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase));
+                    return new MeterPerSecond((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase));
                 }
             }
 
-            public static MetersPerSecond ToMetersPerSeconds(this Measurement input) => new MetersPerSecond(input.ConvertToBase);
+            public static MeterPerSecond ToMetersPerSeconds(this Measurement input) => new MeterPerSecond(input.ConvertToBase);
 
-            public static MetersPerSecond MetersPerSeconds(this byte input) => new MetersPerSecond(input);
-            public static MetersPerSecond MetersPerSeconds(this short input) => new MetersPerSecond(input);
-            public static MetersPerSecond MetersPerSeconds(this int input) => new MetersPerSecond(input);
-            public static MetersPerSecond MetersPerSeconds(this long input) => new MetersPerSecond(input);
+            public static MeterPerSecond MetersPerSeconds(this byte input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSeconds(this short input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSeconds(this int input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSeconds(this long input) => new MeterPerSecond(input);
 
-            public static MetersPerSecond MetersPerSeconds(this float input) => new MetersPerSecond((decimal)input);
-            public static MetersPerSecond MetersPerSeconds(this double input) => new MetersPerSecond((decimal)input);
-            public static MetersPerSecond MetersPerSeconds(this decimal input) => new MetersPerSecond(input);
+            public static MeterPerSecond MetersPerSeconds(this float input) => new MeterPerSecond((decimal)input);
+            public static MeterPerSecond MetersPerSeconds(this double input) => new MeterPerSecond((decimal)input);
+            public static MeterPerSecond MetersPerSeconds(this decimal input) => new MeterPerSecond(input);
         }
     }
 }

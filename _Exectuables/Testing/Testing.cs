@@ -132,11 +132,11 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
-		    
+		    var results = Scenery.LoadAll().ToString();
 
 			consoleWindow.consoleOutput.AddMessage
 				(
-					new InformationMessage(Aircraft.LoadAll().ToString())
+					new InformationMessage(results)
 				);
 	    }
 

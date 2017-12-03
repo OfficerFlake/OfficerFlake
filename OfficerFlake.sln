@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packets", "Libraries\Networ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "Libraries\YSFlight\Metadata\Metadata.csproj", "{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World", "Libraries\YSFlight\World\World.csproj", "{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,10 @@ Global
 		{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -214,6 +220,7 @@ Global
 		{49C7C96E-F161-4278-9846-685F5DB44CAC} = {393342B8-3254-4C91-A4AB-7D80E569A552}
 		{EAD62E25-6A74-432A-801C-4A5C79FC9176} = {49C7C96E-F161-4278-9846-685F5DB44CAC}
 		{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46} = {8C3FA163-8EBA-46C3-85BE-64EB21701353}
+		{3460E682-D1FE-4CE5-8134-168B9C1D8FEC} = {8C3FA163-8EBA-46C3-85BE-64EB21701353}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

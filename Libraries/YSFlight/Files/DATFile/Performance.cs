@@ -134,7 +134,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                 File.Properties.OfType<REFVCRUS>().Max(z => z.Value),
 
             };
-            var output = (input.All(y => y == null)) ? 0.Knotss() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
+            var output = (input.All(y => y == null)) ? 0.Knots() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
 
             return output;
         }
