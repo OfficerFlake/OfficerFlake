@@ -164,6 +164,10 @@
       <Project>{1aa42ed0-fe51-4f6f-893d-0833ccfd9d5a}</Project>
       <Name>LSTFile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\YSFlight\Metadata\Metadata.csproj">
+      <Project>{1e6cef24-35ce-42e0-bd97-9d27eb93ed46}</Project>
+      <Name>Metadata</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\YSTypes\YSTypes.csproj">
       <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
       <Name>YSTypes</Name>

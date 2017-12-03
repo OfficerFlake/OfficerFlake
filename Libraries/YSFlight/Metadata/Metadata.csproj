@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Metadata</RootNamespace>
+    <AssemblyName>Metadata</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aircraft.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RichText\RichTextMessage\RichTextMessage.csproj">
+      <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
+      <Name>RichTextMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RichText\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files\CommandFile\CommandFile.csproj">
+      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
+      <Name>CommandFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files\DATFile\DATFile.csproj">
+      <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
+      <Name>DATFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Files\LSTFile\LSTFile.csproj">
+      <Project>{1aa42ed0-fe51-4f6f-893d-0833ccfd9d5a}</Project>
+      <Name>LSTFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YSTypes\YSTypes.csproj">
+      <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
+      <Name>YSTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

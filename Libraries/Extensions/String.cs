@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -36,13 +37,33 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		/// <param name="input">A string with spaces in it that needs to be split into an array.</param>
 		/// <returns>Array of strings.</returns>
 		public static string[] SplitPresevingQuotes(this string input)
-        {
-            var cleanstr = input
-                .Replace("\t", "    ")
-                .Replace("\r", "");
+		{
+			var cleanstr = input
+				.Replace("\t", "    ")
+				.Replace("\r", "")
+				.Replace('\u2013', '-')
+				.Replace('\u2014', '-')
+				.Replace('\u2015', '-')
+				.Replace('\u2017', '_')
+				.Replace('\u2018', '\'')
+				.Replace('\u2019', '\'')
+				.Replace('\u201a', ',')
+				.Replace('\u201b', '\'')
+				.Replace('\u201c', '\"')
+				.Replace('\u201d', '\"')
+				.Replace('\u201e', '\"')
+				.Replace("\u2026", "...")
+				.Replace('\u2032', '\'')
+				.Replace('\u2033', '\"');
             while (cleanstr.Contains("  ")) cleanstr = cleanstr.Replace("  ", " ");
-            return Regex.Split(cleanstr, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-        }
+			if (cleanstr.Count(x => x == '\"') == 1) cleanstr = cleanstr.Replace("\"", "");
+			var result = cleanstr.Split('"')
+				.Select((element, index) => index % 2 == 0  // If even index
+					? element.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
+					: new[] { element })  // Keep the entire item
+				.SelectMany(element => element).ToArray();
+			return result;
+		}
 
 		/// <summary>
 		/// Removes all double spaces from string.
