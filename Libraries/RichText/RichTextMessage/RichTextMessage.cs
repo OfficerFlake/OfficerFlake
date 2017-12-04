@@ -104,7 +104,12 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    return output.ToString();
 	    }
 		#endregion
-	}
+
+	    public override string ToString()
+	    {
+		    return String.ToUnformattedString();
+	    }
+    }
 
     public class CrashMessage : RichTextMessage
     {

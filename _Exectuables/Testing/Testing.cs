@@ -132,7 +132,10 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console consoleWindow = new Console();
 		    NewWindowThread(consoleWindow);
 
-		    var results = Scenery.LoadAll().ToString();
+		    Metadata.Aircraft.LoadAll();
+			Metadata.Ground.LoadAll();
+			Metadata.Scenery.LoadAll();
+		    var results = World.Load(Scenery.FindByName("HAWAII")).ToString();
 
 			consoleWindow.consoleOutput.AddMessage
 				(
