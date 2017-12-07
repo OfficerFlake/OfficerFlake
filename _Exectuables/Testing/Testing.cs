@@ -22,7 +22,6 @@ using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
 
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
 using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
-using static Com.OfficerFlake.Libraries.YSFlight.Metadata;
 
 using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.RichText;
@@ -130,22 +129,28 @@ namespace Com.OfficerFlake.Executables.Testing
 
 		private static void MainProgram()
 		{
-
+			#region Link Objects Together
 			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
-
-			Server.Start();
+			#endregion
 
 			Console.Show();
 
-			Console.AddInformationMessage("Loading...");
+			#region Load World
+			Console.AddInformationMessage("Loading World");
 
 			Metadata.LoadAll();
+
 			//World.Load("OPENYS_TEST_FIELD");
 			World.Load("HAWAII");
 
-			Console.AddInformationMessage("Loading Complete!");
+			Console.AddInformationMessage("World Loading Complete!");
+			#endregion
 
-			Console.Show();
+			#region Start Server
+			Console.AddInformationMessage("Starting Server...");
+			Server.Start();
+			Console.AddInformationMessage("Now Listening on Port 7915!");
+			#endregion
 
 			Console.WaitForClose();
 

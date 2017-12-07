@@ -6,6 +6,7 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    public string Username = "<NULL>";
 	    public Int32 Version = -1;
 
+	    #region ConnectionNumber
+	    private static int ConnectionIDIncrementer = 0;
+	    public int ConnectionNumber
+	    {
+		    get;
+		    private set;
+	    }
+	    #endregion
 		#region ConnectionType
 		public enum ConnectionType
 	    {
@@ -33,6 +42,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    _connectionType = ConectionType;
 	    }
 		#endregion
+
 		#region LoginStatus
 	    public enum LoginStatus
 	    {
@@ -58,261 +68,284 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    public void SetIsFlying() => _flightStatus = FlightStatus.Flying;
 		#endregion
 		#endregion
-		#region ConnectionNumber
-		private static int ConnectionIDIncrementer = 0;
-	    public int ConnectionNumber
+
+		#region DataFlow
+		#region Connect
+		public void Connect()
 	    {
-		    get;
-	    }
+			ConnectionNumber = ConnectionIDIncrementer++;
+		    AddToServerList();
+		}
+		#endregion
+		#region Sockets
+		#region TCP/IP
+		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+		private Socket TCPSocket = BlankTCPSocket;
+		public bool SetTCPSocket(Socket incomingSocket)
+		{
+			if (TCPSocket == BlankTCPSocket)
+			{
+				TCPSocket = incomingSocket;
+				//TCPStartToRecieveNewPacket();
+				TCPGetPacket();
+				return true;
+			}
+			return false;
+		}
+		#region Recieve
+		private UInt32 TCPGetPacketHeader()
+		{
+			byte[] sizeBuffer = new byte[4];
+			goto Receive;
+
+			//Get Data.
+			Receive:
+			try
+			{
+				TCPSocket.Receive(sizeBuffer, 4, SocketFlags.None);
+				goto Convert;
+			}
+			catch (ArgumentNullException)
+			{
+				//buffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//size exceeds buffer.
+			}
+			catch (SocketException)
+			{
+				//WinSock Error.
+			}
+			catch (ObjectDisposedException)
+			{
+				//Socket Closed.
+			}
+			catch (System.Security.SecurityException)
+			{
+				//Caller in Stack doesn't have permissions.
+			}
+			return 0;
+
+			//Convert Data.
+			Convert:
+			try
+			{
+				return BitConverter.ToUInt32(sizeBuffer, 0);
+			}
+			catch (ArgumentNullException)
+			{
+				//sizeBuffer is Null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//StartIndex outside bounds of array.
+			}
+			catch (ArgumentException)
+			{
+				//StartIndex != 0
+			}
+			return 0;
+		}
+		private byte[] TCPGetPacketBody(UInt32 size)
+		{
+			byte[] bodyBuffer = new byte[size];
+
+			//Get Data.
+			try
+			{
+				TCPSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
+			}
+			catch (ArgumentNullException)
+			{
+				//buffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//size exceeds buffer.
+			}
+			catch (SocketException)
+			{
+				//WinSock Error.
+			}
+			catch (ObjectDisposedException)
+			{
+				//Socket Closed.
+			}
+			catch (System.Security.SecurityException)
+			{
+				//Caller in Stack doesn't have permissions.
+			}
+			return bodyBuffer;
+		}
+		private async Task<GenericPacket> TCPGetPacketAsync()
+		{
+			#region Init
+			GenericPacket output = Packet.NoPacket;
+
+			UInt32 size;
+			byte[] body;
+			#endregion
+			#region GetData
+			Header:
+			try
+			{
+				size = await Task.Run(() => TCPGetPacketHeader());
+				goto Body;
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return output;
+
+			Body:
+			try
+			{
+				body = await Task.Run(() => TCPGetPacketBody(size));
+				goto PrepareType;
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return output;
+			#endregion
+			#region Type
+			PrepareType:
+			byte[] typeBuffer;
+			try
+			{
+				typeBuffer = body.Take(4).ToArray();
+				goto ConvertType;
+			}
+			catch (ArgumentNullException)
+			{
+				//body is null.
+			}
+			return output;
+
+			ConvertType:
+			UInt32 type;
+			try
+			{
+				type = BitConverter.ToUInt32(typeBuffer, 0);
+				goto PrepareData;
+			}
+			catch (ArgumentNullException)
+			{
+				//typebuffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//start index not 0.
+			}
+			catch (ArgumentException)
+			{
+				//start index would not fit insidde array.
+			}
+			return output;
+			#endregion
+			#region Data
+			PrepareData:
+			byte[] data;
+			try
+			{
+				data = body.Skip(4).ToArray();
+				goto Combine;
+			}
+			catch (ArgumentNullException)
+			{
+				//body is null.
+			}
+			return output;
+			#endregion
+			#region BuildPacket
+			Combine:
+			try
+			{
+				output.ResizeData((int)size);
+				output.Type = (int)type;
+				output.Data = data;
+				return output;
+			}
+			catch (ArgumentNullException)
+			{
+				//output is null.
+				output = Packet.NoPacket;
+				return output;
+			}
+			#endregion
+		}
+		private async Task TCPGetPacket()
+		{
+			GenericPacket receivedPacket = Packet.NoPacket;
+			receivedPacket = await TCPGetPacketAsync();
+			if (receivedPacket.Serialise().SequenceEqual(Packet.NoPacket.Serialise()))
+			{
+				//Disconnect! Got Nothing!
+				Disconnect();
+
+				return;
+			}
+			ProcessPacket(receivedPacket);
+			TCPGetPacket();
+		}
+		#endregion
+		#region Send
+		private bool TCPSend(GenericPacket thisPacket)
+		{
+			try
+			{
+				TCPSocket.Send(thisPacket.Serialise());
+				return true;
+			}
+			catch (ArgumentNullException)
+			{
+				//Packet is Null.
+			}
+			catch (SocketException)
+			{
+				//WinSock in Error state.
+			}
+			catch (ObjectDisposedException)
+			{
+				//Socket closed/disposed.
+			}
+			return false;
+		}
+		private async Task<bool> TCPSendAsync(GenericPacket thisPacket)
+		{
+			try
+			{
+				return await Task.Run(() => TCPSend(thisPacket));
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return false;
+		}
+		public async Task<bool> SendMessage(string Input)
+		{
+			Type_32_ChatMessage thisChatMessage = new Type_32_ChatMessage(Input);
+			return await TCPSendAsync(thisChatMessage);
+		}
+		public async Task<bool> Send(GenericPacket Input)
+		{
+			return await TCPSendAsync(Input);
+		}
+		#endregion
 		#endregion
 		#region UDP
 		private bool _isUDPEnabled = false;
 	    public bool IsUDPCapable => _isUDPEnabled;
 		public void SetUDPEnabled() => _isUDPEnabled = true;
 		#endregion
-
-		#region PacketProcessor
-		public delegate void DelegatePacketProcessor(Connection thisConnection, GenericPacket thisPacket);
-	    private static void DummyPacketProcessor(Connection thisConnection, GenericPacket thisPacket)
-	    {
-		    throw new NotImplementedException();
-	    }
-	    #endregion
-
-	    public static DelegatePacketProcessor PacketProcessor
-	    {
-		    get;
-		    private set;
-	    }
-	    public static bool SetPacketProcessor(DelegatePacketProcessor thisPacketProcessor)
-	    {
-		    PacketProcessor = thisPacketProcessor;
-		    return true;
-	    }
-
-		#region Connections List
-		private static List<Connection> _connections = new List<Connection>();
-	    public static List<Connection> GetConnections => _connections;
 		#endregion
-
-		public Connection()
-	    {
-		    ConnectionNumber = ConnectionIDIncrementer++;
-			_connections.Add(this);
-		}
-	    ~Connection()
-	    {
-		    _connections.RemoveAll(x => x == this);
-	    }
-
-		#region Sockets
-		#region TCP/IP
-		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-	    private Socket TCPSocket = BlankTCPSocket;
-	    public bool SetTCPSocket(Socket incomingSocket)
-	    {
-		    if (TCPSocket == BlankTCPSocket)
-		    {
-			    TCPSocket = incomingSocket;
-				TCPStartToRecieveNewPacket();
-			    return true;
-		    }
-		    return false;
-	    }
-		
-		#region Reciever
-		private class TCPSocketReadObject
-	    {
-		    // Size
-		    public byte[] sizebuffer = new byte[4];
-		    public int size = 0;
-
-		    // Data
-		    public byte[] databuffer = null;
-
-		    // Operating...
-		    public int bytesreceivedsofar = 0;
-	    }
-	    private void TCPStartToRecieveNewPacket()
-	    {
-		    TCPReceiveHeader();
-	    }
-		private void TCPReceiveHeader()
-		{
-			lock (TCPSocket)
-			{
-				try
-				{
-					//Debug.WriteLine("Test Async");
-					// Create the state object.
-					TCPSocketReadObject state = new TCPSocketReadObject();
-
-					// Begin receiving the data from the remote device.
-					//Debug.WriteLine("Start Receiving");
-					TCPSocket.BeginReceive(state.sizebuffer, 0, 4, 0,
-						new AsyncCallback(TCPReceiveHeaderCallback), state);
-				}
-				catch (SocketException)
-				{
-					//Client.Disconnect("Remote client forcibly closed the connection.");
-					return;
-				}
-				catch (Exception)
-				{
-					//Debug.WriteLine(e.ToString());
-					//Client.Disconnect("Failed to receive packet header.");
-					return;
-				}
-			}
-		}
-		private void TCPReceiveHeaderCallback(IAsyncResult ar)
-		{
-			lock (TCPSocket)
-			{
-				try
-				{
-					// Retrieve the state object and the client socket 
-					// from the asynchronous state object.
-					TCPSocketReadObject state = (TCPSocketReadObject)ar.AsyncState;
-					// Read data from the remote device.
-					int bytesRead = TCPSocket.EndReceive(ar);
-					if (bytesRead == 0)
-					{
-						//End Of Stream
-						//Debug.WriteLine("End of DataStrem");
-						//Client.Disconnect("Recv'd 0 data when trying to receive packet header.");
-					}
-					state.bytesreceivedsofar += bytesRead;
-					if (state.bytesreceivedsofar < 4)
-					{
-						// need more data, so store the data received so far.
-						//state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-						//  Get the rest of the data.
-						//client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-						//new AsyncCallback(ReceiveHeaderCallback), state);
-						TCPSocket.BeginReceive(state.sizebuffer, state.bytesreceivedsofar, 4 - state.bytesreceivedsofar, SocketFlags.None,
-						new AsyncCallback(TCPReceiveHeaderCallback), state);
-						return;
-					}
-					else
-					{
-						// All bytes have been received.
-						TCPReceivePayload(state);
-					}
-				}
-				catch (SocketException)
-				{
-					//Client.Disconnect("Remote client forcibly closed the connection.");
-					return;
-				}
-				catch (Exception)
-				{
-					//Debug.WriteLine(e.ToString());
-					//Client.Disconnect("Generic Error when trying to receive packet header.");
-					return;
-				}
-			}
-		}
-		private void TCPReceivePayload(TCPSocketReadObject state)
-		{
-			lock (TCPSocket)
-			{
-				try
-				{
-					// Get Size...
-					state.size = (int)(BitConverter.ToUInt32(state.sizebuffer, 0));
-					state.bytesreceivedsofar = 0;
-					state.databuffer = new byte[state.size];
-
-					// Begin receiving the data from the remote device.
-					TCPSocket.BeginReceive(state.databuffer, state.bytesreceivedsofar, state.size - state.bytesreceivedsofar, SocketFlags.None,
-						new AsyncCallback(TCPReceivePayloadCallback), state);
-				}
-				catch (SocketException)
-				{
-					//Client.Disconnect("Remote client forcibly closed the connection.");
-					return;
-				}
-				catch (Exception)
-				{
-					//Debug.WriteLine(e.ToString());
-					//Client.Disconnect("Failed to receive packet body.");
-					return;
-				}
-			}
-		}
-		private void TCPReceivePayloadCallback(IAsyncResult ar)
-		{
-			GenericPacket NewPacket = null;
-			lock (TCPSocket)
-			{
-				try
-				{
-					// Retrieve the state object and the client socket 
-					// from the asynchronous state object.
-					TCPSocketReadObject state = (TCPSocketReadObject)ar.AsyncState;
-					// Read data from the remote device.
-					int bytesRead = TCPSocket.EndReceive(ar);
-					if (bytesRead == 0)
-					{
-						//End Of Stream
-						//Debug.WriteLine("End of DataStream");
-						//Client.Disconnect("Recv'd 0 data when trying to receive packet body.");
-					}
-					state.bytesreceivedsofar += bytesRead;
-					if (state.bytesreceivedsofar < state.size)
-					{
-						TCPSocket.BeginReceive(state.databuffer, state.bytesreceivedsofar, state.size - state.bytesreceivedsofar, SocketFlags.None,
-							new AsyncCallback(TCPReceivePayloadCallback), state);
-						return;
-					}
-					else
-					{
-						//Debug.WriteLine(state.sizebuffer.ToDebugHexString() + state.databuffer.ToDebugHexString());
-						//Debug.TestPoint();
-
-						// All bytes have been received.
-						if (state.databuffer.Length > 4)
-						{
-							byte[] typedata = new byte[4];
-							Array.Copy(state.databuffer, 0, typedata, 0, 4);
-							int type = BitConverter.ToInt32(typedata, 0);
-
-							byte[] data = new byte[state.databuffer.Length - 4];
-							Array.Copy(state.databuffer, 4, data, 0, state.databuffer.Length - 4);
-
-							NewPacket = new GenericPacket(type, data);
-
-							if (NewPacket == null)
-							{
-								Disconnect();
-								return;
-							}
-							ProcessPacket(NewPacket);
-							TCPStartToRecieveNewPacket();
-						}
-						//Debug.WriteLine("End Receiving");
-					}
-				}
-				catch (SocketException)
-				{
-					//Client.Disconnect("Remote client forcibly closed the connection.");
-					return;
-				}
-				catch (Exception)
-				{
-					//Console.WriteLine(e.ToString());
-					//Client.Disconnect("Generic Error when trying to receive packet body.");
-					return;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		#endregion
-
-		#region Packet Processing
-	    public void GivePacket(GenericPacket thisPacket) => GivePacketToConnection(this, thisPacket);
+		#region Processing
+		#region Pass In A Packet
+		public void GivePacket(GenericPacket thisPacket) => GivePacketToConnection(this, thisPacket);
 	    private static void GivePacketToConnection(Connection thisConncetion, GenericPacket thisPacket)
 	    {
 		    if (thisPacket == null)
@@ -320,47 +353,31 @@ namespace Com.OfficerFlake.Libraries.Networking
 			    return;
 		    }
 
-			//Action Packet.
-			thisConncetion.ProcessPacket(thisPacket);
+		    //Action Packet.
+		    thisConncetion.ProcessPacket(thisPacket);
 	    }
+		#endregion
+		#region Wait For A Packet
+		public class PacketWaiter
+		{
+			public PacketWaiter(Int32 type)
+			{
+				Type = type;
+			}
 
-	    private void ProcessPacket(GenericPacket thisPacket)
-	    {
-		    if (thisPacket == null)
-		    {
-			    return;
-		    }
+			public Int32 Type { get; private set; }
+			public class PacketSegmentDescriptor
+			{
+				public int Start = 0;
+				public int End = 0;
+				public byte[] DataExpected = new byte[0];
 
-		    for (int i = 0; i < PacketWaiters.Count; i++)
-		    {
-			    PacketWaiter thisWaiter = PacketWaiters[i];
-				thisWaiter.CheckIfReceived(thisPacket);
-		    }
-
-		    PacketProcessor.BeginInvoke(this, thisPacket, null, null);
-	    }
-
-		private static List<PacketWaiter> PacketWaiters = new List<PacketWaiter>();
-	    public class PacketWaiter
-	    {
-		    public PacketWaiter(Int32 type)
-		    {
-			    Type = type;
-		    }
-
-		    public Int32 Type { get; private set; }
-		    public class PacketSegmentDescriptor
-		    {
-			    public int Start = 0;
-			    public int End = 0;
-			    public byte[] DataExpected = new byte[0];
-
-			    public PacketSegmentDescriptor(int start, byte[] dataExpected)
-			    {
-				    Start = start;
-				    End = Start + dataExpected.Length;
-				    DataExpected = dataExpected;
-			    }
+				public PacketSegmentDescriptor(int start, byte[] dataExpected)
+				{
+					Start = start;
+					End = Start + dataExpected.Length;
+					DataExpected = dataExpected;
+				}
 			}
 
 			public GenericPacket RecievedPacket = null;
@@ -368,281 +385,247 @@ namespace Com.OfficerFlake.Libraries.Networking
 			#region Require
 			private List<PacketSegmentDescriptor> Required = new List<PacketSegmentDescriptor>();
 			public void Require(int start, byte[] description)
-		    {
+			{
 				PacketSegmentDescriptor thisDescriptor = new PacketSegmentDescriptor(start, description);
 				Required.Add(thisDescriptor);
 			}
-		    public void Require(int start, byte description)
-		    {
-			    Require(start, new byte[] { description });
-		    }
-		    public void Require(int start, SByte description)
-		    {
-			    Require(start, new byte[] { (byte)description });
-		    }
+			public void Require(int start, byte description)
+			{
+				Require(start, new byte[] { description });
+			}
+			public void Require(int start, SByte description)
+			{
+				Require(start, new byte[] { (byte)description });
+			}
 			public void Require(int start, Int16 description)
-		    {
-			    Require(start, BitConverter.GetBytes(description));
-		    }
-		    public void Require(int start, Int32 description)
-		    {
-			    Require(start, BitConverter.GetBytes(description));
-		    }
-		    public void Require(int start, UInt16 description)
-		    {
-			    Require(start, BitConverter.GetBytes(description));
-		    }
-		    public void Require(int start, UInt32 description)
-		    {
-			    Require(start, BitConverter.GetBytes(description));
-		    }
-		    public void Require(int start, Single description)
-		    {
-			    Require(start, BitConverter.GetBytes(description));
-		    }
-		    public void Require(int start, string description)
-		    {
-			    byte[] bytes = description.ToByteArray();
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, Int32 description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, UInt16 description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, UInt32 description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, Single description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, string description)
+			{
+				byte[] bytes = description.ToByteArray();
 				Require(start, bytes);
-		    }
+			}
 			#endregion
 			#region Desire
 			private List<PacketSegmentDescriptor> Desired = new List<PacketSegmentDescriptor>();
 			public void Desire(int start, byte[] description)
-		    {
-			    PacketSegmentDescriptor thisDescriptor = new PacketSegmentDescriptor(start, description);
-			    Desired.Add(thisDescriptor);
-		    }
-		    public void Desire(int start, byte description)
-		    {
-			    Desire(start, new byte[] { description });
-		    }
-		    public void Desire(int start, SByte description)
-		    {
-			    Desire(start, new byte[] { (byte)description });
-		    }
-		    public void Desire(int start, Int16 description)
-		    {
-			    Desire(start, BitConverter.GetBytes(description));
-		    }
-		    public void Desire(int start, Int32 description)
-		    {
-			    Desire(start, BitConverter.GetBytes(description));
-		    }
-		    public void Desire(int start, UInt16 description)
-		    {
-			    Desire(start, BitConverter.GetBytes(description));
-		    }
-		    public void Desire(int start, UInt32 description)
-		    {
-			    Desire(start, BitConverter.GetBytes(description));
-		    }
-		    public void Desire(int start, Single description)
-		    {
-			    Desire(start, BitConverter.GetBytes(description));
-		    }
-		    public void Desire(int start, string description)
-		    {
-			    byte[] bytes = description.ToByteArray();
-			    Desire(start, bytes);
-		    }
+			{
+				PacketSegmentDescriptor thisDescriptor = new PacketSegmentDescriptor(start, description);
+				Desired.Add(thisDescriptor);
+			}
+			public void Desire(int start, byte description)
+			{
+				Desire(start, new byte[] { description });
+			}
+			public void Desire(int start, SByte description)
+			{
+				Desire(start, new byte[] { (byte)description });
+			}
+			public void Desire(int start, Int16 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, Int32 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, UInt16 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, UInt32 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, Single description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, string description)
+			{
+				byte[] bytes = description.ToByteArray();
+				Desire(start, bytes);
+			}
 			#endregion
 			#region Receiving
 			private ManualResetEvent Received = new ManualResetEvent(false);
-		    public bool StartListening()
-		    {
-			    if (RecievedPacket != null) return false;
-			    if (!PacketWaiters.Contains(this)) PacketWaiters.Add(this);
-			    return true;
-		    }
-			private void MarkReceived()
-		    {
-			    Received.Set();
-			    PacketWaiters.RemoveAll(x=>x == this);
+			public bool StartListening()
+			{
+				if (RecievedPacket != null) return false;
+				if (!PacketWaiters.Contains(this)) PacketWaiters.Add(this);
+				return true;
 			}
-		    internal void CheckIfReceived(GenericPacket thisPacket)
-		    {
-			    bool GetDesired = (false | Desired.Count <= 0);
-			    foreach (var desiredPacketSegment in Desired)
-			    {
-				    if (thisPacket.Data.Length < desiredPacketSegment.End)
-				    {
-					    continue;
-				    }
-				    byte[] desiredBytes = desiredPacketSegment.DataExpected;
-				    byte[] thisPacketBytes = thisPacket.Data.Skip(desiredPacketSegment.Start)
-					    .Take(desiredPacketSegment.End - desiredPacketSegment.Start).ToArray();
-				    if (desiredBytes.SequenceEqual(thisPacketBytes))
-				    {
-					    GetDesired = true;
-					    break;
-				    }
-			    }
+			private void MarkReceived()
+			{
+				Received.Set();
+				PacketWaiters.RemoveAll(x => x == this);
+			}
+			internal void CheckIfReceived(GenericPacket thisPacket)
+			{
+				bool GetDesired = (false | Desired.Count <= 0);
+				foreach (var desiredPacketSegment in Desired)
+				{
+					if (thisPacket.Data.Length < desiredPacketSegment.End)
+					{
+						continue;
+					}
+					byte[] desiredBytes = desiredPacketSegment.DataExpected;
+					byte[] thisPacketBytes = thisPacket.Data.Skip(desiredPacketSegment.Start)
+						.Take(desiredPacketSegment.End - desiredPacketSegment.Start).ToArray();
+					if (desiredBytes.SequenceEqual(thisPacketBytes))
+					{
+						GetDesired = true;
+						break;
+					}
+				}
 
-			    bool GetAllRequired = true;
-			    foreach (var requiredPacketSegment in Required)
-			    {
-				    if (thisPacket.Data.Length < requiredPacketSegment.End)
-				    {
-					    GetAllRequired = false;
-					    continue;
-				    }
-				    byte[] requiredBytes = requiredPacketSegment.DataExpected;
-				    byte[] thisPacketBytes = thisPacket.Data.Skip(requiredPacketSegment.Start)
-					    .Take(requiredPacketSegment.End - requiredPacketSegment.Start).ToArray();
-				    if (requiredBytes.SequenceEqual(thisPacketBytes))
-				    {
-					    GetAllRequired &= true;
-					    continue;
-				    }
-				    else
-				    {
-					    GetAllRequired = false;
-				    }
-			    }
+				bool GetAllRequired = true;
+				foreach (var requiredPacketSegment in Required)
+				{
+					if (thisPacket.Data.Length < requiredPacketSegment.End)
+					{
+						GetAllRequired = false;
+						continue;
+					}
+					byte[] requiredBytes = requiredPacketSegment.DataExpected;
+					byte[] thisPacketBytes = thisPacket.Data.Skip(requiredPacketSegment.Start)
+						.Take(requiredPacketSegment.End - requiredPacketSegment.Start).ToArray();
+					if (requiredBytes.SequenceEqual(thisPacketBytes))
+					{
+						GetAllRequired &= true;
+						continue;
+					}
+					else
+					{
+						GetAllRequired = false;
+					}
+				}
 
-			    if (GetDesired & GetAllRequired)
-			    {
-				    RecievedPacket = thisPacket;
+				if (GetDesired & GetAllRequired)
+				{
+					RecievedPacket = thisPacket;
 					MarkReceived();
-			    }
-		    }
+				}
+			}
 			#endregion
 
 			public bool WaitUntilRecived(int microseconds)
-		    {
-			    if (Received.WaitOne(0)) return true;
-			    StartListening();
+			{
+				if (Received.WaitOne(0)) return true;
+				StartListening();
 				return Received.WaitOne(microseconds);
-		    }
+			}
 		}
-
-	    public bool GetResponseOrResend(PacketWaiter response, GenericPacket resend)
-	    {
-		    int resends = 0;
-		    while (!response.WaitUntilRecived(3000))
-		    {
-			    if (resends >= 3) return false;
+		private static List<PacketWaiter> PacketWaiters = new List<PacketWaiter>();
+		public bool GetResponseOrResend(PacketWaiter response, GenericPacket resend)
+		{
+			int resends = 0;
+			while (!response.WaitUntilRecived(3000))
+			{
+				if (resends >= 3) return false;
 
 				Send(resend);
-			    resends++;
-		    }
+				resends++;
+			}
+			return true;
+		}
+		#endregion
+
+		#region Set Up Packet Processor
+		public delegate void DelegatePacketProcessor(Connection thisConnection, GenericPacket thisPacket);
+	    private static void DummyPacketProcessor(Connection thisConnection, GenericPacket thisPacket)
+	    {
+		    throw new NotImplementedException();
+	    }
+	    private static DelegatePacketProcessor PacketProcessor = DummyPacketProcessor;
+	    public static bool SetPacketProcessor(DelegatePacketProcessor thisPacketProcessor)
+	    {
+		    PacketProcessor = thisPacketProcessor;
 		    return true;
 	    }
 		#endregion
-		#region Send
+		#region Process Packet
+		private void ProcessPacket(GenericPacket thisPacket)
+		{
+			if (thisPacket == null)
+			{
+				return;
+			}
 
-	    private Task<bool> SendAsync2(GenericPacket input)
-	    {
-		    try
-		    {
-			    return Task.Factory.StartNew<bool>(() =>
-			    {
-				    try
-				    {
-					    return (TCPSocket.Send(input.Serialise()) > 0);
-				    }
-				    catch (ArgumentNullException)
-				    {
-					    //buffer is null.
-				    }
-				    catch (SocketException)
-				    {
-					    //WinSock reports an error.
-				    }
-				    catch (ObjectDisposedException)
-				    {
-					    //Socket closed.
-				    }
-				    return false;
-			    });
-		    }
-		    catch (ArgumentNullException)
-		    {
-			    
-		    }
-		    return null;
-	    }
-		private bool BeginSend(GenericPacket input)
-	    {
-		    if (TCPSocket == BlankTCPSocket)
-		    {
-			    return false;
-		    }
-		    if (!TCPSocket.Connected)
-		    {
-			    return false;
-		    }
+			for (int i = 0; i < PacketWaiters.Count; i++)
+			{
+				PacketWaiter thisWaiter = PacketWaiters[i];
+				thisWaiter.CheckIfReceived(thisPacket);
+			}
 
-		    byte[] buffer = input.Serialise();
-
-		    SocketAsyncEventArgs e = new SocketAsyncEventArgs();
-		    e.SetBuffer(buffer, 0, buffer.Length);
-		    e.Completed += new EventHandler<SocketAsyncEventArgs>(SendCallback);
-
-		    bool completedAsync = false;
-
-		    try
-		    {
-			    completedAsync = TCPSocket.SendAsync(e);
-		    }
-		    catch (SocketException se)
-		    {
-			    Console.WriteLine("Socket Exception: " + se.ErrorCode + " Message: " + se.Message);
-			    return false;
-		    }
-
-		    if (!completedAsync)
-		    {
-			    // The call completed synchronously so invoke the callback ourselves
-			    SendCallback(this, e);
-		    }
-		    return true;
-	    }
-	    private void SendCallback(object sender, SocketAsyncEventArgs e)
-	    {
-		    if (e.SocketError == SocketError.Success)
-		    {
-			    // You may need to specify some type of state and 
-			    // pass it into the BeginSend method so you don't start
-			    // sending from scratch
-		    }
-		    else
-		    {
-			    return;
-		    }
-	    }
-
-		public bool SendMessage(string Input)
-	    {
-			Type_32_ChatMessage thisChatMessage = new Type_32_ChatMessage(Input);
-			return BeginSend(thisChatMessage);
-	    }
-	    public bool Send(GenericPacket Input)
-	    {
-
-
-		    return BeginSend(Input);
-	    }
+			PacketProcessor.BeginInvoke(this, thisPacket, null, null);
+		}
 		#endregion
-
+		#endregion
 		#region Disconnect
-	    public bool Disconnect()
+		public bool Disconnect()
 	    {
+		    RemoveFromServerList();
 		    if (TCPSocket.Connected)
 		    {
 			    try
 			    {
 				    TCPSocket.Disconnect(false);
-				    return true;
 			    }
 			    catch
 			    {
-				    return false;
 			    }
 		    }
-		    return false;
+		    try
+		    {
+			    TCPSocket.Dispose();
+		    }
+		    catch
+		    {
+		    }
+		    return true;
 	    }
 		#endregion
+		#endregion
+
+		#region Connections List
+		private static List<Connection> _connections = new List<Connection>();
+	    public static List<Connection> GetConnections => _connections;
+
+	    private void AddToServerList()
+	    {
+			_connections.Add(this);
+		}
+	    private void RemoveFromServerList()
+	    {
+			_connections.RemoveAll(x => x == this);
+		}
+		#endregion
+
+		public Connection()
+	    {
+		    Connect();
+		}
+	    ~Connection()
+	    {
+			//This is currently being called!
+	    }
 	}
 }

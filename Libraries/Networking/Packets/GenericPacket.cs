@@ -30,6 +30,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public GenericPacket()
 		{
 		}
+
 		public GenericPacket(int type)
 		{
 			Type = type;
@@ -213,5 +214,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 		#endregion
+	}
+
+	public static class Packet
+	{
+		public static GenericPacket NoPacket => new GenericPacket(0);
 	}
 }
