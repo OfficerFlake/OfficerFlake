@@ -531,6 +531,38 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    }
 		#endregion
 		#region Send
+
+	    private Task<bool> SendAsync2(GenericPacket input)
+	    {
+		    try
+		    {
+			    return Task.Factory.StartNew<bool>(() =>
+			    {
+				    try
+				    {
+					    return (TCPSocket.Send(input.Serialise()) > 0);
+				    }
+				    catch (ArgumentNullException)
+				    {
+					    //buffer is null.
+				    }
+				    catch (SocketException)
+				    {
+					    //WinSock reports an error.
+				    }
+				    catch (ObjectDisposedException)
+				    {
+					    //Socket closed.
+				    }
+				    return false;
+			    });
+		    }
+		    catch (ArgumentNullException)
+		    {
+			    
+		    }
+		    return null;
+	    }
 		private bool BeginSend(GenericPacket input)
 	    {
 		    if (TCPSocket == BlankTCPSocket)
@@ -588,6 +620,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    }
 	    public bool Send(GenericPacket Input)
 	    {
+
+
 		    return BeginSend(Input);
 	    }
 		#endregion
