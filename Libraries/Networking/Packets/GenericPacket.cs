@@ -4,14 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Xml.Schema;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Networking.Packets;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
 	public class GenericPacket
 	{
-		public int Size => Data.Length + 4;
-		public int Type = 0;
+		public Int32 Size => Data.Length + 4;
+		public Int32 Type = 0;
 		public byte[] Data = new byte[0];
+
+		public byte[] Serialise()
+		{
+			byte[] output = new byte[Size+4];
+			byte[] sizeBytes = BitConverter.GetBytes(Size);
+			byte[] typeBytes = BitConverter.GetBytes(Type);
+
+			Array.Copy(sizeBytes, 0, output, 0, 4);
+			Array.Copy(typeBytes, 0, output, 4, 4);
+			Array.Copy(Data, 0, output, 8, Data.Length);
+
+			return output;
+		}
 
 		public GenericPacket()
 		{
@@ -72,7 +86,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			byte[] dataAfterInsertionPoint = new byte[Data.Length - start - bytesToCopy.Length];
 			try
 			{
-				Array.Copy(Data, start + bytesToCopy.Length, dataBeforeInsertionPoint, 0, dataAfterInsertionPoint.Length);
+				Array.Copy(Data, start + bytesToCopy.Length, dataAfterInsertionPoint, 0, dataAfterInsertionPoint.Length);
 			}
 			catch
 			{
@@ -190,7 +204,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region String
 		public string GetString(int start, int length)
 		{
-			return GetBytesFromStartToLength(start, length).ToSystemString();
+			return GetBytesFromStartToLength(start, length).ToSystemString().Split('\0')[0];
 		}
 		public bool SetString(int start, int length, string input)
 		{

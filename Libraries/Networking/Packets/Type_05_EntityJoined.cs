@@ -11,6 +11,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	{
 		public Type_05_EntityJoined() : base(5)
 		{
+			ResizeData(140);
 			Initialise();
 		}
 
@@ -23,10 +24,10 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			    (char)00 + (char)00 + (char)03 + (char)00 + (char)00 + (char)00 + (char)00 + (char)00);
 		}
 
-		public Int32 ObjectType
+		public UInt32 ObjectType
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 		public Boolean IsAircraft
 		{

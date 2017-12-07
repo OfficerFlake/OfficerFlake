@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
@@ -128,20 +129,28 @@ namespace Com.OfficerFlake.Executables.Testing
 		#endregion
 
 		private static void MainProgram()
-	    {
-			Console consoleWindow = new Console();
-		    NewWindowThread(consoleWindow);
+		{
 
-		    Metadata.Aircraft.LoadAll();
-			Metadata.Ground.LoadAll();
-			Metadata.Scenery.LoadAll();
-		    var results = World.Load(Scenery.FindByName("HAWAII")).ToString();
+			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
 
-			consoleWindow.consoleOutput.AddMessage
-				(
-					new InformationMessage(results)
-				);
-	    }
+			Server.Start();
+
+			Console.Show();
+
+			Console.AddInformationMessage("Loading...");
+
+			Metadata.LoadAll();
+			//World.Load("OPENYS_TEST_FIELD");
+			World.Load("HAWAII");
+
+			Console.AddInformationMessage("Loading Complete!");
+
+			Console.Show();
+
+			Console.WaitForClose();
+
+			Server.ShutDown();
+		}
 
 		#region Old Tests
 		private static void QuickTest()

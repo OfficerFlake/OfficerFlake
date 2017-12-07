@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -365,7 +366,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 		private static bool LoadFLD(Metadata.Scenery InputScenery)
 		{
-			#region Scenery Not Found on Disk
+			#region FLD Not Found on Disk
 			if (!File.Exists(Metadata.YSFlightDirectory + InputScenery.SceneryPath1Fld))
 			{
 				DebugMessages.Add(new WarningMessage("FLD File Not Found: " + InputScenery.SceneryPath1Fld));
@@ -958,37 +959,46 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 		}
 		private static bool LoadSTP(Metadata.Scenery InputScenery)
 		{
+			#region STP Not Found on Disk
 			if (!File.Exists(Metadata.YSFlightDirectory + InputScenery.SceneryPath2Stp)) return false;
-			//get the stp's from this stp file.
+			#endregion
+			#region Read File Contents
 			string[] STPContents = File.ReadAllLines(Metadata.YSFlightDirectory + InputScenery.SceneryPath2Stp);
-			foreach (string ThisLine in STPContents)
-			{
-			}
+			#endregion
+
+			#region Initialise Variables
 			Objects.StartPosition CurrentStartPosition = Objects.NULL_StartPosition;
-			foreach (string ThisLine in STPContents)
+			#endregion
+
+			#region Iterate over STP Contents
+			for (int i = 0; i < STPContents.Length; i++)
 			{
-				if (CurrentStartPosition == Objects.NULL_StartPosition)
+				#region Update Line Number and Contents
+				int CurrentLineNumber = i;
+				string ThisLine = STPContents[i];
+				#endregion
+
+				if (ThisLine == "") continue; //Skip Blank Lines.
+
+				#region Editing a Start Position
+				if (CurrentStartPosition != Objects.NULL_StartPosition)
 				{
 					#region N
 					if (ThisLine.ToUpperInvariant().StartsWith("N"))
 					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
-						if (Split.Length < 2) continue; //couldn't read the name line - error?
-						CurrentStartPosition = new Objects.StartPosition();
-						CurrentStartPosition.Identify = Split[1];
-						continue;
-					}
-					#endregion
-				}
-				else
-				{
-					#region N
-					if (ThisLine.ToUpperInvariant().StartsWith("N"))
-					{
-						if (CurrentStartPosition != Objects.NULL_StartPosition) Objects.StartPositionList.Add(CurrentStartPosition);
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
+						#region Finish Current Ground and Start a New One
+						if (CurrentStartPosition != Objects.NULL_StartPosition)
+						{
+							Objects.StartPositionList.Add(CurrentStartPosition);
+						}
+						#endregion
+
+
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
+							DebugMessages.Add(new WarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new InformationMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -997,12 +1007,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						continue;
 					}
 					#endregion
-
 					#region C
 					if (ThisLine.ToUpperInvariant().StartsWith("C"))
 					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
-						if (Split.Length < 2) continue; //couldn't read the C line - error?
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+						if (Split.Length < 2)
+						{
+							DebugMessages.Add(new WarningMessage("C Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new InformationMessage("C STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentStartPosition = Objects.NULL_StartPosition;
+							continue;
+						}
 						bool failed = false;
 						switch (Split[1].ToUpperInvariant())
 						{
@@ -1011,7 +1026,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region POSITION
 								if (Split.Length < 5)
 								{
-									continue; //couldn't read the position line - error?
+									DebugMessages.Add(new WarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
 								}
 								failed = false;
 								Length temp;
@@ -1033,6 +1050,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
+									DebugMessages.Add(new WarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Position.X = 0;
 									CurrentStartPosition.Position.Y = 0;
 									CurrentStartPosition.Position.Z = 0;
@@ -1041,7 +1060,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#endregion
 							case "ATTITUDE":
 								#region ATTITUDE
-								if (Split.Length < 5) continue; //couldn't read the attitude line - error?
+
+								if (Split.Length < 5)
+								{
+									DebugMessages.Add(new WarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
+								}
 								failed = false;
 								Angle outx = 0.Degrees();
 								Angle outy = 0.Degrees();
@@ -1081,6 +1106,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
+									DebugMessages.Add(new WarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Attitude.X = 0;
 									CurrentStartPosition.Attitude.Y = 0;
 									CurrentStartPosition.Attitude.Z = 0;
@@ -1089,7 +1116,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#endregion
 							case "INITSPED":
 								#region INITSPED
-								if (Split.Length < 3) continue; //couldn't read the initsped line - error?
+								if (Split.Length < 3)
+								{
+									DebugMessages.Add(new WarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
+								}
+
 								failed = false;
 
 								Speed output = 0.Knots();
@@ -1099,30 +1132,46 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
+									DebugMessages.Add(new WarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Speed = 0;
 								}
 								continue;
 							#endregion
 							case "CTLTHROT":
 								#region CTLTHROT
-								if (Split.Length < 3) continue; //couldn't read the ctlthrot line - error?
+								if (Split.Length < 3)
+								{
+									DebugMessages.Add(new WarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
+								}
 								failed = false;
 								failed |= !Double.TryParse(Split[2], out CurrentStartPosition.Throttle);
 
 								if (failed)
 								{
+									DebugMessages.Add(new WarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Throttle = 0;
 								}
 								continue;
 							#endregion
 							case "CTLLDGEA":
 								#region CTLLDGEA
-								if (Split.Length < 3) continue; //couldn't read the ctlldgea line - error?
+								if (Split.Length < 3)
+								{
+									DebugMessages.Add(new WarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
+								}
 								failed = false;
 								failed |= !Boolean.TryParse(Split[2], out CurrentStartPosition.Gear);
 
 								if (failed)
 								{
+									DebugMessages.Add(new WarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Gear = true;
 								}
 								continue;
@@ -1130,17 +1179,39 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 					}
 					#endregion
-
 					#region P
 					if (ThisLine.ToUpperInvariant().StartsWith("P"))
 					{
 
 						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
-						if (Split.Length < 2) continue; //couldn't read the P line - error?
+						if (Split.Length < 2)
+						{
+							DebugMessages.Add(new WarningMessage("P Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new InformationMessage("P STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentStartPosition = Objects.NULL_StartPosition;
+							continue; //couldn't read the name line - error?
+						}
+
 						bool failed = false;
+
 						switch (Split[1].ToUpperInvariant())
 						{
 							case "CARRIER":
+								#region CARRIER
+								if (Split.Length < 9)
+								{
+									DebugMessages.Add(new WarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new InformationMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
+									continue;
+								}
+
+								Length AdjustPosX = 0.Meters();
+								Length AdjustPosY = 0.Meters();
+								Length AdjustPosZ = 0.Meters();
+								failed |= !Length.TryParse(Split[3].ToUpperInvariant(), out AdjustPosX);
+								failed |= !Length.TryParse(Split[4].ToUpperInvariant(), out AdjustPosY);
+								failed |= !Length.TryParse(Split[5].ToUpperInvariant(), out AdjustPosZ);
+
 								Angle AdjustAngleX = 0.Degrees();
 								Angle AdjustAngleY = 0.Degrees();
 								Angle AdjustAngleZ = 0.Degrees();
@@ -1148,107 +1219,137 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								failed |= !Angle.TryParse(Split[7].ToUpperInvariant(), out AdjustAngleY);
 								failed |= !Angle.TryParse(Split[8].ToUpperInvariant(), out AdjustAngleZ);
 
-								CurrentStartPosition.Attitude.X -= AdjustAngleX;
-								CurrentStartPosition.Attitude.Y -= AdjustAngleY;
-								CurrentStartPosition.Attitude.Z -= AdjustAngleZ;
+								CurrentStartPosition.Position.X -= (double)AdjustPosX.ConvertToBase;
+								CurrentStartPosition.Position.Y -= (double)AdjustPosY.ConvertToBase;
+								CurrentStartPosition.Position.Z -= (double)AdjustPosZ.ConvertToBase;
+								CurrentStartPosition.Attitude.X -= (double)AdjustAngleX.ConvertToBase;
+								CurrentStartPosition.Attitude.Y -= (double)AdjustAngleY.ConvertToBase;
+								CurrentStartPosition.Attitude.Z -= (double)AdjustAngleZ.ConvertToBase;
 
 
 								if (failed)
 								{
-									//CurrentStartPosition.Attitude.X = 0;
-									//CurrentStartPosition.Attitude.Y = 0;
-									//CurrentStartPosition.Attitude.Z = 0;
+									DebugMessages.Add(new WarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new InformationMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
 								}
 								break;
-							default:
-								break;
+								#endregion
 						}
 					}
 					#endregion
 				}
+				#endregion
+				#region Look for another Start Position
+				else
+				{
+					#region N
+					if (ThisLine.ToUpperInvariant().StartsWith("N"))
+					{
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+						if (Split.Length < 2)
+						{
+							DebugMessages.Add(new WarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new InformationMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentStartPosition = Objects.NULL_StartPosition;
+							continue; //couldn't read the name line - error?
+						}
+						CurrentStartPosition = new Objects.StartPosition();
+						CurrentStartPosition.Identify = Split[1];
+						continue;
+					}
+					#endregion
+				}
+				#endregion
 			}
+			#endregion
+			#region Finish the Last Start Position
 			if (CurrentStartPosition != Objects.NULL_StartPosition)
 			{
 				Objects.StartPositionList.Add(CurrentStartPosition);
 				//Since the declarations do not terminate, we need to add the last one at the end of the file.
 			}
+			#endregion
 
-			return true;
+			return (DebugMessages.Count(x => x is WarningMessage) > 0);
 		}
 		private static bool LoadYFS(Metadata.Scenery InputScenery)
 		{
+			#region YFS Not Found on Disk
 			if (!File.Exists(Metadata.YSFlightDirectory + InputScenery.SceneryPath3Yfs)) return false;
-			//get the grounds from this fld file.
+			#endregion
+			#region Read File Contents
 			string[] YFSContents = File.ReadAllLines(Metadata.YSFlightDirectory + InputScenery.SceneryPath3Yfs);
+			#endregion
+
+			#region Initialise Variables
 			Objects.Ground CurrentGround = Objects.NULL_Ground;
-			foreach (string ThisLine in YFSContents)
+			#endregion
+
+			#region Iterate over YFS Contents
+			for (int i = 0; i < YFSContents.Length; i++)
 			{
-				if (CurrentGround == Objects.NULL_Ground)
+				#region Update Line Number and Contents
+				int CurrentLineNumber = i;
+				string ThisLine = YFSContents[i];
+				#endregion
+
+				if (ThisLine == "") continue; //Skip Blank Lines.
+
+				#region Editing a Ground Object
+				if (CurrentGround != Objects.NULL_Ground)
 				{
-					#region GOB
-					if (ThisLine.ToUpperInvariant().StartsWith("GROUNDOB"))
-					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
-						if (Split.Length < 2)
-						{
-							CurrentGround = Objects.NULL_Ground;
-							continue; //couldn't read the name line - error?
-						}
-						CurrentGround = new Objects.Ground();
-						CurrentGround.Identify = Split[1];
-						CurrentGround.MetaGroundObject = Metadata.Ground.FindByName(Split[1]);
-						continue;
-					}
-					#endregion
-				}
-				else
-				{
-					#region GOB
+					#region GROUNDOB
 					if (ThisLine.ToUpperInvariant().StartsWith("GROUNDOB"))
 					{
 						if (CurrentGround != Objects.NULL_Ground) Objects.GroundList.Add(CurrentGround);
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
-						if (Split.Length < 2) if (Split.Length < 2)
-							{
-								CurrentGround = Objects.NULL_Ground;
-								continue; //couldn't read the name line - error?
-							}
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+						if (Split.Length < 2)
+						{
+							DebugMessages.Add(new WarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentGround = Objects.NULL_Ground;
+							continue;
+						}
+
 						CurrentGround = new Objects.Ground();
+
 						CurrentGround.Identify = Split[1];
 						CurrentGround.MetaGroundObject = Metadata.Ground.FindByName(Split[1]);
 						continue;
 					}
 					#endregion
-					#region POS
+					#region GNDPOSIT
 					if (ThisLine.ToUpperInvariant().StartsWith("GNDPOSIT"))
 					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 4)
-							{
-								CurrentGround = Objects.NULL_Ground;
-								continue; //couldn't read the name line - error?
-							}
+						{
+							DebugMessages.Add(new WarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentGround = Objects.NULL_Ground;
+							continue;
+						}
+
 						bool failed = false;
 
 						Length temp;
 
 						temp = 0.Meters();
 						failed |= !Length.TryParse(Split[1], out temp);
-						Split[1] = temp.ToMeters().ToString();
 						CurrentGround.Position.X = (float)temp.ConvertToBase;
 
 						temp = 0.Meters();
 						failed |= !Length.TryParse(Split[2], out temp);
-						Split[2] = temp.ToMeters().ToString();
 						CurrentGround.Position.Y = (float)temp.ConvertToBase;
 
 						temp = 0.Meters();
 						failed |= !Length.TryParse(Split[3], out temp);
-						Split[3] = temp.ToMeters().ToString();
 						CurrentGround.Position.Z = (float)temp.ConvertToBase;
 
 						if (failed)
 						{
+							DebugMessages.Add(new WarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new InformationMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.Position.X = 0;
 							CurrentGround.Position.Y = 0;
 							CurrentGround.Position.Z = 0;
@@ -1256,22 +1357,38 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						continue;
 					}
 					#endregion
-					#region ATT
+					#region GNDATTIT
 					if (ThisLine.ToUpperInvariant().StartsWith("GNDATTIT"))
 					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 4)
 						{
+							DebugMessages.Add(new WarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
-							continue; //couldn't read the name line - error?
+							continue;
 						}
+
 						bool failed = false;
-						failed |= !Single.TryParse(Split[1], out CurrentGround.Attitude.X);
-						failed |= !Single.TryParse(Split[2], out CurrentGround.Attitude.Y);
-						failed |= !Single.TryParse(Split[3], out CurrentGround.Attitude.Z);
+
+						Angle temp;
+
+						temp = 0.Degrees();
+						failed |= !Angle.TryParse(Split[1], out temp);
+						CurrentGround.Position.X = (float)temp.ConvertToBase;
+
+						temp = 0.Degrees();
+						failed |= !Angle.TryParse(Split[1], out temp);
+						CurrentGround.Position.Y = (float)temp.ConvertToBase;
+
+						temp = 0.Degrees();
+						failed |= !Angle.TryParse(Split[1], out temp);
+						CurrentGround.Position.Z = (float)temp.ConvertToBase;
 
 						if (failed)
 						{
+							DebugMessages.Add(new WarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new InformationMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.Attitude.X = 0;
 							CurrentGround.Attitude.Y = 0;
 							CurrentGround.Attitude.Z = 0;
@@ -1279,12 +1396,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						continue;
 					}
 					#endregion
-					#region IFF
+					#region IDENTIFY
 					if (ThisLine.ToUpperInvariant().StartsWith("IDENTIFY"))
 					{
-						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
+							DebugMessages.Add(new WarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue; //couldn't read the name line - error?
 						}
@@ -1292,20 +1411,75 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						failed |= !UInt32.TryParse(Split[1], out CurrentGround.IFF);
 						if (failed)
 						{
+							DebugMessages.Add(new WarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new InformationMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.IFF = 0;
 						}
 						continue;
 					}
 					#endregion
+					#region IDANDTAG
+					if (ThisLine.ToUpperInvariant().StartsWith("IDANDTAG"))
+					{
+						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+						if (Split.Length < 3)
+						{
+							DebugMessages.Add(new WarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							continue;
+						}
+
+						bool failed = false;
+						failed |= !UInt32.TryParse(Split[1], out CurrentGround.ID);
+						CurrentGround.Tag = Split[2].Replace(" ", "_");
+
+
+						if (failed)
+						{
+							DebugMessages.Add(new WarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new InformationMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentGround.ID = 0;
+							CurrentGround.Tag = "<CONVERSION_ERROR>";
+						}
+						continue;
+					}
+					#endregion
+					
 				}
+				#endregion
+				#region Look for another Ground Object
+				else
+				{
+					#region GROUNDOB
+					if (ThisLine.ToUpperInvariant().StartsWith("GROUNDOB"))
+					{
+						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
+						if (Split.Length < 2)
+						{
+							DebugMessages.Add(new WarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new InformationMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							CurrentGround = Objects.NULL_Ground;
+							continue;
+						}
+						CurrentGround = new Objects.Ground();
+						CurrentGround.Identify = Split[1];
+						CurrentGround.MetaGroundObject = Metadata.Ground.FindByName(Split[1]);
+						continue;
+					}
+					#endregion
+				}
+				#endregion
 			}
+			#endregion
+			#region Finish the Last Ground Object
 			if (CurrentGround != Objects.NULL_Ground)
 			{
 				Objects.GroundList.Add(CurrentGround);
 				//Since the declarations do not terminate, we need to add the last one at the end of the file.
 			}
+			#endregion
 
-			return true;
+			return (DebugMessages.Count(x => x is WarningMessage) > 0);
 		}
 	}
 }

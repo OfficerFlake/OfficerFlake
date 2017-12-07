@@ -11,6 +11,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	{
 		public Type_21_GroundData() : base(21)
 		{
+			Version = 1;
 		}
 
 		public Single TimeStamp

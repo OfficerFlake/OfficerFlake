@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E3529CF0-4AD1-494B-8BBC-B313CB608A79}</ProjectGuid>
+    <ProjectGuid>{30F0E352-9FCD-46DA-8503-7137D1001A0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Connection</RootNamespace>
-    <AssemblyName>Connection</AssemblyName>
+    <RootNamespace>Server</RootNamespace>
+    <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,15 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
-      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>Extensions</Name>
+    <ProjectReference Include="..\..\Client\Connection\Connection.csproj">
+      <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
+      <Name>Connection</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Networking\Packets\Packets.csproj">
+    <ProjectReference Include="..\Packets\Packets.csproj">
       <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
       <Name>Packets</Name>
     </ProjectReference>

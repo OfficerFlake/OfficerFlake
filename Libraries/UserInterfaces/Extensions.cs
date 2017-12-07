@@ -14,7 +14,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		/// </summary>
 		/// <param name="inputForm">The form to create as it's own application window.</param>
 		/// <returns>Thread ID or null.</returns>
-		public static Thread NewWindowThread(Form inputForm)
+		public static Thread NewWindowThread(this Form inputForm)
 		{
 			Thread newThread;
 			try

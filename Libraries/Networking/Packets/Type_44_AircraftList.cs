@@ -39,7 +39,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 					ACList += ThisString + "\0";
 				}
 				ResizeData(4);
-				Count = (byte)(ACList.Split('\0').Length);
+				Count = (byte)(ACList.Split('\0').Length-1);
 				SetString(4, ACList.Length, ACList);
 			}
 		}

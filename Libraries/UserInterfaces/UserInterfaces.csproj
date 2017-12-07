@@ -77,10 +77,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Console.resx">
       <DependentUpon>Console.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Components\ConsoleOutput.resx">
-      <DependentUpon>ConsoleOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\IOForm.resx">
       <DependentUpon>IOForm.cs</DependentUpon>

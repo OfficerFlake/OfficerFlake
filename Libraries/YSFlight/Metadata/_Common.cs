@@ -13,5 +13,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
     public static partial class Metadata
     {
 	    public const string YSFlightDirectory = "C:/Program Files/YSFLIGHT.COM/YSFLIGHT/";
+
+	    public static bool LoadAll()
+	    {
+		    bool Errors = false;
+		    Errors |= !Aircraft.LoadAll();
+		    Errors |= !Ground.LoadAll();
+		    Errors |= !Scenery.LoadAll();
+		    return !Errors;
+	    }
 	}
 }

@@ -132,9 +132,17 @@
       <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
       <Name>Statistics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Networking\PacketProcessor\PacketProcessor.csproj">
+      <Project>{4825e8af-f859-47e0-a1bb-c936604c72ef}</Project>
+      <Name>PacketProcessor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Networking\Packets\Packets.csproj">
       <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
       <Name>Packets</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Networking\Server\Server.csproj">
+      <Project>{30f0e352-9fcd-46da-8503-7137d1001a0c}</Project>
+      <Name>Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\RichText\RichTextMessage\RichTextMessage.csproj">
       <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>

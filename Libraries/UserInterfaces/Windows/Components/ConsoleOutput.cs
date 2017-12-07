@@ -34,7 +34,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		#region Variables
 		//private bool performRichTextBoxUpdates = true;
-	    internal bool FormClosing = false;
+	    internal ManualResetEvent FormClosing = new ManualResetEvent(false);
+	    internal bool IsFormClosing => FormClosing.WaitOne(0);
 
 	    private const int DateSize = 8;
 	    private const int TimeSize = 6;
@@ -367,7 +368,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 	    private void RichTextBoxUpdaterThread()
 	    {
-		    while (!FormClosing)
+		    while (!IsFormClosing)
 		    {
 			    //ReEnable when Obfusation Processing Complete.
 			    #region Obfuscation (Disabled)
@@ -392,7 +393,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    {
 				    RichTextMessage thisRichTextMessage = null;
 				    incomingRichTextMessages.TryDequeue(out thisRichTextMessage);
-				    if (FormClosing) return;
+				    if (IsFormClosing) return;
 				    try
 				    {
 					    if (thisRichTextMessage != null)

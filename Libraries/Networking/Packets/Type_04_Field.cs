@@ -11,13 +11,16 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	{
 		public Type_04_Field() : base(4)
 		{
+			ResizeData(60);
 		}
 		public Type_04_Field(string fieldName) : base(4)
         {
+	        ResizeData(60);
 			this.FieldName = fieldName;
 		}
 		public Type_04_Field(string fieldName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ) : base(4)
         {
+	        ResizeData(60);
 			FieldName = fieldName;
 			PosX = posX;
 			PosY = posY;
@@ -29,7 +32,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public String FieldName
 		{
-			get => GetString(0, 32);
+			get => GetString(0, 32).Split('\0')[0];
 			set => SetString(0, 32, value);
 		}
 

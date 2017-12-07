@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4825E8AF-F859-47E0-A1BB-C936604C72EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PacketProcessor</RootNamespace>
+    <AssemblyName>PacketProcessor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Type_00_Login.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Client\Connection\Connection.csproj">
+      <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
+      <Name>Connection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Color\Color.csproj">
+      <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
+      <Name>Color</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Databases\Database.csproj">
+      <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Math\CoordinateSystems\CoordinateSystems.csproj">
+      <Project>{714aa2cd-08cb-4610-ae53-fa7994d8a0a2}</Project>
+      <Name>CoordinateSystems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RichText\RichTextMessage\RichTextMessage.csproj">
+      <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
+      <Name>RichTextMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RichText\RichTextString\RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>RichTextString</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UserInterfaces\UserInterfaces.csproj">
+      <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
+      <Name>UserInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YSFlight\Metadata\Metadata.csproj">
+      <Project>{1e6cef24-35ce-42e0-bd97-9d27eb93ed46}</Project>
+      <Name>Metadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YSFlight\World\World.csproj">
+      <Project>{3460e682-d1fe-4ce5-8134-168b9c1d8fec}</Project>
+      <Name>World</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\YSFlight\YSTypes\YSTypes.csproj">
+      <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
+      <Name>YSTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Packets\Packets.csproj">
+      <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
+      <Name>Packets</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

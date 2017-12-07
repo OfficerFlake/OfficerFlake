@@ -112,9 +112,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 					foreach (Aircraft ThisMetaAircraft in List)
 					{
+						ThisMetaAircraft.Identify = "<NULL>";
 						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat))
 						{
-							InformationMessage Error = new InformationMessage
+							WarningMessage Error = new WarningMessage
 							(
 								"Aircraft DAT file doesn't exist: " + ThisMetaAircraft.AircraftPath0Dat + "."
 							);
@@ -152,7 +153,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						if (ThisMetaAircraft.Identify == null)
 						{
-							InformationMessage Error = new InformationMessage
+							WarningMessage Error = new WarningMessage
 							(
 								"Aircraft DAT file doesn't contain IDENTIFY: " + ThisMetaAircraft.AircraftPath0Dat + "."
 							);

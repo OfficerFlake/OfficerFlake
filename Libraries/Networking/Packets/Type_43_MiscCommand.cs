@@ -23,12 +23,13 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get
 			{
-				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 1);
+				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 2);
 				return Array[0];
 			}
 			set
 			{
-				var Array = GetString(4, Data.Length - 4).Split(new [] {' '}, 1);
+				if (Data.Length < 4) ResizeData(4);
+				var Array = GetString(4, Data.Length - 4).Split(new [] {' '}, 2);
 				var _arg = "";
 				if (Array.Length > 1) _arg = Array[1];
 				if (value == null) value = "";
@@ -40,17 +41,19 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get
 			{
-				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 1);
+				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 2);
 				var _arg = "";
 				if (Array.Length > 1) _arg = Array[1];
 				return _arg;
 			}
 			set
 			{
-				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 1);
+				if (Data.Length < 4) ResizeData(4);
+				var Array = GetString(4, Data.Length - 4).Split(new[] { ' ' }, 2);
 				if (value == null) value = "";
+				value = value.Split('\0')[0];
 
-				SetString(4, value.Length + 1 + value.Length, Array[0] + " " + value);
+				SetString(4, Command.Length + 1 + value.Length, Command + " " + value);
 			}
 		}
 	}
