@@ -12,24 +12,21 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		#region Scenery
 		public class Scenery
 		{
+			#region Variables
 			public string SceneryPath1Fld;
 			public string SceneryPath2Stp;
 			public string SceneryPath3Yfs;
-
+			#endregion
+			#region Cached Information
 			public string Identify;
-			//DO NOT ADD MORE INFO! METADATA IS A CACHE ONLY!
+			#endregion
 
+			public static Scenery None = new Scenery() { Identify = "NULL" };
 			public static List<Scenery> List = new List<Scenery>();
 			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
-
-			/// <summary>
-			/// Psuedo-Object to represent Null.
-			/// </summary>
-			public static Scenery None = new Scenery() { Identify = "NULL" };
-
+			
 			#region Load All
 			/// <summary>
 			/// Searches the YSFlightDirectory for the Scenery Folder, and loads all Scenery Lists from it.
@@ -139,6 +136,5 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			#endregion
 		}
-		#endregion
 	}
 }

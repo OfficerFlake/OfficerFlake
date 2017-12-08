@@ -70,7 +70,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             foreach (var thisLine in Lines)
             {
                 if (ShowLines) Debug.WriteLine(thisLine);
-                if (thisLine.isBlank) continue;
+                if (thisLine.NumberOfElements == 0) continue;
                 if (thisLine.NumberOfElements < 3) continue;
                 var seperatedLine =
                     thisLine.ToString()

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.IO;
+using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties;
 using Com.OfficerFlake.Libraries.YSFlight.Types;
@@ -12,7 +13,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
     public partial class File : CommandFile, ILoadable, ISaveable
     {
-        private bool DebugMode = false;
+        public List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
+
         public List<PropertyTypes.Property> Properties { get; }
 
         public File(string filename) : base(filename)
@@ -20,21 +22,20 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
             Properties = new List<PropertyTypes.Property>();
         }
 
-        public new bool Load()
-        {
-            const bool ShowLines = false;
-            const string nullExceptionString = "<ERROR-DAT.File.Load()>";
+	    //private bool debugMode = false;
+	    private string nullExceptionString = "";
 
+
+		public new bool Load()
+        {
             Properties.Clear();
-            var errorsEncountered = false;
-            var numberErrorsEncounted = 0;
             base.Load();
-            foreach (var thisLine in Lines)
+            for(int i=0; i < Lines.Count; i++)
             {
+	            Line thisLine = Lines[i];
                 if (thisLine.Command == "") continue;
                 if (Comments.StartOfLineMarkers.Contains(thisLine.Command)) continue;
-                if (DebugMode && ShowLines) Debug.WriteLine(thisLine);
-                #region switch (thisLine.Command) ...
+                #region ThisLine => Dat Property
                 switch (thisLine.Command)
                 {
                     case "AAMSLOT_":
@@ -42,6 +43,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Length x;
                             Length y;
                             Length z;
+
+
                             if (!Length.TryParse((thisLine.GetParameterOrNull(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Length.TryParse((thisLine.GetParameterOrNull(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Length.TryParse((thisLine.GetParameterOrNull(2) ?? nullExceptionString).ToString(), out z)) goto Error;
@@ -113,7 +116,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new AUTOCALC());
                             continue;
                         }
-
                     case "BMBAYRCS":
                         {
                             float value;
@@ -139,7 +141,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new BOMINBAY(value));
                             continue;
                         }
-
                     case "BOMVISIB":
                         {
                             bool value;
@@ -262,7 +263,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new CPITSTAB(value));
                             continue;
                         }
-
                     case "CRITAOAM":
                         {
                             Angle value;
@@ -291,7 +291,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new CROLLMAN(value));
                             continue;
                         }
-
                     case "CTLABRNR":
                         {
                             bool value;
@@ -487,7 +486,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Length.TryParse((thisLine.GetParameterOrNull(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Length.TryParse((thisLine.GetParameterOrNull(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Length.TryParse((thisLine.GetParameterOrNull(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            for (var i = 3; i < thisLine.NumberOfParameters; i++)
+                            for (var j = 3; j < thisLine.NumberOfParameters; j++)
                             {
                                 try
                                 {
@@ -673,7 +672,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new MACHNGN3(x, y, z));
                             continue;
                         }
-
                     case "MACHNGN4":
                         {
                             Length x;
@@ -685,7 +683,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new MACHNGN4(x, y, z));
                             continue;
                         }
-
                     case "MACHNGN5":
                         {
                             Length x;
@@ -697,7 +694,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new MACHNGN5(x, y, z));
                             continue;
                         }
-
                     case "MACHNGN6":
                         {
                             Length x;
@@ -709,7 +705,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new MACHNGN6(x, y, z));
                             continue;
                         }
-
                     case "MACHNGN7":
                         {
                             Length x;
@@ -721,7 +716,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new MACHNGN7(x, y, z));
                             continue;
                         }
-
                     case "MACHNGN8":
                         {
                             Length x;
@@ -1356,7 +1350,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new WINGAREA(value));
                             continue;
                         }
-
                     case "WPNSHAPE":
                         {
                             var Value = (thisLine.GetParameterOrNull(0) ?? nullExceptionString).ToString() ?? "";
@@ -1369,21 +1362,16 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             Properties.Add(new WPNSHAPE(value, isStatic, shape));
                             continue;
                         }
-
-
                     default:
-                        if (DebugMode) Debug.WriteLine("DAT COMMAND NOT IMPLEMENTED : " + thisLine);
+                        Debug.WriteLine("DAT COMMAND NOT IMPLEMENTED : " + thisLine);
                         continue;
-
                     Error:
-                        if (DebugMode) Debug.WriteLine("BAD DAT COMMAND? : " + thisLine);
-                        errorsEncountered = true;
-                        numberErrorsEncounted++;
+                        Debug.WriteLine("BAD DAT COMMAND? : " + thisLine);
                         continue;
                 }
                 #endregion
             }
-            return !errorsEncountered;
+	        return true;
         }
         public new bool Save()
         {

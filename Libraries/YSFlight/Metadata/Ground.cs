@@ -12,25 +12,22 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		#region Ground
 		public class Ground
 		{
+			#region Variables
 			public string GroundPath0Dat;
 			public string GroundPath1Model;
 			public string GroundPath2Collision;
 			public string GroundPath3Cockpit;
 			public string GroundPath4Coarse;
-
+			#endregion
+			#region Cached Information
 			public string Identify;
-			//DO NOT ADD MORE INFO! METADATA IS A CACHE ONLY!
+			#endregion
 
+			public static Ground None = new Ground() { Identify = "NULL" };
 			public static List<Ground> List = new List<Ground>();
 			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
-
-			/// <summary>
-			/// Psuedo-Object to represent Null.
-			/// </summary>
-			public static Ground None = new Ground() { Identify = "NULL" };
 
 			#region Load All
 			/// <summary>
@@ -209,6 +206,5 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			#endregion
 		}
-		#endregion
 	}
 }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-
+using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Networking.Packets;
 using Com.OfficerFlake.Libraries.YSFlight;
 using static Com.OfficerFlake.Libraries.Networking.Connection;
@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					thisConnection.SendMessage("You are using an old version of YSFlight");
 					thisConnection.SendMessage("Please verify your username before continuing!");
 					thisConnection.SendMessage("");
-					thisConnection.SendMessage("Please type a blank string. (Press F12 and then press enter)");
+					thisConnection.SendMessage("Please type a blank string. (Press F12 and then press await enter)");
 					thisConnection.SendMessage("IT IS IMPORTANT YOU DON'T TYPE ANYTHING, JUST A BLANK LINE!");
 					while (true)
 					{
@@ -151,11 +151,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//}
 				#endregion
 
-				#region Inform Players [DISABLED]
-				//if (Settings.Flight.JoinFlightNotification)
-				//{
-				//	if (!thisConnection.IsBot()) Clients.AllClients.Exclude(thisConnection).SendMessage("&a" + thisConnection.Username + " Joined the server.");
-				//}
+				#region Inform Players
+				AllConnections.Exclude(thisConnection).SendMessageAsync(thisConnection.Username + " joined the server.").ConfigureAwait(false);
 				#endregion
 
 				#region Send Version(29)
@@ -287,18 +284,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#region Send AircraftList(44)
 				//Process the Aircraft List.
 				List<Metadata.Aircraft> MetaAircraftList = new List<Metadata.Aircraft>();
-				int Percentage = 10;
+				int Percentage = 0;
 				for (int i = 0; i < Metadata.Aircraft.List.Count; i++)
 				{
 					#region Tell YSClient the Percentage
-					if ((decimal)i / (decimal)(Metadata.Aircraft.List.Count - 1) * 100 >= Percentage)
+					bool UpdatedPercentage = false;
+					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(Metadata.Aircraft.List.Count)) * 100;
+					while (CurrentPercent >= Percentage+10)
 					{
-						//if (Metadata.Loading.SendLoadingPercentNotification)
-						//{
+						Percentage += 10;
+						UpdatedPercentage = true;
+					}
+					if (UpdatedPercentage)
+					{
 						if (Percentage == 100) thisConnection.SendMessage("Sending Aircraft List: " + Percentage + "% Complete!");
 						else thisConnection.SendMessage("Sending Aircraft List: " + Percentage + "% Complete...");
-						//}
-						Percentage += 10;
 					}
 					#endregion
 
@@ -318,14 +318,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 						PacketWaiter packetWaiter_ThisAircraftList = new PacketWaiter(44);
 						packetWaiter_ThisAircraftList.Require(0, ThisAircraftListPacket.Data);
 						packetWaiter_ThisAircraftList.StartListening();
-						//Send AircraftList (44)
+
 						thisConnection.Send(ThisAircraftListPacket);
-						//if (!thisConnection.GetResponseOrResend(packetWaiter_ThisAircraftList, ThisAircraftListPacket))
-						//{
-						//	thisConnection.SendMessage("Expected an Aircraft List Reply and didn't get an answer. Disconnecting...");
-						//	//thisConnection.Disconnect();
-						//	//return false;
-						//}
 						#endregion
 					}
 				}
@@ -362,49 +356,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//{
 				//	Packets.Type_50_GroundColor GndColor = new Packets.Type_50_GroundColor(OpenYS.AdvancedWeatherOptions.GndColor.Red, OpenYS.AdvancedWeatherOptions.GndColor.Green, OpenYS.AdvancedWeatherOptions.GndColor.Blue);
 				//	thisConnection.SendPacket(GndColor);
-				//}
-				#endregion
-
-				#region Send PrepareSimulation(16)
-				//Build Prepare Simulation (16)
-				Type_16_PrepareSimulation PrepareSimulation = new Type_16_PrepareSimulation();
-
-				PacketWaiter packetWaiter_AcknowledgePrepareSimulation = new PacketWaiter(16);
-				packetWaiter_AcknowledgePrepareSimulation.Require(0, (Int32)7);
-				packetWaiter_AcknowledgePrepareSimulation.StartListening();
-
-				//Send Prepare Simulation (16)
-				thisConnection.Send(PrepareSimulation);
-				thisConnection.SetLoggedIn();
-				#endregion
-
-				#region Get PrepareSimulation(06:07)
-				//Get Acknowledgement (7:0) (Acknowledge Packets.Type_16_PrepareSimulation)
-				//if (!thisConnection.GetResponseOrResend(packetWaiter_AcknowledgePrepareSimulation, PrepareSimulation))
-				//{
-				//	thisConnection.SendMessage("Expected a Prepare Simulation Acknowledge and didn't get an answer. Disconnecting...");
-				//	//thisConnection.Disconnect();
-				//	//return false;
-				//}
-				#endregion
-
-				#region Complete Login!
-				thisConnection.SendMessage("*** Login Complete! ***");
-				#endregion
-
-				#region Send WelcomeText
-				//finally, send the loggedin.
-				//if (Files.FileExists("AutoMessages/_1_EndLogIn.txt") && Settings.Loading.SendLogInCompleteWelcomeMessage)
-				//{
-				//	string[] msg = Files.FileReadAllLines("AutoMessages/_1_EndLogIn.txt");
-				//	string output = "";
-				//	foreach (string ThisLine in msg)
-				//	{
-				//		if (output.Length > 0) output += "\n";
-				//		output += ThisLine;
-				//	}
-				//	//Send the join info packet.
-				//	thisConnection.SendMessage(output);
 				//}
 				#endregion
 
@@ -458,40 +409,83 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				//Create all the ground objects.
-				Percentage = 10;
+				Percentage = 0;
 				for (int i = 0; i < World.Objects.GroundList.Count; i++)
 				{
+					#region Tell YSClient the Percentage
+					bool UpdatedPercentage = false;
+					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(World.Objects.GroundList.Count)) * 100;
+					while (CurrentPercent >= Percentage + 10)
+					{
+						Percentage += 10;
+						UpdatedPercentage = true;
+					}
+					if (UpdatedPercentage)
+					{
+						if (Percentage == 100) thisConnection.SendMessage("Sending Ground Objects List: " + Percentage + "% Complete!");
+						else thisConnection.SendMessage("Sending Ground Objects List: " + Percentage + "% Complete...");
+					}
+					#endregion
+
 					World.Objects.Ground ThisGround = World.Objects.GroundList[i];
 					Packets.Type_05_EntityJoined GroundJoin = new Packets.Type_05_EntityJoined();
 					GroundJoin.IsGround = true;
-					GroundJoin.ID = (Int32) ThisGround.ID;
+					GroundJoin.ID = (Int32)ThisGround.ID;
 					GroundJoin.Identify = ThisGround.Identify;
 					GroundJoin.OwnerName = ThisGround.Tag;
-					GroundJoin.IFF = (Int32) ThisGround.IFF;
+					GroundJoin.IFF = (Int32)ThisGround.IFF;
 					GroundJoin.PosX = ThisGround.Position.X;
 					GroundJoin.PosY = ThisGround.Position.Y;
 					GroundJoin.PosZ = ThisGround.Position.Z;
-					GroundJoin.RotX = (float) (ThisGround.Attitude.X / 180 * System.Math.PI);
-					GroundJoin.RotY = (float) (ThisGround.Attitude.Y / 180 * System.Math.PI);
-					GroundJoin.RotZ = (float) (ThisGround.Attitude.Z / 180 * System.Math.PI);
+					GroundJoin.RotX = (float)(ThisGround.Attitude.X / 180 * System.Math.PI);
+					GroundJoin.RotY = (float)(ThisGround.Attitude.Y / 180 * System.Math.PI);
+					GroundJoin.RotZ = (float)(ThisGround.Attitude.Z / 180 * System.Math.PI);
 
 					thisConnection.Send(GroundJoin);
-
-					#region Tell YSClient the Percentage
-
-					if ((decimal) i / (decimal) (World.Objects.GroundList.Count - 1) * 100 >= Percentage)
-					{
-						//if (Metadata.Loading.SendLoadingPercentNotification)
-						//{
-						if (Percentage == 100) thisConnection.SendMessage("Sending Ground Objects List: " + Percentage + "% Complete!");
-						else thisConnection.SendMessage("Sending Grounds Objects List: " + Percentage + "% Complete...");
-						//}
-						Percentage += 10;
-					}
-
-					#endregion
 				}
 
+				#endregion
+
+				#region Send PrepareSimulation(16)
+				//Build Prepare Simulation (16)
+				Type_16_PrepareSimulation PrepareSimulation = new Type_16_PrepareSimulation();
+
+				PacketWaiter packetWaiter_AcknowledgePrepareSimulation = new PacketWaiter(16);
+				packetWaiter_AcknowledgePrepareSimulation.Require(0, (Int32)7);
+				packetWaiter_AcknowledgePrepareSimulation.StartListening();
+
+				//Send Prepare Simulation (16)
+				thisConnection.Send(PrepareSimulation);
+				thisConnection.SetLoggedIn();
+				#endregion
+
+				#region Get PrepareSimulation(06:07)
+				if (!thisConnection.GetResponseOrResend(packetWaiter_AcknowledgePrepareSimulation, PrepareSimulation))
+				{
+					thisConnection.SendMessage("Expected a Prepare Simulation Acknowledge and didn't get an answer. Disconnecting...");
+					thisConnection.Disconnect();
+					return false;
+				}
+				#endregion
+
+				#region Complete Login!
+				thisConnection.SendMessage("*** Login Complete! ***");
+				#endregion
+
+				#region Send WelcomeText
+				//finally, send the loggedin.
+				//if (Files.FileExists("AutoMessages/_1_EndLogIn.txt") && Settings.Loading.SendLogInCompleteWelcomeMessage)
+				//{
+				//	string[] msg = Files.FileReadAllLines("AutoMessages/_1_EndLogIn.txt");
+				//	string output = "";
+				//	foreach (string ThisLine in msg)
+				//	{
+				//		if (output.Length > 0) output += "\n";
+				//		output += ThisLine;
+				//	}
+				//	//Send the join info packet.
+				//	thisConnection.SendMessage(output);
+				//}
 				#endregion
 
 				#region DEBUG TESTING

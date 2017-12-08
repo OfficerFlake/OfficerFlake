@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
@@ -15,7 +16,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
         public class Line
         {
             private string _line;
-            private string[] Elements => _line.SplitPresevingQuotes();
+            private string[] Elements => _line.ToUpperInvariant().SplitPresevingQuotes();
 
             public Line(string line)
             {
@@ -24,35 +25,46 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
 
             public string Command
             {
-                get
-                {
-                    try
-                    {
-                        return (Elements.Length > 0) ? Elements[0] : "";
-                    }
-                    catch
-                    {
-                        return "";
-                    }
-                }
+                get => (NumberOfElements > 0) ? Elements[0] : "";
                 set
                 {
-	                try
+	                if (NumberOfElements > 0)
 	                {
-
-		                if (Elements.Length > 0) _line = value + " " + string.Join(" ", Elements.Skip(1));
-		                else _line = value;
+		                _line = value + " " + string.Join(" ", Elements.Skip(1));
 	                }
-	                catch
+	                else
 	                {
 		                _line = value;
 	                }
-                }
+				}
             }
+	        public string[] Parameters
+	        {
+				get => (NumberOfElements > 1) ? Elements.Skip(1).ToArray() : new string[0];
+				set => _line = Command + " " + string.Join(" ", value);
+	        }	  
 
             public int NumberOfElements => Elements.Length;
-            public int NumberOfParameters => Elements.Length-1;
-            public bool isBlank => (_line.Length == 0);
+            public int NumberOfParameters
+			{
+	            get => Parameters.Length;
+	            set
+	            {
+		            if (NumberOfElements >= value)
+		            {
+			            _line = string.Join(" ", Elements.Take(value));
+			            return;
+		            }
+
+					string temp = string.Join(" ", Elements);
+					int remainder = value-NumberOfElements;
+		            for (int i = 0; i < remainder; i++)
+		            {
+			            temp += " " + "\"\"";
+		            }
+		            _line = temp;
+	            }
+			}
 
             public string GetElementOrNull(int index)
             {
@@ -70,20 +82,27 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
             {
 	            try
 	            {
-		            if (index >= Elements.Length - 1 || index < 0) return null;
-		            return Elements[index + 1] ?? "";
+		            if (index >= Parameters.Length || index < 0) return null;
+		            return Parameters[index] ?? "";
 	            }
 	            catch
 	            {
 		            return null;
 	            }
             }
+
             public bool SetParameter(int index, string value)
             {
+	            if (index < 0) return false;
+	            if (NumberOfParameters < index)
+	            {
+		            
+	            }
+
 				//TODO: Fix this, it's clearly wrong... (PRIOTITY=0)
 
 				//If Index is too high?
-                if (index < 0) index = NumberOfParameters + (index % NumberOfParameters);
+				if (index < 0) index = NumberOfParameters + (index % NumberOfParameters);
 
                 var sb = new StringBuilder();
                 sb.Append(Command);

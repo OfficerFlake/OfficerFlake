@@ -75,7 +75,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					int Type = BitConverter.ToInt32(received, 8);
 					GenericPacket thisPacket = new GenericPacket(Type, received.Skip(12).ToArray());
 
-				    foreach (Connection thisConnection in GetConnections.Where(x => x.ConnectionNumber == ConnectionID))
+				    foreach (Connection thisConnection in AllConnections.Where(x => x.ConnectionNumber == ConnectionID))
 				    {
 					    thisConnection.GivePacket(thisPacket);
 				    }

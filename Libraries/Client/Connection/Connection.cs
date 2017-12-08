@@ -77,17 +77,18 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    AddToServerList();
 		}
 		#endregion
+
 		#region Sockets
 		#region TCP/IP
 		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		private Socket TCPSocket = BlankTCPSocket;
-		public bool SetTCPSocket(Socket incomingSocket)
+		public async Task<bool> SetTCPSocket(Socket incomingSocket)
 		{
 			if (TCPSocket == BlankTCPSocket)
 			{
 				TCPSocket = incomingSocket;
 				//TCPStartToRecieveNewPacket();
-				TCPGetPacket();
+				await TCPGetPacket();
 				return true;
 			}
 			return false;
@@ -187,7 +188,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 			byte[] body;
 			#endregion
 			#region GetData
-			Header:
 			try
 			{
 				size = await Task.Run(() => TCPGetPacketHeader());
@@ -289,7 +289,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				return;
 			}
 			ProcessPacket(receivedPacket);
-			TCPGetPacket();
+			await TCPGetPacket();
 		}
 		#endregion
 		#region Send
@@ -314,7 +314,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-		private async Task<bool> TCPSendAsync(GenericPacket thisPacket)
+	    public bool Send(GenericPacket Input)
+	    {
+		    return TCPSend(Input);
+	    }
+		public bool SendMessage(string Input)
+	    {
+		    Type_32_ChatMessage thisChatMessage = new Type_32_ChatMessage(Input);
+		    return TCPSend(thisChatMessage);
+	    }
+		public async Task<bool> SendAsync(GenericPacket thisPacket)
 		{
 			try
 			{
@@ -326,14 +335,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-		public async Task<bool> SendMessage(string Input)
-		{
-			Type_32_ChatMessage thisChatMessage = new Type_32_ChatMessage(Input);
-			return await TCPSendAsync(thisChatMessage);
-		}
-		public async Task<bool> Send(GenericPacket Input)
-		{
-			return await TCPSendAsync(Input);
+	    public async Task<bool> SendMessageAsync(string Message)
+	    {
+			try
+		    {
+			    return await Task.Run(() => SendMessage(Message));
+		    }
+		    catch (ArgumentNullException)
+		    {
+			    //thisPacket is Null.
+		    }
+		    return false;
 		}
 		#endregion
 		#endregion
@@ -549,8 +561,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Set Up Packet Processor
-		public delegate void DelegatePacketProcessor(Connection thisConnection, GenericPacket thisPacket);
-	    private static void DummyPacketProcessor(Connection thisConnection, GenericPacket thisPacket)
+		public delegate bool DelegatePacketProcessor(Connection thisConnection, GenericPacket thisPacket);
+	    private static bool DummyPacketProcessor(Connection thisConnection, GenericPacket thisPacket)
 	    {
 		    throw new NotImplementedException();
 	    }
@@ -579,10 +591,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 		#endregion
+
 		#region Disconnect
 		public bool Disconnect()
 	    {
 		    RemoveFromServerList();
+		    AllConnections.SendMessageAsync(this.Username + " left the server.").ConfigureAwait(false);
 		    if (TCPSocket.Connected)
 		    {
 			    try
@@ -607,7 +621,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 		#region Connections List
 		private static List<Connection> _connections = new List<Connection>();
-	    public static List<Connection> GetConnections => _connections;
+	    public static List<Connection> AllConnections => _connections;
 
 	    private void AddToServerList()
 	    {
@@ -627,5 +641,73 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    {
 			//This is currently being called!
 	    }
+	}
+
+	public static class ConnectionExtensions
+	{
+		#region Include
+		public static List<Connection> Include(this List<Connection> originalList, Connection includeConnection)
+		{
+			var Output = new List<Connection>();
+			Output.AddRange(originalList);
+			Output.RemoveAll(x => x == includeConnection);
+			Output.Add(includeConnection);
+			return Output;
+		}
+		public static List<Connection> Include(this List<Connection> originalList, List<Connection> includeConnections)
+		{
+			var Output = new List<Connection>();
+			Output.AddRange(originalList);
+			Output.RemoveAll(includeConnections.Contains);
+			Output.AddRange(includeConnections);
+			return Output;
+		}
+		#endregion
+		#region Exclude
+		public static List<Connection> Exclude(this List<Connection> originalList, Connection excludeConnection)
+		{
+			var Output = new List<Connection>();
+			Output.AddRange(originalList);
+			Output.RemoveAll(x => x == excludeConnection);
+			return Output;
+		}
+		public static List<Connection> Exclude(this List<Connection> originalList, List<Connection> excludeConnections)
+		{
+			var Output = new List<Connection>();
+			Output.AddRange(originalList);
+			Output.RemoveAll(excludeConnections.Contains);
+			return Output;
+		}
+		#endregion
+		#region Send
+		public static async Task<bool> SendAsync(this List<Connection> connections, GenericPacket thisPacket)
+		{
+			List<Task<bool>> tasks = new List<Task<bool>>();
+			foreach (Connection thisConnection in connections)
+			{
+				tasks.Add(thisConnection.SendAsync(thisPacket));
+			}
+			bool AnyErrors = false;
+			foreach (Task<bool> thisTask in tasks)
+			{
+				AnyErrors |= !(await thisTask);
+			}
+			return !AnyErrors;
+		}
+		public static async Task<bool> SendMessageAsync(this List<Connection> connections, string message)
+		{
+			List<Task<bool>> tasks = new List<Task<bool>>();
+			foreach (Connection thisConnection in connections)
+			{
+				tasks.Add(thisConnection.SendMessageAsync(message));
+			}
+			bool AnyErrors = false;
+			foreach (Task<bool> thisTask in tasks)
+			{
+				AnyErrors |= !(await thisTask);
+			}
+			return !AnyErrors;
+		}
+		#endregion
 	}
 }

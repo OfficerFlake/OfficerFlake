@@ -252,6 +252,10 @@
       <Project>{24009F81-9D6A-48D7-B8D1-EBB599A4D260}</Project>
       <Name>Statistics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\RichText\RichTextMessage\RichTextMessage.csproj">
+      <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
+      <Name>RichTextMessage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>

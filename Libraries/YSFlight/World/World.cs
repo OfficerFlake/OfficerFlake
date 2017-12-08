@@ -396,7 +396,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				#region Update Line Number and Contents
 				int CurrentLineNumber = i;
-				string ThisLine = FLDContents[i];
+				string ThisLine = FLDContents[i].ToUpperInvariant();
 				#endregion
 
 				if (ThisLine == "") continue; //Skip Blank Lines.
@@ -975,7 +975,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				#region Update Line Number and Contents
 				int CurrentLineNumber = i;
-				string ThisLine = STPContents[i];
+				string ThisLine = STPContents[i].ToUpperInvariant();
 				#endregion
 
 				if (ThisLine == "") continue; //Skip Blank Lines.
@@ -1290,7 +1290,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				#region Update Line Number and Contents
 				int CurrentLineNumber = i;
-				string ThisLine = YFSContents[i];
+				string ThisLine = YFSContents[i].ToUpperInvariant();
 				#endregion
 
 				if (ThisLine == "") continue; //Skip Blank Lines.

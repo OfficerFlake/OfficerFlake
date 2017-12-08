@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.RichText;
@@ -12,25 +13,24 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		#region Aircraft
 		public class Aircraft
 		{
-			public string AircraftPath0Dat;
-			public string AircraftPath1Model;
-			public string AircraftPath2Collision;
-			public string AircraftPath3Cockpit;
-			public string AircraftPath4Coarse;
-
+			#region Variables
+			private string AircraftPath0Dat;
+			#pragma warning disable 414
+			private string AircraftPath1Model;
+			private string AircraftPath2Collision;
+			private string AircraftPath3Cockpit;
+			private string AircraftPath4Coarse;
+			#pragma warning restore 414
+			#endregion
+			#region Cached Information
 			public string Identify;
-			//DO NOT ADD MORE INFO! METADATA IS A CACHE ONLY!
+			#endregion
 
+			public static Aircraft None = new Aircraft() { Identify = "NULL" };
 			public static List<Aircraft> List = new List<Aircraft>();
 			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
-
-			/// <summary>
-			/// Psuedo-Object to represent Null.
-			/// </summary>
-			public static Aircraft None = new Aircraft() { Identify = "NULL" };
 
 			#region Load All
 			/// <summary>
@@ -46,26 +46,48 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				try
 				{
 					string YSFlightAircraftDirectory = YSFlightDirectory + @"Aircraft/";
+
+					#region Aircraft Directory Not Found on Disk
 					if (!Directory.Exists(YSFlightAircraftDirectory)) return false;
-					string[] FullFilenames = Directory.GetFiles(YSFlightAircraftDirectory);
-					string[] Filenames = FullFilenames.Select(Path.GetFileName).ToArray();
-					string[] AircraftLists = Filenames
+					#endregion
+					#region Initialise Variables
+					string[] allFilesInDirectory = Directory.GetFiles(YSFlightAircraftDirectory);
+					string[] allLSTFilesInDirectory = allFilesInDirectory.Select(Path.GetFileName).ToArray();
+					string[] aircraftLists = allLSTFilesInDirectory
 						.Where(x => x.ToUpperInvariant().StartsWith(@"AIR") && x.ToUpperInvariant().EndsWith(@".LST")).ToArray();
-					foreach (string AircraftList in AircraftLists)
+					#endregion
+
+					#region Load Each Aircraft List.
+					foreach (string thisAircraftListFile in aircraftLists)
 					{
-						if (!File.Exists(YSFlightAircraftDirectory + AircraftList)) return false;
-						string[] AircraftListContents = File.ReadAllLines(YSFlightAircraftDirectory + AircraftList);
-						AircraftListContents = AircraftListContents.Where(x => x.ToUpperInvariant().Contains(@".DAT")).ToArray();
-						foreach (string Line in AircraftListContents)
+						#region Aircraft List Not Found on Disk
+						if (!File.Exists(YSFlightAircraftDirectory + thisAircraftListFile)) return false;
+						#endregion
+						#region Get Lines With .DAT Definitions.
+						string[] aircraftListContents = File.ReadAllLines(YSFlightAircraftDirectory + thisAircraftListFile);
+						aircraftListContents = aircraftListContents.Where(x => x.ToUpperInvariant().Contains(@".DAT")).ToArray();
+						#endregion
+
+						#region Iterate Over LST Contents
+						for (int i =0; i < aircraftListContents.Length; i++)
 						{
-							string ProcessedLine = Line.Replace("\\", "/");
-							string[] SplitString = ProcessedLine.SplitPresevingQuotes();
+							#region Update Line Number and Contents
+							string thisLine = aircraftListContents[i];
+							string ProcessedLine = thisLine.Replace("\\", "/");
+							string[] SplitString = ProcessedLine.ToUpperInvariant().SplitPresevingQuotes();
+							#endregion
+
+							if (thisLine == "") continue; //skip blank lines.
+
+							#region Initialise Variables
 							string AircraftPath0Dat = "";
 							string AircraftPath1Model = "";
 							string AircraftPath2Collision = "";
 							string AircraftPath3Cockpit = "";
 							string AircraftPath4Coarse = "";
+							#endregion
 
+							#region Assign File Paths for This Aircraft
 							switch (SplitString.Length - 1)
 							{
 								case 4:
@@ -84,7 +106,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									AircraftPath0Dat = SplitString[0];
 									break;
 							}
-
+							#endregion
+							#region Create a New MetaAircraft
 							Aircraft NewMetaAircraft = new Aircraft
 							{
 								AircraftPath0Dat = AircraftPath0Dat,
@@ -93,26 +116,33 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								AircraftPath3Cockpit = AircraftPath3Cockpit,
 								AircraftPath4Coarse = AircraftPath4Coarse
 							};
-
+							#endregion
+							#region Ensure .DAT is defined.
 							if (NewMetaAircraft.AircraftPath0Dat.Length < 4)
 							{
-								//InformationMessage Error = new InformationMessage
-								//	(
-								//	"Blank line in Aircraft List: " + AircraftList + "."
-								//	);
-								//DebugInformation.Add(Error);
+								InformationMessage Error = new InformationMessage
+									(
+									"Blank line in Aircraft List: " + thisAircraftListFile + "."
+									);
+								DebugInformation.Add(Error);
 								continue;
 							}
+							#endregion
 
 							List.Add(NewMetaAircraft);
 						}
+						#endregion
 					}
-
-					//AT THIS POINT, ALL YSFLIGHT AIRCRAFT LST's ARE FULLY LOADED. NOW WE CACHE THE AIRCRAFT NAMES.
-
-					foreach (Aircraft ThisMetaAircraft in List)
+					#endregion
+					#region Cache MetaAircraft Names
+					for (int i = 0; i < List.Count; i++)
 					{
-						ThisMetaAircraft.Identify = "<NULL>";
+						#region Update Line Number and Contents
+						Aircraft ThisMetaAircraft = List[i];
+						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat);
+						#endregion
+
+						#region .DAT Not Found on Disk
 						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat))
 						{
 							WarningMessage Error = new WarningMessage
@@ -122,7 +152,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							DebugInformation.Add(Error);
 							continue; //Couldn't find the aircraft DAT file, we'll leave it blank!
 						}
-						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat);
+						#endregion
+
+						#region Find IDENTIFY in DAT
 						foreach (string DatFileLine in DatFileContents)
 						{
 							#region Identify
@@ -151,6 +183,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							#endregion
 						}
+						#endregion
+						#region Couldn't Find IDENTIFY
 						if (ThisMetaAircraft.Identify == null)
 						{
 							WarningMessage Error = new WarningMessage
@@ -159,10 +193,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							);
 							DebugInformation.Add(Error);
 						}
+						#endregion
 					}
+					#endregion
 
-					//Cache Complete. All aircraft are loaded, ready for use.
-					//return false if there are errors. The loading process should investigate the error log.
 					return (DebugInformation.Count <= 0);
 				}
 				catch (Exception e)
@@ -190,14 +224,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				Aircraft Output = None;
 				if (Name == null) return Output;
-
+				
 				foreach (Aircraft ThisMetaAircraft in List)
 				{
 					if (ThisMetaAircraft == null) continue;
 					if (ThisMetaAircraft.Identify == null) continue;
 					if (System.String.Equals(
-						ThisMetaAircraft.Identify.ToUpperInvariant().ResizeOnRight(31),
-						Name.ToUpperInvariant().ResizeOnRight(31)))
+						ThisMetaAircraft.Identify.ToUpperInvariant().ResizeOnRight(32),
+						Name.ToUpperInvariant().ResizeOnRight(32)))
 					{
 						Output = ThisMetaAircraft;
 					}
@@ -210,6 +244,5 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			#endregion
 		}
-		#endregion
 	}
 }

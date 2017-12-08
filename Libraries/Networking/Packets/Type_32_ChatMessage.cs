@@ -26,9 +26,15 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		private string _Username = "";
 
+		public bool SetUsername(string username)
+		{
+			_Username = username;
+			return true;
+		}
+
 		public String FullMessage
 		{
-			get => GetString(8, Data.Length).Split('\0')[0];
+			get => GetString(8, Data.Length-8).Split('\0')[0];
 			set
 			{
 				if (value == null) value = "";
@@ -39,8 +45,22 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public String Message
 		{
-			get => FullMessage.Substring(1 + _Username.Length + 1);
-			set => FullMessage = FullMessage.Substring(0, 1 + _Username.Length + 1) + value + "\0";
+			get
+			{
+				if (_Username == "")
+				{
+					return FullMessage;
+				}
+				return FullMessage.Substring(1 + _Username.Length + 1);
+			}
+			set
+			{
+				if (_Username == "")
+				{
+					FullMessage = value + "\0";
+				}
+				FullMessage = FullMessage.Substring(0, 1 + _Username.Length + 1) + value + "\0";
+			}
 		}
 	}
 }
