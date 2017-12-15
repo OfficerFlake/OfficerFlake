@@ -6,8 +6,8 @@ using System.Runtime.Remoting.Messaging;
 
 namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class Time
-    {
+    public static class TimeExtensions
+	{
         public static DateTime StartTime => Process.GetCurrentProcess().StartTime;
 
         public class TimeContainer

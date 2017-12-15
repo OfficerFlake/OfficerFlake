@@ -4,8 +4,8 @@ using System.Reflection;
 
 namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class Reflection
-    {
+    public static class ReflectionExtensions
+	{
         public static Type[] GetTypesInNamespace(Assembly assembly, string nameSpace)
         {
             return

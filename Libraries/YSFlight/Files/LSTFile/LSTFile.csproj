@@ -49,10 +49,6 @@
       <Project>{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}</Project>
       <Name>IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommandFile\CommandFile.csproj">
-      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
-      <Name>CommandFile</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

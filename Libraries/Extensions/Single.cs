@@ -1,7 +1,7 @@
 ﻿namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class Percentages
-    {
+    public static class PercentageExtensions
+	{
 		/// <summary>
 		/// Trys to parse the string representation of a percentage to a floating put number .(1.0 == 100%)
 		/// </summary>

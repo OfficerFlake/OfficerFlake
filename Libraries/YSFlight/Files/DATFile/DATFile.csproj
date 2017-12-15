@@ -260,10 +260,6 @@
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommandFile\CommandFile.csproj">
-      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
-      <Name>CommandFile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\YSTypes\YSTypes.csproj">
       <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
       <Name>YSTypes</Name>

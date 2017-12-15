@@ -19,7 +19,7 @@ namespace Com.OfficerFlake.Libraries.Networking
     public class Connection
     {
 		#region Properties
-	    public string Username = "<NULL>";
+	    public string Username = "<Unknown User>";
 	    public Int32 Version = -1;
 
 	    #region ConnectionNumber

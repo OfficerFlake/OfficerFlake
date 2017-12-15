@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class String
+    public static class StringExtensions
     {
 		#region Byte Array Conversions
 		/// <summary>

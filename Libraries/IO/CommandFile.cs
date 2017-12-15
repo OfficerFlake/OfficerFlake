@@ -5,9 +5,9 @@ using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.IO;
 
-namespace Com.OfficerFlake.Libraries.YSFlight.Files
+namespace Com.OfficerFlake.Libraries.IO
 {
-    public abstract class CommandFile : IO.File, ILoadable, ISaveable
+    public abstract class CommandFile : IO.IOFile, ILoadable, ISaveable
     {
         protected CommandFile(string filename) : base(filename)
         {
@@ -22,6 +22,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
             {
                 _line = line;
             }
+	        public string RawLine => _line;
 
             public string Command
             {
@@ -115,6 +116,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files
             }
         }
         public readonly List<Line> Lines = new List<Line>();
+
+	    public string[] RawLines => Lines.Select(x=>x.RawLine).ToArray();
         
         public bool Load()
         {

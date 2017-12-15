@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class Byte
+    public static class ByteExtensions
     {
 		/// <summary>
 		/// Converts a Bytes into it's hexadecimal string representation.

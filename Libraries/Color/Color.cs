@@ -1,4 +1,5 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.Color
 {

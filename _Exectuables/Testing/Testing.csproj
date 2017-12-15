@@ -164,10 +164,6 @@
       <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
       <Name>UserInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\Files\CommandFile\CommandFile.csproj">
-      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
-      <Name>CommandFile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\Files\DATFile\DATFile.csproj">
       <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
       <Name>DATFile</Name>

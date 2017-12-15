@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandFile.cs" />
     <Compile Include="File.cs" />
     <Compile Include="HTMLFile.cs" />
     <Compile Include="Log.cs" />

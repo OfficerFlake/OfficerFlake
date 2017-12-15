@@ -6,12 +6,13 @@ using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public class File : IReadable, IWriteable, IEraseable
+    public class IOFile : IReadable, IWriteable, IEraseable
     {
         private bool DebugMode = false;
         public string Filename { get; }
+	    internal string[] FileContents = new string[0];
 
-        public File(string filename)
+        public IOFile(string filename)
         {
             switch (filename)
             {
@@ -82,22 +83,8 @@ namespace Com.OfficerFlake.Libraries.IO
         protected string[] ReadLines()
         {
             var bytes = ((IReadable)this).ReadAll();
-
-
-
-            return (bytes ?? new byte[] { }).ToSystemString().Replace("\r","").Split('\n');
-        }
-
-		/// <summary>
-		/// Will try to read all the lines from the file, then get the string for the specific line address, otherwise returns null.
-		/// </summary>
-		/// <param name="number">Line number to return.</param>
-		/// <returns>string or null.</returns>
-        protected string ReadLine(int number)
-        {
-            var lines = ReadLines();
-	        if (number <= 0 || number >= lines.Length) return null;
-            return lines[number];
+			FileContents = (bytes ?? new byte[0]).ToSystemString().Replace("\r","").Split('\n');
+	        return FileContents;
         }
         #endregion
         #region Write

@@ -66,10 +66,6 @@
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Files\CommandFile\CommandFile.csproj">
-      <Project>{52a2ad5e-9feb-4ec4-b944-2bf74a2be125}</Project>
-      <Name>CommandFile</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Files\DATFile\DATFile.csproj">
       <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
       <Name>DATFile</Name>

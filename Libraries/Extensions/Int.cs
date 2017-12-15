@@ -3,8 +3,8 @@ using System.Text;
 
 namespace Com.OfficerFlake.Libraries.Extensions
 {
-    public static class Integers
-    {
+    public static class IntegerExtensions
+	{
 		#region Hexadecimal Conversions
 		/// <summary>
 		/// Returns the hexadecimal digit in the specified column from the right, if the integer was expressed as a hexadecimal number.
