@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{393342B8-3254-4C91-A4AB-7D80E569A552}"
 	ProjectSection(SolutionItems) = preProject
 		Libraries\NOTES.cs = Libraries\NOTES.cs
+		PlannedDependency.cs = PlannedDependency.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserInterfaces", "UserInterfaces", "{B85F99E4-3F77-4828-80C1-DE0099CD5E28}"

@@ -67,6 +67,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    {
 		    if (!ShuttingDown)
 		    {
+				//TODO : Graceful Close...
 			    byte[] received = UDPReciever.EndReceive(res, ref UDPEndPoint);
 
 			    if (received.Length >= 12)

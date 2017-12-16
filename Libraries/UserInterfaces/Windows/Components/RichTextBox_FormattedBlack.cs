@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -46,12 +47,22 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 				Width += Margin.Horizontal + SystemInformation.HorizontalResizeBorderThickness;
 			};
 
+			Enter += (object sender, EventArgs e) =>
+			{
+				var richTextBox = (RichTextBox)sender;
+				HideCaret(richTextBox.Handle);
+			};
+
 			ResumeLayout();
 		}
 
 		public RichTextBox_FormattedBlack()
 		{
 		}
+
+		[DllImport("user32.dll")]
+		private static extern bool HideCaret(IntPtr hWnd);
+
 
 		public void PopulateRTB(RichTextString _input)
 		{
@@ -106,6 +117,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			}
 			#endregion
 
+			HideCaret(Handle);
 			//ResumeLayout();
 		}
 
@@ -134,6 +146,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			SelectionFont = new Font("Courier New", 8, thisStyle);
 
 			SelectionColor = thisElement.Color.AsSystemDrawingColor();
+
+			SelectionStart = 0;
+			SelectionLength = 0;
 		}
 	}
 }

@@ -111,52 +111,53 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    }
     }
 
-    public class CrashMessage : RichTextMessage
-    {
-        public CrashMessage(string input) : base("&e&l" + input)
-        {
-            Type = MessageType.Crash;
-	        UserObject = Users.Console;
+	public class UserMessage : RichTextMessage
+	{
+		public UserMessage(User userObject, string input) : base(input)
+		{
+			Type = MessageType.User;
+			UserObject = userObject;
 		}
-    }
-    public class ErrorMessage : RichTextMessage
-    {
-        public ErrorMessage(string input) : base(input)
-        {
-            Type = MessageType.Error;
-	        UserObject = Users.Console;
+	}
+
+	public class DebugMessage : RichTextMessage
+	{
+		public DebugMessage(string input) : base("&9&o" + input)
+		{
+			Type = MessageType.Debug;
+			UserObject = Users.Console;
 		}
-    }
-    public class DebugMessage : RichTextMessage
-    {
-        public DebugMessage(string input) : base(input)
-        {
-            Type = MessageType.Debug;
-	        UserObject = Users.Console;
+	}
+	public class InformationMessage : RichTextMessage
+	{
+		public InformationMessage(string input) : base("&b&o" + input)
+		{
+			Type = MessageType.Information;
+			UserObject = Users.Console;
 		}
-    }
-    public class WarningMessage : RichTextMessage
-    {
-        public WarningMessage(string input) : base(input)
-        {
-            Type = MessageType.Warning;
-	        UserObject = Users.Console;
+	}
+	public class WarningMessage : RichTextMessage
+	{
+		public WarningMessage(string input) : base("&e&o" + input)
+		{
+			Type = MessageType.Warning;
+			UserObject = Users.Console;
 		}
-    }
-    public class InformationMessage : RichTextMessage
-    {
-        public InformationMessage(string input) : base("&b&o" + input)
-        {
-            Type = MessageType.Information;
-	        UserObject = Users.Console;
-        }
-    }
-    public class UserMessage : RichTextMessage
-    {
-        public UserMessage(User userObject, string input) : base(input)
-        {
-            Type = MessageType.User;
-	        UserObject = userObject;
-        }
-    }
+	}
+	public class ErrorMessage : RichTextMessage
+	{
+		public ErrorMessage(string input) : base("&4&n" + input)
+		{
+			Type = MessageType.Error;
+			UserObject = Users.Console;
+		}
+	}
+	public class CrashMessage : RichTextMessage
+	{
+		public CrashMessage(string input) : base("&c&l&n" + input)
+		{
+			Type = MessageType.Crash;
+			UserObject = Users.Console;
+		}
+	}
 }

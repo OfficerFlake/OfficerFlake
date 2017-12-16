@@ -3,13 +3,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
-using Com.OfficerFlake.Libraries.UserInterfaces.Windows;
 using Com.OfficerFlake.Libraries.Extensions;
 
 using DAT = Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
@@ -27,6 +27,7 @@ using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.YSFHQ;
 using Com.OfficerFlake.Libraries.YSFlight;
+using Debug = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Debug;
 
 namespace Com.OfficerFlake.Executables.Testing
 {
@@ -49,7 +50,7 @@ namespace Com.OfficerFlake.Executables.Testing
 		#region LoadFromLibrariesFolder
 		private static Assembly LoadFromLibrariesFolder(object sender, ResolveEventArgs args)
 		{
-			//unblock all the files first!
+			#region Unblock Files
 			string[] FileNames = Directory.GetFiles("./Libraries/");
 			foreach (string ThisFileName in FileNames)
 			{
@@ -61,36 +62,53 @@ namespace Com.OfficerFlake.Executables.Testing
 				{
 				}
 			}
+			#endregion
+			#region Initialise Variables
+			Assembly AssemblyToLoad;
+			Assembly RequestingAssembly;
+			string assemblyFileameWithoutExtension = "";
+			#endregion
 
-			//This handler is called only when the common language runtime tries to bind to the assembly and fails.
-
-			//Retrieve the list of referenced assemblies in an array of AssemblyName.
-			Assembly MyAssembly, objExecutingAssembly;
-			string strTempAssmbPath = "";
-
+			#region Find and Load the Assembly
 			try
 			{
-				objExecutingAssembly = Assembly.GetExecutingAssembly();
-				if (args.RequestingAssembly != null) objExecutingAssembly = args.RequestingAssembly;
-				AssemblyName[] arrReferencedAssmbNames = objExecutingAssembly.GetReferencedAssemblies();
+				#region Get Requesting Assembly
+				RequestingAssembly = Assembly.GetExecutingAssembly();
+				if (args.RequestingAssembly != null) RequestingAssembly = args.RequestingAssembly;
+				#endregion
+				#region Get List of Referenced Assembly Names
+				AssemblyName[] ReferencedAssemblymNames = RequestingAssembly.GetReferencedAssemblies();
+				#endregion
 
-				//Loop through the array of referenced assembly names.
-				foreach (AssemblyName strAssmbName in arrReferencedAssmbNames)
+				#region Iterate over Referenced Assembly Names
+				foreach (AssemblyName thisAssemblyName in ReferencedAssemblymNames)
 				{
-					//Check for the assembly names that have raised the "AssemblyResolve" event.
-					if (strAssmbName.FullName.Substring(0, strAssmbName.FullName.IndexOf(",")) == args.Name.Substring(0, args.Name.IndexOf(",")))
-					{
-						//Build the path of the assembly from where it has to be loaded.                
-						strTempAssmbPath = "./Libraries/" + args.Name.Substring(0, args.Name.IndexOf(",")) + ".dll";
+					#region Initialise Variables
+					string currentIterationAssemblyName =
+						thisAssemblyName.FullName.Substring(0, thisAssemblyName.FullName.IndexOf(","));
+					string desiredAssemblyName = args.Name.Substring(0, args.Name.IndexOf(","));
+					#endregion
+					#region Found it!
+					if (currentIterationAssemblyName == desiredAssemblyName)
+					{             
+						assemblyFileameWithoutExtension = args.Name.Substring(0, args.Name.IndexOf(","));
 						break;
 					}
-
+					#endregion
 				}
+				#endregion
+				#region Not Found!
+				if (assemblyFileameWithoutExtension == "")
+				{
+					return null;
+				}
+				#endregion
 
-
-				//Load the assembly from the specified path.     
-				byte[] RawBytes = File.ReadAllBytes(strTempAssmbPath);
-				MyAssembly = Assembly.Load(RawBytes);
+				#region Load DLL and PDB 
+				byte[] DLLBytes = File.ReadAllBytes("./Libraries/" + assemblyFileameWithoutExtension + ".DLL");
+				byte[] PDBBytes = File.ReadAllBytes("./ProgramDebugSymbols/" + assemblyFileameWithoutExtension + ".PDB");
+				AssemblyToLoad = Assembly.Load(DLLBytes, PDBBytes);
+				#endregion
 			}
 			catch (Exception e)
 			{
@@ -111,8 +129,9 @@ namespace Com.OfficerFlake.Executables.Testing
 					System.Console.ReadKey(true);
 				}
 			}
-			//Return the loaded assembly.
-			return MyAssembly;
+			#endregion
+
+			return AssemblyToLoad;
 		}
 
 		#region Unblock File
@@ -134,6 +153,9 @@ namespace Com.OfficerFlake.Executables.Testing
 			#endregion
 
 			Console.Show();
+			Debug.Show();
+
+			Debug.AddCrashMessage("TEST");
 
 			#region Load World
 			Console.AddInformationMessage("Loading World");
@@ -153,6 +175,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			#endregion
 
 			Console.WaitForClose();
+			Debug.WaitForClose();
 
 			Server.ShutDown();
 		}
@@ -199,37 +222,37 @@ namespace Com.OfficerFlake.Executables.Testing
             var result = file.Load();
             if (result)
             {
-                Debug.WriteLine(filename + " reads OK!");
+                Debug.AddInformationMessage(filename + " reads OK!");
                 return true;
             }
-            Debug.WriteLine(filename + " reads with ERRORS!");
-            if (debug) Debug.WriteLine("NOW PROCESSING : " + filename);
-            if (debug) Debug.WriteLine("=================" + new string('=', filename.Length));
+            Debug.AddWarningMessage(filename + " reads with ERRORS!");
+            if (debug) Debug.AddInformationMessage("NOW PROCESSING : " + filename);
+            if (debug) Debug.AddInformationMessage("=================" + new string('=', filename.Length));
             file.Load();
-            if (debug) Debug.WriteLine("==============" + new string('=', filename.Length));
-            if (debug) Debug.WriteLine("END OF FILE : " + filename);
+            if (debug) Debug.AddInformationMessage("==============" + new string('=', filename.Length));
+            if (debug) Debug.AddInformationMessage("END OF FILE : " + filename);
             return false;
         }
         private static void LstTest()
         {
-            Debug.WriteLine("STARTING LST SPIDER TEST");
-            Debug.WriteLine("========================");
-            Debug.WriteLine("");
+            Debug.AddInformationMessage("STARTING LST SPIDER TEST");
+            Debug.AddInformationMessage("========================");
+            Debug.AddInformationMessage("");
             var path = @"C:/Program Files/YSFLIGHT.COM/YSFlight/";
             var installedAircraftLsTs = new [] {path + "Aircraft/aircraft.lst"};
             //var installedAircraftLsTs = LST.Aircraft.GetAllAircraftLSTFilesInYSFlightFolder();
             var count = installedAircraftLsTs.Sum(t => new LST.Aircraft(t).GetAllInstalledAircraftFromLSTFile().Length);
-            Debug.WriteLine("There are " + count + " installed aircraft in the YSFlight folder.");
-            Debug.WriteLine("");
+            Debug.AddInformationMessage("There are " + count + " installed aircraft in the YSFlight folder.");
+            Debug.AddInformationMessage("");
             for (var j = 0; j < installedAircraftLsTs.Length; j++)
             {
                 var thisLstFile = new LST.Aircraft(installedAircraftLsTs[j]);
                 var installedAircraft = thisLstFile.GetAllInstalledAircraftFromLSTFile(true);
-                Debug.WriteLine("Sequentially testing " + (j + 1) + " of " + installedAircraftLsTs.Length +
+                Debug.AddInformationMessage("Sequentially testing " + (j + 1) + " of " + installedAircraftLsTs.Length +
                                     " installed aircraft LST files. (" + installedAircraftLsTs[j] + ")");
                 for (var i = 0; i < installedAircraft.Length; i++)
                 {
-                    Debug.WriteLine("----Sequentially testing " + (i + 1) + " of " + installedAircraft.Length +
+                    Debug.AddInformationMessage("----Sequentially testing " + (i + 1) + " of " + installedAircraft.Length +
                                     " defined aircraft...");
                     var thisAircraftDefinition = installedAircraft[i];
                     var filename = thisAircraftDefinition.DataFilePath;
@@ -248,20 +271,20 @@ namespace Com.OfficerFlake.Executables.Testing
                     var identify = (file.Properties.OfType<DAT.Properties.IDENTIFY>().Any())
                         ? file.Properties.OfType<DAT.Properties.IDENTIFY>().Last().Value
                         : "???";
-                    Debug.WriteLine("----====Aircraft: " + identify + " (" + filename + ")");
+                    Debug.AddInformationMessage("----====Aircraft: " + identify + " (" + filename + ")");
                     if (!result) continue;
                     var graph = new DAT.Performance.SpiderGraph(file);
                     DAT.Performance.SpiderGraph.Statistics.Update(graph);
                     graph.ShowDebug();
-                    Debug.WriteLine("----Done: " + identify);
+                    Debug.AddInformationMessage("----Done: " + identify);
                 }
-                Debug.WriteLine("Sequential aircraft testing complete for: " + thisLstFile.Filename);
-                Debug.WriteLine("Spider statistics for: " + thisLstFile.Filename);
+                Debug.AddInformationMessage("Sequential aircraft testing complete for: " + thisLstFile.Filename);
+                Debug.AddInformationMessage("Spider statistics for: " + thisLstFile.Filename);
                 DAT.Performance.SpiderGraph.Statistics.ShowDebug();
-                Debug.WriteLine("End Spider statistics.");
+                Debug.AddInformationMessage("End Spider statistics.");
             }
-            Debug.WriteLine("END LST SPIDER TEST");
-            Debug.WriteLine("===================");
+            Debug.AddInformationMessage("END LST SPIDER TEST");
+            Debug.AddInformationMessage("===================");
         }
 
         private static DAT.File GetRandomDatFileFromYsfFolder()

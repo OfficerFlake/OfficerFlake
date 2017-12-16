@@ -9,6 +9,7 @@ namespace Com.OfficerFlake.PlanningAndNotes
 		// PacketSniffer
 		// All Packets Read
 	}
+
 	public abstract class OldNotes
 	{
 		//Database Save/Load

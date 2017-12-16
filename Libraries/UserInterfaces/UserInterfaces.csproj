@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContextMenus\DebugMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContextMenus\DebugMenu.designer.cs">
+      <DependentUpon>DebugMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="ContextMenus\UserObject.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -53,8 +59,25 @@
       <DependentUpon>UserObject.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Components\DebugOutput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Windows\Components\DebugOutput.Designer.cs">
+      <DependentUpon>DebugOutput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Components\RichTextBox_FormattedBlack.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Windows\Debug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Debug.Designer.cs">
+      <DependentUpon>Debug.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\Console.cs">
       <SubType>Form</SubType>
@@ -75,8 +98,21 @@
       <DependentUpon>IOForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ContextMenus\DebugMenu.resx">
+      <DependentUpon>DebugMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ContextMenus\UserObject.resx">
       <DependentUpon>UserObject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Components\DebugOutput.resx">
+      <DependentUpon>DebugOutput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Debug.resx">
+      <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Console.resx">
       <DependentUpon>Console.cs</DependentUpon>
@@ -132,7 +168,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Windows\Components\ContextMenus\" />
+    <None Include="Resources\MenuBar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
