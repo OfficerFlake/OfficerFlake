@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class COCKPITP : DAT_Vector3
     {
-        public COCKPITP(Length x, Length y, Length z) : base("COCKPITP", x,y,z)
+        public COCKPITP(Distance x, Distance y, Distance z) : base("COCKPITP", x,y,z)
         {
         }
     }

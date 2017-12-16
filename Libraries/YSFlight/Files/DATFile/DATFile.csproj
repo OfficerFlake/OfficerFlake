@@ -99,7 +99,7 @@
     <Compile Include="DAT_Types\DAT_Power.cs" />
     <Compile Include="DAT_Types\DAT_QuantifiedLength.cs" />
     <Compile Include="DAT_Types\DAT_QuantifiedString.cs" />
-    <Compile Include="DAT_Types\DAT_QuantifiedTimeSpan.cs" />
+    <Compile Include="DAT_Types\DAT_QuantifiedDuration.cs" />
     <Compile Include="DAT_Types\DAT_QuantifiedInt32.cs" />
     <Compile Include="DAT_Types\DAT_QuantifiedAngle3.cs" />
     <Compile Include="DAT_Types\DAT_DescriptiveOrientation3.cs" />

@@ -8,7 +8,7 @@ using System.Text;
 using Com.OfficerFlake.Libraries.Color;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
-using static Com.OfficerFlake.Libraries.Extensions.Time;
+using static Com.OfficerFlake.Libraries.Extensions.TimeExtensions;
 
 namespace Com.OfficerFlake.Libraries.IO.Log
 {

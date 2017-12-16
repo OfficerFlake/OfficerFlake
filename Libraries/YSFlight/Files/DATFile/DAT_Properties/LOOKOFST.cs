@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class LOOKOFST : DAT_Vector3
     {
-        public LOOKOFST(Length x, Length y, Length z) : base("LOOKOFST", x,y,z)
+        public LOOKOFST(Distance x, Distance y, Distance z) : base("LOOKOFST", x,y,z)
         {
         }
     }

@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Foot : Length
-            {
+	    public static partial class Distances
+	    {
+			public class Foot : Distance
+			{
                 public Foot(decimal value) : base(value, Conversion.Foot, "FT") { }
 
                 public static Foot operator +(Foot firstMeasurement, Foot secondMeasurement)

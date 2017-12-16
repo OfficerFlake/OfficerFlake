@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Micron : Length
-            {
+        public static partial class Distances
+		{
+            public class Micron : Distance
+			{
                 public Micron(decimal value) : base(value, Conversion.Micron, "UM") { }
 
                 public static Micron operator +(Micron firstMeasurement, Micron secondMeasurement)

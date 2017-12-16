@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class MACHNGN4 : DAT_Vector3
     {
-        public MACHNGN4(Length x, Length y, Length z) : base("MACHNGN4", x, y, z)
+        public MACHNGN4(Distance x, Distance y, Distance z) : base("MACHNGN4", x, y, z)
         {
         }
     }

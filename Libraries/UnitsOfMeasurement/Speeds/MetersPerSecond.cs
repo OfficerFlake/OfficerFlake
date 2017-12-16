@@ -28,14 +28,14 @@
 
             public static MeterPerSecond ToMetersPerSeconds(this Measurement input) => new MeterPerSecond(input.ConvertToBase);
 
-            public static MeterPerSecond MetersPerSeconds(this byte input) => new MeterPerSecond(input);
-            public static MeterPerSecond MetersPerSeconds(this short input) => new MeterPerSecond(input);
-            public static MeterPerSecond MetersPerSeconds(this int input) => new MeterPerSecond(input);
-            public static MeterPerSecond MetersPerSeconds(this long input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSecond(this byte input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSecond(this short input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSecond(this int input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSecond(this long input) => new MeterPerSecond(input);
 
-            public static MeterPerSecond MetersPerSeconds(this float input) => new MeterPerSecond((decimal)input);
-            public static MeterPerSecond MetersPerSeconds(this double input) => new MeterPerSecond((decimal)input);
-            public static MeterPerSecond MetersPerSeconds(this decimal input) => new MeterPerSecond(input);
+            public static MeterPerSecond MetersPerSecond(this float input) => new MeterPerSecond((decimal)input);
+            public static MeterPerSecond MetersPerSecond(this double input) => new MeterPerSecond((decimal)input);
+            public static MeterPerSecond MetersPerSecond(this decimal input) => new MeterPerSecond(input);
         }
     }
 }

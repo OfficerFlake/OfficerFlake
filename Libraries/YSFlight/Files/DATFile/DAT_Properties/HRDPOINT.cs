@@ -6,7 +6,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class HRDPOINT : DAT_Hardpoint
     {
-        public HRDPOINT(Length x, Length y, Length z, WeaponDescription[] descriptors) : base("HRDPOINT", x,y,z,descriptors)
+        public HRDPOINT(Distance x, Distance y, Distance z, WeaponDescription[] descriptors) : base("HRDPOINT", x,y,z,descriptors)
         {
         }
     }

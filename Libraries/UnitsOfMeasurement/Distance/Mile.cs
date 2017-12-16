@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Mile : Length
-            {
+        public static partial class Distances
+		{
+            public class Mile : Distance
+			{
                 public Mile(decimal value) : base(value, Conversion.Mile, "MI") { }
 
                 public static Mile operator +(Mile firstMeasurement, Mile secondMeasurement)

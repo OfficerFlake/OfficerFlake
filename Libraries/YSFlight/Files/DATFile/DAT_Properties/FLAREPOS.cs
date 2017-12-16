@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class FLAREPOS : DAT_DualVector3
     {
-        public FLAREPOS(Length x1, Length y1, Length z1, Length x2, Length y2, Length z2) : base("FLAREPOS", x1, y1, z1, x2, y2, z2)
+        public FLAREPOS(Distance x1, Distance y1, Distance z1, Distance x2, Distance y2, Distance z2) : base("FLAREPOS", x1, y1, z1, x2, y2, z2)
         {
         }
     }

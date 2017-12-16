@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
     public static partial class PropertyTypes
     {
-        public class DAT_QuantifiedTimeSpan : Property
+        public class DAT_QuantifiedDuration : Property
         {
             private const string NullExceptionString = "<ERROR-DAT_QuantifiedTimeSpan>";
 
@@ -21,19 +21,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                 set { SetParameter(0, value.ToString()); }
             }
 
-            public TimeSpan Value
+            public Duration Value
             {
                 get
                 {
-                    TimeSpan output;
+	                Duration output;
                     var conversionSuccess =
-                        Time.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
+	                    Duration.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(1, value.ToString()); }
             }
 
-            public DAT_QuantifiedTimeSpan(string command, int quantifier, TimeSpan value) : base(command, quantifier, value)
+            public DAT_QuantifiedDuration(string command, int quantifier, Duration value) : base(command, quantifier, value)
             {
                 Quantifier = quantifier;
                 Value = value;

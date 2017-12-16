@@ -3,11 +3,11 @@ using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Length : Measurement
+    public class Distance : Measurement
     {
         #region CTOR
 
-        protected Length(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Distance(decimal value, decimal conversionRatio, string unitSuffix)
     : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -18,35 +18,35 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Length thisLength) => (byte)thisLength.ConvertToBase;
-        public static implicit operator short(Length thisLength) => (short)thisLength.ConvertToBase;
-        public static implicit operator int(Length thisLength) => (int)thisLength.ConvertToBase;
-        public static implicit operator long(Length thisLength) => (long)thisLength.ConvertToBase;
+        public static implicit operator byte(Distance thisDistance) => (byte)thisDistance.ConvertToBase;
+        public static implicit operator short(Distance thisDistance) => (short)thisDistance.ConvertToBase;
+        public static implicit operator int(Distance thisDistance) => (int)thisDistance.ConvertToBase;
+        public static implicit operator long(Distance thisDistance) => (long)thisDistance.ConvertToBase;
 
-        public static implicit operator float(Length thisLength) => (float)thisLength.ConvertToBase;
-        public static implicit operator double(Length thisLength) => (double)thisLength.ConvertToBase;
-        public static implicit operator decimal(Length thisLength) => thisLength.ConvertToBase;
+        public static implicit operator float(Distance thisDistance) => (float)thisDistance.ConvertToBase;
+        public static implicit operator double(Distance thisDistance) => (double)thisDistance.ConvertToBase;
+        public static implicit operator decimal(Distance thisDistance) => thisDistance.ConvertToBase;
 
-        public static Length operator +(Length firstMeasurement, Length secondMeasurement)
+        public static Distance operator +(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Length((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1,
+            return new Distance((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1,
                 DefaultSuffix);
         }
 
-        public static Length operator -(Length firstMeasurement, Length secondMeasurement)
+        public static Distance operator -(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Length((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1,
+            return new Distance((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1,
                 DefaultSuffix);
         }
 
-        public static Length operator *(Length firstMeasurement, Length secondMeasurement)
+        public static Distance operator *(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Length((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Distance((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
         }
 
-        public static Length operator /(Length firstMeasurement, Length secondMeasurement)
+        public static Distance operator /(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Length((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Distance((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
         }
 
         #endregion
@@ -96,7 +96,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         }
 
         #endregion
-        public static bool TryParse(string input, out Length output)
+        public static bool TryParse(string input, out Distance output)
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
@@ -107,102 +107,102 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             {
                 Debug.WriteLine("Measurement Input not successfully converted.");
                 Debug.WriteLine("----" + capInput);
-                output = new Lengths.Meter(0);
+                output = new Distances.Meter(0);
                 return false;
             }
 
             if (capInput.EndsWithAny(Suffixes.Nanometer))
             {
 
-                output = new Lengths.Nanometer(conversion);
+                output = new Distances.Nanometer(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Micron))
             {
 
-                output = new Lengths.Micron(conversion);
+                output = new Distances.Micron(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Millimeter))
             {
 
-                output = new Lengths.Millimeter(conversion);
+                output = new Distances.Millimeter(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Centimeter))
             {
 
-                output = new Lengths.Centimeter(conversion);
+                output = new Distances.Centimeter(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Meter))
             {
 
-                output = new Lengths.Meter(conversion);
+                output = new Distances.Meter(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Kilometer))
             {
 
-                output = new Lengths.Kilometer(conversion);
+                output = new Distances.Kilometer(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Inch))
             {
 
-                output = new Lengths.Inch(conversion);
+                output = new Distances.Inch(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Foot))
             {
 
-                output = new Lengths.Foot(conversion);
+                output = new Distances.Foot(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Yard))
             {
 
-                output = new Lengths.Yard(conversion);
+                output = new Distances.Yard(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.Mile))
             {
 
-                output = new Lengths.Mile(conversion);
+                output = new Distances.Mile(conversion);
                 return true;
             }
 
             if (capInput.EndsWithAny(Suffixes.NauticalMile))
             {
 
-                output = new Lengths.NauticalMile(conversion);
+                output = new Distances.NauticalMile(conversion);
                 return true;
             }
 
             //Type Unrecognised.
-            Debug.WriteLine("No Type for input length conversion. Break here for details...");
+            Debug.WriteLine("No Type for input Distance conversion. Break here for details...");
             Debug.WriteLine("----" + capInput);
-            output = new Lengths.Meter(conversion);
+            output = new Distances.Meter(conversion);
             return false;
 
         }
     }
 
-    public static partial class Lengths
+    public static partial class Distances
     {
-        public static Length TryParse(this string input)
+        public static Distance TryParse(this string input)
         {
-            Length result;
-            var success = Length.TryParse(input, out result);
+            Distance result;
+            var success = Distance.TryParse(input, out result);
             return result;
         }
     }

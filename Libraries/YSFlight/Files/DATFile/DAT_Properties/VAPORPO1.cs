@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class VAPORPO1 : DAT_Vector3
     {
-        public VAPORPO1(Length x, Length y, Length z) : base("VAPORPO1", x,y,z)
+        public VAPORPO1(Distance x, Distance y, Distance z) : base("VAPORPO1", x,y,z)
         {
         }
     }

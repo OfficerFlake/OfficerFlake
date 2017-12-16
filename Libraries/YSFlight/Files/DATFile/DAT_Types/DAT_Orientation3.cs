@@ -8,37 +8,37 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
         {
             private const string NullExceptionString = "<ERROR-DAT_DescriptiveOrientation3>";
 
-            public Length X
+            public Distance X
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(0).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(0).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(0, value.ToString()); }
             }
 
-            public Length Y
+            public Distance Y
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(1, value.ToString()); }
             }
 
-            public Length Z
+            public Distance Z
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(2, value.ToString()); }
@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                 set { SetParameter(5, value.ToString()); }
             }
 
-            public DAT_Orientation3(string command, Length x, Length y, Length z, Angle h, Angle p, Angle b)
+            public DAT_Orientation3(string command, Distance x, Distance y, Distance z, Angle h, Angle p, Angle b)
                 : base(command, x, y, z, h, p, b)
             {
                 X = x;

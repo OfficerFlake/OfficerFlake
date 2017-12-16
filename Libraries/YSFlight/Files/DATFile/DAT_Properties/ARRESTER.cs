@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class ARRESTER : DAT_Vector3
     {
-        public ARRESTER(Length x, Length y, Length z) : base("ARRESTER", x,y,z)
+        public ARRESTER(Distance x, Distance y, Distance z) : base("ARRESTER", x,y,z)
         {
         }
     }

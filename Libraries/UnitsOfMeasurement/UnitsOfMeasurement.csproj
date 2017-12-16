@@ -37,6 +37,14 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateAndTime\Duration\Year.cs" />
+    <Compile Include="DateAndTime\Duration\Month.cs" />
+    <Compile Include="DateAndTime\Duration\Week.cs" />
+    <Compile Include="DateAndTime\Duration\Hour.cs" />
+    <Compile Include="DateAndTime\Duration\Minute.cs" />
+    <Compile Include="DateAndTime\Duration\Second.cs" />
+    <Compile Include="DateAndTime\Duration\Day.cs" />
+    <Compile Include="Duration.cs" />
     <Compile Include="Angle.cs" />
     <Compile Include="Angle\Gradian.cs" />
     <Compile Include="Angle\Radian.cs" />
@@ -100,7 +108,10 @@
     <Compile Include="Temperature\Fahrenheit.cs" />
     <Compile Include="Temperature\Kelvin.cs" />
     <Compile Include="Temperature\Celcius.cs" />
-    <Compile Include="Time.cs" />
+    <Compile Include="DateAndTime\TimeSpan\TimeSpan.cs" />
+    <Compile Include="DateAndTime\DateTime\DateTime.cs" />
+    <Compile Include="DateAndTime\Date\Date.cs" />
+    <Compile Include="DateAndTime\Time\Time.cs" />
     <Compile Include="Volume\CubicFoot.cs" />
     <Compile Include="Mass\Kilogram.cs" />
     <Compile Include="Volume\UK\FluidOunce.cs" />
@@ -122,18 +133,18 @@
     <Compile Include="Volume\Millilitre.cs" />
     <Compile Include="Volume\Litre.cs" />
     <Compile Include="Volume.cs" />
-    <Compile Include="Length.cs" />
-    <Compile Include="Length\Centimeter.cs" />
-    <Compile Include="Length\Foot.cs" />
-    <Compile Include="Length\NauticalMile.cs" />
-    <Compile Include="Length\Mile.cs" />
-    <Compile Include="Length\Yard.cs" />
-    <Compile Include="Length\Kilometer.cs" />
-    <Compile Include="Length\Inch.cs" />
-    <Compile Include="Length\Microns.cs" />
-    <Compile Include="Length\Nanometer.cs" />
-    <Compile Include="Length\Millimeter.cs" />
-    <Compile Include="Length\Meter.cs" />
+    <Compile Include="Distance.cs" />
+    <Compile Include="Distance\Centimeter.cs" />
+    <Compile Include="Distance\Foot.cs" />
+    <Compile Include="Distance\NauticalMile.cs" />
+    <Compile Include="Distance\Mile.cs" />
+    <Compile Include="Distance\Yard.cs" />
+    <Compile Include="Distance\Kilometer.cs" />
+    <Compile Include="Distance\Inch.cs" />
+    <Compile Include="Distance\Microns.cs" />
+    <Compile Include="Distance\Nanometer.cs" />
+    <Compile Include="Distance\Millimeter.cs" />
+    <Compile Include="Distance\Meter.cs" />
     <Compile Include="_Measurement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -143,6 +154,7 @@
       <Name>Extensions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

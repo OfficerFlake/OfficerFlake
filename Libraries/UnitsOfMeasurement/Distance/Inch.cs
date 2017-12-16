@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Inch : Length
-            {
+        public static partial class Distances
+		{
+            public class Inch : Distance
+			{
                 public Inch(decimal value) : base(value, Conversion.Inch, "IN") { }
 
                 public static Inch operator +(Inch firstMeasurement, Inch secondMeasurement)

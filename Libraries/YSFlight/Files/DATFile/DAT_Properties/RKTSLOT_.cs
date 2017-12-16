@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class RKTSLOT_ : DAT_Vector3
     {
-        public RKTSLOT_(Length x, Length y, Length z) : base("RKTSLOT_", x,y,z)
+        public RKTSLOT_(Distance x, Distance y, Distance z) : base("RKTSLOT_", x,y,z)
         {
         }
     }

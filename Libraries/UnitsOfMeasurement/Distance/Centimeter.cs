@@ -2,9 +2,9 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Centimeter : Length
+	    public static partial class Distances
+	    {
+			public class Centimeter : Distance
             {
                 public Centimeter(decimal value) : base(value, Conversion.Centimeter, "CM") { }
 

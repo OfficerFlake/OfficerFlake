@@ -3,9 +3,9 @@ using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class REFLNRWY : DAT_Length
+    public class REFLNRWY : DAT_Distance
     {
-        public REFLNRWY(Length value) : base("REFLNRWY", value)
+        public REFLNRWY(Distance value) : base("REFLNRWY", value)
         {
         }
     }

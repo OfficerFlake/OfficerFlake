@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class BOMBSLOT : DAT_Vector3
     {
-        public BOMBSLOT(Length x, Length y, Length z) : base("BOMBSLOT", x,y,z)
+        public BOMBSLOT(Distance x, Distance y, Distance z) : base("BOMBSLOT", x,y,z)
         {
         }
     }

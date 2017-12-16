@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
@@ -9,8 +10,8 @@ using String = System.String;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public class HtmlFile : File
-    {
+    public class HtmlFile : IOFile
+	{
         public class Dom
         {
             public class Head

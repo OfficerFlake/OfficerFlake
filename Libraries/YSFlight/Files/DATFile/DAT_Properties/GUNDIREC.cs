@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class GUNDIREC : DAT_Vector3
     {
-        public GUNDIREC(Length x, Length y, Length z) : base("GUNDIREC", x,y,z)
+        public GUNDIREC(Distance x, Distance y, Distance z) : base("GUNDIREC", x,y,z)
         {
         }
     }

@@ -1031,20 +1031,20 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									continue;
 								}
 								failed = false;
-								Length temp;
+								Distance temp;
 
 								temp = 0.Meters();
-								failed |= !Length.TryParse(Split[2], out temp);
+								failed |= !Distance.TryParse(Split[2], out temp);
 								Split[2] = temp.ToMeters().ToString();
 								CurrentStartPosition.Position.X = (float)temp.ConvertToBase;
 
 								temp = 0.Meters();
-								failed |= !Length.TryParse(Split[3], out temp);
+								failed |= !Distance.TryParse(Split[3], out temp);
 								Split[2] = temp.ToMeters().ToString();
 								CurrentStartPosition.Position.Y = (float)temp.ConvertToBase;
 
 								temp = 0.Meters();
-								failed |= !Length.TryParse(Split[4], out temp);
+								failed |= !Distance.TryParse(Split[4], out temp);
 								Split[3] = temp.ToMeters().ToString();
 								CurrentStartPosition.Position.Z = (float)temp.ConvertToBase;
 
@@ -1205,12 +1205,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									continue;
 								}
 
-								Length AdjustPosX = 0.Meters();
-								Length AdjustPosY = 0.Meters();
-								Length AdjustPosZ = 0.Meters();
-								failed |= !Length.TryParse(Split[3].ToUpperInvariant(), out AdjustPosX);
-								failed |= !Length.TryParse(Split[4].ToUpperInvariant(), out AdjustPosY);
-								failed |= !Length.TryParse(Split[5].ToUpperInvariant(), out AdjustPosZ);
+								Distance AdjustPosX = 0.Meters();
+								Distance AdjustPosY = 0.Meters();
+								Distance AdjustPosZ = 0.Meters();
+								failed |= !Distance.TryParse(Split[3].ToUpperInvariant(), out AdjustPosX);
+								failed |= !Distance.TryParse(Split[4].ToUpperInvariant(), out AdjustPosY);
+								failed |= !Distance.TryParse(Split[5].ToUpperInvariant(), out AdjustPosZ);
 
 								Angle AdjustAngleX = 0.Degrees();
 								Angle AdjustAngleY = 0.Degrees();
@@ -1332,18 +1332,18 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						bool failed = false;
 
-						Length temp;
+						Distance temp;
 
 						temp = 0.Meters();
-						failed |= !Length.TryParse(Split[1], out temp);
+						failed |= !Distance.TryParse(Split[1], out temp);
 						CurrentGround.Position.X = (float)temp.ConvertToBase;
 
 						temp = 0.Meters();
-						failed |= !Length.TryParse(Split[2], out temp);
+						failed |= !Distance.TryParse(Split[2], out temp);
 						CurrentGround.Position.Y = (float)temp.ConvertToBase;
 
 						temp = 0.Meters();
-						failed |= !Length.TryParse(Split[3], out temp);
+						failed |= !Distance.TryParse(Split[3], out temp);
 						CurrentGround.Position.Z = (float)temp.ConvertToBase;
 
 						if (failed)

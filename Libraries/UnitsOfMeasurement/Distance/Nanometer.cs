@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Nanometer : Length
-            {
+        public static partial class Distances
+		{
+            public class Nanometer : Distance
+			{
                 public Nanometer(decimal value) : base(value, Conversion.Nanometer, "NM") { }
 
                 public static Nanometer operator +(Nanometer firstMeasurement, Nanometer secondMeasurement)

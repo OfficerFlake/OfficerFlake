@@ -3,9 +3,9 @@ using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class TURRETRG : DAT_QuantifiedLength
+    public class TURRETRG : DAT_QuantifiedDistance
     {
-        public TURRETRG(int quantifier, Length value) : base("TURRETRG", quantifier, value)
+        public TURRETRG(int quantifier, Distance value) : base("TURRETRG", quantifier, value)
         {
         }
     }

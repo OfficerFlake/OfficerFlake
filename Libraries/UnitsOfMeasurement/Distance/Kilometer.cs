@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Kilometer : Length
-            {
+        public static partial class Distances
+		{
+            public class Kilometer : Distance
+			{
                 public Kilometer(decimal value) : base(value, Conversion.Kilometer, "KM") { }
 
                 public static Kilometer operator +(Kilometer firstMeasurement, Kilometer secondMeasurement)

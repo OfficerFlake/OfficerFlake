@@ -14,37 +14,37 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                 set { SetParameter(0, value.ToString()); }
             }
 
-            public Length X
+            public Distance X
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(1, value.ToString()); }
             }
 
-            public Length Y
+            public Distance Y
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(2, value.ToString()); }
             }
 
-            public Length Z
+            public Distance Z
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(3).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(3).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(3, value.ToString()); }
@@ -86,7 +86,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                 set { SetParameter(6, value.ToString()); }
             }
 
-            public DAT_DescriptiveOrientation3(string command, string description, Length x, Length y, Length z, Angle h,
+            public DAT_DescriptiveOrientation3(string command, string description, Distance x, Distance y, Distance z, Angle h,
                 Angle p, Angle b) : base(command, x, y, z, h, p, b)
             {
                 Description = description;

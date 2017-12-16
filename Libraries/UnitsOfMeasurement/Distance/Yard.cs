@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Yard : Length
-            {
+        public static partial class Distances
+		{
+            public class Yard : Distance
+			{
                 public Yard(decimal value) : base(value, Conversion.Yard, "YD") { }
 
                 public static Yard operator +(Yard firstMeasurement, Yard secondMeasurement)

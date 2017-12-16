@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class ISPNLPOS : DAT_Vector3
     {
-        public ISPNLPOS(Length x, Length y, Length z) : base("ISPNLPOS", x,y,z)
+        public ISPNLPOS(Distance x, Distance y, Distance z) : base("ISPNLPOS", x,y,z)
         {
         }
     }

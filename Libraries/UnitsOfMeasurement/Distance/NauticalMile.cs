@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class NauticalMile : Length
-            {
+        public static partial class Distances
+		{
+            public class NauticalMile : Distance
+			{
                 public NauticalMile(decimal value) : base(value, Conversion.NauticalMile, "NM") { }
 
                 public static NauticalMile operator +(NauticalMile firstMeasurement, NauticalMile secondMeasurement)

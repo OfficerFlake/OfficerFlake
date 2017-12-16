@@ -18,7 +18,7 @@ namespace Com.OfficerFlake.Libraries.IO
             private string _line;
             private string[] Elements => _line.SplitPresevingQuotes();
 
-            internal Line(string line)
+            public Line(string line)
             {
                 _line = line;
             }

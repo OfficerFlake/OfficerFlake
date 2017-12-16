@@ -2,10 +2,10 @@
 {
     namespace UnitsOfMeasurement
     {
-        public static partial class Lengths
-        {
-            public class Millimeter : Length
-            {
+        public static partial class Distances
+		{
+            public class Millimeter : Distance
+			{
                 public Millimeter(decimal value) : base(value, Conversion.Millimeter, "MM") { }
 
                 public static Millimeter operator +(Millimeter firstMeasurement, Millimeter secondMeasurement)

@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class SMOKEGEN : DAT_Vector3
     {
-        public SMOKEGEN(Length x, Length y, Length z) : base("SMOKEGEN", x,y,z)
+        public SMOKEGEN(Distance x, Distance y, Distance z) : base("SMOKEGEN", x,y,z)
         {
         }
     }

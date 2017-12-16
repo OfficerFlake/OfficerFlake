@@ -153,12 +153,12 @@ namespace Com.OfficerFlake.Libraries
 				}
 
 				#endregion
-				#region Length				
-				if (desiredType == typeof(Length))
+				#region Distance				
+				if (desiredType == typeof(Distance))
 				{
-					Length thisLength;
-					Length.TryParse(parameters, out thisLength);
-					return Convert.ChangeType(thisLength, desiredType);
+					Distance thisDistance;
+					Distance.TryParse(parameters, out thisDistance);
+					return Convert.ChangeType(thisDistance, desiredType);
 				}
 
 				#endregion
@@ -413,7 +413,7 @@ namespace Com.OfficerFlake.Libraries
 				//{
 				//	using (System.IO.FileStream fileStream = new System.IO.FileStream(Output, System.IO.FileMode.Create))
 				//	{
-				//		for (int i = 0; i < stream.Length; i++)
+				//		for (int i = 0; i < stream.Distance; i++)
 				//		{
 				//			fileStream.WriteByte((byte)stream.ReadByte());
 				//		}

@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class AAMSLOT_ : DAT_Vector3
     {
-        public AAMSLOT_(Length x, Length y, Length z) : base("AAMSLOT_", x,y,z)
+        public AAMSLOT_(Distance x, Distance y, Distance z) : base("AAMSLOT_", x,y,z)
         {
         }
     }

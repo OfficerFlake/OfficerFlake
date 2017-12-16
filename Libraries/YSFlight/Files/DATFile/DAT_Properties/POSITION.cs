@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
     public class POSITION : DAT_Vector3
     {
-        public POSITION(Length x, Length y, Length z) : base("POSITION", x,y,z)
+        public POSITION(Distance x, Distance y, Distance z) : base("POSITION", x,y,z)
         {
         }
     }

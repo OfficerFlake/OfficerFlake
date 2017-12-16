@@ -12,37 +12,37 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
         {
             private const string NullExceptionString = "<ERROR-DAT_Hardpoint>";
 
-            public Length X
+            public Distance X
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(0).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(0).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(0, value.ToString()); }
             }
 
-            public Length Y
+            public Distance Y
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(1).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(1, value.ToString()); }
             }
 
-            public Length Z
+            public Distance Z
             {
                 get
                 {
-                    Length output;
+                    Distance output;
                     bool conversionSuccess =
-                        Length.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
+	                    Distance.TryParse((GetParameterOrNull(2).ToString() ?? NullExceptionString), out output);
                     return output;
                 }
                 set { SetParameter(2, value.ToString()); }
@@ -81,7 +81,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                 return a3;
             }
 
-            protected DAT_Hardpoint(string command, Length x, Length y, Length z, WeaponDescription[] descriptors)
+            protected DAT_Hardpoint(string command, Distance x, Distance y, Distance z, WeaponDescription[] descriptors)
                 : base(command, x, y, z, string.Join(" ", descriptors.Select(q=>q.ToString())))
             {
             }
