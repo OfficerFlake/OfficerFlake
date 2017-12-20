@@ -3,33 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public abstract class CommandFile : IO.IOFile, ILoadable, ISaveable
+    public abstract class CommandFile : File, ICommandFile
     {
-        protected CommandFile(string filename) : base(filename)
+	    protected CommandFile(string filename) : base(filename)
         {
         }
 
-        public class Line
+        public class Line : ICommandFileLine
         {
             private string _line;
-            private string[] Elements => _line.SplitPresevingQuotes();
+	        public string RawLine => _line;
+
+			private string[] Elements => _line.SplitPresevingQuotes();
 
             public Line(string line)
             {
                 _line = line;
             }
-	        public string RawLine => _line;
 
             public string Command
-            {
-                get => (NumberOfElements > 0) ? Elements[0].ToUpperInvariant() : "";
-				internal set
+			{
+                get => (Elements.Length > 0) ? Elements[0].ToUpperInvariant() : "";
+				set
 				{
-	                if (NumberOfElements > 0)
+	                if (Elements.Length > 0)
 	                {
 		                _line = value.ToUpperInvariant() + " " + string.Join(" ", Elements.Skip(1));
 	                }
@@ -39,34 +41,20 @@ namespace Com.OfficerFlake.Libraries.IO
 	                }
 				}
             }
-	        public string[] Parameters
-	        {
-				get => (NumberOfElements > 1) ? Elements.Skip(1).ToArray() : new string[0];
-		        internal set =>
+	        private string[] Parameters
+			{
+				get => (Elements.Length > 1) ? Elements.Skip(1).ToArray() : new string[0];
+		        set =>
 					_line =
 					
 					Command + " " +
 					string.Join(" ", 
 						value.Select(x=>x.ToUpperInvariant())
 						);
-	        }	  
+	        }
+			string ICommandFileLine.Command { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            public int NumberOfElements => Elements.Length;
-	        public int NumberOfParameters => Parameters.Length;
-
-            public string GetElementOrNull(int index)
-            {
-	            try
-	            {
-		            if (index >= Elements.Length || index < 0) return null;
-		            return Elements[index];
-	            }
-	            catch
-	            {
-		            return null;
-	            }
-            }
-            public object GetParameterOrNull(int index)
+			public string GetParameter(int index)
             {
 	            try
 	            {
@@ -75,21 +63,15 @@ namespace Com.OfficerFlake.Libraries.IO
 	            }
 	            catch
 	            {
-		            return null;
+		            return "";
 	            }
             }
-
-	        public bool SetCommand(string value)
-	        {
-		        Command = value;
-		        return true;
-	        }
             public bool SetParameter(int index, string value)
             {
 	            if (index < 0) return false;
 
 				#region Initialise Variables
-				int newSize = (index > NumberOfParameters - 1) ? (index + 1) : NumberOfParameters;
+				int newSize = (index > Parameters.Length - 1) ? (index + 1) : Parameters.Length;
 				string[] replacement = new string[newSize];
 				#endregion
 
@@ -98,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.IO
 		            replacement[i] = "\"\"";
 				#endregion
 				#region Fill New List from Old List
-				for (int i = 0; i < NumberOfParameters - 1; i++)
+				for (int i = 0; i < Parameters.Length - 1; i++)
 					replacement[i] = Parameters[i];
 				#endregion
 
@@ -114,26 +96,26 @@ namespace Com.OfficerFlake.Libraries.IO
             {
                 return string.Join(" ", Elements);
             }
-        }
-        public readonly List<Line> Lines = new List<Line>();
+		}
+        public readonly List<ICommandFileLine> Lines = new List<ICommandFileLine>();
 
-	    public string[] RawLines => Lines.Select(x=>x.RawLine).ToArray();
-        
-        public bool Load()
+		List<ICommandFileLine> ICommandFile.Lines { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+		public new bool Load()
         {
-            var loadedLines = ReadLines();
+            base.Load();
             Lines.Clear();
-            foreach (var thisLine in loadedLines)
+            foreach (var thisLine in Contents)
             {
                 var thisLinePrepared = string.Join(" ", thisLine.SplitPresevingQuotes());
                 Lines.Add(new Line(thisLinePrepared));
             }
             return true;
         }
-        public bool Save()
+        public new bool Save()
         {
-            var lines = Lines.Select(x => x.ToString()).ToArray();
-            return Overwrite(lines);
+	        Contents = Lines.Select(x => x.ToString()).ToArray();
+			return base.Save();
         }
     }
 }

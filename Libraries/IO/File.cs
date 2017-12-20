@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public class IOFile : IReadable, IWriteable, IEraseable
+    public class File : IFile
     {
         private bool DebugMode = false;
-        public string Filename { get; }
-	    internal string[] FileContents = new string[0];
 
-        public IOFile(string filename)
+        public string Filename { get; }
+		public string[] Contents { get; set; }
+
+		public File(string filename)
         {
             switch (filename)
             {
@@ -26,9 +27,124 @@ namespace Com.OfficerFlake.Libraries.IO
             }
         }
 
-        #region Read
+		public bool Load()
+		{
+			try
+			{
+				Contents = System.IO.File.ReadAllLines(Filename);
+				return true;
+			}
+			catch (ArgumentNullException e)
+			{
+				Debug.AddErrorMessage(e, "path is null.");
+				return false;
+			}
+			catch (ArgumentException e)
+			{
+				Debug.AddErrorMessage(e, "path is a zero-length string, contains only white space, or contains one or more invalid characters as defined by InvalidPathChars.");
+				return false;
+			}
+			catch (PathTooLongException e)
+			{
+				Debug.AddErrorMessage(e, "The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.");
+				return false;
+			}
+			catch (DirectoryNotFoundException e)
+			{
+				Debug.AddErrorMessage(e, "The specified path is invalid (for example, it is on an unmapped drive).");
+				return false;
+			}
+			catch (FileNotFoundException e)
+			{
+				Debug.AddErrorMessage(e, "The file specified in path was not found.");
+				return false;
+			}
+			catch (IOException e)
+			{
+				Debug.AddErrorMessage(e, "an I/O error occurred while opening the file.");
+				return false;
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				Debug.AddErrorMessage(e, "path specified a file that is read-only.\r\n\r\n-or-\r\n\r\nThis operation is not supported on the current platform.\r\n\r\n-or-\r\n\r\npath specified a directory.\r\n\r\n-or-\r\n\r\nThe caller does not have the required permission.");
+				return false;
+			}
+			catch (NotSupportedException e)
+			{
+				Debug.AddErrorMessage(e, "path is in an invalid format.");
+				return false;
+			}
+			catch (System.Security.SecurityException e)
+			{
+				Debug.AddErrorMessage(e, "The caller does not have the required permission.");
+				return false;
+			}
+			catch (Exception e)
+			{
+				Debug.AddErrorMessage(e, "Unknown error, general Exception.");
+				return false;
+			}
+		}
 
-	    public Encoding GetEncoding()
+		public bool Save()
+		{
+			try
+			{
+				System.IO.File.WriteAllLines(Filename, Contents);
+				return true;
+			}
+			catch (ArgumentNullException e)
+			{
+				Debug.AddErrorMessage(e, "path is a zero - length string, contains only white space, or contains one or more invalid characters as defined by InvalidPathChars.");
+				return false;
+			}
+			catch (ArgumentException e)
+			{
+				Debug.AddErrorMessage(e, "Either path or contents is null.");
+				return false;
+			}
+			catch (PathTooLongException e)
+			{
+				Debug.AddErrorMessage(e, "The specified path, file name, or both exceed the system-defined maximum length. For example, on Windows-based platforms, paths must be less than 248 characters, and file names must be less than 260 characters.");
+				return false;
+			}
+			catch (DirectoryNotFoundException e)
+			{
+				Debug.AddErrorMessage(e, "The specified path is invalid (for example, it is on an unmapped drive).");
+				return false;
+			}
+			catch (IOException e)
+			{
+				Debug.AddErrorMessage(e, "An I/O error occurred while opening the file.");
+				return false;
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				Debug.AddErrorMessage(e, "path specified a file that is read-only.\r\n\r\n-or-\r\n\r\nThis operation is not supported on the current platform.\r\n\r\n-or-\r\n\r\npath specified a directory.\r\n\r\n-or-\r\n\r\nThe caller does not have the required permission.");
+				return false;
+			}
+			catch (NotSupportedException e)
+			{
+				Debug.AddErrorMessage(e, "path is in an invalid format.");
+				return false;
+			}
+			catch (System.Security.SecurityException e)
+			{
+				Debug.AddErrorMessage(e, "The caller does not have the required permission.");
+				return false;
+			}
+			catch (Exception e)
+			{
+				Debug.AddErrorMessage(e, "Unknown error, general Exception.");
+				return false;
+			}
+		}
+
+		#region Trash
+		/*
+		#region Read
+
+		public Encoding GetEncoding()
 	    {
 			// Read the BOM
 		    var bom = new byte[4];
@@ -173,7 +289,7 @@ namespace Com.OfficerFlake.Libraries.IO
             }
             catch (Exception e)
             {
-                Debug.Write(e);
+                
 	            return false;
             }
         }
@@ -192,7 +308,8 @@ namespace Com.OfficerFlake.Libraries.IO
             }
             return false;
         }
-
-        #endregion
-    }
+		#endregion
+		*/
+		#endregion
+	}
 }

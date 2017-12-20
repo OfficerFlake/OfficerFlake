@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Distance : Measurement
+    public class Distance : Measurement, IDistance
     {
         #region CTOR
 
@@ -105,8 +105,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
             if (failed)
             {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
+                Debug.AddWarningMessage("Measurement Input not successfully converted.");
+                Debug.AddWarningMessage("----" + capInput);
                 output = new Distances.Meter(0);
                 return false;
             }
@@ -189,13 +189,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             }
 
             //Type Unrecognised.
-            Debug.WriteLine("No Type for input Distance conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
+            Debug.AddWarningMessage("No Type for input Distance conversion. Break here for details...");
+            Debug.AddWarningMessage("----" + capInput);
             output = new Distances.Meter(conversion);
             return false;
 
         }
-    }
+	}
 
     public static partial class Distances
     {

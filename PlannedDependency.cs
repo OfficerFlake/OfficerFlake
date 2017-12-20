@@ -2,8 +2,8 @@
 //LAYERS OF INHERITENCE
 
 //8
-//PacketIO : Connection(?)
-//Server
+//PacketIO : Connection, ConsoleIO, 
+//Server : Connection, Packets;
 
 //7
 //MetaData : ConsoleIO
@@ -26,29 +26,29 @@
 //Database : RichTextString, Permissions
 
 //4
-//Settings : UnitsOfMeasurement, Color
-//RichTextString : Color;
-//Equations : CoordinateSystems
+//Settings : Color, Settings, DiskIO
+//RichTextString : Color, Extensions;
+//Equations : CoordinateSystems;
 
 //3
-//UnitsOfMeasurement
-//Color
-//Permissions
-//YSFHQ
-//YSTypes
-//CoordinateSystems
-//Statistics
-//Packets
-//DiskIO
+//UnitsOfMeasurement : Extensions
+//Color : Extensions
+//Permissions : Extensions
+//YSFHQ : Extensions
+//YSTypes : Extensions
+//CoordinateSystems : Extensions
+//Statistics : Extensions
+//Packets : Extensions
+//DiskIO : Extensions
 //	CommandFile Save/Load
 
 //2
-//*SystemExtensions : ExceptionHandling(1);
-//AssemblyLoading : ExceptionHandling(1)
+//*SystemExtensions : [1]
+//AssemblyLoading : [1]
 //	Load(string assemblyName);
 
 //1
-//ExceptionHandling : DebugIO(0);
+//ExceptionHandling : [0]
 //	Log(Exception e);
 
 //0
@@ -58,3 +58,5 @@
 //		Else Write To VS Debugger.
 //	LinkDebugOutput(delegate method(string));
 //	UnlinkDebugOutput(delegate method(string));
+
+//INTERFACES
