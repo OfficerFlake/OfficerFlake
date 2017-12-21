@@ -1,8 +1,13 @@
-﻿namespace Com.OfficerFlake.Libraries.Interfaces
+﻿using System;
+
+namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	//UnitsOfMeasurement
 	public interface IUnitOfMeasurement
 	{
+		double RawValue { get; set; }
+		double ConversionRatio { get; set; }
+
 		string ToString();
 	}
 	public interface IAngle : IUnitOfMeasurement
@@ -46,5 +51,18 @@
 	}
 	public interface IVolume : IUnitOfMeasurement
 	{
+	}
+
+	public static class UnitsOfMeasurementExtentions
+	{
+		public static T ConvertToBase<T>(this T measurment) where T : IUnitOfMeasurement, new()
+		{
+			T output = new T()
+			{
+				RawValue = measurment.RawValue / measurment.ConversionRatio,
+				ConversionRatio = 1,
+			};
+			return output;
+		}
 	}
 }

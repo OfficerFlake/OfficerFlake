@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Debug = System.Diagnostics.Debug;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Angle : Measurement
+    public class Angle : Measurement, IAngle
     {
         #region CTOR
         protected Angle(decimal value, decimal conversionRatio, string unitSuffix)

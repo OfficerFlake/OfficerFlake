@@ -17,50 +17,50 @@ namespace Com.OfficerFlake.Libraries.IO
 		    this.debug = debug;
 	    }
 
-	    public void AddDetailMessage(string message)
-	    {
-			if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("DebugDetail: " + message);
-			    return;
-		    }
-		    debug.AddDetailMessage(message);
-		}
 	    public void AddSummaryMessage(string message)
 	    {
-			if (debug == null)
+		    if (debug == null)
 		    {
-			    System.Diagnostics.Debug.WriteLine("DebugSummary: " + message);
+			    System.Diagnostics.Debug.WriteLine("Debug> Summary: " + message);
 			    return;
 		    }
 		    debug.AddSummaryMessage(message);
+	    }
+		public void AddDetailMessage(string message)
+	    {
+			if (debug == null)
+		    {
+			    System.Diagnostics.Debug.WriteLine("Debug> Detail: " + message);
+			    return;
+		    }
+		    debug.AddDetailMessage(message);
 		}
 	    public void AddWarningMessage(string message)
 	    {
 			if (debug == null)
 		    {
-			    System.Diagnostics.Debug.WriteLine("DebugWarning: " + message);
+			    System.Diagnostics.Debug.WriteLine("Debug> Warning: " + message);
 			    return;
 		    }
 		    debug.AddWarningMessage(message);
 		}
-	    public void AddErrorMessage(string message)
+	    public void AddErrorMessage(Exception e, string message)
 	    {
 			if (debug == null)
 		    {
-			    System.Diagnostics.Debug.WriteLine("DebugError: " + message);
+			    System.Diagnostics.Debug.WriteLine("Debug> Error: " + message);
 			    return;
 		    }
-		    debug.AddErrorMessage(message);
+		    debug.AddErrorMessage(e, message);
 		}
-	    public void AddCrashMessage(string message)
+	    public void AddCrashMessage(Exception e, string message)
 	    {
 			if (debug == null)
 		    {
-			    System.Diagnostics.Debug.WriteLine("DebugCrash: " + message);
+			    System.Diagnostics.Debug.WriteLine("Debug> Crash: " + message);
 			    return;
 		    }
-		    debug.AddCrashMessage(message);
+		    debug.AddCrashMessage(e, message);
 		}
     }
 	public static class Debug
@@ -72,7 +72,7 @@ namespace Com.OfficerFlake.Libraries.IO
 		public static void AddDetailMessage(string message) => debug.AddDetailMessage(message);
 		public static void AddSummaryMessage(string message) => debug.AddSummaryMessage(message);
 		public static void AddWarningMessage(string message) => debug.AddWarningMessage(message);
-		public static void AddErrorMessage(string message) => debug.AddErrorMessage(message);
-		public static void AddCrashMessage(string message) => debug.AddCrashMessage(message);
+		public static void AddErrorMessage(Exception e, string message) => debug.AddErrorMessage(e, message);
+		public static void AddCrashMessage(Exception e, string message) => debug.AddCrashMessage(e, message);
 	}
 }

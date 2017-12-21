@@ -52,8 +52,8 @@ namespace Com.OfficerFlake.Libraries.IO
 						value.Select(x=>x.ToUpperInvariant())
 						);
 	        }
-			string ICommandFileLine.Command { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+	        public int NumberOfParameters => Parameters.Length;
 			public string GetParameter(int index)
             {
 	            try

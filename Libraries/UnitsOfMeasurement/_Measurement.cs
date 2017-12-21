@@ -1,25 +1,25 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
     namespace UnitsOfMeasurement
     {
-        public abstract class Measurement
+        public abstract class Measurement : IUnitOfMeasurement
         {
-            private readonly decimal _value;
-            private readonly decimal _conversionRatio;
+	        public double RawValue { get; set; }
+	        public double ConversionRatio { get; set; }
 
-            protected Measurement(decimal value, decimal conversionRatio)
+			protected Measurement(double value, double conversionRatio)
+	        {
+		        RawValue = value;
+		        ConversionRatio = conversionRatio;
+	        }
+
+			public double ConvertToBase() => RawValue * ConversionRatio;
+			
+			public override string ToString()
             {
-                _value = value;
-                _conversionRatio = conversionRatio;
-            }
-
-            public decimal ConvertToBase => _value * _conversionRatio;
-            public decimal RawValue => _value;
-            public decimal RawConversionRatio => _conversionRatio;
-
-            public override string ToString()
-            {
-                return _value.ToString();
+                return RawValue.ToString();
             }
         }
     }

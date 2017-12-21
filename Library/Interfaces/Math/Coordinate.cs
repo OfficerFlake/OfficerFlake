@@ -25,9 +25,6 @@
 		T B { get; set; }
 	}
 
-	public interface IPoint1 : IDimensionX<IDistance>
-	{
-	}
 	public interface IPoint2 : IDimensionX<IDistance>, IDimensionY<IDistance>
 	{
 	}
@@ -35,9 +32,6 @@
 	{
 	}
 
-	public interface IVector1 : IDimensionX<IDistance>
-	{
-	}
 	public interface IVector2 : IDimensionX<IDistance>, IDimensionY<IDistance>
 	{
 	}
@@ -45,9 +39,6 @@
 	{
 	}
 
-	public interface IOrientation1 : IDimensionH<IAngle>
-	{
-	}
 	public interface IOrientation2 : IDimensionH<IAngle>, IDimensionP<IAngle>
 	{
 	}

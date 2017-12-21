@@ -10,7 +10,7 @@ using String = System.String;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public class HtmlFile : IOFile
+    public class HtmlFile : File
 	{
         public class Dom
         {
@@ -242,14 +242,5 @@ namespace Com.OfficerFlake.Libraries.IO
 
             return string.Join("\n", output);
         }
-
-        public void Save()
-        {
-            Overwrite(ToString());
-        }
-        public void Load()
-        {
-            throw new NotImplementedException("No loading function exists yet for HTML files!");
-        }
-    }
+	}
 }
