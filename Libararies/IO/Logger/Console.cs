@@ -8,7 +8,7 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Logger
 {
-    internal class ConsoleInterface : IConsole
+    internal class DefaultConsole : IConsole
     {
 	    private IConsole console = null;
 
@@ -38,11 +38,11 @@ namespace Com.OfficerFlake.Libraries.Logger
     }
 	public static class Console
 	{
-		private static readonly ConsoleInterface console = new ConsoleInterface();
+		private static IConsole _console = new DefaultConsole();
 
-		public static void LinkConsole(IConsole _console) => console.LinkConsole(_console);
+		public static void LinkConsole(IConsole console) => _console = console;
 
-		public static void AddUserMessage(IUser user, string message) => console.AddUserMessage(user, message);
-		public static void AddInformationMessage(string message) => console.AddInformationMessage(message);
+		public static void AddUserMessage(IUser user, string message) => _console.AddUserMessage(user, message);
+		public static void AddInformationMessage(string message) => _console.AddInformationMessage(message);
 	}
 }

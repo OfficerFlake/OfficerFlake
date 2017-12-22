@@ -8,7 +8,7 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Logger
 {
-    internal class DebugInterface : IDebug
+    internal class DefaultDebug : IDebug
     {
 	    private IDebug debug = null;
 
@@ -65,14 +65,14 @@ namespace Com.OfficerFlake.Libraries.Logger
     }
 	public static class Debug
 	{
-		private static readonly DebugInterface debug = new DebugInterface();
+		private static IDebug _debug = new DefaultDebug();
 
-		public static void LinkDebug(IDebug _Debug) => debug.LinkDebug(_Debug);
+		public static void LinkDebug(IDebug debug) => _debug = debug;
 
-		public static void AddDetailMessage(string message) => debug.AddDetailMessage(message);
-		public static void AddSummaryMessage(string message) => debug.AddSummaryMessage(message);
-		public static void AddWarningMessage(string message) => debug.AddWarningMessage(message);
-		public static void AddErrorMessage(Exception e, string message) => debug.AddErrorMessage(e, message);
-		public static void AddCrashMessage(Exception e, string message) => debug.AddCrashMessage(e, message);
+		public static void AddDetailMessage(string message) => _debug.AddDetailMessage(message);
+		public static void AddSummaryMessage(string message) => _debug.AddSummaryMessage(message);
+		public static void AddWarningMessage(string message) => _debug.AddWarningMessage(message);
+		public static void AddErrorMessage(Exception e, string message) => _debug.AddErrorMessage(e, message);
+		public static void AddCrashMessage(Exception e, string message) => _debug.AddCrashMessage(e, message);
 	}
 }

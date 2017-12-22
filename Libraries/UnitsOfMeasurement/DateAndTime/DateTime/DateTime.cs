@@ -3,12 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
 {
 	namespace UnitsOfMeasurement
 	{
-		public class OYSDateTime
+		public class OYSDateTime : IDateTime
 		{
 			public Int32 YYYY;
 			public Int32 MM;
@@ -26,10 +27,23 @@ namespace Com.OfficerFlake.Libraries
 				this.mm = mm;
 				this.ss = ss;
 			}
+			public OYSDateTime(DateTime datetime)
+			{
+				YYYY = datetime.Year;
+				MM = datetime.Month;
+				DD = datetime.Day;
+				hh = datetime.Hour;
+				mm = datetime.Minute;
+				ss = datetime.Second;
+			}
 
 			public static implicit operator System.DateTime(OYSDateTime thisDate)
 			{
 				return new System.DateTime(thisDate.YYYY, thisDate.MM, thisDate.DD, thisDate.hh, thisDate.mm, thisDate.ss);
+			}
+			public static implicit operator OYSDateTime(System.DateTime thisDate)
+			{
+				return new OYSDateTime(thisDate);
 			}
 
 			public override string ToString()

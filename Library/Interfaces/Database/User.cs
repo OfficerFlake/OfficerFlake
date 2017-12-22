@@ -50,16 +50,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Administrative
 	public interface IExpiringAction
 	{
-		IUser ActionedBy { get; }
-		IDateTime Starts { get; }
-		IDateTime Ends { get; }
-		IRichTextString Reason { get; }
+		IUser ActionedBy { get; set; }
+		IDateTime Starts { get; set; }
+		IDateTime Ends { get; set; }
+		IRichTextString Reason { get; set; }
 	}
 	public interface IPermanentAction
 	{
-		IUser ActionedBy { get; }
-		IDateTime ActionedDateTime { get; }
-		IRichTextString Reason { get; }
+		IUser ActionedBy { get; set; }
+		IDateTime ActionedDateTime { get; set; }
+		IRichTextString Reason { get; set; }
 	}
 	#endregion
 	#region Group History

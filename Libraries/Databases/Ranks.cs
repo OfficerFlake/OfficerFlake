@@ -1,158 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries
 {
 	public static partial class Database
 	{
-		public class Rank
+		public class Rank : IRank, IHasPermissions
 		{
-			public RichTextString Name;
-			public int Index;
-			public Permissions Permissions;
+			public IRichTextString Name { get; set; }
+			public int Index { get; set; }
+
+			public ILocalPermissions LocalPermissions { get; set; }
+			public IGlobalPermissions GlobalPermissions { get; set; }
 
 			public override string ToString()
 			{
-				return Name.ToUnformattedString();
-			}
-
-			public Permission GetPermission(PermissionTypes permissionType)
-			{
-				Permission permission = null;
-				switch (permissionType)
-				{
-					case PermissionTypes.Mute:
-						permission = Permissions.Mute;
-						break;
-					case PermissionTypes.Freeze:
-						permission = Permissions.Freeze;
-						break;
-					case PermissionTypes.Kick:
-						permission = Permissions.Kick;
-						break;
-					case PermissionTypes.Ban:
-						permission = Permissions.Ban;
-						break;
-
-					case PermissionTypes.AddToGroup:
-						permission = Permissions.AddToGroup;
-						break;
-					case PermissionTypes.RemoveFromGroup:
-						permission = Permissions.RemoveFromGroup;
-						break;
-
-					case PermissionTypes.Promote:
-						permission = Permissions.Promote;
-						break;
-					case PermissionTypes.Demote:
-						permission = Permissions.Demote;
-						break;
-
-					default:
-						break;
-				}
-				return permission;
+				return Name.ToUnformattedSystemString();
 			}
 		}
 
 		public static class Ranks
 		{
 			#region ServerRanks
-			public static Rank ServerRankOwner = new Rank()
+			public static IRank ServerRankOwner = new Rank()
 			{
 				Name = "Owner".AsRichTextString(),
 				Index = 4,
-				Permissions = new Permissions()
-				{
-					Mute = new Permission(0, -1, false),
-					Freeze = new Permission(0, -1, false),
-					Kick = new Permission(0, -1, false),
-					Ban = new Permission(0, -1, false),
-
-					AddToGroup = new Permission(0, -1, false),
-					RemoveFromGroup = new Permission(0, -1, true),
-
-					Promote = new Permission(0, -1, true),
-					Demote = new Permission(0, -1, true),
-				},
+				LocalPermissions = new LocalPermissions(),
+				GlobalPermissions = new GlobalPermissions(),
 			};
-			public static Rank ServerRankAdmin = new Rank()
+			public static IRank ServerRankAdmin = new Rank()
 			{
 				Name = "Admin".AsRichTextString(),
 				Index = 3,
-				Permissions = new Permissions()
-				{
-					Mute = new Permission(0, -1, true),
-					Freeze = new Permission(0, -1, true),
-					Kick = new Permission(0, -1, true),
-					Ban = new Permission(0, -1, true),
-
-					AddToGroup = new Permission(0, -1, true),
-					RemoveFromGroup = new Permission(0, -1, true),
-
-					Promote = new Permission(0, -1, true),
-					Demote = new Permission(0, -1, true),
-				},
+				LocalPermissions = new LocalPermissions(),
+				GlobalPermissions = new GlobalPermissions(),
 			};
-			public static Rank ServerRankModerator = new Rank()
+			public static IRank ServerRankModerator = new Rank()
 			{
 				Name = "Moderator".AsRichTextString(),
 				Index = 2,
-				Permissions = new Permissions()
-				{
-					Mute = new Permission(0, -1, true),
-					Freeze = new Permission(0, -1, true),
-					Kick = new Permission(0, -1, true),
-					Ban = new Permission(-1, 0, true),
-
-					AddToGroup = new Permission(0, -1, true),
-					RemoveFromGroup = new Permission(0, -1, true),
-
-					Promote = new Permission(0, -1, true),
-					Demote = new Permission(0, -1, true),
-				},
+				LocalPermissions = new LocalPermissions(),
+				GlobalPermissions = new GlobalPermissions(),
 			};
-			public static Rank ServerRankMember = new Rank()
+			public static IRank ServerRankMember = new Rank()
 			{
 				Name = "Member".AsRichTextString(),
 				Index = 1,
-				Permissions = new Permissions()
-				{
-					Mute = new Permission(-1, -1, true),
-					Freeze = new Permission(-1, -1, true),
-					Kick = new Permission(-1, -1, true),
-					Ban = new Permission(-1, -1, true),
-
-					AddToGroup = new Permission(-1, -1, true),
-					RemoveFromGroup = new Permission(-1, -1, true),
-
-					Promote = new Permission(-1, -1, true),
-					Demote = new Permission(-1, -1, true),
-				},
+				LocalPermissions = new LocalPermissions(),
+				GlobalPermissions = new GlobalPermissions(),
 			};
-			public static Rank ServerRankGuest = new Rank()
+			public static IRank ServerRankGuest = new Rank()
 			{
 				Name = "Guest".AsRichTextString(),
 				Index = 0,
-				Permissions = new Permissions()
-				{
-					Mute = new Permission(-1, -1, true),
-					Freeze = new Permission(-1, -1, true),
-					Kick = new Permission(-1, -1, true),
-					Ban = new Permission(-1, -1, true),
-
-					AddToGroup = new Permission(-1, -1, true),
-					RemoveFromGroup = new Permission(-1, -1, true),
-
-					Promote = new Permission(-1, -1, true),
-					Demote = new Permission(-1, -1, true),
-				},
+				LocalPermissions = new LocalPermissions(),
+				GlobalPermissions = new GlobalPermissions(),
 			};
 
-			public static List<Rank> ServerRanks = new List<Rank>()
+			public static List<IRank> ServerRanks = new List<IRank>()
 			{
 				ServerRankOwner,
 				ServerRankAdmin,

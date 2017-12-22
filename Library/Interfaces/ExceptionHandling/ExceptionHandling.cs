@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
-	public interface IFile
+	public interface IExceptionHandler
 	{
-		string Filename { get; }
-		string[] Contents { get; set; }
-
-		bool Load();
-		bool Save();
+		bool Handle<T>(T e) where T : Exception;
 	}
 }

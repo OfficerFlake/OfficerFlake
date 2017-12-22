@@ -17,18 +17,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IArea : IUnitOfMeasurement
 	{
 	}
-	public interface ITime : IUnitOfMeasurement
-	{
-	}
-	public interface ITimeSpan : IUnitOfMeasurement
-	{
-	}
-	public interface IDate : IUnitOfMeasurement
-	{
-	}
-	public interface IDateTime : IUnitOfMeasurement
-	{
-	}
 	public interface IDistance : IUnitOfMeasurement
 	{
 	}
@@ -65,5 +53,18 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 			};
 			return output;
 		}
+	}
+
+	public interface ITime
+	{
+	}
+	public interface ITimeSpan
+	{
+	}
+	public interface IDate
+	{
+	}
+	public interface IDateTime
+	{
 	}
 }

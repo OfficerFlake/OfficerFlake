@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
-using Com.OfficerFlake.Libraries.YSFHQ;
-using Microsoft.Win32;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries
 {
 	public static partial class Database
     {
-	    public class User
+	    public class User : IUser, IHasPermissions
 	    {
 		    public RichTextString Username;
 
@@ -28,36 +23,36 @@ namespace Com.OfficerFlake.Libraries
 
 		    public override string ToString()
 		    {
-			    return Username.ToUnformattedString();
+			    return Username.ToUnformattedSystemString();
 		    }
 
 		    #region History
 			//Actions on User level.
-			public class ExpiringAction
+			public class ExpiringAction : IExpiringAction
 		    {
-			    public User ActionedBy;
-			    public DateTime Starts;
-			    public DateTime Ends;
-			    public RichTextString Reason;
+			    public IUser ActionedBy { get; set; }
+			    public IDateTime Starts { get; set; }
+				public IDateTime Ends { get; set; }
+				public IRichTextString Reason { get; set; }
 
-			    public ExpiringAction(User actionedBy, DateTime starts, DateTime ends, RichTextString reason)
+				public ExpiringAction(IUser actionedBy, IDateTime starts, IDateTime ends, IRichTextString reason)
 			    {
 				    ActionedBy = actionedBy;
 				    Starts = starts;
 				    Ends = ends;
 				    Reason = reason;
 			    }
-		    }
-		    public class PermanentAction
+			}
+		    public class PermanentAction : IPermanentAction
 		    {
-			    public User ActionedBy;
-			    public DateTime Timestamp;
-			    public RichTextString Reason;
+			    public IUser ActionedBy { get; set; }
+			    public IDateTime ActionedDateTime { get; set; }
+				public IRichTextString Reason { get; set; }
 
-			    public PermanentAction(User actionedBy, DateTime timestamp, RichTextString reason)
+				public PermanentAction(IUser actionedBy, IDateTime actioneDateTime, IRichTextString reason)
 			    {
 				    ActionedBy = actionedBy;
-				    Timestamp = timestamp;
+				    ActionedDateTime = actioneDateTime;
 				    Reason = reason;
 			    }
 		    }
@@ -88,6 +83,10 @@ namespace Com.OfficerFlake.Libraries
 			#region Ban
 			public ExpiringAction BanHistory = new ExpiringAction(Users.Console, DateTime.MinValue, DateTime.MinValue, "Never Banned.".AsRichTextString());
 		    public bool isBanned => (DateTime.Now < FreezeHistory.Ends);
+
+			public IRichTextString UserName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+			public IUserHistory History { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 			void Ban(User bannedby, DateTime starts, DateTime ends, RichTextString reason)
 		    {
 				throw new NotImplementedException();
@@ -95,159 +94,84 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 
 		    #region Groups
-		    public class GroupUpdate
+		    public class GroupUpdate : IUserGroupUpdate
 		    {
-			    public Group Group;
-			    public Rank Rank;
-			    public bool IsMember;
+			    public IUser ActionedBy { get; set; }
+			    public IDateTime ActionedDateTime { get; set; }
+				public GroupUpdateType ActionType { get; set; }
 
-				public User ActionedBy;
-			    public DateTime ActionedTimestamp;
+			    public IGroup Group { get; set; }
+			    public IRank Rank { get; set; }
 
-			    public RichTextString Reason;
-
-
-			    //Actions on Group level.
-			    #region Add
-			    void AddToGroup(User addedBy, Group groupToAddTo, DateTime timestamp, RichTextString reason)
-			    {
-				    throw new NotImplementedException();
-			    }
-			    #endregion
-			    #region Remove
-			    void RemoveFromGroup(User removedby, Group groupToRemoveFrom, DateTime timestamp, RichTextString reason)
-			    {
-				    throw new NotImplementedException();
-			    }
-			    #endregion
+			    public IRichTextString Reason { get; set; }
 		    }
-
-		    public Rank GetRankInGroupOrNull(Group target)
+		    public List<IUserGroupUpdate> GroupUpdateHistory { get; set; } = new List<IUserGroupUpdate>();
+			#region Add
+			private void AddToGroup(IUser addedBy, IGroup groupToAddTo, IDateTime datetime, IRichTextString reason)
 		    {
-			    GroupUpdate groupReference;
-				try
+			    GroupUpdateHistory.Add(new GroupUpdate()
 			    {
-				    groupReference = GroupHistory.Where(x => x.Group == target).OrderBy(y=>y.ActionedTimestamp).Last();
-				    return groupReference.Rank;
-			    }
+				    ActionedBy = addedBy,
+					Group = groupToAddTo,
+				    ActionedDateTime = datetime,
+				    Reason = reason,
+				});
+		    }
+			#endregion
+			#region Remove
+		    private void RemoveFromGroup(IUser removedby, IGroup groupToRemoveFrom, IDateTime datetime, IRichTextString reason)
+		    {
+				GroupUpdateHistory.Add(new GroupUpdate()
+				{
+					ActionedBy = removedby,
+					Group = groupToRemoveFrom,
+					ActionedDateTime = datetime,
+					Reason = reason,
+				});
+			}
+		    #endregion
+
+			public IRank GetRankInGroupOrNull(IGroup target)
+		    {
+			    try
+				{
+					var groupReference = GroupUpdateHistory.Where(x => x.Group == target).OrderBy(y=>y.ActionedDateTime).Last();
+					return groupReference.Rank;
+				}
 			    catch
 			    {
 				    return null;
 			    }
 		    }
-		    public bool IsCurrentlyInGroup(Group group)
+		    public bool IsCurrentlyInGroup(IGroup group)
 		    {
-			    if (GroupHistory.All(x => x.Group != group)) return false;
-			    GroupUpdate LastGroupReference = GroupHistory.Where(x => x.Group == group).OrderBy(y => y.ActionedTimestamp).Last();
+				//Not In the Group
+			    if (GroupUpdateHistory.All(x => x.Group != group)) return false;
+			    IEnumerable<IUserGroupUpdate> GroupReferences = GroupUpdateHistory.Where(x => x.Group == group).OrderBy(y => y.ActionedDateTime);
 
-			    if (LastGroupReference.IsMember) return true;
-			    return false;
+				//Was Never Added/Removed. Must be still a member by default.
+			    if (GroupReferences.All(x => x.ActionType != GroupUpdateType.Added & x.ActionType != GroupUpdateType.Removed)
+			    ) return true;
+
+				//Get al updates that are additions or removals.
+			    IUserGroupUpdate GroupReferenceAction = GroupReferences
+				    .Where(x => x.ActionType == GroupUpdateType.Added | x.ActionType == GroupUpdateType.Removed)
+				    .OrderBy(y => y.ActionedDateTime).Last();
+
+				//if addition, true.
+				if (GroupReferenceAction.ActionType == GroupUpdateType.Added) return true;
+				//must be a removal.
+			    else return false;
 		    }
 		    #endregion
-		    public List<GroupUpdate> GroupHistory = new List<GroupUpdate>();
+
 			#endregion
 			#region Perissmions
-		    private class PermissionsTesting
-		    {
-			    public PermissionsTesting(User parent)
-			    {
-				    Parent = parent;
-			    }
+		    public ILocalPermissions LocalPermissions { get; set; }
+			private ILocalPermissionsTester LocalPermissionsTester { get; set; }
 
-			    public User Parent;
-
-			    private bool BaseTest(PermissionTypes permissionType, User target, Group scope = null)
-			    {
-				    #region Initialisation
-					User caller = Parent;
-
-				    Rank callerRank;
-				    Rank targetRank;
-
-				    Permission minimumPermission;
-					Permission permission;
-
-					if (scope == null) scope = Database.Groups.Server;
-					#endregion
-
-					#region Minimum Ranks Permission has "Maximum Rank" as -1, and "Must Outrank" as false, so will always have permission. RETURN TRUE.
-				    minimumPermission = scope.GetLowestRank().GetPermission(permissionType);
-					if (minimumPermission.MaximumRank <= -1 && !minimumPermission.MustOutrank) return true; //permission always enabled.
-					#endregion
-
-					#region Caller is not a member of the group. RETURN FALSE.
-				    callerRank = caller.GetRankInGroupOrNull(scope);
-				    if (callerRank == null) return false; //not a member of the group to begin with...
-					#endregion
-
-					#region Test Permissions Failed. RETURN FALSE
-					permission = callerRank.GetPermission(permissionType);
-
-					#region Permissions minimum rank must be above -1 to be enabled. RETURN FALSE.
-					if (permission.MinimumRank <= -1) return false; //permission disabled.
-					#endregion
-
-					#region Caller doesn't outrank target. RETURN FALSE.
-					#region Set TargetRank to Minimum if not in the group.
-					targetRank = target.GetRankInGroupOrNull(scope);
-				    if (targetRank == null) targetRank = scope.GetLowestRank(); //not a member of the group to begin with...
-				    #endregion
-
-				    int callerRankIndex = 0;
-				    int targetRankIndex = 0;
-
-				    callerRankIndex = callerRank.Index;
-				    targetRankIndex = targetRank.Index;
-
-				    bool Outranks = (callerRankIndex > targetRankIndex);
-				    if (!Outranks) return false;
-				    #endregion
-				    #region Targets Rank is outside permissions scope. RETURN FALSE.
-				    if (targetRankIndex < permission.MinimumRank) return false; //Target rank is below minimum allowed.
-				    if (targetRankIndex > permission.MaximumRank && permission.MaximumRank >= 0) return false; //Target rank is above maximum allowed.
-					#endregion
-					#endregion
-
-					#region Tested permissions and all is okay. RETURN TRUE.
-					return true;
-				    #endregion
-				}
-
-				public bool Mute(User target)
-			    {
-				    return BaseTest(PermissionTypes.Mute, target);
-			    }
-			    public bool Freeze(User target)
-			    {
-					return BaseTest(PermissionTypes.Freeze, target);
-				}
-			    public bool Kick(User target)
-			    {
-					return BaseTest(PermissionTypes.Kick, target);
-				}
-			    public bool Ban(User target)
-			    {
-					return BaseTest(PermissionTypes.Ban, target);
-				}
-
-			    public bool AddToGroup(User target, Group group)
-			    {
-				    return BaseTest(PermissionTypes.AddToGroup, target, group);
-				}
-			    public bool RemoveFromGroup(User target, Group group)
-			    {
-					return BaseTest(PermissionTypes.RemoveFromGroup, target, group);
-				}
-
-			    public bool Promote(User target, Group group)
-			    {
-					return BaseTest(PermissionTypes.Promote, target, group);
-				}
-			    public bool Demote(User target, Group group)
-			    {
-					return BaseTest(PermissionTypes.Demote, target, group);
-				}
-			}
+		    public IGlobalPermissions GlobalPermissions { get; set; }
+			private IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
 
 		    public class PermissionsTesting_Can
 		    {
@@ -380,16 +304,14 @@ namespace Com.OfficerFlake.Libraries
 		    public void AddToGroup(User addedBy, Group group, RichTextString reason = null)
 		    {
 			    if (IsCurrentlyInGroup(group)) return; //Currently a member, no need to add again.
-				GroupHistory.Add(
+			    GroupUpdateHistory.Add(
 					new GroupUpdate()
 					{
 						Group = group,
 						Rank = group.GetLowestRank(),
 
-						IsMember = true,
-
 						ActionedBy = addedBy,
-						ActionedTimestamp = DateTime.Now,
+						ActionedDateTime = new OYSDateTime(DateTime.Now),
 
 						Reason = (reason ?? "No Reason.".AsRichTextString())
 					}
@@ -402,11 +324,10 @@ namespace Com.OfficerFlake.Libraries
 				    new GroupUpdate()
 				    {
 					    Group = group,
-					    IsMember = false,
 						Rank = group.GetLowestRank(),
 
 						ActionedBy = addedBy,
-					    ActionedTimestamp = DateTime.Now,
+					    ActionedDateTime = DateTime.Now,
 
 					    Reason = (reason ?? "No Reason.".AsRichTextString())
 				    }
@@ -424,10 +345,9 @@ namespace Com.OfficerFlake.Libraries
 				    {
 					    Group = group,
 						Rank = newRank,
-					    IsMember = true,
 
 					    ActionedBy = promotedBy,
-					    ActionedTimestamp = DateTime.Now,
+					    ActionedDateTime = new OYSDateTime(DateTime.Now),
 
 					    Reason = (reason ?? "No Reason.".AsRichTextString())
 				    }
@@ -444,12 +364,11 @@ namespace Com.OfficerFlake.Libraries
 				    {
 					    Group = group,
 					    Rank = newRank,
-					    IsMember = true,
 
 					    ActionedBy = demotedBy,
-					    ActionedTimestamp = DateTime.Now,
+					    ActionedDateTime = new OYSDateTime(DateTime.Now),
 
-					    Reason = (reason ?? "No Reason.".AsRichTextString())
+						Reason = (reason ?? "No Reason.".AsRichTextString())
 				    }
 			    );
 		    }
@@ -461,7 +380,7 @@ namespace Com.OfficerFlake.Libraries
 		    public static User Unknown = new User("&o&4<UNKNOWN>".AsRichTextString());
 		    public static User Console = new User("&o&3<OpenYS Console>".AsRichTextString())
 		    {
-			    GroupHistory = new List<User.GroupUpdate>()
+			    GroupUpdateHistory = new List<IUserGroupUpdate>()
 			    {
 				    new User.GroupUpdate()
 				    {

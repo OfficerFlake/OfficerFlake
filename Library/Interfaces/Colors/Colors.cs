@@ -13,13 +13,12 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface ISimpleColor
 	{
-		I24BitColor Color { get; set; }
+		IColor Color { get; set; }
 		char ColorCode { get; set; }
 	}
 
 	public interface I24BitColor
 	{
-		IColor FullColor { get; set; }
 		byte Red { get; set; }
 		byte Green { get; set; }
 		byte Blue { get; set; }
@@ -29,7 +28,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface I32BitColor
 	{
-		IColor FullColor { get; set; }
 		byte Alpha { get; set; }
 		byte Red { get; set; }
 		byte Green { get; set; }

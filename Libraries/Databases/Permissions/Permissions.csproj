@@ -35,20 +35,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\Extensions.csproj">
-      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>Extensions</Name>
+    <ProjectReference Include="..\..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

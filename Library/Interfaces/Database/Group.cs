@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		bool ChangeOwner(IUser ChangedBy, IUser NewOwner);
 		#endregion
 		#region CurrentInfo
-		IRichTextString GroupName { get; set; }
+		IRichTextString Name { get; set; }
 
 		List<IUser> Members { get; set; }
 		List<IRank> Ranks { get; set; }
@@ -30,8 +30,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region Ranks
 		IRank GetLowestRank();
-		IRank GetNextLowestRank(IRank comparisonRank);
-		IRank GetNextHighestRank(IRank comparisonRank);
+		IRank GetNextLowerRank(IRank comparisonRank);
+		IRank GetNextHigherRank(IRank comparisonRank);
 		IRank GetHighestRank();
 		#endregion
 

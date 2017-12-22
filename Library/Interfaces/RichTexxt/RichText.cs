@@ -14,7 +14,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		IColor ForeColor { get; set; }
 		IColor BackColor { get; set; }
-		char ClosestColorCode { get; }
+		char GetClosestColorCode();
 
 		string ToUnformattedSystemString();
 		string ToInternallyFormattedSystemString();

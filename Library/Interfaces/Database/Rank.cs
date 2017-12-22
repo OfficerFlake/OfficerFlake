@@ -6,7 +6,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IRank
 	{
 		int Index { get; set; }
-		IRichTextString RankName { get; set; }
+		IRichTextString Name { get; set; }
 		ILocalPermissions LocalPermissions { get; set; }
 		IGlobalPermissions GlobalPermissions { get; set; }
 
