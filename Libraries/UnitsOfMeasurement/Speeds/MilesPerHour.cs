@@ -35,7 +35,6 @@
 
             public static MilesPerHour MilesPerHours(this float input) => new MilesPerHour((double)input);
             public static MilesPerHour MilesPerHours(this double input) => new MilesPerHour((double)input);
-            public static MilesPerHour MilesPerHours(this double input) => new MilesPerHour(input);
         }
     }
 }

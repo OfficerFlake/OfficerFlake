@@ -35,7 +35,6 @@
 
             public static USTeaSpoon USTeaSpoons(this float input) => new USTeaSpoon((double)input);
             public static USTeaSpoon USTeaSpoons(this double input) => new USTeaSpoon((double)input);
-            public static USTeaSpoon USTeaSpoons(this double input) => new USTeaSpoon(input);
         }
 
     }

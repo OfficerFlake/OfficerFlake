@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.RichText;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 
@@ -30,8 +31,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 			Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
 
-			BackColor = Color.MinecraftColor.Black.AsSystemDrawingColor();
-			ForeColor = Color.MinecraftColor.White.AsSystemDrawingColor();
+			BackColor = Color.SimpleColors.Black.ToSystemDrawingColor();
+			ForeColor = Color.SimpleColors.White.ToSystemDrawingColor();
 
 			BorderStyle = BorderStyle.None;
 
@@ -112,7 +113,19 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 				SelectionFont = new Font("Courier New", 8, FontStyle);
 
-				SelectionColor = thisElement.Color.AsSystemDrawingColor();
+				System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
+					255,
+					(int)thisElement.Color.Color.Red,
+					(int)thisElement.Color.Color.Green,
+					(int)thisElement.Color.Color.Blue);
+				System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
+					255,
+					16,
+					16,
+					16);
+
+				SelectionColor = ForeColor;
+				SelectionBackColor = BackColor;
 
 			}
 			#endregion
@@ -145,7 +158,19 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 			SelectionFont = new Font("Courier New", 8, thisStyle);
 
-			SelectionColor = thisElement.Color.AsSystemDrawingColor();
+			System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
+				255,
+				(int)thisElement.Color.Color.Red,
+				(int)thisElement.Color.Color.Green,
+				(int)thisElement.Color.Color.Blue);
+			System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
+				255,
+				16,
+				16,
+				16);
+
+			SelectionColor = ForeColor;
+			SelectionBackColor = BackColor;
 
 			SelectionStart = 0;
 			SelectionLength = 0;

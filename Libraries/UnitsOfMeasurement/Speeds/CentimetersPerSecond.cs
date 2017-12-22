@@ -35,7 +35,6 @@
 
             public static CentimetersPerSecond CentimetersPerSeconds(this float input) => new CentimetersPerSecond((double)input);
             public static CentimetersPerSecond CentimetersPerSeconds(this double input) => new CentimetersPerSecond((double)input);
-            public static CentimetersPerSecond CentimetersPerSeconds(this double input) => new CentimetersPerSecond(input);
         }
     }
 }

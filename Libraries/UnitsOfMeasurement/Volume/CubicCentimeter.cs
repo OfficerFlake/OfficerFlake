@@ -35,7 +35,6 @@
 
             public static CubicCentimeter CubicCentimeters(this float input) => new CubicCentimeter((double)input);
             public static CubicCentimeter CubicCentimeters(this double input) => new CubicCentimeter((double)input);
-            public static CubicCentimeter CubicCentimeters(this double input) => new CubicCentimeter(input);
         }
     }
 }

@@ -35,7 +35,6 @@
 
             public static Knot Knots(this float input) => new Knot((double)input);
             public static Knot Knots(this double input) => new Knot((double)input);
-            public static Knot Knots(this double input) => new Knot(input);
         }
     }
 }

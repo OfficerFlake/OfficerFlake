@@ -35,7 +35,6 @@
 
             public static USTableSpoon USTableSpoons(this float input) => new USTableSpoon((double)input);
             public static USTableSpoon USTableSpoons(this double input) => new USTableSpoon((double)input);
-            public static USTableSpoon USTableSpoons(this double input) => new USTableSpoon(input);
         }
 
     }

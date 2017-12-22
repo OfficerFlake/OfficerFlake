@@ -35,7 +35,6 @@
 
             public static USPint USPints(this float input) => new USPint((double)input);
             public static USPint USPints(this double input) => new USPint((double)input);
-            public static USPint USPints(this double input) => new USPint(input);
         }
 
     }

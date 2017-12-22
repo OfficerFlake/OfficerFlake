@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.IO
 {

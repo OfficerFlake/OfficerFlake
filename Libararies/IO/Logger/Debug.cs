@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Interfaces;
 
-namespace Com.OfficerFlake.Libraries.IO
+namespace Com.OfficerFlake.Libraries.Logger
 {
     internal class DebugInterface : IDebug
     {

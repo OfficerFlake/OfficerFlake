@@ -132,7 +132,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
             if (capInput.EndsWithAny(Suffixes.FootPounds))
             {
-                output = new Energys.FootPounds(conversion);
+                output = new Energys.FootPound(conversion);
                 return true;
             }
 

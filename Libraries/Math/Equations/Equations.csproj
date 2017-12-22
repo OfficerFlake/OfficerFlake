@@ -46,6 +46,10 @@
       <Project>{60286C68-AB78-4F34-8199-E8CF255AB284}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
+      <Project>{BEB82D31-C638-420B-B388-F79D599F2A3F}</Project>
+      <Name>UnitsOfMeasurement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CoordinateSystems\CoordinateSystems.csproj">
       <Project>{714aa2cd-08cb-4610-ae53-fa7994d8a0a2}</Project>
       <Name>CoordinateSystems</Name>

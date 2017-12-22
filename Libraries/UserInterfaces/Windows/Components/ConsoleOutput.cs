@@ -223,15 +223,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
 		                   thisRichTextMessage.Created.InStandardForm().MM +
 		                   thisRichTextMessage.Created.InStandardForm().DD;
-			date.Color = MinecraftColor.White;
+			date.Color = SimpleColors.ColorF;
 
 		    RichTextString.MessageElement time = new RichTextString.MessageElement();
 			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
 			               thisRichTextMessage.Created.InStandardForm().mm +
 			               thisRichTextMessage.Created.InStandardForm().ss;
-			time.Color = MinecraftColor.DarkGray;
+			time.Color = SimpleColors.ColorE;
 
-		    RichTextString.MessageElement[] username = thisRichTextMessage.UserObject.Username.Elements;
+			RichTextString.MessageElement[] username = thisRichTextMessage.UserObject.Username.Elements;
 
 			RichTextString.MessageElement[] message = thisRichTextMessage.String.Elements;
 

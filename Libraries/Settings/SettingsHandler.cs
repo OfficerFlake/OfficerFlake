@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using static Com.OfficerFlake.Libraries.IO.CommandFile;
@@ -297,7 +298,7 @@ namespace Com.OfficerFlake.Libraries
 		public static bool LoadAll()
 		{
 			#region Settings Not Found on Disk
-			if (!File.Exists(@"./Settings.Dat")) return false;
+			if (!System.IO.File.Exists(@"./Settings.Dat")) return false;
 			#endregion
 			#region Load Settings File Contents
 			Settings.SettingsFile.Load();
@@ -307,12 +308,13 @@ namespace Com.OfficerFlake.Libraries
 			{
 				for (int i = 0; i < Settings.SettingsFile.Lines.Count; i++)
 				{
-					CommandFile.Line thisLine = Settings.SettingsFile.Lines[i];
+					ICommandFileLine thisLine = Settings.SettingsFile.Lines[i];
 
 					string command = thisLine.Command;
-					string parameters = string.Join(" ", thisLine.Parameters);
-
-					FindAndUpdateSetting(command, parameters);
+					List<string> parameters = new List<string>();
+					for (int j=0; j<thisLine.NumberOfParameters; j++)
+						parameters.Add(thisLine.GetParameter(i));
+					FindAndUpdateSetting(command, string.Join(" ", parameters));
 				}
 				return true;
 			}

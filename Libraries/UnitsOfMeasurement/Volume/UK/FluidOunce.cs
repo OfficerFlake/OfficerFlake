@@ -35,7 +35,6 @@
 
             public static UKFluidOunce UKFluidOunces(this float input) => new UKFluidOunce((double)input);
             public static UKFluidOunce UKFluidOunces(this double input) => new UKFluidOunce((double)input);
-            public static UKFluidOunce UKFluidOunces(this double input) => new UKFluidOunce(input);
         }
 
     }

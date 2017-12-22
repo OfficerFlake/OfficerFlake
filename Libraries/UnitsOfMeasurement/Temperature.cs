@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -17,7 +18,8 @@ namespace Com.OfficerFlake.Libraries
 
             #endregion
             public double Value { get; set; }
-            private readonly string _unitSuffix;
+
+			private readonly string _unitSuffix;
 
             #region Operators
 
@@ -58,35 +60,35 @@ namespace Com.OfficerFlake.Libraries
                 {
                     Debug.WriteLine("Measurement Input not successfully converted.");
                     Debug.WriteLine("----" + capInput);
-                    output = new Temperatures.Celcius(0);
+                    output = new Temperatures.DegreeCelcius(0);
                     return false;
                 }
 
                 if (capInput.EndsWithAny(Suffixes.Celcius))
                 {
 
-                    output = new Temperatures.Celcius(conversion);
+                    output = new Temperatures.DegreeCelcius(conversion);
                     return true;
                 }
 
                 if (capInput.EndsWithAny(Suffixes.Fahrenheit))
                 {
 
-                    output = new Temperatures.Fahrenheit(conversion);
+                    output = new Temperatures.DegreeFahrenheit(conversion);
                     return true;
                 }
 
                 if (capInput.EndsWithAny(Suffixes.Kelvin))
                 {
 
-                    output = new Temperatures.Kelvin(conversion);
+                    output = new Temperatures.DegreeKelvin(conversion);
                     return true;
                 }
 
                 //Type Unrecognised.
                 Debug.WriteLine("No Type for input temperature conversion. Break here for details...");
                 Debug.WriteLine("----" + capInput);
-                output = new Temperatures.Celcius(conversion);
+                output = new Temperatures.DegreeCelcius(conversion);
                 return false;
 
             }

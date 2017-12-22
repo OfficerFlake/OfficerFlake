@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using static Com.OfficerFlake.Libraries.Extensions.TimeExtensions;
 
 namespace Com.OfficerFlake.Libraries.IO.Log
@@ -23,8 +24,7 @@ namespace Com.OfficerFlake.Libraries.IO.Log
                 new Dom.Head.Css.Object.Property("margin-left", "0px"),
                 new Dom.Head.Css.Object.Property("margin-bottom", "0px"), 
                 new Dom.Head.Css.Object.Property("margin-right", "0px"),
-                new Dom.Head.Css.Object.Property("background-color", MinecraftColor.Black.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("background-color", MinecraftColor.Black.Color.ToARGBColor().ToCssRgbaString()),
+                new Dom.Head.Css.Object.Property("background-color", SimpleColors.Black.ToString()),
                 new Dom.Head.Css.Object.Property("background", "-webkit-linear-gradient(top, rgba(0,32,32,0.8), rgba(0,32,64,0.8))"),
                 new Dom.Head.Css.Object.Property("font-family", "Lucida Console"),
                 new Dom.Head.Css.Object.Property("text-shadow", "1px 1px rgba(0,0,0,0.67)"),
@@ -39,102 +39,85 @@ namespace Com.OfficerFlake.Libraries.IO.Log
                 new Dom.Head.Css.Object.Property("padding-right", "10px"),
                 new Dom.Head.Css.Object.Property("margin", "0px"));
             newCSS.Objects.Add(CssP);
-            #endregion
+			#endregion
 
-            #region color0
-            Dom.Head.Css.Object cssColor0 = new Dom.Head.Css.Object(".color0",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Black.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Black.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor0);
-            #endregion
-            #region color1
-            Dom.Head.Css.Object cssColor1 = new Dom.Head.Css.Object(".color1",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkBlue.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkBlue.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor1);
-            #endregion
-            #region color2
-            Dom.Head.Css.Object cssColor2 = new Dom.Head.Css.Object(".color2",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkGreen.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkGreen.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor2);
-            #endregion
-            #region color3
-            Dom.Head.Css.Object cssColor3 = new Dom.Head.Css.Object(".color3",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Teal.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Teal.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor3);
-            #endregion
-            #region color4
-            Dom.Head.Css.Object cssColor4 = new Dom.Head.Css.Object(".color4",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkRed.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkRed.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor4);
-            #endregion
-            #region color5
-            Dom.Head.Css.Object cssColor5 = new Dom.Head.Css.Object(".color5",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Purple.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Purple.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor5);
-            #endregion
-            #region color6
-            Dom.Head.Css.Object cssColor6 = new Dom.Head.Css.Object(".color6",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Gold.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Gold.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor6);
-            #endregion
-            #region color7
-            Dom.Head.Css.Object cssColor7 = new Dom.Head.Css.Object(".color7",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Gray.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Gray.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor7);
-            #endregion
-            #region color8
-            Dom.Head.Css.Object cssColor8 = new Dom.Head.Css.Object(".color8",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkGray.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.DarkGray.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor8);
-            #endregion
-            #region color9
-            Dom.Head.Css.Object cssColor9 = new Dom.Head.Css.Object(".color9",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Blue.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Blue.Color.ToARGBColor().ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColor9);
-            #endregion
-            #region colorA
-            Dom.Head.Css.Object cssColorA = new Dom.Head.Css.Object(".colorA",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Green.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Green.Color.ToARGBColor().ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColorA);
-            #endregion
-            #region colorB
-            Dom.Head.Css.Object cssColorB = new Dom.Head.Css.Object(".colorB",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Aqua.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Aqua.Color.ToARGBColor().ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColorB);
-            #endregion
-            #region colorC
-            Dom.Head.Css.Object cssColorC = new Dom.Head.Css.Object(".colorC",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Red.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Red.Color.ToARGBColor().ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColorC);
-            #endregion
-            #region colorD
-            Dom.Head.Css.Object cssColorD = new Dom.Head.Css.Object(".colorD",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Magenta.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Magenta.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColorD);
-            #endregion
-            #region colorE
-            Dom.Head.Css.Object cssColorE = new Dom.Head.Css.Object(".colorE",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Yellow.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.Yellow.Color.ToARGBColor().ToCssRgbaString()));
-            newCSS.Objects.Add(cssColorE);
+			#region color0
+			Dom.Head.Css.Object cssColor0 = new Dom.Head.Css.Object(".color0",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color0.Color.ToString()));
+			#endregion
+			#region color1
+			Dom.Head.Css.Object cssColor1 = new Dom.Head.Css.Object(".color1",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color1.Color.ToString()));
+			newCSS.Objects.Add(cssColor1);
+			#endregion
+			#region color2
+			Dom.Head.Css.Object cssColor2 = new Dom.Head.Css.Object(".color2",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color2.Color.ToString()));
+			newCSS.Objects.Add(cssColor2);
+			#endregion
+			#region color3
+			Dom.Head.Css.Object cssColor3 = new Dom.Head.Css.Object(".color3",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color3.Color.ToString()));
+			newCSS.Objects.Add(cssColor3);
+			#endregion
+			#region color4
+			Dom.Head.Css.Object cssColor4 = new Dom.Head.Css.Object(".color4",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color4.Color.ToString()));
+			newCSS.Objects.Add(cssColor4);
+			#endregion
+			#region color5
+			Dom.Head.Css.Object cssColor5 = new Dom.Head.Css.Object(".color5",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color5.Color.ToString()));
+			newCSS.Objects.Add(cssColor5);
+			#endregion
+			#region color6
+			Dom.Head.Css.Object cssColor6 = new Dom.Head.Css.Object(".color6",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color6.Color.ToString()));
+			newCSS.Objects.Add(cssColor6);
+			#endregion
+			#region color7
+			Dom.Head.Css.Object cssColor7 = new Dom.Head.Css.Object(".color7",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color7.Color.ToString()));
+			newCSS.Objects.Add(cssColor7);
+			#endregion
+			#region color8
+			Dom.Head.Css.Object cssColor8 = new Dom.Head.Css.Object(".color8",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color8.Color.ToString()));
+			newCSS.Objects.Add(cssColor8);
+			#endregion
+			#region color9
+			Dom.Head.Css.Object cssColor9 = new Dom.Head.Css.Object(".color9",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.Color9.Color.ToString()));
+			newCSS.Objects.Add(cssColor9);
+			#endregion
+			#region colorA
+			Dom.Head.Css.Object cssColorA = new Dom.Head.Css.Object(".colorA",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.ColorA.Color.ToString()));
+			newCSS.Objects.Add(cssColorA);
+			#endregion
+			#region colorB
+			Dom.Head.Css.Object cssColorB = new Dom.Head.Css.Object(".colorB",
+		        new Dom.Head.Css.Object.Property("color", SimpleColors.ColorB.Color.ToString()));
+			newCSS.Objects.Add(cssColorB);
+			#endregion
+			#region colorC
+			Dom.Head.Css.Object cssColorC = new Dom.Head.Css.Object(".colorC",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.ColorC.Color.ToString()));
+			newCSS.Objects.Add(cssColorC);
+			#endregion
+			#region colorD
+			Dom.Head.Css.Object cssColorD = new Dom.Head.Css.Object(".colorD",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.ColorD.Color.ToString()));
+			newCSS.Objects.Add(cssColorD);
+			#endregion
+			#region colorE
+			Dom.Head.Css.Object cssColorE = new Dom.Head.Css.Object(".colorE",
+				new Dom.Head.Css.Object.Property("color", SimpleColors.ColorE.Color.ToString()));
+			newCSS.Objects.Add(cssColorE);
             #endregion
             #region colorF
-            Dom.Head.Css.Object cssColorF = new Dom.Head.Css.Object(".colorF",
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.White.Color.ToCssWebString()),
-                new Dom.Head.Css.Object.Property("color", MinecraftColor.White.Color.ToARGBColor().ToCssRgbaString()));
+	        Dom.Head.Css.Object cssColorF = new Dom.Head.Css.Object(".colorF",
+		        new Dom.Head.Css.Object.Property("color", SimpleColors.ColorF.Color.ToString()));
             newCSS.Objects.Add(cssColorF);
             #endregion
 

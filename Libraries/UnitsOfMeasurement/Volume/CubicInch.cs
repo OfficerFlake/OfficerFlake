@@ -35,7 +35,6 @@
 
             public static CubicInch CubicInches(this float input) => new CubicInch((double)input);
             public static CubicInch CubicInches(this double input) => new CubicInch((double)input);
-            public static CubicInch CubicInches(this double input) => new CubicInch(input);
         }
     }
 }

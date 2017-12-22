@@ -1,5 +1,6 @@
 ﻿using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Math
 {
@@ -108,6 +109,14 @@ namespace Com.OfficerFlake.Libraries.Math
                 };
             }
             #endregion
+
+	        public static Quadratic StatisticCurve(double x1, double x2, double x3)
+	        {
+		        return Quadratic.From3Point2s(
+					new Point2(x1.Meters(), 0.Meters()),
+					new Point2(x2.Meters(), 0.5.Meters()),
+					new Point2(x3.Meters(), 1.Meters()));
+	        }
         }
     }
 }

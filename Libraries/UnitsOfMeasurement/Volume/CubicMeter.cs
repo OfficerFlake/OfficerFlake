@@ -35,7 +35,6 @@
 
             public static CubicMeter CubicMeters(this float input) => new CubicMeter((double)input);
             public static CubicMeter CubicMeters(this double input) => new CubicMeter((double)input);
-            public static CubicMeter CubicMeters(this double input) => new CubicMeter(input);
         }
     }
 }

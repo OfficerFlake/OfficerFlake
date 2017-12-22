@@ -17,6 +17,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		string Command { get; set; }
 
+		int NumberOfParameters { get; }
 		string GetParameter(int index);
 		bool SetParameter(int index, string value);
 

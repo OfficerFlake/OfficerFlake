@@ -35,7 +35,6 @@
 
             public static CubicYard CubicYards(this float input) => new CubicYard((double)input);
             public static CubicYard CubicYards(this double input) => new CubicYard((double)input);
-            public static CubicYard CubicYards(this double input) => new CubicYard(input);
         }
     }
 }

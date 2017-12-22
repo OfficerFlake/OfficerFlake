@@ -107,7 +107,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             }
             if (capInput.EndsWithAny(Suffixes.MillimetersOfMercury))
             {
-                output = new Pressures.MillimetersOfMercury(conversion);
+                output = new Pressures.MillimeterOfMercury(conversion);
                 return true;
             }
             if (capInput.EndsWithAny(Suffixes.Pascal))

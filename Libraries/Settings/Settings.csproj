@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286C68-AB78-4F34-8199-E8CF255AB284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Color\Color.csproj">
       <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
       <Name>Color</Name>

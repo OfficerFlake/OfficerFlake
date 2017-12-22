@@ -142,6 +142,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Databases\Database.csproj">
       <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
       <Name>Database</Name>

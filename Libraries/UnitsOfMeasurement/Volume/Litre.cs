@@ -35,7 +35,6 @@
 
             public static Litre Litres(this float input) => new Litre((double)input);
             public static Litre Litres(this double input) => new Litre((double)input);
-            public static Litre Litres(this double input) => new Litre(input);
         }
     }
 }

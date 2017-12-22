@@ -16,5 +16,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 
 		public IPoint3 Value1 { get; set; }
 		public WeaponDescription[] Value2 { get; set; }
+
+		public int GetWeaponQuantity(WeaponCategory Weapon)
+		{
+			if (Value2.All(x => x.Weapon != Weapon)) return 0;
+			return Value2.Where(x => x.Weapon == Weapon).Sum(x => x.Quantity);
+		}
 	}
 }

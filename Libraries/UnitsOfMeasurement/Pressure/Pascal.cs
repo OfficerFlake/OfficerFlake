@@ -35,7 +35,6 @@
 
             public static Pascal Pascals(this float input) => new Pascal((double)input);
             public static Pascal Pascals(this double input) => new Pascal((double)input);
-            public static Pascal Pascals(this double input) => new Pascal(input);
         }
     }
 }

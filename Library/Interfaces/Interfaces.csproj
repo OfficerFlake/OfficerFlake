@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildEnvironment\BuildEnvironment.cs" />
+    <Compile Include="Colors\Formatting.cs" />
     <Compile Include="Colors\Colors.cs" />
     <Compile Include="Files\ListFile.cs" />
     <Compile Include="YSFlight\DATFile.cs" />

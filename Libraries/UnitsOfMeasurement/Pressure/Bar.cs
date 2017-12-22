@@ -35,7 +35,6 @@
 
             public static Bar Bars(this float input) => new Bar((double)input);
             public static Bar Bars(this double input) => new Bar((double)input);
-            public static Bar Bars(this double input) => new Bar(input);
         }
     }
 }

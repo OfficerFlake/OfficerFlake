@@ -35,7 +35,6 @@
 
             public static MeterPerSecond MetersPerSecond(this float input) => new MeterPerSecond((double)input);
             public static MeterPerSecond MetersPerSecond(this double input) => new MeterPerSecond((double)input);
-            public static MeterPerSecond MetersPerSecond(this double input) => new MeterPerSecond(input);
         }
     }
 }

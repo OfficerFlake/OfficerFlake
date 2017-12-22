@@ -35,7 +35,6 @@
 
             public static USCup USCups(this float input) => new USCup((double)input);
             public static USCup USCups(this double input) => new USCup((double)input);
-            public static USCup USCups(this double input) => new USCup(input);
         }
 
     }

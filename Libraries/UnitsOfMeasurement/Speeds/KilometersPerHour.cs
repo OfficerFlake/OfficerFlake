@@ -35,7 +35,6 @@
 
             public static KilometersPerHour KilometersPerHours(this float input) => new KilometersPerHour((double)input);
             public static KilometersPerHour KilometersPerHours(this double input) => new KilometersPerHour((double)input);
-            public static KilometersPerHour KilometersPerHours(this double input) => new KilometersPerHour(input);
         }
     }
 }

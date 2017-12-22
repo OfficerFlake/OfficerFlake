@@ -35,7 +35,6 @@
 
             public static PoundsPerSquareInch PoundsPerSquareInchs(this float input) => new PoundsPerSquareInch((double)input);
             public static PoundsPerSquareInch PoundsPerSquareInchs(this double input) => new PoundsPerSquareInch((double)input);
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this double input) => new PoundsPerSquareInch(input);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		double RawValue { get; set; }
 		double ConversionRatio { get; set; }
+		double ConvertToBase();
 
 		string ToString();
 	}

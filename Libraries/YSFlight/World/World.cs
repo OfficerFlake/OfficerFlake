@@ -1036,17 +1036,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								temp = 0.Meters();
 								failed |= !Distance.TryParse(Split[2], out temp);
 								Split[2] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.X = (float)temp.ConvertToBase;
+								CurrentStartPosition.Position.X = (float)temp.ConvertToBase();
 
 								temp = 0.Meters();
 								failed |= !Distance.TryParse(Split[3], out temp);
 								Split[2] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.Y = (float)temp.ConvertToBase;
+								CurrentStartPosition.Position.Y = (float)temp.ConvertToBase();
 
 								temp = 0.Meters();
 								failed |= !Distance.TryParse(Split[4], out temp);
 								Split[3] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.Z = (float)temp.ConvertToBase;
+								CurrentStartPosition.Position.Z = (float)temp.ConvertToBase();
 
 								if (failed)
 								{
@@ -1074,9 +1074,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								failed |= !Angle.TryParse(Split[2].ToUpperInvariant(), out outx);
 								failed |= !Angle.TryParse(Split[3].ToUpperInvariant(), out outy);
 								failed |= !Angle.TryParse(Split[4].ToUpperInvariant(), out outz);
-								CurrentStartPosition.Attitude.X += (double)outx.ToDegrees().ConvertToBase;
-								CurrentStartPosition.Attitude.Y += (double)outy.ToDegrees().ConvertToBase;
-								CurrentStartPosition.Attitude.Z += (double)outz.ToDegrees().ConvertToBase;
+								CurrentStartPosition.Attitude.X += (double)outx.ToDegrees().ConvertToBase();
+								CurrentStartPosition.Attitude.Y += (double)outy.ToDegrees().ConvertToBase();
+								CurrentStartPosition.Attitude.Z += (double)outz.ToDegrees().ConvertToBase();
 
 								while (CurrentStartPosition.Attitude.X <= -180)
 								{
@@ -1128,7 +1128,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								Speed output = 0.Knots();
 								failed |= !Speed.TryParse(Split[2].ToUpperInvariant(), out output);
 								Split[2] = output.ToString() + "M/S";
-								CurrentStartPosition.Speed = (double)output.ToMetersPerSeconds().ConvertToBase;
+								CurrentStartPosition.Speed = (double)output.ToMetersPerSeconds().ConvertToBase();
 
 								if (failed)
 								{
@@ -1219,12 +1219,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								failed |= !Angle.TryParse(Split[7].ToUpperInvariant(), out AdjustAngleY);
 								failed |= !Angle.TryParse(Split[8].ToUpperInvariant(), out AdjustAngleZ);
 
-								CurrentStartPosition.Position.X -= (double)AdjustPosX.ConvertToBase;
-								CurrentStartPosition.Position.Y -= (double)AdjustPosY.ConvertToBase;
-								CurrentStartPosition.Position.Z -= (double)AdjustPosZ.ConvertToBase;
-								CurrentStartPosition.Attitude.X -= (double)AdjustAngleX.ConvertToBase;
-								CurrentStartPosition.Attitude.Y -= (double)AdjustAngleY.ConvertToBase;
-								CurrentStartPosition.Attitude.Z -= (double)AdjustAngleZ.ConvertToBase;
+								CurrentStartPosition.Position.X -= (double)AdjustPosX.ConvertToBase();
+								CurrentStartPosition.Position.Y -= (double)AdjustPosY.ConvertToBase();
+								CurrentStartPosition.Position.Z -= (double)AdjustPosZ.ConvertToBase();
+								CurrentStartPosition.Attitude.X -= (double)AdjustAngleX.ConvertToBase();
+								CurrentStartPosition.Attitude.Y -= (double)AdjustAngleY.ConvertToBase();
+								CurrentStartPosition.Attitude.Z -= (double)AdjustAngleZ.ConvertToBase();
 
 
 								if (failed)
@@ -1336,15 +1336,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						temp = 0.Meters();
 						failed |= !Distance.TryParse(Split[1], out temp);
-						CurrentGround.Position.X = (float)temp.ConvertToBase;
+						CurrentGround.Position.X = (float)temp.ConvertToBase();
 
 						temp = 0.Meters();
 						failed |= !Distance.TryParse(Split[2], out temp);
-						CurrentGround.Position.Y = (float)temp.ConvertToBase;
+						CurrentGround.Position.Y = (float)temp.ConvertToBase();
 
 						temp = 0.Meters();
 						failed |= !Distance.TryParse(Split[3], out temp);
-						CurrentGround.Position.Z = (float)temp.ConvertToBase;
+						CurrentGround.Position.Z = (float)temp.ConvertToBase();
 
 						if (failed)
 						{
@@ -1375,15 +1375,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						temp = 0.Degrees();
 						failed |= !Angle.TryParse(Split[1], out temp);
-						CurrentGround.Position.X = (float)temp.ConvertToBase;
+						CurrentGround.Position.X = (float)temp.ConvertToBase();
 
 						temp = 0.Degrees();
 						failed |= !Angle.TryParse(Split[1], out temp);
-						CurrentGround.Position.Y = (float)temp.ConvertToBase;
+						CurrentGround.Position.Y = (float)temp.ConvertToBase();
 
 						temp = 0.Degrees();
 						failed |= !Angle.TryParse(Split[1], out temp);
-						CurrentGround.Position.Z = (float)temp.ConvertToBase;
+						CurrentGround.Position.Z = (float)temp.ConvertToBase();
 
 						if (failed)
 						{

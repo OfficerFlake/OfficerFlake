@@ -35,7 +35,6 @@
 
             public static USGallon USGallons(this float input) => new USGallon((double)input);
             public static USGallon USGallons(this double input) => new USGallon((double)input);
-            public static USGallon USGallons(this double input) => new USGallon(input);
         }
 
     }

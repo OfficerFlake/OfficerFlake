@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
@@ -1029,7 +1030,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!byte.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out r)) goto Error;
                             if (!byte.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out g)) goto Error;
                             if (!byte.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new SMOKECOL(n, new RGB_Color(r,g,b)));
+                            Properties.Add(new SMOKECOL(n, new XRGBColor(r, g, b)));
                             continue;
                         }
                     case "SMOKEGEN":

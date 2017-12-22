@@ -35,7 +35,6 @@
 
             public static FeetPerSecond FeetPerSeconds(this float input) => new FeetPerSecond((double)input);
             public static FeetPerSecond FeetPerSeconds(this double input) => new FeetPerSecond((double)input);
-            public static FeetPerSecond FeetPerSeconds(this double input) => new FeetPerSecond(input);
         }
     }
 }

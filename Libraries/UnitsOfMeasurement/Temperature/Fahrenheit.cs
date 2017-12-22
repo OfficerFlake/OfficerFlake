@@ -4,39 +4,38 @@
     {
         public static partial class Temperatures
         {
-            public class Fahrenheit : Temperature
+            public class DegreeFahrenheit : Temperature
             {
-                public Fahrenheit(double value) : base(value, "F") { }
+                public DegreeFahrenheit(double value) : base(value, "F") { }
 
-                public static Fahrenheit operator +(Fahrenheit firstMeasurement, Fahrenheit secondMeasurement)
+                public static DegreeFahrenheit operator +(DegreeFahrenheit firstMeasurement, DegreeFahrenheit secondMeasurement)
                 {
-                    return new Fahrenheit((firstMeasurement.Value + secondMeasurement.Value));
+                    return new DegreeFahrenheit((firstMeasurement.Value + secondMeasurement.Value));
                 }
-                public static Fahrenheit operator -(Fahrenheit firstMeasurement, Fahrenheit secondMeasurement)
+                public static DegreeFahrenheit operator -(DegreeFahrenheit firstMeasurement, DegreeFahrenheit secondMeasurement)
                 {
-                    return new Fahrenheit((firstMeasurement.Value - secondMeasurement.Value));
+                    return new DegreeFahrenheit((firstMeasurement.Value - secondMeasurement.Value));
                 }
-                public static Fahrenheit operator *(Fahrenheit firstMeasurement, Fahrenheit secondMeasurement)
+                public static DegreeFahrenheit operator *(DegreeFahrenheit firstMeasurement, DegreeFahrenheit secondMeasurement)
                 {
-                    return new Fahrenheit((firstMeasurement.Value * secondMeasurement.Value));
+                    return new DegreeFahrenheit((firstMeasurement.Value * secondMeasurement.Value));
                 }
-                public static Fahrenheit operator /(Fahrenheit firstMeasurement, Fahrenheit secondMeasurement)
+                public static DegreeFahrenheit operator /(DegreeFahrenheit firstMeasurement, DegreeFahrenheit secondMeasurement)
                 {
-                    return new Fahrenheit((firstMeasurement.Value / secondMeasurement.Value));
+                    return new DegreeFahrenheit((firstMeasurement.Value / secondMeasurement.Value));
                 }
             }
 
-            public static Celcius ToCelcius(this Fahrenheit input) => new Celcius((input-32)*(5m/9m));
-            public static Kelvin ToKelvin(this Fahrenheit input) => new Kelvin(input.ToCelcius().ToKelvin());
+            public static DegreeCelcius ToCelcius(this DegreeFahrenheit input) => new DegreeCelcius((input-32)*(5d/9d));
+            public static DegreeKelvin ToKelvin(this DegreeFahrenheit input) => new DegreeKelvin(input.ToCelcius().ToKelvin());
 
-            public static Fahrenheit Fahrenheits(this byte input) => new Fahrenheit(input);
-            public static Fahrenheit Fahrenheits(this short input) => new Fahrenheit(input);
-            public static Fahrenheit Fahrenheits(this int input) => new Fahrenheit(input);
-            public static Fahrenheit Fahrenheits(this long input) => new Fahrenheit(input);
+            public static DegreeFahrenheit DegreesFahrenheit(this byte input) => new DegreeFahrenheit(input);
+            public static DegreeFahrenheit DegreesFahrenheit(this short input) => new DegreeFahrenheit(input);
+            public static DegreeFahrenheit DegreesFahrenheit(this int input) => new DegreeFahrenheit(input);
+            public static DegreeFahrenheit DegreesFahrenheit(this long input) => new DegreeFahrenheit(input);
 
-            public static Fahrenheit Fahrenheits(this float input) => new Fahrenheit((double)input);
-            public static Fahrenheit Fahrenheits(this double input) => new Fahrenheit((double)input);
-            public static Fahrenheit Fahrenheits(this double input) => new Fahrenheit(input);
+            public static DegreeFahrenheit DegreesFahrenheit(this float input) => new DegreeFahrenheit((double)input);
+            public static DegreeFahrenheit DegreesFahrenheit(this double input) => new DegreeFahrenheit((double)input);
         }
     }
 }

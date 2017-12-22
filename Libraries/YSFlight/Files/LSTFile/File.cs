@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
 {
@@ -28,14 +29,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                 CoarseModelFilePath = coarseModelFilePath;
             }
 
-            public AircraftDefinition(string thisLine)
+            public AircraftDefinition(IListFileLine thisLine)
             {
-                DataFilePath = thisLine.GetElementOrNull(0);
-                VisualModelFilePath = thisLine.GetElementOrNull(1);
-                CollisionFilePath = thisLine.GetElementOrNull(2);
-                CockpitFilePath = thisLine.GetElementOrNull(3);
-                CoarseModelFilePath = thisLine.GetElementOrNull(4);
-            }
+	            DataFilePath = thisLine.GetParameter(0);
+				VisualModelFilePath = thisLine.GetParameter(1);
+				CollisionFilePath = thisLine.GetParameter(2);
+				CockpitFilePath = thisLine.GetParameter(3);
+				CoarseModelFilePath = thisLine.GetParameter(4);
+			}
 
             public AircraftDefinition(string[] input)
             {
@@ -70,9 +71,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             List = new List<AircraftDefinition>();
             foreach (var thisLine in Lines)
             {
-                if (ShowLines) Debug.WriteLine(thisLine);
-                if (thisLine.NumberOfElements == 0) continue;
-                if (thisLine.NumberOfElements < 3) continue;
+                if (ShowLines) Debug.AddSummaryMessage(thisLine.ToString());
+                if (thisLine.NumberOfParameters < 3) continue;
                 var seperatedLine =
                     thisLine.ToString()
                         .SplitPresevingQuotes()
@@ -89,7 +89,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             List<AircraftDefinition> Output = new List<AircraftDefinition>();
             var ysflightDirectory = @"C:/Program Files/YSFLIGHT.COM/YSFlight/";
             Load();
-            if (debugMode) Debug.WriteLine("Testing definitions in LST file for validity...");
+            if (debugMode) Debug.AddDetailMessage("Testing definitions in LST file for validity...");
             var errors = 0;
             foreach (AircraftDefinition thisAircraftDefinition in List)
             {
@@ -102,10 +102,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                 Output.Add(thisAircraftDefinition);
                 continue;
                 Error:
-                if (debugMode) Debug.WriteLine("\"" + thisAircraftDefinition.DataFilePath + "\" entry in (" + Filename + ") has files missing - DAT, Model or Collision File. Check the pack and ensure the addon exists in the defined file path address!");
+                if (debugMode) Debug.AddDetailMessage("\"" + thisAircraftDefinition.DataFilePath + "\" entry in (" + Filename + ") has files missing - DAT, Model or Collision File. Check the pack and ensure the addon exists in the defined file path address!");
                 errors++;
             }
-            if (debugMode) Debug.WriteLine("LST file has " + errors + " errors. " + ((errors > 0) ? ":(" : ":D"));
+            if (debugMode) Debug.AddDetailMessage("LST file has " + errors + " errors. " + ((errors > 0) ? ":(" : ":D"));
             return Output.ToArray();
         }
 
@@ -136,7 +136,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                     Output.Add(thisAircraftDefinition);
                     continue;
                     Error:
-                        Debug.WriteLine(thisAircraftDefinition.ToString() + " files missing.");
+                        Debug.AddDetailMessage(thisAircraftDefinition.ToString() + " files missing.");
                 }
             }
             return Output.ToArray();

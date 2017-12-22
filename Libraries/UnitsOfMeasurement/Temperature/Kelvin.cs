@@ -4,39 +4,38 @@
     {
         public static partial class Temperatures
         {
-            public class Kelvin : Temperature
+            public class DegreeKelvin : Temperature
             {
-                public Kelvin(double value) : base(value, "K") { Value = value; }
+                public DegreeKelvin(double value) : base(value, "K") { Value = value; }
 
-                public static Kelvin operator +(Kelvin firstMeasurement, Kelvin secondMeasurement)
+                public static DegreeKelvin operator +(DegreeKelvin firstMeasurement, DegreeKelvin secondMeasurement)
                 {
-                    return new Kelvin((firstMeasurement.Value + secondMeasurement.Value));
+                    return new DegreeKelvin((firstMeasurement.Value + secondMeasurement.Value));
                 }
-                public static Kelvin operator -(Kelvin firstMeasurement, Kelvin secondMeasurement)
+                public static DegreeKelvin operator -(DegreeKelvin firstMeasurement, DegreeKelvin secondMeasurement)
                 {
-                    return new Kelvin((firstMeasurement.Value - secondMeasurement.Value));
+                    return new DegreeKelvin((firstMeasurement.Value - secondMeasurement.Value));
                 }
-                public static Kelvin operator *(Kelvin firstMeasurement, Kelvin secondMeasurement)
+                public static DegreeKelvin operator *(DegreeKelvin firstMeasurement, DegreeKelvin secondMeasurement)
                 {
-                    return new Kelvin((firstMeasurement.Value * secondMeasurement.Value));
+                    return new DegreeKelvin((firstMeasurement.Value * secondMeasurement.Value));
                 }
-                public static Kelvin operator /(Kelvin firstMeasurement, Kelvin secondMeasurement)
+                public static DegreeKelvin operator /(DegreeKelvin firstMeasurement, DegreeKelvin secondMeasurement)
                 {
-                    return new Kelvin((firstMeasurement.Value / secondMeasurement.Value));
+                    return new DegreeKelvin((firstMeasurement.Value / secondMeasurement.Value));
                 }
             }
 
-            public static Fahrenheit ToFahrenheit(this Kelvin input) => new Fahrenheit(input.ToCelcius().ToFahrenheit());
-            public static Celcius ToCelcius(this Kelvin input) => new Celcius((input + 273.15m));
+            public static DegreeFahrenheit ToFahrenheit(this DegreeKelvin input) => new DegreeFahrenheit(input.ToCelcius().ToFahrenheit());
+            public static DegreeCelcius ToCelcius(this DegreeKelvin input) => new DegreeCelcius((input + 273.15d));
 
-            public static Kelvin Kelvins(this byte input) => new Kelvin(input);
-            public static Kelvin Kelvins(this short input) => new Kelvin(input);
-            public static Kelvin Kelvins(this int input) => new Kelvin(input);
-            public static Kelvin Kelvins(this long input) => new Kelvin(input);
+            public static DegreeKelvin DegreesKelvin(this byte input) => new DegreeKelvin(input);
+            public static DegreeKelvin DegreesKelvin(this short input) => new DegreeKelvin(input);
+            public static DegreeKelvin DegreesKelvin(this int input) => new DegreeKelvin(input);
+            public static DegreeKelvin DegreesKelvin(this long input) => new DegreeKelvin(input);
 
-            public static Kelvin Kelvins(this float input) => new Kelvin((double)input);
-            public static Kelvin Kelvins(this double input) => new Kelvin((double)input);
-            public static Kelvin Kelvins(this double input) => new Kelvin(input);
+            public static DegreeKelvin DegreesKelvin(this float input) => new DegreeKelvin((double)input);
+            public static DegreeKelvin DegreesKelvin(this double input) => new DegreeKelvin((double)input);
         }
     }
 }

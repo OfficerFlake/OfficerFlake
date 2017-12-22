@@ -35,7 +35,6 @@
 
             public static UKQuart UKQuarts(this float input) => new UKQuart((double)input);
             public static UKQuart UKQuarts(this double input) => new UKQuart((double)input);
-            public static UKQuart UKQuarts(this double input) => new UKQuart(input);
         }
 
     }

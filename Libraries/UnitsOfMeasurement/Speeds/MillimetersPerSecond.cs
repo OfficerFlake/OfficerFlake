@@ -35,7 +35,6 @@
 
             public static MillimetersPerSecond MillimetersPerSeconds(this float input) => new MillimetersPerSecond((double)input);
             public static MillimetersPerSecond MillimetersPerSeconds(this double input) => new MillimetersPerSecond((double)input);
-            public static MillimetersPerSecond MillimetersPerSeconds(this double input) => new MillimetersPerSecond(input);
         }
     }
 }

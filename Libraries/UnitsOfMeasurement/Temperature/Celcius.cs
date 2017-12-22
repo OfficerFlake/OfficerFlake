@@ -4,39 +4,38 @@
     {
         public static partial class Temperatures
         {
-            public class Celcius : Temperature
+            public class DegreeCelcius : Temperature
             {
-                public Celcius(double value) : base(value, "C") { }
+                public DegreeCelcius(double value) : base(value, "C") { }
 
-                public static Celcius operator +(Celcius firstMeasurement, Celcius secondMeasurement)
+                public static DegreeCelcius operator +(DegreeCelcius firstMeasurement, DegreeCelcius secondMeasurement)
                 {
-                    return new Celcius((firstMeasurement.Value + secondMeasurement.Value));
+                    return new DegreeCelcius((firstMeasurement.Value + secondMeasurement.Value));
                 }
-                public static Celcius operator -(Celcius firstMeasurement, Celcius secondMeasurement)
+                public static DegreeCelcius operator -(DegreeCelcius firstMeasurement, DegreeCelcius secondMeasurement)
                 {
-                    return new Celcius((firstMeasurement.Value - secondMeasurement.Value));
+                    return new DegreeCelcius((firstMeasurement.Value - secondMeasurement.Value));
                 }
-                public static Celcius operator *(Celcius firstMeasurement, Celcius secondMeasurement)
+                public static DegreeCelcius operator *(DegreeCelcius firstMeasurement, DegreeCelcius secondMeasurement)
                 {
-                    return new Celcius((firstMeasurement.Value * secondMeasurement.Value));
+                    return new DegreeCelcius((firstMeasurement.Value * secondMeasurement.Value));
                 }
-                public static Celcius operator /(Celcius firstMeasurement, Celcius secondMeasurement)
+                public static DegreeCelcius operator /(DegreeCelcius firstMeasurement, DegreeCelcius secondMeasurement)
                 {
-                    return new Celcius((firstMeasurement.Value / secondMeasurement.Value));
+                    return new DegreeCelcius((firstMeasurement.Value / secondMeasurement.Value));
                 }
             }
 
-            public static Fahrenheit ToFahrenheit(this Celcius input) => new Fahrenheit((input*9m/5m)+32);
-            public static Kelvin ToKelvin(this Celcius input) => new Kelvin((input - 273.15m));
+            public static DegreeFahrenheit ToFahrenheit(this DegreeCelcius input) => new DegreeFahrenheit((input*9d/5d)+32);
+            public static DegreeKelvin ToKelvin(this DegreeCelcius input) => new DegreeKelvin((input - 273.15d));
 
-            public static Celcius Celciuss(this byte input) => new Celcius(input);
-            public static Celcius Celciuss(this short input) => new Celcius(input);
-            public static Celcius Celciuss(this int input) => new Celcius(input);
-            public static Celcius Celciuss(this long input) => new Celcius(input);
+            public static DegreeCelcius DegreesCelcius(this byte input) => new DegreeCelcius(input);
+            public static DegreeCelcius DegreesCelcius(this short input) => new DegreeCelcius(input);
+            public static DegreeCelcius DegreesCelcius(this int input) => new DegreeCelcius(input);
+            public static DegreeCelcius DegreesCelcius(this long input) => new DegreeCelcius(input);
 
-            public static Celcius Celciuss(this float input) => new Celcius((double)input);
-            public static Celcius Celciuss(this double input) => new Celcius((double)input);
-            public static Celcius Celciuss(this double input) => new Celcius(input);
+            public static DegreeCelcius DegreesCelcius(this float input) => new DegreeCelcius((double)input);
+            public static DegreeCelcius DegreesCelcius(this double input) => new DegreeCelcius((double)input);
         }
     }
 }

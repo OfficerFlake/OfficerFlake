@@ -35,7 +35,6 @@
 
             public static UKTableSpoon UKTableSpoons(this float input) => new UKTableSpoon((double)input);
             public static UKTableSpoon UKTableSpoons(this double input) => new UKTableSpoon((double)input);
-            public static UKTableSpoon UKTableSpoons(this double input) => new UKTableSpoon(input);
         }
 
     }

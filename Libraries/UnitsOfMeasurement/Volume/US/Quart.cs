@@ -35,7 +35,6 @@
 
             public static USQuart USQuarts(this float input) => new USQuart((double)input);
             public static USQuart USQuarts(this double input) => new USQuart((double)input);
-            public static USQuart USQuarts(this double input) => new USQuart(input);
         }
 
     }

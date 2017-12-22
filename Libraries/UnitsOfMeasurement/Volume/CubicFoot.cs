@@ -35,7 +35,6 @@
 
             public static CubicFoot CubicFeet(this float input) => new CubicFoot((double)input);
             public static CubicFoot CubicFeet(this double input) => new CubicFoot((double)input);
-            public static CubicFoot CubicFeet(this double input) => new CubicFoot(input);
         }
     }
 }

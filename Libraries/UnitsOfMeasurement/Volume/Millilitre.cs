@@ -35,7 +35,6 @@
 
             public static Millilitre Millilitres(this float input) => new Millilitre((double)input);
             public static Millilitre Millilitres(this double input) => new Millilitre((double)input);
-            public static Millilitre Millilitres(this double input) => new Millilitre(input);
         }
     }
 }

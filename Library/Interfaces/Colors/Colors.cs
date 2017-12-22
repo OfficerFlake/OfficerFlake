@@ -11,26 +11,30 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		byte Blue { get; set; }
 	}
 
-	public interface I4BitColor
+	public interface ISimpleColor
 	{
-		IColor FullColor { get; set; }
+		I24BitColor Color { get; set; }
 		char ColorCode { get; set; }
-
-		string ToString();
 	}
 
 	public interface I24BitColor
 	{
 		IColor FullColor { get; set; }
-		byte Red { get; }
-		byte Green { get; }
-		byte Blue { get; }
+		byte Red { get; set; }
+		byte Green { get; set; }
+		byte Blue { get; set; }
 
 		string ToHexString();
 	}
 
-	public interface I32BitColor : IColor
+	public interface I32BitColor
 	{
+		IColor FullColor { get; set; }
+		byte Alpha { get; set; }
+		byte Red { get; set; }
+		byte Green { get; set; }
+		byte Blue { get; set; }
+
 		string ToHexString();
 	}
 }

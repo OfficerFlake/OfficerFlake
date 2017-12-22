@@ -35,7 +35,6 @@
 
             public static MachAtSeaLevel MachAtSeaLevels(this float input) => new MachAtSeaLevel((double)input);
             public static MachAtSeaLevel MachAtSeaLevels(this double input) => new MachAtSeaLevel((double)input);
-            public static MachAtSeaLevel MachAtSeaLevels(this double input) => new MachAtSeaLevel(input);
         }
     }
 }

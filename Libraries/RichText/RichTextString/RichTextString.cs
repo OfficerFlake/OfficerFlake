@@ -14,7 +14,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    {
 			#region Properties
 			public string Message = "";
-		    public MinecraftColor Color = MinecraftColor.White;
+		    public SimpleColor Color = SimpleColors.ColorF;
 
 		    public bool IsObfuscated;
 		    public bool IsBold;
@@ -27,7 +27,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 		    }
 
-			public MessageElement(string message, MinecraftColor color, bool isbold, bool isitalic, bool isunderlined,
+			public MessageElement(string message, SimpleColor color, bool isbold, bool isitalic, bool isunderlined,
 			    bool isobfuscated)
 		    {
 			    Message = message;
@@ -127,54 +127,53 @@ namespace Com.OfficerFlake.Libraries.RichText
 						switch (thisCharUpperCase)
 						{
 							#region Cases
-
 							case '0':
-								currentMessageElement.Color = MinecraftColor.Black;
+								currentMessageElement.Color = SimpleColors.Color0;
 								break;
 							case '1':
-								currentMessageElement.Color = MinecraftColor.DarkBlue;
+								currentMessageElement.Color = SimpleColors.Color1;
 								break;
 							case '2':
-								currentMessageElement.Color = MinecraftColor.DarkGreen;
+								currentMessageElement.Color = SimpleColors.Color2;
 								break;
 							case '3':
-								currentMessageElement.Color = MinecraftColor.Teal;
+								currentMessageElement.Color = SimpleColors.Color3;
 								break;
 							case '4':
-								currentMessageElement.Color = MinecraftColor.DarkRed;
+								currentMessageElement.Color = SimpleColors.Color4;
 								break;
 							case '5':
-								currentMessageElement.Color = MinecraftColor.Purple;
+								currentMessageElement.Color = SimpleColors.Color5;
 								break;
 							case '6':
-								currentMessageElement.Color = MinecraftColor.Gold;
+								currentMessageElement.Color = SimpleColors.Color6;
 								break;
 							case '7':
-								currentMessageElement.Color = MinecraftColor.Gray;
+								currentMessageElement.Color = SimpleColors.Color7;
 								break;
 							case '8':
-								currentMessageElement.Color = MinecraftColor.DarkGray;
+								currentMessageElement.Color = SimpleColors.Color8;
 								break;
 							case '9':
-								currentMessageElement.Color = MinecraftColor.Blue;
+								currentMessageElement.Color = SimpleColors.Color9;
 								break;
 							case 'A':
-								currentMessageElement.Color = MinecraftColor.Green;
+								currentMessageElement.Color = SimpleColors.ColorA;
 								break;
 							case 'B':
-								currentMessageElement.Color = MinecraftColor.Aqua;
+								currentMessageElement.Color = SimpleColors.ColorB;
 								break;
 							case 'C':
-								currentMessageElement.Color = MinecraftColor.Red;
+								currentMessageElement.Color = SimpleColors.ColorC;
 								break;
 							case 'D':
-								currentMessageElement.Color = MinecraftColor.Magenta;
+								currentMessageElement.Color = SimpleColors.ColorD;
 								break;
 							case 'E':
-								currentMessageElement.Color = MinecraftColor.Yellow;
+								currentMessageElement.Color = SimpleColors.ColorE;
 								break;
 							case 'F':
-								currentMessageElement.Color = MinecraftColor.White;
+								currentMessageElement.Color = SimpleColors.ColorF;
 								break;
 
 							case 'K':
@@ -194,7 +193,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 								break;
 
 							case 'R':
-								currentMessageElement.Color = MinecraftColor.White;
+								currentMessageElement.Color = SimpleColors.White;
 								currentMessageElement.IsObfuscated = false;
 								currentMessageElement.IsBold = false;
 								currentMessageElement.IsStrikeThrough = false;
@@ -251,7 +250,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 				if (!thisElement.IsItalic && prevElement.IsItalic) shouldReset = true;
 				if (shouldReset) output.Append("&" + 'R');
 
-				if (thisElement.Color != prevElement.Color) output.Append("&" + thisElement.Color.Character);
+				if (thisElement.Color != prevElement.Color) output.Append("&" + thisElement.Color.ColorCode);
 
 				if (thisElement.IsObfuscated && !prevElement.IsObfuscated) output.Append("&" + 'K');
 				if (thisElement.IsBold && !prevElement.IsBold) output.Append("&" + 'L');

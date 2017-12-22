@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Math;
 using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
 using Com.OfficerFlake.Libraries.Math.Statistics;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using Com.OfficerFlake.Libraries.YSFlight.Types;
 using Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties;
+using Com.OfficerFlake.Libraries.IO;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 {
@@ -72,69 +74,71 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
         #region ThrustToWeight
 
-        private Mass GetMaxThrust()
+        private IMass GetMaxThrust()
         {
-            var magicnumber_propellorpower = 0.0053333333333333m;
-            var input = new List<Mass>
+            var magicnumber_propellorpower = 0.0053333333333333d;
+            var input = new List<IMass>
             {
                 File.Properties.OfType<THRAFTBN>().Max(z => z.Value),
                 File.Properties.OfType<THRMILIT>().Max(z => z.Value),
-                File.Properties.OfType<PROPELLR>().Max(z => (z.Value.ConvertToBase*magicnumber_propellorpower).Kilograms().ToMetricTonnes())
+                File.Properties.OfType<PROPELLR>().Max(z => (z.Value.ConversionRatio*magicnumber_propellorpower).Kilograms().ToMetricTonnes())
 
             };
-            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
+            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
 
             return output;
         }
-        private Mass GetMinWeight()
+        private IMass GetMinWeight()
         {
-            var input = new List<Mass>
+            var input = new List<IMass>
             {
                 File.Properties.OfType<WEIGHCLN>().Min(z => z.Value)
             };
-            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).Last();
+            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).Last();
             return output;
         }
         private Mass GetOperatingWeight()
         {
-            var weightClean = new List<Mass>
+            var weightClean = new List<IMass>
             {
                 File.Properties.OfType<WEIGHCLN>().Min(z => z.Value)
             };
-            var weightFuel50Percent = new List<Mass>
+            var weightFuel50Percent = new List<IMass>
             {
                 File.Properties.OfType<WEIGFUEL>().Min(z => z.Value)
             };
-            var weightCleanOut = weightClean.All(y => y == null) ?
-                0.MetricTonnes() :
-                weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).Last();
-            var weightFuel50PercentOut = 0.5 *
-                ((weightClean.All(y => y == null)) ?
-                    0.MetricTonnes() :
-                    weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).Last()
-                );
+	        var weightCleanOut = weightClean.All(y => y == null)
+		        ? 0.MetricTonnes()
+		        : weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).Last().ConvertToBase();
+
+	        var weightFuel50PercentOut = 0.5 *
+	                                     ((weightClean.All(y => y == null))
+		                                     ? 0.MetricTonnes()
+		                                     : weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase())
+												.Last().ConvertToBase()
+	                                     );
             return (weightCleanOut + weightFuel50PercentOut).Kilograms();
         }
         public double CalculateThrustToWeightRatio()
         {
-            decimal numerator = GetMaxThrust().ConvertToBase;
-            decimal denominator = GetOperatingWeight().ConvertToBase;
-            if (denominator == 0) return decimal.MaxValue;
-            decimal output = numerator / denominator;
+	        double numerator = GetMaxThrust().ConvertToBase();
+	        double denominator = GetOperatingWeight().ConvertToBase();
+            if (denominator == 0) return double.MaxValue;
+	        double output = numerator / denominator;
             return output;
         }
 
         #endregion
         #region CruiseSpeed
 
-        private Speed GetCruiseSpeed()
+        private ISpeed GetCruiseSpeed()
         {
-            var input = new List<Speed>
+            var input = new List<ISpeed>
             {
                 File.Properties.OfType<REFVCRUS>().Max(z => z.Value),
 
             };
-            var output = (input.All(y => y == null)) ? 0.Knots() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
+            var output = (input.All(y => y == null)) ? 0.Knots() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
 
             return output;
         }
@@ -150,39 +154,39 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
         }
         public double CalculateMaxCruiseSpeed()
         {
-            decimal numerator = GetCruiseSpeed().ConvertToBase;
-            decimal denominator = (decimal)GetCruiseThrottle();
+	        double numerator = GetCruiseSpeed().ConvertToBase();
+	        double denominator = (double)GetCruiseThrottle();
             if (denominator == 0) return 0;
-            decimal output = numerator / denominator;
+	        double output = numerator / denominator;
             return output;
         }
 
         #endregion
         #region MaxTurnRate
 
-        private Angle GetMaxInputAoA()
+        private IAngle GetMaxInputAoA()
         {
-            var ListOfMXIPTAOA = new List<Angle>
+            var ListOfMXIPTAOA = new List<IAngle>
             {
                 File.Properties.OfType<MXIPTAOA>().Max(z => z.Value),
             };
-            var MXIPTAOA = (ListOfMXIPTAOA.All(y => y == null)) ? 0.Degrees() : ListOfMXIPTAOA.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
+            var MXIPTAOA = (ListOfMXIPTAOA.All(y => y == null)) ? 0.Degrees() : ListOfMXIPTAOA.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
 
             return MXIPTAOA;
         }
-        private Angle GetPSTMAoA()
+        private IAngle GetPSTMAoA()
         {
-            var ListOfPSTMPTCH = new List<Angle>
+            var ListOfPSTMPTCH = new List<IAngle>
             {
                 File.Properties.OfType<PSTMPTCH>().Max(z => z.Value),
             };
-            var PSTMPTCH = (ListOfPSTMPTCH.All(y => y == null)) ? 0.Degrees() : ListOfPSTMPTCH.Where(y => y != null).OrderByDescending(x => x.ConvertToBase).First();
+            var PSTMPTCH = (ListOfPSTMPTCH.All(y => y == null)) ? 0.Degrees() : ListOfPSTMPTCH.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
 
             return PSTMPTCH;
         }
         public double CalculateMaxTurnRate()
         {
-            return (GetMaxInputAoA().ConvertToBase + GetPSTMAoA().ConvertToBase).Radians().ToDegrees();
+            return (GetMaxInputAoA().ConvertToBase() + GetPSTMAoA().ConvertToBase()).Radians().ToDegrees();
         }
 
         #endregion
@@ -201,7 +205,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                 };
             var output = STRENGTH.OrderByDescending(x => x).First();
 
-            return (decimal)output;
+            return output;
         }
 
         #endregion
@@ -224,18 +228,18 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
         private int GetAmmoOfGuns()
         {
             var input = (File.Properties.OfType<INITIGUN>().Any())
-                ? new List<int>
+                ? new List<uint>
                 {
                     File.Properties.OfType<INITIGUN>().Max(z => z.Value)
                 }
-                : new List<int>
+                : new List<uint>
                 {
                     0
                 };
 
             var output = input.OrderByDescending(x => x).First();
 
-            return output;
+            return (int)output;
         }
         private float GetPowerOfGuns()
         {
@@ -261,9 +265,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             return fastestSpeed > 0 ? fastestSpeed : 1;
         }
 
-        private decimal GetMaxGunDamagePerSecond()
+        private double GetMaxGunDamagePerSecond()
         {
-            return ((GetNumberOfGuns() * (decimal)GetPowerOfGuns()) / (decimal)GetSpeedOfGuns());
+            return ((GetNumberOfGuns() * GetPowerOfGuns()) / GetSpeedOfGuns());
         }
 
         private int GetNumberOfWeapon(WeaponCategory Weapon)
@@ -287,7 +291,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                     .OfType<RKTSLOT_>()
                     .Count();
 
-            var numberOfInit = 0;
+            uint numberOfInit = 0;
             if (Weapon.ToString() == WeaponCategory.AIM9.ToString())
                 numberOfInit = File.Properties
                     .OfType<INITIAAM>()
@@ -323,7 +327,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             {
                 numberOnHardPoint,
                 numberOfSlot,
-                numberOfInit
+                (int)numberOfInit
             }.Max();
 
             return maxQtyWeapon;
@@ -337,19 +341,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             var B250 = GetNumberOfWeapon(WeaponCategory.B250);
             var B500 = GetNumberOfWeapon(WeaponCategory.B500);
             var B500HD = GetNumberOfWeapon(WeaponCategory.B500HD);
-            var GUN = GetMaxGunDamagePerSecond() * (GetAmmoOfGuns()/3000M);
+            var GUN = GetMaxGunDamagePerSecond() * (GetAmmoOfGuns()/3000d);
 
 			//TODO: SOLVE SLOT LOADING  (PRIOTITY=0)
 			//TODO: SOLVE SCORE BALANCE  (PRIOTITY=0)
 			var score =
-                (AAM * 1.0M) +
-                (A_AAM * 1.2M) +
-                (AGM * 0.9M) +
-                (RKT * 0.75M) +
-                (B250 * 0.5M) +
-                (B500 * 0.6M) +
-                (B500HD * 0.5M) +
-                (GUN * 0.07M);
+                (AAM * 1.0d) +
+                (A_AAM * 1.2d) +
+                (AGM * 0.9d) +
+                (RKT * 0.75d) +
+                (B250 * 0.5d) +
+                (B500 * 0.6d) +
+                (B500HD * 0.5d) +
+                (GUN * 0.07d);
 
             return score;
         }
@@ -382,12 +386,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
             var output = (RADARCRSMin < BMBAYRCSMin) ? RADARCRSMin : BMBAYRCSMin;
 
-            return (decimal)output;
+            return output;
         }
 
         #endregion
 
-        public float GetScore(Equations.Quadratic EQ, decimal Value)
+        public float GetScore(Equations.Quadratic EQ, double Value)
         {
             float score = EQ.Solve(Value);
             if (score < 0) score = 0;
@@ -397,23 +401,23 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
         public void ShowDebug()
         {
-            var ThrustToWeightRatio = Equations.Quadratic.From3Point2s(new Point2(0m, 0m), new Point2(0.5m, 5m), new Point2(2m, 10m));
-            Debug.WriteLine("----====----ThrustToWeightRatio: " + GetScore(ThrustToWeightRatio, CalculateThrustToWeightRatio()));
+	        var ThrustToWeightRatio = Equations.Quadratic.StatisticCurve(0, 0.5, 2);
+            Debug.AddSummaryMessage("----====----ThrustToWeightRatio: " + GetScore(ThrustToWeightRatio, CalculateThrustToWeightRatio()));
 
-            var MaxCruiseSpeed = Equations.Quadratic.From3Point2s(new Point2(0m, 0m), new Point2(350m, 5m), new Point2(1000m, 10m));
-            Debug.WriteLine("----====----MaxCruiseSpeed: " + GetScore(MaxCruiseSpeed, CalculateMaxCruiseSpeed()));
+            var MaxCruiseSpeed = Equations.Quadratic.StatisticCurve(0, 350, 1000);
+			Debug.AddSummaryMessage("----====----MaxCruiseSpeed: " + GetScore(MaxCruiseSpeed, CalculateMaxCruiseSpeed()));
 
-            var MaxTurnRate = Equations.Quadratic.From3Point2s(new Point2(0m, 0m), new Point2(0.0075m, 5m), new Point2(0.05m, 10m));
-            Debug.WriteLine("----====----MaxTurnRate: " + GetScore(MaxTurnRate, CalculateMaxTurnRate()));
+            var MaxTurnRate = Equations.Quadratic.StatisticCurve(0, 0.0075, 0.05);
+			Debug.AddSummaryMessage("----====----MaxTurnRate: " + GetScore(MaxTurnRate, CalculateMaxTurnRate()));
 
-            var MaxStrength = Equations.Quadratic.From3Point2s(new Point2(0m, 0m), new Point2(10m, 5m), new Point2(100m, 10m));
-            Debug.WriteLine("----====----MaxStrength: " + GetScore(MaxStrength, CalculateMaxStrength()));
+            var MaxStrength = Equations.Quadratic.StatisticCurve(0, 10, 100);
+			Debug.AddSummaryMessage("----====----MaxStrength: " + GetScore(MaxStrength, CalculateMaxStrength()));
 
-            var WeaponScore = Equations.Quadratic.From3Point2s(new Point2(0m, 0m), new Point2(10m, 5m), new Point2(100m, 10m));
-            Debug.WriteLine("----====----WeaponScore: " + GetScore(WeaponScore, CalculateWeaponScore()));
+            var WeaponScore = Equations.Quadratic.StatisticCurve(0, 10, 100);
+			Debug.AddSummaryMessage("----====----WeaponScore: " + GetScore(WeaponScore, CalculateWeaponScore()));
 
-            var Stealth = Equations.Quadratic.From3Point2s(new Point2(1m, 0m), new Point2(0.5m, 5m), new Point2(0m, 10m));
-            Debug.WriteLine("----====----Stealth: " + GetScore(Stealth, CalculateStealth()));
+            var Stealth = Equations.Quadratic.StatisticCurve(1, 0.5, 0);
+			Debug.AddSummaryMessage("----====----Stealth: " + GetScore(Stealth, CalculateStealth()));
         }
     }
 }

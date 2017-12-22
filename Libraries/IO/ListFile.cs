@@ -1,20 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
-using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.IO;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-    public class ListFile : File, IListFile
+	public class ListFile : File, Com.OfficerFlake.Libraries.Interfaces.IListFile
 	{
-	    protected ListFile(string filename) : base(filename)
+		public List<IListFileLine> Lines { get; set; }
+
+		protected ListFile(string filename) : base(filename)
         {
         }
 
-		public List<string> Lines = new List<string>();
+		public class Line : IListFileLine
+		{
+			private List<string> Contents = new List<string>();
+
+			public Line(string[] contents)
+			{
+				Contents = contents.ToList();
+			}
+
+			public int NumberOfParameters => Contents.Count;
+
+			public string GetParameter(int index)
+			{
+				if (index > Contents.Count) return "";
+				return Contents[index];
+			}
+			public void SetParameter(int index, string value)
+			{
+				while (index > Contents.Count) Contents.Add("");
+				Contents[index] = value;
+			}
+
+			public override string ToString()
+			{
+				return string.Join(" ", Contents);
+			}
+		}
 
 		public new bool Load()
         {
@@ -22,8 +48,8 @@ namespace Com.OfficerFlake.Libraries.IO
             Lines.Clear();
             foreach (var thisLine in Contents)
             {
-                var thisLinePrepared = string.Join(" ", thisLine.SplitPresevingQuotes());
-	            Lines.Add(thisLinePrepared);
+	            var contents = thisLine.SplitPresevingQuotes();
+	            Lines.Add(new Line(contents));
             }
             return true;
         }

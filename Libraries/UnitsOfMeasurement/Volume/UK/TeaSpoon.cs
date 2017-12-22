@@ -35,7 +35,6 @@
 
             public static UKTeaSpoon UKTeaSpoons(this float input) => new UKTeaSpoon((double)input);
             public static UKTeaSpoon UKTeaSpoons(this double input) => new UKTeaSpoon((double)input);
-            public static UKTeaSpoon UKTeaSpoons(this double input) => new UKTeaSpoon(input);
         }
 
     }

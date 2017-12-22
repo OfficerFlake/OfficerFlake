@@ -90,16 +90,16 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    public string ToUnformattedString()
 	    {
 			StringBuilder output = new StringBuilder();
-		    output.Append("&" + MinecraftColor.DarkGray.Character);
+		    output.Append("&" + SimpleColors.DarkGray.ColorCode);
 			output.Append(Created.InStandardForm().YYYYMMDD);
 		    output.Append(" ");
-		    output.Append("&" + MinecraftColor.Gray.Character);
+		    output.Append("&" + SimpleColors.Gray.ColorCode);
 			output.Append(Created.InStandardForm().hhmmss);
 		    output.Append(" ");
-		    output.Append("&" + MinecraftColor.Teal.Character);
+		    output.Append("&" + SimpleColors.Teal.ColorCode);
 			output.Append(UserObject);
 		    output.Append(" ");
-		    output.Append("&" + MinecraftColor.White.Character);
+		    output.Append("&" + SimpleColors.White.ColorCode);
 			output.Append(String.ToFormattedString());
 		    return output.ToString();
 	    }

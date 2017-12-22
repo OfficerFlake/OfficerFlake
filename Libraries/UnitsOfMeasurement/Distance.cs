@@ -1,5 +1,6 @@
 ﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
@@ -15,8 +16,6 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #endregion
         private readonly string _unitSuffix;
-	    private double _rawValue;
-	    private double _conversionRatio;
 
 	    #region Operators
         public static implicit operator byte(Distance thisDistance) => (byte)thisDistance.ConvertToBase();

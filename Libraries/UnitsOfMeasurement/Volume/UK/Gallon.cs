@@ -35,7 +35,6 @@
 
             public static UKGallon UKGallons(this float input) => new UKGallon((double)input);
             public static UKGallon UKGallons(this double input) => new UKGallon((double)input);
-            public static UKGallon UKGallons(this double input) => new UKGallon(input);
         }
 
     }

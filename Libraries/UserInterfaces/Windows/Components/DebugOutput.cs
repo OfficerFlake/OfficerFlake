@@ -224,13 +224,13 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
 		                   thisRichTextMessage.Created.InStandardForm().MM +
 		                   thisRichTextMessage.Created.InStandardForm().DD;
-			date.Color = MinecraftColor.White;
+			date.Color = SimpleColors.White;
 
 		    RichTextString.MessageElement time = new RichTextString.MessageElement();
 			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
 			               thisRichTextMessage.Created.InStandardForm().mm +
 			               thisRichTextMessage.Created.InStandardForm().ss;
-			time.Color = MinecraftColor.DarkGray;
+			time.Color = SimpleColors.DarkGray;
 
 		    MessageType type = thisRichTextMessage.Type;
 
@@ -251,7 +251,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    if (DebugMenu.showTypeToolStripMenuItem.Checked)
 		    {
 			    int totalMessageSize = 0;
-			    RichTextString messageTypeString = "Unknown".AsRichTextString();
+			    RichTextString messageTypeString = ("&d" + "???").AsRichTextString();
 			    switch (thisRichTextMessage.Type)
 			    {
 				    case MessageType.Unknown:

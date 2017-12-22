@@ -35,7 +35,6 @@
 
             public static UKPint UKPints(this float input) => new UKPint((double)input);
             public static UKPint UKPints(this double input) => new UKPint((double)input);
-            public static UKPint UKPints(this double input) => new UKPint(input);
         }
 
     }

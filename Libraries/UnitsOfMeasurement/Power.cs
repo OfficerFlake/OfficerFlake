@@ -110,7 +110,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             if (capInput.EndsWithAny(Suffixes.FootPoundsPerMinute))
             {
 
-                output = new Powers.FootPoundsPerMinute(conversion);
+                output = new Powers.FootPoundPerMinute(conversion);
                 return true;
             }
             if (capInput.EndsWithAny(Suffixes.BTUsPerMinute))
