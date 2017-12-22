@@ -1,11 +1,15 @@
-﻿using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
+﻿using System;
+using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class VARGEOMW : DAT_Bool
-    {
-        public VARGEOMW(bool value) : base("VARGEOMW", value)
-        {
-        }
-    }
+	public class VARGEOMW : DATProperty, IDAT_1_Parameter<Boolean>
+	{
+		public VARGEOMW(Boolean value) : base("VARGEOMW" + " " + string.Join(" ", value))
+		{
+			Value = value;
+		}
+
+		public Boolean Value { get; set; }
+	}
 }

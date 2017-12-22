@@ -14,31 +14,31 @@ namespace Com.OfficerFlake.Libraries.Math.Statistics
         }
         #endregion
         public string Name { get;}
-        private List<decimal> samplesList = new List<decimal>();
+        private List<double> samplesList = new List<double>();
 
-        public decimal Max()
+        public double Max()
         {
             if (samplesList.Count == 0) return 0;
             return samplesList.Max();
         }
-        public decimal Min()
+        public double Min()
         {
             if (samplesList.Count == 0) return 0;
             return samplesList.Min();
         }
-        public decimal Mode()
+        public double Mode()
         {
             if (samplesList.Count == 0) return 0;
             return samplesList.GroupBy(v => v).OrderByDescending(g => g.Count()).FirstOrDefault().Key;
         }
-        public decimal Mean()
+        public double Mean()
         {
             if (samplesList.Count == 0) return 0;
             return samplesList.Select(x => x/samplesList.Count).Sum();
         }
-        public decimal StandardDeviation()
+        public double StandardDeviation()
         {
-            decimal ret = 0;
+	        double ret = 0;
             if (samplesList.Count() > 0)
             {
                 //Compute the Average      
@@ -46,12 +46,12 @@ namespace Com.OfficerFlake.Libraries.Math.Statistics
                 //Perform the Sum of (value-avg)_2_2      
                 var sum = samplesList.Sum(d => ((d - avg) * (d - avg)));
                 //Put it all together      
-                ret = (decimal)System.Math.Sqrt((double)((sum) / (samplesList.Count() - 1)));
+                ret = System.Math.Sqrt((double)((sum) / (samplesList.Count() - 1)));
             }
             return ret;
         }
 
-        public void AddSample(decimal value)
+        public void AddSample(double value)
         {
             lock (samplesList)
             {

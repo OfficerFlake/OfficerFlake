@@ -1,4 +1,5 @@
-﻿using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
 
 namespace Com.OfficerFlake.Libraries.Math
 {
@@ -8,24 +9,31 @@ namespace Com.OfficerFlake.Libraries.Math
         {
             #region Properties
 
-            public decimal Result;
-            public decimal A;
-            public decimal B;
-            public decimal C;
+            public double Result;
+            public double A;
+            public double B;
+            public double C;
 
             #endregion
             #region Constructors
             public Quadratic()
             {
             }
-            public Quadratic(decimal x, decimal y)
+            public Quadratic(double x, double y)
             {
                 Result = y;
                 A = x*x;
                 B = x;
                 C = 1;
             }
-            public Quadratic(Quadratic duplicate)
+	        public Quadratic(IDistance x, IDistance y)
+	        {
+		        Result = y.RawValue / y.ConversionRatio;
+		        A = x.RawValue/x.ConversionRatio * x.RawValue / x.ConversionRatio;
+		        B = x.RawValue / x.ConversionRatio;
+		        C = 1;
+	        }
+			public Quadratic(Quadratic duplicate)
             {
                 Result = duplicate.Result;
                 A = duplicate.A;
@@ -50,7 +58,7 @@ namespace Com.OfficerFlake.Libraries.Math
                 //Solve for A then B then C
                 var a = equation6.MakeSubject(equation6.A).Result; //Substitute into EQ 6
                 var b = (equation4.Result - equation4.A*a)/equation4.B; //Into EQ 4
-                var c = A.Y - (a * A.X * A.X) - (b * A.X); //Into EQ 1
+                var c = (A.Y.RawValue / A.Y.ConversionRatio) - (a * (A.X.RawValue/A.X.ConversionRatio) * (A.X.RawValue / A.X.ConversionRatio)) - (b * (A.X.RawValue / A.X.ConversionRatio)); //Into EQ 1
 
                 //Create new Quadratic solver based on A, B and C.
                 var output = new Quadratic
@@ -63,7 +71,7 @@ namespace Com.OfficerFlake.Libraries.Math
             }
             #endregion
             #region Methods
-            public Quadratic MakeSubject(decimal value)
+            public Quadratic MakeSubject(double value)
             {
                 Quadratic output = new Quadratic(this);
                 //No adjustment for X, this is intrinsic 
@@ -73,7 +81,7 @@ namespace Com.OfficerFlake.Libraries.Math
                 output.C /= value;
                 return output;
             }
-            public float Solve(decimal X)
+            public float Solve(double X)
             {
                 return (float)(A * (X * X) + B * X + C);
             }

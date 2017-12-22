@@ -6,7 +6,7 @@
         {
             public class Celcius : Temperature
             {
-                public Celcius(decimal value) : base(value, "C") { }
+                public Celcius(double value) : base(value, "C") { }
 
                 public static Celcius operator +(Celcius firstMeasurement, Celcius secondMeasurement)
                 {
@@ -34,9 +34,9 @@
             public static Celcius Celciuss(this int input) => new Celcius(input);
             public static Celcius Celciuss(this long input) => new Celcius(input);
 
-            public static Celcius Celciuss(this float input) => new Celcius((decimal)input);
-            public static Celcius Celciuss(this double input) => new Celcius((decimal)input);
-            public static Celcius Celciuss(this decimal input) => new Celcius(input);
+            public static Celcius Celciuss(this float input) => new Celcius((double)input);
+            public static Celcius Celciuss(this double input) => new Celcius((double)input);
+            public static Celcius Celciuss(this double input) => new Celcius(input);
         }
     }
 }

@@ -1,20 +1,15 @@
-﻿using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
+﻿using System;
+using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class CKPITIST : DAT_Bool
-    {
-        public CKPITIST(bool value) : base("CKPITIST", value)
-        {
-        }
-    }
-	public class ARRESTER : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class CKPITIST : DATProperty, IDAT_1_Parameter<Boolean>
 	{
-		public ARRESTER(IPoint3 value) : base("AAMSLOT_" + " " + string.Join(" ", value))
+		public CKPITIST(Boolean value) : base("CKPITIST" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public Boolean Value { get; set; }
 	}
 }

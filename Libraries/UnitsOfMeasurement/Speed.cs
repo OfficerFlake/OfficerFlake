@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Speed(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Speed(double value, double conversionRatio, string unitSuffix)
 : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -19,30 +19,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Speed thisSpeed) => (byte)thisSpeed.ConvertToBase;
-        public static implicit operator short(Speed thisSpeed) => (short)thisSpeed.ConvertToBase;
-        public static implicit operator int(Speed thisSpeed) => (int)thisSpeed.ConvertToBase;
-        public static implicit operator long(Speed thisSpeed) => (long)thisSpeed.ConvertToBase;
+        public static implicit operator byte(Speed thisSpeed) => (byte)thisSpeed.ConvertToBase();
+        public static implicit operator short(Speed thisSpeed) => (short)thisSpeed.ConvertToBase();
+        public static implicit operator int(Speed thisSpeed) => (int)thisSpeed.ConvertToBase();
+        public static implicit operator long(Speed thisSpeed) => (long)thisSpeed.ConvertToBase();
 
-        public static implicit operator float(Speed thisSpeed) => (float)thisSpeed.ConvertToBase;
-        public static implicit operator double(Speed thisSpeed) => (double)thisSpeed.ConvertToBase;
-        public static implicit operator decimal(Speed thisSpeed) => thisSpeed.ConvertToBase;
+        public static implicit operator float(Speed thisSpeed) => (float)thisSpeed.ConvertToBase();
+        public static implicit operator double(Speed thisSpeed) => thisSpeed.ConvertToBase();
+        public static implicit operator decimal(Speed thisSpeed) => (decimal)thisSpeed.ConvertToBase();
 
         public static Speed operator +(Speed firstMeasurement, Speed secondMeasurement)
         {
-            return new Speed((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Speed((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Speed operator -(Speed firstMeasurement, Speed secondMeasurement)
         {
-            return new Speed((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Speed((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Speed operator *(Speed firstMeasurement, Speed secondMeasurement)
         {
-            return new Speed((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Speed((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Speed operator /(Speed firstMeasurement, Speed secondMeasurement)
         {
-            return new Speed((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Speed((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
 
         #endregion
@@ -57,14 +57,14 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         public struct Conversion
         {
-            public const decimal MillimetersPerSecond = 0.001m;
-            public const decimal CentimetersPerSecond = 0.01m;
-            public const decimal MetersPerSecond = 1m;
-            public const decimal KilometersPerHour = 0.277778m;
-            public const decimal FeetPerSecond = 0.3048m;
-            public const decimal MilesPerHour = 0.447m;
-            public const decimal Knots = 0.5144m;
-            public const decimal MachAtSeaLevel = 340.3m;
+            public const double MillimetersPerSecond = 0.001d;
+            public const double CentimetersPerSecond = 0.01d;
+            public const double MetersPerSecond = 1d;
+            public const double KilometersPerHour = 0.277778d;
+            public const double FeetPerSecond = 0.3048d;
+            public const double MilesPerHour = 0.447d;
+            public const double Knots = 0.5144d;
+            public const double MachAtSeaLevel = 340.3d;
         }
 
         private struct Suffixes
@@ -84,8 +84,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

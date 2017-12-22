@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Energy(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Energy(double value, double conversionRatio, string unitSuffix)
 : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -18,30 +18,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Energy thisEnergy) => (byte)thisEnergy.ConvertToBase;
-        public static implicit operator short(Energy thisEnergy) => (short)thisEnergy.ConvertToBase;
-        public static implicit operator int(Energy thisEnergy) => (int)thisEnergy.ConvertToBase;
-        public static implicit operator long(Energy thisEnergy) => (long)thisEnergy.ConvertToBase;
+        public static implicit operator byte(Energy thisEnergy) => (byte)thisEnergy.ConvertToBase();
+        public static implicit operator short(Energy thisEnergy) => (short)thisEnergy.ConvertToBase();
+        public static implicit operator int(Energy thisEnergy) => (int)thisEnergy.ConvertToBase();
+        public static implicit operator long(Energy thisEnergy) => (long)thisEnergy.ConvertToBase();
 
-        public static implicit operator float(Energy thisEnergy) => (float)thisEnergy.ConvertToBase;
-        public static implicit operator double(Energy thisEnergy) => (double)thisEnergy.ConvertToBase;
-        public static implicit operator decimal(Energy thisEnergy) => thisEnergy.ConvertToBase;
+        public static implicit operator float(Energy thisEnergy) => (float)thisEnergy.ConvertToBase();
+        public static implicit operator double(Energy thisEnergy) => thisEnergy.ConvertToBase();
+        public static implicit operator decimal(Energy thisEnergy) => (decimal)thisEnergy.ConvertToBase();
 
         public static Energy operator +(Energy firstMeasurement, Energy secondMeasurement)
         {
-            return new Energy((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Energy((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Energy operator -(Energy firstMeasurement, Energy secondMeasurement)
         {
-            return new Energy((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Energy((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Energy operator *(Energy firstMeasurement, Energy secondMeasurement)
         {
-            return new Energy((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Energy((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Energy operator /(Energy firstMeasurement, Energy secondMeasurement)
         {
-            return new Energy((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Energy((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
 
         #endregion
@@ -56,17 +56,17 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal ElectronVolt = 1.602177e-22m;
+            public const double ElectronVolt = 1.602177e-22d;
 
-            public const decimal ThermalCalorie = 0.004184m;
-            public const decimal FoodCalories = 4.184m;
+            public const double ThermalCalorie = 0.004184d;
+            public const double FoodCalories = 4.184d;
 
-            public const decimal Joule = 0.001m;
-            public const decimal Kilojoule = 1.0m;
+            public const double Joule = 0.001d;
+            public const double Kilojoule = 1.0d;
 
-            public const decimal FootPounds = 0.001356m;
+            public const double FootPounds = 0.001356d;
 
-            public const decimal BritishThermalUnits = 1.055056m;
+            public const double BritishThermalUnits = 1.055056d;
         }
 
         private struct Suffixes
@@ -89,8 +89,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

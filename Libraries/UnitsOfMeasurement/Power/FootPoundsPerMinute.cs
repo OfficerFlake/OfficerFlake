@@ -4,38 +4,37 @@
     {
         public static partial class Powers
         {
-            public class FootPoundsPerMinute : Power
+            public class FootPoundPerMinute : Power
             {
-                public FootPoundsPerMinute(decimal value) : base(value, Conversion.FootPoundsPerMinute, "FT.LB/MIN") { }
+                public FootPoundPerMinute(double value) : base(value, Conversion.FootPoundsPerMinute, "FT.LB/MIN") { }
 
-                public static FootPoundsPerMinute operator +(FootPoundsPerMinute firstMeasurement, FootPoundsPerMinute secondMeasurement)
+                public static FootPoundPerMinute operator +(FootPoundPerMinute firstMeasurement, FootPoundPerMinute secondMeasurement)
                 {
-                    return new FootPoundsPerMinute((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase));
+                    return new FootPoundPerMinute((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
                 }
-                public static FootPoundsPerMinute operator -(FootPoundsPerMinute firstMeasurement, FootPoundsPerMinute secondMeasurement)
+                public static FootPoundPerMinute operator -(FootPoundPerMinute firstMeasurement, FootPoundPerMinute secondMeasurement)
                 {
-                    return new FootPoundsPerMinute((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase));
+                    return new FootPoundPerMinute((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
                 }
-                public static FootPoundsPerMinute operator *(FootPoundsPerMinute firstMeasurement, FootPoundsPerMinute secondMeasurement)
+                public static FootPoundPerMinute operator *(FootPoundPerMinute firstMeasurement, FootPoundPerMinute secondMeasurement)
                 {
-                    return new FootPoundsPerMinute((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase));
+                    return new FootPoundPerMinute((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
                 }
-                public static FootPoundsPerMinute operator /(FootPoundsPerMinute firstMeasurement, FootPoundsPerMinute secondMeasurement)
+                public static FootPoundPerMinute operator /(FootPoundPerMinute firstMeasurement, FootPoundPerMinute secondMeasurement)
                 {
-                    return new FootPoundsPerMinute((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase));
+                    return new FootPoundPerMinute((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
                 }
             }
 
-            public static FootPoundsPerMinute ToFootPoundsPerMinutes(this Measurement input) => new FootPoundsPerMinute(input.ConvertToBase);
+            public static FootPoundPerMinute ToFootPoundsPerMinutes(this Measurement input) => new FootPoundPerMinute(input.ConvertToBase());
 
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this byte input) => new FootPoundsPerMinute(input);
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this short input) => new FootPoundsPerMinute(input);
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this int input) => new FootPoundsPerMinute(input);
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this long input) => new FootPoundsPerMinute(input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this byte input) => new FootPoundPerMinute(input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this short input) => new FootPoundPerMinute(input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this int input) => new FootPoundPerMinute(input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this long input) => new FootPoundPerMinute(input);
 
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this float input) => new FootPoundsPerMinute((decimal)input);
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this double input) => new FootPoundsPerMinute((decimal)input);
-            public static FootPoundsPerMinute FootPoundsPerMinutes(this decimal input) => new FootPoundsPerMinute(input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this float input) => new FootPoundPerMinute((double)input);
+            public static FootPoundPerMinute FootPoundsPerMinute(this double input) => new FootPoundPerMinute((double)input);
         }
     }
 }

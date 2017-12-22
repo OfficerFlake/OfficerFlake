@@ -9,14 +9,14 @@ namespace Com.OfficerFlake.Libraries
         {
             #region CTOR
 
-            protected Temperature(decimal value, string unitSuffix)
+            protected Temperature(double value, string unitSuffix)
             {
                 Value = value;
                 _unitSuffix = unitSuffix;
             }
 
             #endregion
-            public decimal Value { get; set; }
+            public double Value { get; set; }
             private readonly string _unitSuffix;
 
             #region Operators
@@ -27,8 +27,8 @@ namespace Com.OfficerFlake.Libraries
             public static implicit operator long(Temperature thisTemperature) => (long)thisTemperature.Value;
 
             public static implicit operator float(Temperature thisTemperature) => (float)thisTemperature.Value;
-            public static implicit operator double(Temperature thisTemperature) => (double)thisTemperature.Value;
-            public static implicit operator decimal(Temperature thisTemperature) => thisTemperature.Value;
+            public static implicit operator double(Temperature thisTemperature) => thisTemperature.Value;
+            public static implicit operator decimal(Temperature thisTemperature) => (decimal)thisTemperature.Value;
 
             #endregion
             public override string ToString()
@@ -51,8 +51,8 @@ namespace Com.OfficerFlake.Libraries
             {
                 var capInput = input.ToUpperInvariant();
                 var extraction = input.ExtractNumberComponentFromMeasurementString();
-                decimal conversion;
-                var failed = !decimal.TryParse(extraction, out conversion);
+                double conversion;
+                var failed = !double.TryParse(extraction, out conversion);
 
                 if (failed)
                 {

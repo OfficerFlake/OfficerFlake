@@ -3,11 +3,11 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public abstract class Distance : Measurement, IDistance
+    public class Distance : Measurement, IDistance
     {
         #region CTOR
 
-        protected Distance(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Distance(double value, double conversionRatio, string unitSuffix)
     : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -19,32 +19,32 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 	    private double _conversionRatio;
 
 	    #region Operators
-        public static implicit operator byte(Distance thisDistance) => (byte)thisDistance.ConvertToBase;
-        public static implicit operator short(Distance thisDistance) => (short)thisDistance.ConvertToBase;
-        public static implicit operator int(Distance thisDistance) => (int)thisDistance.ConvertToBase;
-        public static implicit operator long(Distance thisDistance) => (long)thisDistance.ConvertToBase;
+        public static implicit operator byte(Distance thisDistance) => (byte)thisDistance.ConvertToBase();
+        public static implicit operator short(Distance thisDistance) => (short)thisDistance.ConvertToBase();
+        public static implicit operator int(Distance thisDistance) => (int)thisDistance.ConvertToBase();
+        public static implicit operator long(Distance thisDistance) => (long)thisDistance.ConvertToBase();
 
-        public static implicit operator float(Distance thisDistance) => (float)thisDistance.ConvertToBase;
-        public static implicit operator double(Distance thisDistance) => (double)thisDistance.ConvertToBase;
-        public static implicit operator decimal(Distance thisDistance) => thisDistance.ConvertToBase;
+        public static implicit operator float(Distance thisDistance) => (float)thisDistance.ConvertToBase();
+        public static implicit operator double(Distance thisDistance) => thisDistance.ConvertToBase();
+        public static implicit operator decimal(Distance thisDistance) => (decimal)thisDistance.ConvertToBase();
 
         public static Distance operator +(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Distance((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1,
+            return new Distance((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
         public static Distance operator -(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Distance((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1,
+            return new Distance((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
         public static Distance operator *(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Distance((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Distance((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Distance operator /(Distance firstMeasurement, Distance secondMeasurement)
         {
-            return new Distance((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Distance((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
 
         #endregion
@@ -77,20 +77,20 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal Nanometer = 0.000000001m;
-            public const decimal Micron = 0.000001m;
+            public const double Nanometer = 0.000000001d;
+            public const double Micron = 0.000001d;
 
-            public const decimal Millimeter = 0.001m;
-            public const decimal Centimeter = 0.01m;
-            public const decimal Meter = 1.00m;
-            public const decimal Kilometer = 1000m;
+            public const double Millimeter = 0.001d;
+            public const double Centimeter = 0.01d;
+            public const double Meter = 1.00d;
+            public const double Kilometer = 1000d;
 
-            public const decimal Inch = 0.0254m;
-            public const decimal Foot = 0.3048m;
-            public const decimal Yard = 0.9144m;
-            public const decimal Mile = 1609.34m;
+            public const double Inch = 0.0254d;
+            public const double Foot = 0.3048d;
+            public const double Yard = 0.9144d;
+            public const double Mile = 1609.34d;
 
-            public const decimal NauticalMile = 1.00m;
+            public const double NauticalMile = 1.00d;
         }
 
         #endregion
@@ -98,8 +98,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

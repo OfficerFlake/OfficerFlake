@@ -1,20 +1,15 @@
-﻿using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
+﻿using System;
+using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class CYAWSTAB : DAT_Single
-    {
-        public CYAWSTAB(float value) : base("CYAWSTAB", value)
-        {
-        }
-    }
-	public class ARRESTER : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class CYAWSTAB : DATProperty, IDAT_1_Parameter<Single>
 	{
-		public ARRESTER(IPoint3 value) : base("AAMSLOT_" + " " + string.Join(" ", value))
+		public CYAWSTAB(Single value) : base("CYAWSTAB" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public Single Value { get; set; }
 	}
 }

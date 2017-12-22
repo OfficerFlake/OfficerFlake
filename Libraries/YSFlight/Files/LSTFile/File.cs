@@ -7,7 +7,7 @@ using Com.OfficerFlake.Libraries.IO;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
 {
-    public class Aircraft : CommandFile
+    public class Aircraft : ListFile
     {
         private const bool DebugMode = false;
         public class AircraftDefinition
@@ -28,7 +28,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                 CoarseModelFilePath = coarseModelFilePath;
             }
 
-            public AircraftDefinition(Line thisLine)
+            public AircraftDefinition(string thisLine)
             {
                 DataFilePath = thisLine.GetElementOrNull(0);
                 VisualModelFilePath = thisLine.GetElementOrNull(1);

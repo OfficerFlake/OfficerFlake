@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
@@ -8,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Volume(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Volume(double value, double conversionRatio, string unitSuffix)
             : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -19,36 +18,36 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Volume thisVolume) => (byte) thisVolume.ConvertToBase;
-        public static implicit operator short(Volume thisVolume) => (short) thisVolume.ConvertToBase;
-        public static implicit operator int(Volume thisVolume) => (int) thisVolume.ConvertToBase;
-        public static implicit operator long(Volume thisVolume) => (long) thisVolume.ConvertToBase;
+        public static implicit operator byte(Volume thisVolume) => (byte) thisVolume.ConvertToBase();
+        public static implicit operator short(Volume thisVolume) => (short) thisVolume.ConvertToBase();
+        public static implicit operator int(Volume thisVolume) => (int) thisVolume.ConvertToBase();
+        public static implicit operator long(Volume thisVolume) => (long) thisVolume.ConvertToBase();
 
-        public static implicit operator float(Volume thisVolume) => (float) thisVolume.ConvertToBase;
-        public static implicit operator double(Volume thisVolume) => (double) thisVolume.ConvertToBase;
-        public static implicit operator decimal(Volume thisVolume) => thisVolume.ConvertToBase;
+        public static implicit operator float(Volume thisVolume) => (float) thisVolume.ConvertToBase();
+        public static implicit operator double(Volume thisVolume) => thisVolume.ConvertToBase();
+        public static implicit operator decimal(Volume thisVolume) => (decimal)thisVolume.ConvertToBase();
 
         public static Volume operator +(Volume firstMeasurement, Volume secondMeasurement)
         {
-            return new Volume((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1,
+            return new Volume((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
 
         public static Volume operator -(Volume firstMeasurement, Volume secondMeasurement)
         {
-            return new Volume((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1,
+            return new Volume((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
 
         public static Volume operator *(Volume firstMeasurement, Volume secondMeasurement)
         {
-            return new Volume((firstMeasurement.ConvertToBase*secondMeasurement.ConvertToBase), 1,
+            return new Volume((firstMeasurement.ConvertToBase()*secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
 
         public static Volume operator /(Volume firstMeasurement, Volume secondMeasurement)
         {
-            return new Volume((firstMeasurement.ConvertToBase/secondMeasurement.ConvertToBase), 1,
+            return new Volume((firstMeasurement.ConvertToBase()/secondMeasurement.ConvertToBase()), 1,
                 DefaultSuffix);
         }
 
@@ -64,34 +63,34 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal Millilitre = 0.001m;
-            public const decimal Litre = 1.00m;
+            public const double Millilitre = 0.001d;
+            public const double Litre = 1.00d;
 
-            public const decimal CubicCentimeter = 0.001m;
-            public const decimal CubicMeter = 1000m;
+            public const double CubicCentimeter = 0.001d;
+            public const double CubicMeter = 1000d;
 
-            public const decimal CubicInch = 0.016387m;
-            public const decimal CubicFoot = 28.31685m;
-            public const decimal CubicYard = 764.5549m;
+            public const double CubicInch = 0.016387d;
+            public const double CubicFoot = 28.31685d;
+            public const double CubicYard = 764.5549d;
 
             public struct US
             {
-                public const decimal TeaSpoon = 0.004929m;
-                public const decimal TableSpoon = 0.014787m;
-                public const decimal Cup = 0.236588m;
-                public const decimal Pint = 0.473176m;
-                public const decimal Quart = 0.946353m;
-                public const decimal Gallon = 3.785412m;
+                public const double TeaSpoon = 0.004929d;
+                public const double TableSpoon = 0.014787d;
+                public const double Cup = 0.236588d;
+                public const double Pint = 0.473176d;
+                public const double Quart = 0.946353d;
+                public const double Gallon = 3.785412d;
             }
 
             public struct UK
             {
-                public const decimal TeaSpoon = 0.005919m;
-                public const decimal TableSpoon = 0.017758m;
-                public const decimal FluidOunce = 0.028413m;
-                public const decimal Pint = 0.568261m;
-                public const decimal Quart = 1.136523m;
-                public const decimal Gallon = 4.54609m;
+                public const double TeaSpoon = 0.005919d;
+                public const double TableSpoon = 0.017758d;
+                public const double FluidOunce = 0.028413d;
+                public const double Pint = 0.568261d;
+                public const double Quart = 1.136523d;
+                public const double Gallon = 4.54609d;
             }
         }
 
@@ -134,8 +133,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !Decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

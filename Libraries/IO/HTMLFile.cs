@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.RichText;
-using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
-using String = System.String;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
@@ -170,7 +168,7 @@ namespace Com.OfficerFlake.Libraries.IO
                         Name = "p";
                     }
 
-                    public Paragraph(RichTextMessage input)
+                    public Paragraph(IRichTextMessage input)
                     {
                         Name = "p";
                         //Contents = input.ToString(); //input.AsHTMLParagraph;
@@ -182,16 +180,17 @@ namespace Com.OfficerFlake.Libraries.IO
 
                         Span dateSpan = new Span();
                         dateSpan.Attributes.Add(dateStyle);
-                        dateSpan.Contents = input.Created.InStandardForm().YYYYMMDD_hhmmss_ + ": ";
+                        dateSpan.Contents = input.Datestamp + " " + input.Timestamp + ": ";
                         output.Append(dateSpan);
-                        foreach (var thisElement in input.String.Elements)
+                        foreach (var thisElement in input.Message.Elements)
                         {
+
                             Style thisStyle = new Style();
-                            thisStyle.Classes.Add("color" + thisElement.Color.Character);
+                            thisStyle.Classes.Add("color" + thisElement.ClosestColorCode);
                             if (thisElement.IsBold) thisStyle.Classes.Add("bold");
-                            if (thisElement.IsItalic) thisStyle.Classes.Add("italic");
+                            if (thisElement.IsItallic) thisStyle.Classes.Add("italic");
                             if (thisElement.IsObfuscated) thisStyle.Classes.Add("obfuscated");
-                            if (thisElement.IsStrikeThrough) thisStyle.Classes.Add("strikethrough");
+                            if (thisElement.IsStrikeout) thisStyle.Classes.Add("strikethrough");
                             if (thisElement.IsUnderlined) thisStyle.Classes.Add("underlined");
 
                             Span thisSpan = new Span();
@@ -200,14 +199,41 @@ namespace Com.OfficerFlake.Libraries.IO
                             output.Append(thisSpan);
                         }
                         Contents = output.ToString();
-                        Attributes.Add(new Class(input.GetHtmlMessageType()));
-                    }
-                }
-                public class Table
+	                    string messagetype = "unknown";
+	                    {
+							switch (input.Type)
+							{
+								case MessageType.User:
+									messagetype = "user";
+									break;
+								case MessageType.ConsoleInformation:
+									messagetype = "consoleinformation";
+									break;
+								case MessageType.DebugSummary:
+									messagetype = "debugsummary";
+									break;
+								case MessageType.DebugDetail:
+									messagetype = "debugdetail";
+									break;
+								case MessageType.DebugWarning:
+									messagetype = "debugwarning";
+									break;
+								case MessageType.DebugError:
+									messagetype = "debugerror";
+									break;
+								case MessageType.DebugCrash:
+									messagetype = "debugcrash";
+									break;
+							}
+						}
+						Attributes.Add(new Class(messagetype));
+					}
+				}
+				public class Table
                 {
                     public class Row
                     {
-                        public RichTextMessage Message;
+                        public IRichTextMessage Message;
                     }
                 }
 
@@ -222,9 +248,9 @@ namespace Com.OfficerFlake.Libraries.IO
                     output.Add("</body>");
                     return String.Join("\n", output);
                 }
-            };
-        }
-        public Dom.Head Head = new Dom.Head();
+			};
+		}
+		public Dom.Head Head = new Dom.Head();
         public Dom.Body Body = new Dom.Body();
 
         public HtmlFile(string filename) : base(filename)

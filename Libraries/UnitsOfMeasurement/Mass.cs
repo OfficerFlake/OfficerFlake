@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Mass(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Mass(double value, double conversionRatio, string unitSuffix)
 : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -19,30 +19,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Mass thisMass) => (byte)thisMass.ConvertToBase;
-        public static implicit operator short(Mass thisMass) => (short)thisMass.ConvertToBase;
-        public static implicit operator int(Mass thisMass) => (int)thisMass.ConvertToBase;
-        public static implicit operator long(Mass thisMass) => (long)thisMass.ConvertToBase;
+        public static implicit operator byte(Mass thisMass) => (byte)thisMass.ConvertToBase();
+        public static implicit operator short(Mass thisMass) => (short)thisMass.ConvertToBase();
+        public static implicit operator int(Mass thisMass) => (int)thisMass.ConvertToBase();
+        public static implicit operator long(Mass thisMass) => (long)thisMass.ConvertToBase();
 
-        public static implicit operator float(Mass thisMass) => (float)thisMass.ConvertToBase;
-        public static implicit operator double(Mass thisMass) => (double)thisMass.ConvertToBase;
-        public static implicit operator decimal(Mass thisMass) => thisMass.ConvertToBase;
+        public static implicit operator float(Mass thisMass) => (float)thisMass.ConvertToBase();
+        public static implicit operator double(Mass thisMass) => thisMass.ConvertToBase();
+        public static implicit operator decimal(Mass thisMass) => (decimal)thisMass.ConvertToBase();
 
         public static Mass operator +(Mass firstMeasurement, Mass secondMeasurement)
         {
-            return new Mass((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Mass((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Mass operator -(Mass firstMeasurement, Mass secondMeasurement)
         {
-            return new Mass((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Mass((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Mass operator *(Mass firstMeasurement, Mass secondMeasurement)
         {
-            return new Mass((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Mass((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Mass operator /(Mass firstMeasurement, Mass secondMeasurement)
         {
-            return new Mass((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Mass((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
 
         #endregion
@@ -57,22 +57,22 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         public struct Conversion
         {
-            public const decimal Milligram = 0.000001m;
-            public const decimal Centigram = 0.00001m;
-            public const decimal Decigram = 0.0001m;
-            public const decimal Gram = 0.001m;
-            public const decimal Decagram = 0.01m;
-            public const decimal Hectogram = 0.1m;
-            public const decimal Kilogram = 1m;
-            public const decimal MetricTonne = 1000m;
+            public const double Milligram = 0.000001d;
+            public const double Centigram = 0.00001d;
+            public const double Decigram = 0.0001d;
+            public const double Gram = 0.001d;
+            public const double Decagram = 0.01d;
+            public const double Hectogram = 0.1d;
+            public const double Kilogram = 1d;
+            public const double MetricTonne = 1000d;
 
-            public const decimal Carat = 0.0002m;
-            public const decimal Ounce = 0.02835m;
-            public const decimal Pound = 0.453592m;
-            public const decimal Stone = 6.350293m;
+            public const double Carat = 0.0002d;
+            public const double Ounce = 0.02835d;
+            public const double Pound = 0.453592d;
+            public const double Stone = 6.350293d;
 
-            public const decimal USShortTon = 907.1847m;
-            public const decimal UKLongTon = 1016.047m;
+            public const double USShortTon = 907.1847d;
+            public const double UKLongTon = 1016.047d;
         }
 
         private struct Suffixes
@@ -100,8 +100,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

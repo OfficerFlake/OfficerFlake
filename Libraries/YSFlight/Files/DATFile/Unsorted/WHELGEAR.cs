@@ -1,12 +1,16 @@
-﻿using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class WHELGEAR : DAT_Vector3
-    {
-        public WHELGEAR(IPoint3 point) : base("WHELGEAR", point)
-        {
-        }
-    }
+	public class WHELGEAR : DATProperty, IDAT_1_Parameter<IPoint3>
+	{
+		public WHELGEAR(IPoint3 value) : base("WHELGEAR" + " " + string.Join(" ", value))
+		{
+			Value = value;
+		}
+
+		public IPoint3 Value { get; set; }
+	}
 }

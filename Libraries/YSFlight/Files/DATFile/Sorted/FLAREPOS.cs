@@ -1,21 +1,18 @@
-﻿using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class FLAREPOS : DAT_DualVector3
-    {
-        public FLAREPOS(Distance x1, Distance y1, Distance z1, Distance x2, Distance y2, Distance z2) : base("FLAREPOS", x1, y1, z1, x2, y2, z2)
-        {
-        }
-    }
-	public class ARRESTER : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class FLAREPOS : DATProperty, IDAT_2_Parameters<IPoint3, IVector3>
 	{
-		public ARRESTER(IPoint3 value) : base("AAMSLOT_" + " " + string.Join(" ", value))
+		public FLAREPOS(IPoint3 value1, IVector3 value2) : base("FLAREPOS" + " " + value1 + " " + value2)
 		{
-			Value = value;
+			Value1 = value1;
+			Value2 = value2;
 		}
 
-		public IPoint3 Value { get; set; }
+		public IPoint3 Value1 { get; set; }
+		public IVector3 Value2 { get; set; }
 	}
 }

@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Pressure(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Pressure(double value, double conversionRatio, string unitSuffix)
 : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -18,30 +18,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         #region Operators
 
-        public static implicit operator byte(Pressure thisPressure) => (byte)thisPressure.ConvertToBase;
-        public static implicit operator short(Pressure thisPressure) => (short)thisPressure.ConvertToBase;
-        public static implicit operator int(Pressure thisPressure) => (int)thisPressure.ConvertToBase;
-        public static implicit operator long(Pressure thisPressure) => (long)thisPressure.ConvertToBase;
+        public static implicit operator byte(Pressure thisPressure) => (byte)thisPressure.ConvertToBase();
+        public static implicit operator short(Pressure thisPressure) => (short)thisPressure.ConvertToBase();
+        public static implicit operator int(Pressure thisPressure) => (int)thisPressure.ConvertToBase();
+        public static implicit operator long(Pressure thisPressure) => (long)thisPressure.ConvertToBase();
 
-        public static implicit operator float(Pressure thisPressure) => (float)thisPressure.ConvertToBase;
-        public static implicit operator double(Pressure thisPressure) => (double)thisPressure.ConvertToBase;
-        public static implicit operator decimal(Pressure thisPressure) => thisPressure.ConvertToBase;
+        public static implicit operator float(Pressure thisPressure) => (float)thisPressure.ConvertToBase();
+        public static implicit operator double(Pressure thisPressure) => thisPressure.ConvertToBase();
+        public static implicit operator decimal(Pressure thisPressure) => (decimal)thisPressure.ConvertToBase();
 
         public static Pressure operator +(Pressure firstMeasurement, Pressure secondMeasurement)
         {
-            return new Pressure((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Pressure((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Pressure operator -(Pressure firstMeasurement, Pressure secondMeasurement)
         {
-            return new Pressure((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Pressure((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Pressure operator *(Pressure firstMeasurement, Pressure secondMeasurement)
         {
-            return new Pressure((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Pressure((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Pressure operator /(Pressure firstMeasurement, Pressure secondMeasurement)
         {
-            return new Pressure((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Pressure((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
 
         #endregion
@@ -56,12 +56,12 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         public struct Conversion
         {
-            public const decimal Atmosphere = 101325m;
-            public const decimal Bar = 100000m;
-            public const decimal KiloPascal = 1000m;
-            public const decimal MillimetersOfMercury = 133.3m;
-            public const decimal Pascal = 1m;
-            public const decimal PoundsPerSquareInch = 6894.757m;
+            public const double Atmosphere = 101325d;
+            public const double Bar = 100000d;
+            public const double KiloPascal = 1000d;
+            public const double MillimetersOfMercury = 133.3d;
+            public const double Pascal = 1d;
+            public const double PoundsPerSquareInch = 6894.757d;
         }
 
         private struct Suffixes
@@ -79,8 +79,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

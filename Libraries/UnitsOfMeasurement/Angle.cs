@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     public class Angle : Measurement, IAngle
     {
         #region CTOR
-        protected Angle(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Angle(double value, double conversionRatio, string unitSuffix)
             : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -16,30 +16,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         private readonly string _unitSuffix;
 
         #region Operators
-        public static implicit operator byte(Angle thisAngle) => (byte)thisAngle.ConvertToBase;
-        public static implicit operator short(Angle thisAngle) => (short)thisAngle.ConvertToBase;
-        public static implicit operator int(Angle thisAngle) => (int)thisAngle.ConvertToBase;
-        public static implicit operator long(Angle thisAngle) => (long)thisAngle.ConvertToBase;
+        public static implicit operator byte(Angle thisAngle) => (byte)thisAngle.ConvertToBase();
+        public static implicit operator short(Angle thisAngle) => (short)thisAngle.ConvertToBase();
+        public static implicit operator int(Angle thisAngle) => (int)thisAngle.ConvertToBase();
+        public static implicit operator long(Angle thisAngle) => (long)thisAngle.ConvertToBase();
 
-        public static implicit operator float(Angle thisAngle) => (float)thisAngle.ConvertToBase;
-        public static implicit operator double(Angle thisAngle) => (double)thisAngle.ConvertToBase;
-        public static implicit operator decimal(Angle thisAngle) => thisAngle.ConvertToBase;
+        public static implicit operator float(Angle thisAngle) => (float)thisAngle.ConvertToBase();
+        public static implicit operator double(Angle thisAngle) => thisAngle.ConvertToBase();
+        public static implicit operator decimal(Angle thisAngle) => (decimal)thisAngle.ConvertToBase();
             
         public static Angle operator +(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
         }
         public static Angle operator -(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
         }
         public static Angle operator *(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
         }
         public static Angle operator /(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
         }
 
         public static implicit operator string(Angle thisAngle) => thisAngle.ToString();
@@ -54,9 +54,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal Radian = 1.00m;
-            public const decimal Degree = 0.017453m;
-            public const decimal Gradian = 0.015708m;
+            public const double Radian = 1.00d;
+            public const double Degree = 0.017453d;
+            public const double Gradian = 0.015708d;
         }
 
         private struct Suffixes
@@ -70,8 +70,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

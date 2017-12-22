@@ -5,19 +5,6 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 {
-    public class Point1 : IPoint1
-    {
-        public IDistance X
-        {
-            get ;
-            set ;
-        }
-
-        public Point1(IDistance x)
-        {
-            X = x;
-        }
-    }
 	public class Point2 : IPoint2
 	{
 		public IDistance X
@@ -63,19 +50,6 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		}
 	}
 
-	public class Vector1 : IVector1
-	{
-		public IDistance X
-		{
-			get;
-			set;
-		}
-
-		public Vector1(IDistance x)
-		{
-			X = x;
-		}
-	}
 	public class Vector2 : IVector2
 	{
 		public IDistance X
@@ -121,19 +95,6 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		}
 	}
 
-	public class Orientation1 : IOrientation1
-	{
-		public IAngle H
-		{
-			get;
-			set;
-		}
-
-		public Orientation1(IAngle h)
-		{
-			H = h;
-		}
-	}
 	public class Orientation2 : IOrientation2
 	{
 		public IAngle H

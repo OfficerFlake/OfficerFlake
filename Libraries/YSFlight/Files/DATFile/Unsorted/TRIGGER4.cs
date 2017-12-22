@@ -5,13 +5,13 @@ using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class TRIGGER4 : DATProperty, IDAT_1_Parameter<String>
+    public class TRIGGER4 : DATProperty, IDAT_1_Parameter<WeaponCategory>
 	{
-		public TRIGGER4(String value) : base("TRIGGER4" + " " + value)
+		public TRIGGER4(WeaponCategory value) : base("TRIGGER4" + " " + value)
 		{
 			Value = value;
 		}
 
-		public String Value { get; set; }
+		public WeaponCategory Value { get; set; }
 	}
 }

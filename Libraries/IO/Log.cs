@@ -6,7 +6,6 @@ using System.Security.Authentication.ExtendedProtection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Com.OfficerFlake.Libraries.Color;
-using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
 using static Com.OfficerFlake.Libraries.Extensions.TimeExtensions;
 

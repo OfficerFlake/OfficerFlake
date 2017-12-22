@@ -1,20 +1,15 @@
-﻿using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
+﻿using System;
+using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class CDBYGEAR : DAT_Single
-    {
-        public CDBYGEAR(float value) : base("CDBYGEAR", value)
-        {
-        }
-    }
-	public class ARRESTER : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class CDBYGEAR : DATProperty, IDAT_1_Parameter<Single>
 	{
-		public ARRESTER(IPoint3 value) : base("AAMSLOT_" + " " + string.Join(" ", value))
+		public CDBYGEAR(Single value) : base("CDBYGEAR" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public Single Value { get; set; }
 	}
 }

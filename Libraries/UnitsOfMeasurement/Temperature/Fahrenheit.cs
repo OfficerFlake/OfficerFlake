@@ -6,7 +6,7 @@
         {
             public class Fahrenheit : Temperature
             {
-                public Fahrenheit(decimal value) : base(value, "F") { }
+                public Fahrenheit(double value) : base(value, "F") { }
 
                 public static Fahrenheit operator +(Fahrenheit firstMeasurement, Fahrenheit secondMeasurement)
                 {
@@ -34,9 +34,9 @@
             public static Fahrenheit Fahrenheits(this int input) => new Fahrenheit(input);
             public static Fahrenheit Fahrenheits(this long input) => new Fahrenheit(input);
 
-            public static Fahrenheit Fahrenheits(this float input) => new Fahrenheit((decimal)input);
-            public static Fahrenheit Fahrenheits(this double input) => new Fahrenheit((decimal)input);
-            public static Fahrenheit Fahrenheits(this decimal input) => new Fahrenheit(input);
+            public static Fahrenheit Fahrenheits(this float input) => new Fahrenheit((double)input);
+            public static Fahrenheit Fahrenheits(this double input) => new Fahrenheit((double)input);
+            public static Fahrenheit Fahrenheits(this double input) => new Fahrenheit(input);
         }
     }
 }

@@ -115,7 +115,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                 );
             return (weightCleanOut + weightFuel50PercentOut).Kilograms();
         }
-        public decimal CalculateThrustToWeightRatio()
+        public double CalculateThrustToWeightRatio()
         {
             decimal numerator = GetMaxThrust().ConvertToBase;
             decimal denominator = GetOperatingWeight().ConvertToBase;
@@ -148,7 +148,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
             return output;
         }
-        public decimal CalculateMaxCruiseSpeed()
+        public double CalculateMaxCruiseSpeed()
         {
             decimal numerator = GetCruiseSpeed().ConvertToBase;
             decimal denominator = (decimal)GetCruiseThrottle();
@@ -180,7 +180,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
             return PSTMPTCH;
         }
-        public decimal CalculateMaxTurnRate()
+        public double CalculateMaxTurnRate()
         {
             return (GetMaxInputAoA().ConvertToBase + GetPSTMAoA().ConvertToBase).Radians().ToDegrees();
         }
@@ -188,7 +188,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
         #endregion
         #region Strength
 
-        public decimal CalculateMaxStrength()
+        public double CalculateMaxStrength()
         {
             var STRENGTH = (File.Properties.OfType<STRENGTH>().Any())
                 ? new List<float>
@@ -328,7 +328,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
             return maxQtyWeapon;
         }
-        public decimal CalculateWeaponScore()
+        public double CalculateWeaponScore()
         {
             var AAM = GetNumberOfWeapon(WeaponCategory.AIM9);
             var A_AAM = GetNumberOfWeapon(WeaponCategory.AIM9X);
@@ -357,7 +357,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
         #endregion
         #region Stealth
 
-        public decimal CalculateStealth()
+        public double CalculateStealth()
         {
             var RADARCRS = (File.Properties.OfType<RADARCRS>().Any())
                 ? new List<float>

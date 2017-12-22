@@ -237,7 +237,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out h)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out p)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new COCKPITA(h, p, b));
+                            Properties.Add(new COCKPITA(new Orientation3(h, p, b)));
                             continue;
                         }
                     case "COCKPITP":
@@ -402,7 +402,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse(thisLine.GetParameter(3).ToString() ?? "0M", out x2)) goto Error;
                             if (!Distance.TryParse(thisLine.GetParameter(4).ToString() ?? "0M", out y2)) goto Error;
                             if (!Distance.TryParse(thisLine.GetParameter(5).ToString() ?? "0M", out z2)) goto Error;
-                            Properties.Add(new FLAREPOS(x1, y1, z1, x2, y2, z2));
+                            Properties.Add(new FLAREPOS(new Point3(x1,y1,z1), new Vector3(x2,y2,z2)));
                             continue;
                         }
                     case "FLATCLR1":
@@ -519,15 +519,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "INITAAMM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new INITAAMM(value));
                             continue;
                         }
                     case "INITBOMB":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new INITBOMB(value));
                             continue;
                         }
@@ -540,22 +540,22 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "INITIAAM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new INITIAAM(value));
                             continue;
                         }
                     case "INITIAGM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new INITIAGM(value));
                             continue;
                         }
                     case "INITIGUN":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new INITIGUN(value));
                             continue;
                         }
@@ -659,7 +659,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN2(x, y, z));
+                            Properties.Add(new MACHNGN2(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN3":
@@ -670,7 +670,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN3(x, y, z));
+                            Properties.Add(new MACHNGN3(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN4":
@@ -681,7 +681,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN4(x, y, z));
+                            Properties.Add(new MACHNGN4(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN5":
@@ -692,7 +692,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN5(x, y, z));
+                            Properties.Add(new MACHNGN5(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN6":
@@ -703,7 +703,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN6(x, y, z));
+                            Properties.Add(new MACHNGN6(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN7":
@@ -714,7 +714,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN7(x, y, z));
+                            Properties.Add(new MACHNGN7(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGN8":
@@ -725,7 +725,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN8(x, y, z));
+                            Properties.Add(new MACHNGN8(new Point3(x, y, z)));
                             continue;
                         }
                     case "MACHNGUN":
@@ -736,7 +736,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGUN(x, y, z));
+                            Properties.Add(new MACHNGUN(new Point3(x, y, z)));
                             continue;
                         }
                     case "MANESPD1":
@@ -762,43 +762,43 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "MAXNAAMM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNAAMM(value));
                             continue;
                         }
                     case "MAXNBOMB":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNBOMB(value));
                             continue;
                         }
                     case "MAXNMAAM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNMAAM(value));
                             continue;
                         }
                     case "MAXNMAGM":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNMAGM(value));
                             continue;
                         }
                     case "MAXNMFLR":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNMFLR(value));
                             continue;
                         }
                     case "MAXNMRKT":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNMRKT(value));
                             continue;
                         }
@@ -832,8 +832,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "NMTURRET":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new MAXNMFLR(value));
                             continue;
                         }
@@ -845,7 +845,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new POSITION(x, y, z));
+                            Properties.Add(new POSITION(new Point3(x, y, z)));
                             continue;
                         }
                     case "PROPEFCY":
@@ -989,7 +989,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new RIGHGEAR(x, y, z));
+                            Properties.Add(new RIGHGEAR(new Point3(x, y, z)));
                             continue;
                         }
                     case "RKTSLOT_":
@@ -1000,7 +1000,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new RKTSLOT_(x, y, z));
+                            Properties.Add(new RKTSLOT_(new Point3(x, y, z)));
                             continue;
                         }
                     case "RKTVISIB":
@@ -1029,7 +1029,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!byte.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out r)) goto Error;
                             if (!byte.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out g)) goto Error;
                             if (!byte.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new SMOKECOL(n,r,g,b));
+                            Properties.Add(new SMOKECOL(n, new RGB_Color(r,g,b)));
                             continue;
                         }
                     case "SMOKEGEN":
@@ -1040,7 +1040,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new SMOKEGEN(x, y, z));
+                            Properties.Add(new SMOKEGEN(new Point3(x, y, z)));
                             continue;
                         }
                     case "SMOKEOIL":
@@ -1059,8 +1059,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "STRENGTH":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new STRENGTH(value));
                             continue;
                         }
@@ -1154,102 +1154,102 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                         }
                     case "TURRETAM":
                         {
-                            int quantifier;
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!int.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint quantifier;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new TURRETAM(quantifier, value));
                             continue;
                         }
                     case "TURRETAR":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new TURRETAR(value));
                             continue;
                         }
                     case "TURRETCT":
                         {
-                            int quantifier;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            uint quantifier;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             string value = (thisLine.GetParameter(1) ?? nullExceptionString).ToString();
                             Properties.Add(new TURRETCT(quantifier, value));
                             continue;
                         }
                     case "TURRETGD":
                         {
-                            int value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
+                            uint value;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new TURRETGD(value));
                             continue;
                         }
                     case "TURRETHD":
                         {
-                            int quantifier;
+                            uint quantifier;
                             Angle h;
                             Angle p;
                             Angle b;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out h)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out p)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETHD(quantifier,h,p,b));
+                            Properties.Add(new TURRETHD(quantifier, new Orientation3(h,p,b)));
                             continue;
                         }
                     case "TURRETIV":
                         {
-                            int quantifier;
+                            uint quantifier;
                             Duration interval;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             if (!Duration.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out interval)) goto Error;
                             Properties.Add(new TURRETIV(quantifier, interval));
                             continue;
                         }
                     case "TURRETNM":
                         {
-                            int quantifier;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            uint quantifier;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             var name = (thisLine.GetParameter(1) ?? nullExceptionString).ToString();
                             Properties.Add(new TURRETNM(quantifier, name));
                             continue;
                         }
                     case "TURRETPO":
                         {
-                            int quantifier;
+                            uint quantifier;
                             Distance x;
                             Distance y;
                             Distance z;
                             Angle h;
                             Angle p;
                             Angle b;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out z)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(4) ?? nullExceptionString).ToString(), out h)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(5) ?? nullExceptionString).ToString(), out p)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(6) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETPO(quantifier,x,y,z,h, p, b));
+                            Properties.Add(new TURRETPO(quantifier, new Point3(x, y, z), new Orientation3(h, p, b)));
                             continue;
                         }
                     case "TURRETPT":
                         {
-                            int quantifier;
+                            uint quantifier;
                             Angle h;
                             Angle p;
                             Angle b;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out h)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out p)) goto Error;
                             if (!Angle.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETPT(quantifier, h, p, b));
+                            Properties.Add(new TURRETPT(quantifier, new Orientation3(h, p, b)));
                             continue;
                         }
                     case "TURRETRG":
                         {
-                            int quantifier;
+                            uint quantifier;
                             Distance value;
-                            if (!int.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
+                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out value)) goto Error;
                             Properties.Add(new TURRETRG(quantifier, value));
                             continue;
@@ -1262,7 +1262,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new VAPORPO0(x, y, z));
+                            Properties.Add(new VAPORPO0(new Point3(x, y, z)));
                             continue;
                         }
                     case "VAPORPO1":
@@ -1273,7 +1273,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new VAPORPO1(x, y, z));
+                            Properties.Add(new VAPORPO1(new Point3(x, y, z)));
                             continue;
                         }
                     case "VARGEOMW":
@@ -1341,7 +1341,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                             if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
                             if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new WHELGEAR(x, y, z));
+                            Properties.Add(new WHELGEAR(new Point3(x, y, z)));
                             continue;
                         }
                     case "WINGAREA":
@@ -1354,7 +1354,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
                     case "WPNSHAPE":
                         {
                             var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            var value =
+	                        WeaponType value =
                                 WeaponType.CATEGORIES.FirstOrDefault(
                                     x => (x.Value == Value));
                             if (value == null) goto Error;

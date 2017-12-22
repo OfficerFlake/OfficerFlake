@@ -14,6 +14,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		IColor ForeColor { get; set; }
 		IColor BackColor { get; set; }
+		char ClosestColorCode { get; }
 
 		string ToUnformattedSystemString();
 		string ToInternallyFormattedSystemString();
@@ -27,9 +28,21 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IRichTextMessage
 	{
-		IUnitOfMeasurement Datestamp { get; }
-		IUnitOfMeasurement Timestamp { get; }
-		IUser User { get; }
-		IRichTextString Message { get; }
+		IDate Datestamp { get; set; }
+		ITime Timestamp { get; set; }
+		IUser User { get; set; }
+		IRichTextString Message { get; set; }
+		MessageType Type { get; set; }
+	}
+
+	public enum MessageType
+	{
+		User,
+		ConsoleInformation,
+		DebugSummary,
+		DebugDetail,
+		DebugWarning,
+		DebugError,
+		DebugCrash
 	}
 }

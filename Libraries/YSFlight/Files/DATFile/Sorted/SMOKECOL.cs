@@ -1,16 +1,19 @@
-﻿using Com.OfficerFlake.Libraries.Interfaces;
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
 using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class SMOKECOL : DATProperty, IDAT_1_Parameter<I24BitColor>
+	public class SMOKECOL : DATProperty, IDAT_2_Parameters<Byte, I24BitColor>
 	{
-		public SMOKECOL(I24BitColor value) : base("SMOKECOL" + " " + string.Join(" ", value))
+		public SMOKECOL(Byte value1, I24BitColor value2) : base("SMOKECOL" + " " + value1 + " " + value2)
 		{
-			Value = value;
+			Value1 = value1;
+			Value2 = value2;
 		}
 
-		public I24BitColor Value { get; set; }
+		public Byte Value1 { get; set; }
+		public I24BitColor Value2 { get; set; }
 	}
 }

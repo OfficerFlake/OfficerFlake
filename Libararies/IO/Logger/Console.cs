@@ -21,7 +21,7 @@ namespace Com.OfficerFlake.Libraries.IO
 	    {
 		    if (console == null)
 		    {
-			    System.Diagnostics.Debug.WriteLine(user.UserName.ToSystemString() + ": " + message);
+			    System.Diagnostics.Debug.WriteLine(user.UserName.ToUnformattedSystemString() + ": " + message);
 			    return;
 		    }
 		    console.AddUserMessage(user, message);

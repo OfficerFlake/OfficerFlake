@@ -6,36 +6,35 @@
         {
             public class Second : Duration
             {
-                public Second(decimal value) : base(value, Conversion.Second, "D") { }
+                public Second(double value) : base(value, Conversion.Second, "D") { }
 
                 public static Second operator +(Second firstMeasurement, Second secondMeasurement)
                 {
-                    return new Second((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase));
+                    return new Second((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
                 }
                 public static Second operator -(Second firstMeasurement, Second secondMeasurement)
                 {
-                    return new Second((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase));
+                    return new Second((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
                 }
                 public static Second operator *(Second firstMeasurement, Second secondMeasurement)
                 {
-                    return new Second((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase));
+                    return new Second((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
                 }
                 public static Second operator /(Second firstMeasurement, Second secondMeasurement)
                 {
-                    return new Second((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase));
+                    return new Second((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
                 }
             }
 
-            public static Second ToSeconds(this Measurement input) => new Second(input.ConvertToBase);
+            public static Second ToSeconds(this Measurement input) => new Second(input.ConvertToBase());
 
             public static Second Seconds(this byte input) => new Second(input);
             public static Second Seconds(this short input) => new Second(input);
             public static Second Seconds(this int input) => new Second(input);
             public static Second Seconds(this long input) => new Second(input);
 
-            public static Second Seconds(this float input) => new Second((decimal)input);
-            public static Second Seconds(this double input) => new Second((decimal)input);
-            public static Second Seconds(this decimal input) => new Second(input);
+            public static Second Seconds(this float input) => new Second((double)input);
+            public static Second Seconds(this double input) => new Second((double)input);
         }
     }
 }

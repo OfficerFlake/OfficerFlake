@@ -6,7 +6,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     public class Duration : Measurement
     {
         #region CTOR
-        protected Duration(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Duration(double value, double conversionRatio, string unitSuffix)
             : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -15,30 +15,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         private readonly string _unitSuffix;
 
         #region Operators
-        public static implicit operator byte(Duration thisDuration) => (byte)thisDuration.ConvertToBase;
-        public static implicit operator short(Duration thisDuration) => (short)thisDuration.ConvertToBase;
-        public static implicit operator int(Duration thisDuration) => (int)thisDuration.ConvertToBase;
-        public static implicit operator long(Duration thisDuration) => (long)thisDuration.ConvertToBase;
+        public static implicit operator byte(Duration thisDuration) => (byte)thisDuration.ConvertToBase();
+        public static implicit operator short(Duration thisDuration) => (short)thisDuration.ConvertToBase();
+        public static implicit operator int(Duration thisDuration) => (int)thisDuration.ConvertToBase();
+        public static implicit operator long(Duration thisDuration) => (long)thisDuration.ConvertToBase();
 
-        public static implicit operator float(Duration thisDuration) => (float)thisDuration.ConvertToBase;
-        public static implicit operator double(Duration thisDuration) => (double)thisDuration.ConvertToBase;
-        public static implicit operator decimal(Duration thisDuration) => thisDuration.ConvertToBase;
+        public static implicit operator float(Duration thisDuration) => (float)thisDuration.ConvertToBase();
+        public static implicit operator double(Duration thisDuration) => thisDuration.ConvertToBase();
+        public static implicit operator decimal(Duration thisDuration) => (decimal)thisDuration.ConvertToBase();
             
         public static Duration operator +(Duration firstMeasurement, Duration secondMeasurement)
         {
-            return new Duration((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, Duration.DefaultSuffix);
+            return new Duration((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Duration.DefaultSuffix);
         }
         public static Duration operator -(Duration firstMeasurement, Duration secondMeasurement)
         {
-            return new Duration((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, Duration.DefaultSuffix);
+            return new Duration((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Duration.DefaultSuffix);
         }
         public static Duration operator *(Duration firstMeasurement, Duration secondMeasurement)
         {
-            return new Duration((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, Duration.DefaultSuffix);
+            return new Duration((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Duration.DefaultSuffix);
         }
         public static Duration operator /(Duration firstMeasurement, Duration secondMeasurement)
         {
-            return new Duration((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, Duration.DefaultSuffix);
+            return new Duration((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Duration.DefaultSuffix);
         }
 
         public static implicit operator string(Duration thisDuration) => thisDuration.ToString();
@@ -53,13 +53,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal Second =  1.0m;
-            public const decimal Minute = 60.0m;
-            public const decimal Hour = 3600.0m;
-	        public const decimal Day = 86400.0m;
-	        public const decimal Week = 604800.0m;
-	        public const decimal Month = 2678400.0m;
-	        public const decimal Year = 31536000.0m;
+            public const double Second =  1.0d;
+            public const double Minute = 60.0d;
+            public const double Hour = 3600.0d;
+	        public const double Day = 86400.0d;
+	        public const double Week = 604800.0d;
+	        public const double Month = 2678400.0d;
+	        public const double Year = 31536000.0d;
 		}
 
         private struct Suffixes
@@ -77,8 +77,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

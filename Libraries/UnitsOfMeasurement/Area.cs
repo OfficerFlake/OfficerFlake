@@ -1,12 +1,13 @@
-﻿using System.Diagnostics;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Debug = System.Diagnostics.Debug;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Area : Measurement
+    public class Area : Measurement, IArea
     {
         #region CTOR
-        protected Area(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Area(double value, double conversionRatio, string unitSuffix)
 : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -15,30 +16,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         private readonly string _unitSuffix;
 
         #region Operators
-        public static implicit operator byte(Area thisArea) => (byte)thisArea.ConvertToBase;
-        public static implicit operator short(Area thisArea) => (short)thisArea.ConvertToBase;
-        public static implicit operator int(Area thisArea) => (int)thisArea.ConvertToBase;
-        public static implicit operator long(Area thisArea) => (long)thisArea.ConvertToBase;
+        public static implicit operator byte(Area thisArea) => (byte)thisArea.ConvertToBase();
+        public static implicit operator short(Area thisArea) => (short)thisArea.ConvertToBase();
+        public static implicit operator int(Area thisArea) => (int)thisArea.ConvertToBase();
+        public static implicit operator long(Area thisArea) => (long)thisArea.ConvertToBase();
 
-        public static implicit operator float(Area thisArea) => (float)thisArea.ConvertToBase;
-        public static implicit operator double(Area thisArea) => (double)thisArea.ConvertToBase;
-        public static implicit operator decimal(Area thisArea) => thisArea.ConvertToBase;
+        public static implicit operator float(Area thisArea) => (float)thisArea.ConvertToBase();
+        public static implicit operator double(Area thisArea) => thisArea.ConvertToBase();
+        public static implicit operator decimal(Area thisArea) => (decimal)thisArea.ConvertToBase();
 
         public static Area operator +(Area firstMeasurement, Area secondMeasurement)
         {
-            return new Area((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, Area.DefaultSuffix);
+            return new Area((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Area.DefaultSuffix);
         }
         public static Area operator -(Area firstMeasurement, Area secondMeasurement)
         {
-            return new Area((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, Area.DefaultSuffix);
+            return new Area((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Area.DefaultSuffix);
         }
         public static Area operator *(Area firstMeasurement, Area secondMeasurement)
         {
-            return new Area((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, Area.DefaultSuffix);
+            return new Area((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Area.DefaultSuffix);
         }
         public static Area operator /(Area firstMeasurement, Area secondMeasurement)
         {
-            return new Area((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, Area.DefaultSuffix);
+            return new Area((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Area.DefaultSuffix);
         }
         #endregion
         public override string ToString()
@@ -51,16 +52,16 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         protected struct Conversion
         {
-            public const decimal SquareMillimeter = 0.000001m;
-            public const decimal SquareCentimeter = 0.0001m;
-            public const decimal SquareMeter = 1m;
-            public const decimal Hectare = 10000m;
-            public const decimal SquareKilometer = 1000000m;
-            public const decimal SquareInch = 0.000645m;
-            public const decimal SquareFoot = 0.092903m;
-            public const decimal SquareYard = 0.836127m;
-            public const decimal Acre = 4046.856m;
-            public const decimal SquareMile = 2589988m;
+            public const double SquareMillimeter = 0.000001d;
+            public const double SquareCentimeter = 0.0001d;
+            public const double SquareMeter = 1d;
+            public const double Hectare = 10000d;
+            public const double SquareKilometer = 1000000d;
+            public const double SquareInch = 0.000645d;
+            public const double SquareFoot = 0.092903d;
+            public const double SquareYard = 0.836127d;
+            public const double Acre = 4046.856d;
+            public const double SquareMile = 2589988d;
         }
 
         protected struct Suffixes
@@ -81,8 +82,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
     {
         #region CTOR
 
-        protected Power(decimal value, decimal conversionRatio, string unitSuffix)
+        protected Power(double value, double conversionRatio, string unitSuffix)
             : base(value, conversionRatio)
         {
             _unitSuffix = unitSuffix;
@@ -18,30 +18,30 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         private readonly string _unitSuffix;
 
         #region Operators
-        public static implicit operator byte(Power thisPower) => (byte)thisPower.ConvertToBase;
-        public static implicit operator short(Power thisPower) => (short)thisPower.ConvertToBase;
-        public static implicit operator int(Power thisPower) => (int)thisPower.ConvertToBase;
-        public static implicit operator long(Power thisPower) => (long)thisPower.ConvertToBase;
+        public static implicit operator byte(Power thisPower) => (byte)thisPower.ConvertToBase();
+        public static implicit operator short(Power thisPower) => (short)thisPower.ConvertToBase();
+        public static implicit operator int(Power thisPower) => (int)thisPower.ConvertToBase();
+        public static implicit operator long(Power thisPower) => (long)thisPower.ConvertToBase();
 
-        public static implicit operator float(Power thisPower) => (float)thisPower.ConvertToBase;
-        public static implicit operator double(Power thisPower) => (double)thisPower.ConvertToBase;
-        public static implicit operator decimal(Power thisPower) => thisPower.ConvertToBase;
+        public static implicit operator float(Power thisPower) => (float)thisPower.ConvertToBase();
+        public static implicit operator double(Power thisPower) => thisPower.ConvertToBase();
+        public static implicit operator decimal(Power thisPower) => (decimal)thisPower.ConvertToBase();
 
         public static Power operator +(Power firstMeasurement, Power secondMeasurement)
         {
-            return new Power((firstMeasurement.ConvertToBase + secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Power((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Power operator -(Power firstMeasurement, Power secondMeasurement)
         {
-            return new Power((firstMeasurement.ConvertToBase - secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Power((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Power operator *(Power firstMeasurement, Power secondMeasurement)
         {
-            return new Power((firstMeasurement.ConvertToBase * secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Power((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         public static Power operator /(Power firstMeasurement, Power secondMeasurement)
         {
-            return new Power((firstMeasurement.ConvertToBase / secondMeasurement.ConvertToBase), 1, DefaultSuffix);
+            return new Power((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
         }
         #endregion
         public override string ToString()
@@ -55,11 +55,11 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
         public struct Conversion
         {
-            public const decimal Watt = 0.001m;
-            public const decimal KiloWatt = 1m;
-            public const decimal USHorsepower = 0.7457m;
-            public const decimal FootPoundsPerMinute = 0.000023m;
-            public const decimal BTUsPerMinute = 0.017584m;
+            public const double Watt = 0.001d;
+            public const double KiloWatt = 1d;
+            public const double USHorsepower = 0.7457d;
+	        public const double FootPoundsPerMinute = 0.000023d;
+            public const double BTUsPerMinute = 0.017584d;
         }
 
         private struct Suffixes
@@ -76,8 +76,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
         {
             var capInput = input.ToUpperInvariant();
             var extraction = input.ExtractNumberComponentFromMeasurementString();
-            decimal conversion;
-            var failed = !decimal.TryParse(extraction, out conversion);
+            double conversion;
+            var failed = !double.TryParse(extraction, out conversion);
 
             if (failed)
             {

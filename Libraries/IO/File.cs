@@ -8,8 +8,6 @@ namespace Com.OfficerFlake.Libraries.IO
 {
     public class File : IFile
     {
-        private bool DebugMode = false;
-
         public string Filename { get; }
 		public string[] Contents { get; set; }
 
