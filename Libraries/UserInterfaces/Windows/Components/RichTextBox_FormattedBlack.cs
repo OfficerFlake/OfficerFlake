@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries.Color;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 
@@ -107,17 +108,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 				var FontStyle = System.Drawing.FontStyle.Regular;
 				if (thisElement.IsBold) FontStyle |= FontStyle.Bold;
-				if (thisElement.IsItalic) FontStyle |= FontStyle.Italic;
+				if (thisElement.IsItallic) FontStyle |= FontStyle.Italic;
 				if (thisElement.IsUnderlined) FontStyle |= FontStyle.Underline;
-				if (thisElement.IsStrikeThrough) FontStyle |= FontStyle.Strikeout;
+				if (thisElement.IsStrikeout) FontStyle |= FontStyle.Strikeout;
 
 				SelectionFont = new Font("Courier New", 8, FontStyle);
 
 				System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
 					255,
-					(int)thisElement.Color.Color.Red,
-					(int)thisElement.Color.Color.Green,
-					(int)thisElement.Color.Color.Blue);
+					(int)thisElement.ForeColor.Red,
+					(int)thisElement.ForeColor.Green,
+					(int)thisElement.ForeColor.Blue);
 				System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
 					255,
 					16,
@@ -134,7 +135,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			//ResumeLayout();
 		}
 
-		public void AppendRichTextElement(RichTextString.MessageElement thisElement)
+		public void AppendRichTextElement(IRichTextElement thisElement)
 		{
 			SelectionStart = 0;
 			SelectionLength = 0;
@@ -152,17 +153,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 			FontStyle thisStyle = FontStyle.Regular;
 			if (thisElement.IsBold) thisStyle |= FontStyle.Bold;
-			if (thisElement.IsItalic) thisStyle |= FontStyle.Italic;
+			if (thisElement.IsItallic) thisStyle |= FontStyle.Italic;
 			if (thisElement.IsUnderlined) thisStyle |= FontStyle.Underline;
-			if (thisElement.IsStrikeThrough) thisStyle |= FontStyle.Strikeout;
+			if (thisElement.IsStrikeout) thisStyle |= FontStyle.Strikeout;
 
 			SelectionFont = new Font("Courier New", 8, thisStyle);
 
 			System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
 				255,
-				(int)thisElement.Color.Color.Red,
-				(int)thisElement.Color.Color.Green,
-				(int)thisElement.Color.Color.Blue);
+				(int)thisElement.ForeColor.Red,
+				(int)thisElement.ForeColor.Green,
+				(int)thisElement.ForeColor.Blue);
 			System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
 				255,
 				16,

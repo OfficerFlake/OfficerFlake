@@ -1,45 +1,78 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using static Com.OfficerFlake.Libraries.UnitsOfMeasurement.Durations;
 
 namespace Com.OfficerFlake.Libraries
 {
 	namespace UnitsOfMeasurement
 	{
-		public class OYSTime
+		public class OYSTime : ITime
 		{
-			public Int32 hh;
-			public Int32 mm;
-			public Int32 ss;
-
-			public OYSTime(Int32 hh, Int32 mm, Int32 ss)
+			#region Properties
+			public Hour hh;
+			public Minute mm;
+			public Second ss;
+			#endregion
+			#region CTOR
+			public OYSTime(Hour hh, Minute mm, Second ss)
 			{
 				this.hh = hh;
 				this.mm = mm;
 				this.ss = ss;
 			}
+			public OYSTime(DateTime datetime)
+			{
+				hh = new Hour(datetime.Hour);
+				mm = new Minute(datetime.Minute);
+				ss = new Second(datetime.Second);
+			}
+			#endregion
 
+			#region Operators
+			public static bool operator <(OYSTime date1, OYSTime date2)
+			{
+				return (System.DateTime)date1 < (System.DateTime)date2;
+			}
+			public static bool operator >(OYSTime date1, OYSTime date2)
+			{
+				return (System.DateTime)date1 > (System.DateTime)date2;
+			}
+			public static OYSTime operator +(OYSTime t1, OYSTime t2)
+			{
+				return (System.DateTime)t1 + new System.TimeSpan(t2.hh, t2.mm, t2.ss);
+			}
+			public static OYSTime operator -(OYSTime t1, OYSTime t2)
+			{
+				return (System.DateTime)t1 - new System.TimeSpan(t2.hh, t2.mm, t2.ss);
+			}
+			#endregion
+
+			#region OYSTime <> DateTime
 			public static implicit operator System.DateTime(OYSTime thistime)
 			{
 				return new System.DateTime(0, 0, 0, thistime.hh, thistime.mm, thistime.ss);
 			}
-
+			public static implicit operator OYSTime(System.DateTime thisDate)
+			{
+				return new OYSTime(thisDate);
+			}
+			#endregion
+			#region OYSTime <> String
 			public override string ToString()
 			{
-				return hh.ToString().ResizeOnLeft(2, '0') + ":" +
-				       mm.ToString().ResizeOnLeft(2, '0') + ":" +
-				       ss.ToString().ResizeOnLeft(2, '0');
+				return hh.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+					   mm.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+					   ss.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
-		}
-
-		public static class TimeExtension
-		{
 			public static bool TryParse(string input, out OYSTime output)
 			{
 				#region Initialise Output
-				output = new OYSTime(0,0,0);
+				output = new OYSTime(0.Hours(), 0.Minutes(), 0.Seconds());
 				#endregion
 				#region Not enough Parameters!
 				if (input.Count(x => x == ':') < 2) return false;
@@ -57,10 +90,11 @@ namespace Com.OfficerFlake.Libraries
 				failed |= !Int32.TryParse(split[2], out ss);
 				if (failed) return false;
 
-				output = new OYSTime(hh,mm,ss);
+				output = new OYSTime(hh.Hours(), mm.Minutes(), ss.Seconds());
 				return true;
 				#endregion
 			}
+			#endregion
 		}
 	}
 }

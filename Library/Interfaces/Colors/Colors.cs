@@ -13,7 +13,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface ISimpleColor
 	{
-		IColor Color { get; set; }
+		I24BitColor Color { get; set; }
 		char ColorCode { get; set; }
 	}
 

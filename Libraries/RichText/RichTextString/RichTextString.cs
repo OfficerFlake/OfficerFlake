@@ -15,8 +15,8 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    {
 			#region Properties
 		    public string Message { get; set; } = "";
-		    public IColor ForeColor { get; set; } = (IColor)SimpleColors.White.Color;
-		    public IColor BackColor { get; set; } = (IColor)SimpleColors.Black.Color;
+		    public I24BitColor ForeColor { get; set; } = (I24BitColor)SimpleColors.White.Color;
+		    public I24BitColor BackColor { get; set; } = (I24BitColor)SimpleColors.Black.Color;
 
 			public bool IsObfuscated { get; set; }
 		    public bool IsBold { get; set; }
@@ -29,15 +29,15 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 		    }
 
-		    public MessageElement(string message, SimpleColor color, bool isbold, bool isitalic, bool isunderlined,
-			    bool isobfuscated)
+		    public MessageElement(string message, ISimpleColor color, bool isBold, bool isItallic, bool isUnderlined,
+			    bool isObfuscated, bool isStrikeout)
 		    {
 			    Message = message;
-			    ForeColor = GetClosestColorCode();
-			    IsBold = isbold;
-			    IsItallic = isitalic;
-			    IsUnderlined = isunderlined;
-			    IsObfuscated = isobfuscated;
+			    ForeColor = GetColor(color.ColorCode);
+			    IsBold = isBold;
+			    IsItallic = isItallic;
+			    IsUnderlined = isUnderlined;
+			    IsObfuscated = isObfuscated;
 		    }
 			#endregion
 
@@ -50,9 +50,14 @@ namespace Com.OfficerFlake.Libraries.RichText
 						Math.Pow((thiscolor.Color.Red - ForeColor.Red) * 0.30, 2) +
 						Math.Pow((thiscolor.Color.Green - ForeColor.Green) * 0.59, 2) +
 						Math.Pow((thiscolor.Color.Blue - ForeColor.Blue) * 0.11, 2);
-					charindexes.Add(distance, thiscolor.ColorCode);
+					charindexes[distance] = thiscolor.ColorCode;
 				}
 				return charindexes[charindexes.Keys.Min()];
+		    }
+		    public I24BitColor GetColor(char charCode)
+		    {
+			    if (SimpleColors.List.All((x => x.ColorCode != charCode))) return SimpleColors.White.Color;
+			    return SimpleColors.List.Last(x => x.ColorCode == charCode).Color;
 		    }
 
 		    public string ToInternallyFormattedSystemString()
@@ -63,6 +68,12 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 			    throw new NotImplementedException();
 		    }
+
+			public ISimpleColor GetClosestSimpleColor()
+			{
+				if (SimpleColors.List.All(x => x.ColorCode != GetClosestColorCode())) return SimpleColors.White;
+				return SimpleColors.List.First(x => x.ColorCode == GetClosestColorCode());
+			}
 		}
 		public List<IRichTextElement> Elements
 	    {
@@ -101,7 +112,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		/// <returns>A System String with no formatting.</returns>
 		public override string ToString()
 	    {
-		    return ToUnformattedString();
+		    return ToUnformattedSystemString();
 	    }
 		#endregion
 

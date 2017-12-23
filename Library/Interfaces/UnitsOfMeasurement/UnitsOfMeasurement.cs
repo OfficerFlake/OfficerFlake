@@ -55,16 +55,45 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		}
 	}
 
-	public interface ITime
+	public interface IDuration : IUnitOfMeasurement
 	{
 	}
-	public interface ITimeSpan
+	public interface ISecond : IDuration
 	{
 	}
+	public interface IMinute : IDuration
+	{
+	}
+	public interface IHour : IDuration
+	{
+	}
+	public interface IDay : IDuration
+	{
+	}
+	public interface IWeek : IDuration
+	{
+	}
+	public interface IMonth : IDuration
+	{
+	}
+	public interface IYear : IDuration
+	{
+	}
+
 	public interface IDate
 	{
+
+	}
+	public interface ITime
+	{
+		
 	}
 	public interface IDateTime
 	{
+
+	}
+	public interface ITimeSpan
+	{
+
 	}
 }

@@ -37,13 +37,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateAndTime\Duration\Year.cs" />
-    <Compile Include="DateAndTime\Duration\Month.cs" />
-    <Compile Include="DateAndTime\Duration\Week.cs" />
-    <Compile Include="DateAndTime\Duration\Hour.cs" />
-    <Compile Include="DateAndTime\Duration\Minute.cs" />
-    <Compile Include="DateAndTime\Duration\Second.cs" />
-    <Compile Include="DateAndTime\Duration\Day.cs" />
+    <Compile Include="DateAndTime\_Duration\Year.cs" />
+    <Compile Include="DateAndTime\_Duration\Month.cs" />
+    <Compile Include="DateAndTime\_Duration\Week.cs" />
+    <Compile Include="DateAndTime\_Duration\Hour.cs" />
+    <Compile Include="DateAndTime\_Duration\Minute.cs" />
+    <Compile Include="DateAndTime\_Duration\Second.cs" />
+    <Compile Include="DateAndTime\_Duration\Day.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="Angle.cs" />
     <Compile Include="Angle\Gradian.cs" />

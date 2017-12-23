@@ -12,6 +12,7 @@ using static Com.OfficerFlake.Libraries.Database;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
@@ -98,7 +99,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    MessageBox.Show(
 			    "Mouse Row: " + GetMouseRow(currentTextIndex) + "\n\n" +
 			    "Console Index: " + GetMessageIndexFromPosition(GetMouseRow(currentTextIndex)) + "\n\n" +
-			    "Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedString());
+			    "Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedSystemString());
 	    }
 		#endregion
 
@@ -223,17 +224,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
 		                   thisRichTextMessage.Created.InStandardForm().MM +
 		                   thisRichTextMessage.Created.InStandardForm().DD;
-			date.Color = SimpleColors.ColorF;
+			date.ForeColor = SimpleColors.White.Color;
 
 		    RichTextString.MessageElement time = new RichTextString.MessageElement();
 			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
 			               thisRichTextMessage.Created.InStandardForm().mm +
 			               thisRichTextMessage.Created.InStandardForm().ss;
-			time.Color = SimpleColors.ColorE;
+			time.ForeColor = SimpleColors.Yellow.Color;
 
-			RichTextString.MessageElement[] username = thisRichTextMessage.UserObject.Username.Elements;
+			List<IRichTextElement> username = thisRichTextMessage.UserObject.Username.Elements;
 
-			RichTextString.MessageElement[] message = thisRichTextMessage.String.Elements;
+		    List<IRichTextElement> message = thisRichTextMessage.String.Elements;
 
 			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
 		    int messageIndentSize = GetIndentSize();
@@ -250,26 +251,26 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    if (checkBox_ShowUsername.Checked)
 		    {
 			    int totalMessageSize = 0;
-				for (int i=0; i<username.Length; i++)
+				for (int i=0; i<username.Count; i++)
 				{
-					MessageElement thisElement = username[i];
-					MessageElement currentElement;
+					IRichTextElement thisElement = username[i];
+					IRichTextElement currentElement;
 					#region Limit Size of total message to 16 Chars
 					int thisElementSize = thisElement.Message.Length;
 					if (totalMessageSize + thisElementSize > 16)
 					{
-						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.Color,
-							thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.GetClosestSimpleColor(),
+							thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
 						totalMessageSize += currentElement.Message.Length;
 					}
 					else
 					{
 						currentElement = thisElement;
 						totalMessageSize += currentElement.Message.Length;
-						if (i == username.Length - 1)
+						if (i == username.Count - 1)
 						{
-							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.Color,
-								thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.GetClosestSimpleColor(),
+								thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
 						}
 					}
 					#endregion
@@ -283,10 +284,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    int remainingCharactersToAdd = fullMessageSize;
 			    int charactersOnThisLine = 0;
 
-			    for (int i = 0; i < message.Length; i++)
+			    for (int i = 0; i < message.Count; i++)
 			    {
-				    MessageElement thisElement = message[i];
-				    MessageElement workingElement;
+				    IRichTextElement thisElement = message[i];
+				    IRichTextElement workingElement;
 					#region Limit Size of total message
 				    int maxLineSize = MessageSize;
 				    #region  Break the currrent element across lines if required.
@@ -303,11 +304,12 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 						workingElement = new MessageElement
 					    (
 						    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-							thisElement.Color,
+							thisElement.GetClosestSimpleColor(),
 						    thisElement.IsBold,
-							thisElement.IsItalic,
+							thisElement.IsItallic,
 							thisElement.IsUnderlined,
-							thisElement.IsObfuscated
+							thisElement.IsObfuscated,
+							thisElement.IsStrikeout
 							);
 					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					    charactersOnThisLine += sizeToAdd;
@@ -326,11 +328,12 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 				    workingElement = new MessageElement
 				    (
 					    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-					    thisElement.Color,
+					    thisElement.GetClosestSimpleColor(),
 					    thisElement.IsBold,
-					    thisElement.IsItalic,
+					    thisElement.IsItallic,
 					    thisElement.IsUnderlined,
-					    thisElement.IsObfuscated
+					    thisElement.IsObfuscated,
+						thisElement.IsStrikeout
 				    );
 				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 				    charactersOnThisLine += sizeToAdd;

@@ -186,7 +186,7 @@ namespace Com.OfficerFlake.Libraries.IO
                         {
 
                             Style thisStyle = new Style();
-                            thisStyle.Classes.Add("color" + thisElement.ClosestColorCode);
+                            thisStyle.Classes.Add("color" + thisElement.GetClosestColorCode());
                             if (thisElement.IsBold) thisStyle.Classes.Add("bold");
                             if (thisElement.IsItallic) thisStyle.Classes.Add("italic");
                             if (thisElement.IsObfuscated) thisStyle.Classes.Add("obfuscated");

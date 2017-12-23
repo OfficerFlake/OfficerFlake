@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Com.OfficerFlake.Libraries.Interfaces;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Com.OfficerFlake.Libraries
 {
 	public static partial class Database
     {
-	    public class User : IUser, IHasPermissions
+	    public class User : IUser
 	    {
 		    public RichTextString Username;
 
@@ -58,31 +58,31 @@ namespace Com.OfficerFlake.Libraries
 		    }
 
 			#region Mute
-			public ExpiringAction MuteHistory = new ExpiringAction(Users.Console, DateTime.MinValue, DateTime.MinValue, "Never Muted.".AsRichTextString());
-		    public bool isMuted => (DateTime.Now < MuteHistory.Ends);
+			public IExpiringAction MuteHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Muted.".AsRichTextString());
+		    public bool isMuted => ((OYSDateTime)DateTime.Now < (OYSDateTime)MuteHistory.Ends);
 		    void Mute(User mutedBy, DateTime starts, DateTime ends, RichTextString reason)
 		    {
 			    throw new NotImplementedException();
 		    }
 			#endregion
 			#region Freeze
-			public ExpiringAction FreezeHistory = new ExpiringAction(Users.Console, DateTime.MinValue, DateTime.MinValue, "Never Frozen.".AsRichTextString());
-		    public bool isFrozen => (DateTime.Now < FreezeHistory.Ends);
+			public ExpiringAction FreezeHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Frozen.".AsRichTextString());
+		    public bool isFrozen => ((OYSDateTime)DateTime.Now < (OYSDateTime)FreezeHistory.Ends);
 			void Freeze(User frozenby, DateTime starts, DateTime ends, RichTextString reason)
 		    {
 			    throw new NotImplementedException();
 		    }
 			#endregion
 			#region Kick
-			public PermanentAction KickHistory = new PermanentAction(Users.Console, DateTime.MinValue,  "Never Kicked.".AsRichTextString());
+			public PermanentAction KickHistory = new PermanentAction(Users.Console, (OYSDateTime)DateTime.MinValue,  "Never Kicked.".AsRichTextString());
 			void Kick(User kickedby, DateTime timestamp, RichTextString reason)
 		    {
 				throw new NotImplementedException();
 			}
 			#endregion
 			#region Ban
-			public ExpiringAction BanHistory = new ExpiringAction(Users.Console, DateTime.MinValue, DateTime.MinValue, "Never Banned.".AsRichTextString());
-		    public bool isBanned => (DateTime.Now < FreezeHistory.Ends);
+			public ExpiringAction BanHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Banned.".AsRichTextString());
+		    public bool isBanned => ((OYSDateTime)DateTime.Now < (OYSDateTime)FreezeHistory.Ends);
 
 			public IRichTextString UserName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 			public IUserHistory History { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -167,101 +167,101 @@ namespace Com.OfficerFlake.Libraries
 
 			#endregion
 			#region Perissmions
-		    public ILocalPermissions LocalPermissions { get; set; }
-			private ILocalPermissionsTester LocalPermissionsTester { get; set; }
+		    public ILocalPermissions LocalPermissions { get; set; } = new LocalPermissions();
+			public ILocalPermissionsTester LocalPermissionsTester { get; set; } = new LocalPermissionsTester(Users.Unknown);
 
-		    public IGlobalPermissions GlobalPermissions { get; set; }
-			private IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
+		    public IGlobalPermissions GlobalPermissions { get; set; } = new GlobalPermissions();
+		    public IGlobalPermissionsTester GlobalPermissionsTester { get; set; } = new GlobalPermissionsTester(Users.Unknown);
 
 		    public class PermissionsTesting_Can
 		    {
-			    private PermissionsTesting Testing;
+			    private IUser parent;
 
-			    public PermissionsTesting_Can(User parent)
+			    public PermissionsTesting_Can(IUser parent)
 			    {
-				    Testing = new PermissionsTesting(parent);
+				    this.parent = parent;
 			    }
 
-			    public bool Mute(User target)
+				public bool Mute(User target)
 			    {
-				    return Testing.Mute(target);
+				    return parent.GlobalPermissionsTester.Mute(target);
 			    }
 			    public bool Freeze(User target)
 			    {
-					return Testing.Freeze(target);
+					return parent.GlobalPermissionsTester.Freeze(target);
 				}
 			    public bool Kick(User target)
 			    {
-					return Testing.Kick(target);
+					return parent.GlobalPermissionsTester.Kick(target);
 				}
 			    public bool Ban(User target)
 			    {
-					return Testing.Ban(target);
+					return parent.GlobalPermissionsTester.Ban(target);
 				}
 
-			    public bool AddToGroup(User target, Group group)
+			    public bool AddToGroup(IGroup group, IUser target)
 			    {
-					return Testing.AddToGroup(target, group);
+					return parent.GlobalPermissionsTester.AddToGroup(group, target);
 				}
-			    public bool RemoveFromGroup(User target, Group group)
+			    public bool RemoveFromGroup(Group group, User target)
 			    {
-					return Testing.RemoveFromGroup(target, group);
+					return parent.GlobalPermissionsTester.RemoveFromGroup(group, target);
 				}
 
-			    public bool Promote(User target, Group group)
+			    public bool Promote(Group group, User target)
 			    {
-					return Testing.Promote(target, group);
+					return parent.GlobalPermissionsTester.Promote(group, target);
 				}
-			    public bool Demote(User target, Group group)
+			    public bool Demote(Group group, User target)
 			    {
-					return Testing.Demote(target, group);
+					return parent.GlobalPermissionsTester.Demote(group, target);
 				}
 			}
 		    public PermissionsTesting_Can Can;
 
 		    public class PermissionsTesting_Cannot
 		    {
-			    private PermissionsTesting Testing;
+				private IUser parent;
 
-			    public PermissionsTesting_Cannot(User parent)
+			    public PermissionsTesting_Cannot(IUser parent)
 			    {
-				    Testing = new PermissionsTesting(parent);
+				    this.parent = parent;
 			    }
 
 			    public bool Mute(User target)
 			    {
-				    return !Testing.Mute(target);
+				    return !parent.GlobalPermissionsTester.Mute(target);
 			    }
 			    public bool Freeze(User target)
 			    {
-				    return !Testing.Freeze(target);
+				    return !parent.GlobalPermissionsTester.Freeze(target);
 			    }
 			    public bool Kick(User target)
 			    {
-				    return !Testing.Kick(target);
+				    return !parent.GlobalPermissionsTester.Kick(target);
 			    }
 			    public bool Ban(User target)
 			    {
-				    return !Testing.Ban(target);
+				    return !parent.GlobalPermissionsTester.Ban(target);
 			    }
 
 			    public bool AddToGroup(User target, Group group)
 			    {
-				    return !Testing.AddToGroup(target, group);
+				    return !parent.GlobalPermissionsTester.AddToGroup(group, target);
 			    }
 			    public bool RemoveFromGroup(User target, Group group)
 			    {
-				    return !Testing.RemoveFromGroup(target, group);
-			    }
+				    return !parent.GlobalPermissionsTester.RemoveFromGroup(group, target);
+				}
 
 			    public bool Promote(User target, Group group)
 			    {
-				    return !Testing.Promote(target, group);
-			    }
+				    return !parent.GlobalPermissionsTester.Promote(group, target);
+				}
 			    public bool Demote(User target, Group group)
 			    {
-				    return !Testing.Demote(target, group);
-			    }
+				    return !parent.GlobalPermissionsTester.Demote(group, target);
+				}
 			}
 		    public PermissionsTesting_Cannot Cannot;
 			#endregion
@@ -270,16 +270,16 @@ namespace Com.OfficerFlake.Libraries
 		    {
 				MuteHistory = new ExpiringAction(
 					mutedBy,
-					DateTime.Now,
-					DateTime.Now + (duration ?? TimeSpan.MaxValue), 
+					(OYSDateTime)DateTime.Now,
+					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)), 
 					(reason ?? "No Reason.".AsRichTextString())
 					);
 		    }
 			public void Freeze(User frozenBy, TimeSpan? duration = null, RichTextString reason = null)
 			{
 				FreezeHistory = new ExpiringAction(frozenBy,
-					DateTime.Now,
-					DateTime.Now + (duration ?? TimeSpan.MaxValue),
+					(OYSDateTime)DateTime.Now,
+					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)),
 					(reason ?? "No Reason.".AsRichTextString())
 					);
 			}
@@ -287,7 +287,7 @@ namespace Com.OfficerFlake.Libraries
 		    {
 			    KickHistory = new PermanentAction(
 					kickedBy,
-					DateTime.Now,
+					(OYSDateTime)DateTime.Now,
 					(reason ?? "No Reason.".AsRichTextString())
 					);
 		    }
@@ -295,8 +295,8 @@ namespace Com.OfficerFlake.Libraries
 		    {
 			    BanHistory = new ExpiringAction(
 					bannedBy,
-					DateTime.Now,
-					DateTime.Now + (duration ?? TimeSpan.MaxValue),
+					(OYSDateTime)DateTime.Now,
+					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)),
 					(reason ?? "No Reason.".AsRichTextString())
 					);
 		    }
@@ -320,14 +320,14 @@ namespace Com.OfficerFlake.Libraries
 		    public void RemoveFromGroup(User addedBy, Group group, RichTextString reason = null)
 		    {
 			    if (!IsCurrentlyInGroup(group)) return; //Not even in the group.
-			    GroupHistory.Add(
+			    GroupUpdateHistory.Add(
 				    new GroupUpdate()
 				    {
 					    Group = group,
 						Rank = group.GetLowestRank(),
 
 						ActionedBy = addedBy,
-					    ActionedDateTime = DateTime.Now,
+					    ActionedDateTime = (OYSDateTime)DateTime.Now,
 
 					    Reason = (reason ?? "No Reason.".AsRichTextString())
 				    }
@@ -337,10 +337,10 @@ namespace Com.OfficerFlake.Libraries
 		    public void Promote(User promotedBy, Group group, RichTextString reason = null)
 		    {
 				if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't promote!
-			    Rank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
-			    Rank newRank = group.GetNextHigherRank(currentRank);
+			    IRank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
+			    IRank newRank = group.GetNextHigherRank(currentRank);
 
-			    GroupHistory.Add(
+			    GroupUpdateHistory.Add(
 				    new GroupUpdate()
 				    {
 					    Group = group,
@@ -356,10 +356,10 @@ namespace Com.OfficerFlake.Libraries
 		    public void Demote(User demotedBy, Group group, RichTextString reason = null)
 		    {
 			    if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't demote!
-			    Rank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
-			    Rank newRank = group.GetNextLowerRank(currentRank);
+			    IRank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
+			    IRank newRank = group.GetNextLowerRank(currentRank);
 
-			    GroupHistory.Add(
+			    GroupUpdateHistory.Add(
 				    new GroupUpdate()
 				    {
 					    Group = group,

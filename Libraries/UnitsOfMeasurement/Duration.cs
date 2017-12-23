@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Duration : Measurement
+    public class Duration : Measurement, IDuration
     {
         #region CTOR
         protected Duration(double value, double conversionRatio, string unitSuffix)

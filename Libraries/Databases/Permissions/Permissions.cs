@@ -141,6 +141,11 @@ namespace Com.OfficerFlake.Libraries
 		public bool ChangePermissionsMaximumRank(IPermission permission) { throw new NotImplementedException(); }
 		public bool ChangePermissionsMustOutrank(IPermission permission) { throw new NotImplementedException(); }
 		#endregion
+
+		public LocalPermissionsTester(IHasPermissions owner)
+		{
+			Owner = owner;
+		}
 	}
 	public class GlobalPermissionsTester : IGlobalPermissionsTester
 	{
@@ -177,5 +182,10 @@ namespace Com.OfficerFlake.Libraries
 		public bool ChangePermissionMaximumRank(IPermission permission, int maximumRankIndex) { throw new NotImplementedException(); }
 		public bool ChangePermissionMustOutrank(IPermission permission, bool mustOutrank) { throw new NotImplementedException(); }
 		#endregion
+
+		public GlobalPermissionsTester(IHasPermissions owner)
+		{
+			Owner = owner;
+		}
 	}
 }

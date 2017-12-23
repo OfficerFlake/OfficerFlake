@@ -82,7 +82,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 	        output.Append(" ");
 	        output.Append(UserObject);
 	        output.Append(" ");
-	        output.Append(String.ToUnformattedString());
+	        output.Append(String.ToUnformattedSystemString());
 	        return output.ToString();
 		}
 		#endregion
@@ -100,14 +100,14 @@ namespace Com.OfficerFlake.Libraries.RichText
 			output.Append(UserObject);
 		    output.Append(" ");
 		    output.Append("&" + SimpleColors.White.ColorCode);
-			output.Append(String.ToFormattedString());
+			output.Append(String.ToInternallyFormattedSystemString());
 		    return output.ToString();
 	    }
 		#endregion
 
 	    public override string ToString()
 	    {
-		    return String.ToUnformattedString();
+		    return String.ToUnformattedSystemString();
 	    }
     }
 

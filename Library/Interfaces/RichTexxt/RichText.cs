@@ -12,9 +12,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		bool IsObfuscated { get; set; }
 		bool IsStrikeout { get; set; }
 
-		IColor ForeColor { get; set; }
-		IColor BackColor { get; set; }
+		I24BitColor ForeColor { get; set; }
+		I24BitColor BackColor { get; set; }
 		char GetClosestColorCode();
+		ISimpleColor GetClosestSimpleColor();
 
 		string ToUnformattedSystemString();
 		string ToInternallyFormattedSystemString();

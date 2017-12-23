@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Threading;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using static Com.OfficerFlake.Libraries.UnitsOfMeasurement.Durations;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -11,14 +14,16 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public class OYSDateTime : IDateTime
 		{
-			public Int32 YYYY;
-			public Int32 MM;
-			public Int32 DD;
-			public Int32 hh;
-			public Int32 mm;
-			public Int32 ss;
-
-			public OYSDateTime(Int32 YYYY, Int32 MM, Int32 DD, Int32 hh, Int32 mm, Int32 ss)
+			#region Properties
+			public Year YYYY { get; set; }
+			public Month MM { get; set; }
+			public Day DD { get; set; }
+			public Hour hh { get; set; }
+			public Minute mm { get; set; }
+			public Second ss { get; set; }
+			#endregion
+			#region CTOR
+			public OYSDateTime(Year YYYY, Month MM, Day DD, Hour hh, Minute mm, Second ss)
 			{
 				this.YYYY = YYYY;
 				this.MM = MM;
@@ -29,40 +34,55 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public OYSDateTime(DateTime datetime)
 			{
-				YYYY = datetime.Year;
-				MM = datetime.Month;
-				DD = datetime.Day;
-				hh = datetime.Hour;
-				mm = datetime.Minute;
-				ss = datetime.Second;
+				YYYY = new Year(datetime.Year);
+				MM = new Month(datetime.Month);
+				DD = new Day(datetime.Day);
+				hh = new Hour(datetime.Hour);
+				mm = new Minute(datetime.Minute);
+				ss = new Second(datetime.Second);
 			}
+			#endregion
 
+			#region Operators
+			public static bool operator <(OYSDateTime date1, OYSDateTime date2)
+			{
+				return (System.DateTime)date1 < (System.DateTime)date2;
+			}
+			public static bool operator >(OYSDateTime date1, OYSDateTime date2)
+			{
+				return (System.DateTime)date1 > (System.DateTime)date2;
+			}
+			public static OYSDateTime operator +(OYSDateTime date, OYSTimeSpan time)
+			{
+				return (OYSDateTime)((System.DateTime)date + (System.TimeSpan)time);
+			}
+			public static OYSDateTime operator -(OYSDateTime date, OYSTimeSpan time)
+			{
+				return (OYSDateTime)((System.DateTime)date - (System.TimeSpan)time);
+			}
+			#endregion
+
+			#region OYSDateTime <> DateTime
 			public static implicit operator System.DateTime(OYSDateTime thisDate)
 			{
-				return new System.DateTime(thisDate.YYYY, thisDate.MM, thisDate.DD, thisDate.hh, thisDate.mm, thisDate.ss);
+				return new System.DateTime(
+					(int)thisDate.YYYY.RawValue,
+					(int)thisDate.MM.RawValue,
+					(int)thisDate.DD.RawValue,
+					(int)thisDate.hh.RawValue,
+					(int)thisDate.mm.RawValue,
+					(int)thisDate.ss.RawValue);
 			}
 			public static implicit operator OYSDateTime(System.DateTime thisDate)
 			{
 				return new OYSDateTime(thisDate);
 			}
-
-			public override string ToString()
-			{
-				return YYYY.ToString().ResizeOnLeft(4, '0') +
-				       MM.ToString().ResizeOnLeft(2, '0') +
-				       DD.ToString().ResizeOnLeft(2, '0') +
-				       hh.ToString().ResizeOnLeft(2, '0') +
-				       mm.ToString().ResizeOnLeft(2, '0') +
-				       ss.ToString().ResizeOnLeft(2, '0');
-			}
-		}
-
-		public static class DateTimeExtension
-		{
-			public static bool TryParse(string input, out DateTime output)
+			#endregion
+			#region OYSDateTime <> String
+			public static bool TryParse(string input, out OYSDateTime output)
 			{
 				#region Initialise Output
-				output = new DateTime(0,0,0,0,0,0);
+				output = new DateTime(0, 0, 0, 0, 0, 0);
 				#endregion
 				#region Not enough Parameters!
 				if (input.Length < 14) return false;
@@ -84,10 +104,20 @@ namespace Com.OfficerFlake.Libraries
 				failed |= !Int32.TryParse(input.Substring(12, 2), out ss);
 				if (failed) return false;
 
-				output = new DateTime(YYYY,MM,DD, hh, mm, ss);
+				output = new OYSDateTime(YYYY.Years(), MM.Months(), DD.Days(), hh.Hours(), mm.Minutes(), ss.Seconds());
 				return true;
 				#endregion
 			}
+			public override string ToString()
+			{
+				return YYYY.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +
+					   MM.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   DD.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   hh.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   mm.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   ss.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
+			}
+			#endregion
 		}
 	}
 }

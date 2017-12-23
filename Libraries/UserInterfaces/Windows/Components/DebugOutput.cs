@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries.Color;
 using static Com.OfficerFlake.Libraries.Database;
-using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using static Com.OfficerFlake.Libraries.RichText.RichTextString;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UserInterfaces.ContextMenus;
 
@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		    MessageBox.Show(
 			    "Mouse Row: " + GetMouseRow(currentTextIndex) + "\n\n" +
 			    "Console Index: " + GetMessageIndexFromPosition(GetMouseRow(currentTextIndex)) + "\n\n" +
-			    "Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedString());
+			    "Message: " + GetMessageFromPosition(GetMouseRow(currentTextIndex)).String.ToUnformattedSystemString());
 	    }
 		#endregion
 
@@ -203,19 +203,19 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    {
 		    switch (thisRichTextMessage.Type)
 		    {
-			    case MessageType.Information:
+			    case RichTextMessage.MessageType.Information:
 				    if (!DebugMenu.showInformationToolStripMenuItem.Checked) return;
 				    break;
-			    case MessageType.Debug:
+			    case RichTextMessage.MessageType.Debug:
 				    if (!DebugMenu.showDebugToolStripMenuItem.Checked) return;
 				    break;
-				case MessageType.Warning:
+				case RichTextMessage.MessageType.Warning:
 				    if (!DebugMenu.showWarningToolStripMenuItem.Checked) return;
 					break;
-				case MessageType.Error:
+				case RichTextMessage.MessageType.Error:
 				    if (!DebugMenu.showErrorToolStripMenuItem.Checked) return;
 					break;
-				case MessageType.Crash:
+				case RichTextMessage.MessageType.Crash:
 				    if (!DebugMenu.showCrashToolStripMenuItem.Checked) return;
 					break;
 			}
@@ -224,17 +224,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
 		                   thisRichTextMessage.Created.InStandardForm().MM +
 		                   thisRichTextMessage.Created.InStandardForm().DD;
-			date.Color = SimpleColors.White;
+			date.ForeColor = SimpleColors.White.Color;
 
 		    RichTextString.MessageElement time = new RichTextString.MessageElement();
 			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
 			               thisRichTextMessage.Created.InStandardForm().mm +
 			               thisRichTextMessage.Created.InStandardForm().ss;
-			time.Color = SimpleColors.DarkGray;
+			time.ForeColor = SimpleColors.DarkGray.Color;
 
-		    MessageType type = thisRichTextMessage.Type;
+		    RichTextMessage.MessageType type = thisRichTextMessage.Type;
 
-			RichTextString.MessageElement[] message = thisRichTextMessage.String.Elements;
+			List<IRichTextElement> message = thisRichTextMessage.String.Elements;
 
 			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
 		    int messageIndentSize = GetIndentSize();
@@ -254,48 +254,48 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    RichTextString messageTypeString = ("&d" + "???").AsRichTextString();
 			    switch (thisRichTextMessage.Type)
 			    {
-				    case MessageType.Unknown:
+				    case RichTextMessage.MessageType.Unknown:
 					    messageTypeString = ("&d" + "???").AsRichTextString(); ;
 						break;
-				    case MessageType.Crash:
+				    case RichTextMessage.MessageType.Crash:
 					    messageTypeString = ("&c" + "CRASH").AsRichTextString(); ;
 						break;
-				    case MessageType.Error:
+				    case RichTextMessage.MessageType.Error:
 					    messageTypeString = ("&4" + "Error").AsRichTextString(); ;
 						break;
-				    case MessageType.Debug:
+				    case RichTextMessage.MessageType.Debug:
 					    messageTypeString = ("&9" + "Debug").AsRichTextString(); ;
 						break;
-				    case MessageType.Warning:
+				    case RichTextMessage.MessageType.Warning:
 					    messageTypeString = ("&e" + "Warning").AsRichTextString(); ;
 						break;
-				    case MessageType.Information:
+				    case RichTextMessage.MessageType.Information:
 					    messageTypeString = ("&b" + "Information").AsRichTextString(); ;
 						break;
 				    default:
 						messageTypeString = ("&d" + "???").AsRichTextString();
 					    break;
 				}
-				for (int i=0; i < messageTypeString.Elements.Length; i++)
+				for (int i=0; i < messageTypeString.Elements.Count; i++)
 				{
-					MessageElement thisElement = messageTypeString.Elements[i];
-					MessageElement currentElement;
+					IRichTextElement thisElement = messageTypeString.Elements[i];
+					IRichTextElement currentElement;
 					#region Limit Size of total message to 16 Chars
 					int thisElementSize = thisElement.Message.Length;
 					if (totalMessageSize + thisElementSize > 16)
 					{
-						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.Color,
-							thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.GetClosestSimpleColor(),
+							thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
 						totalMessageSize += currentElement.Message.Length;
 					}
 					else
 					{
 						currentElement = thisElement;
 						totalMessageSize += currentElement.Message.Length;
-						if (i == messageTypeString.Elements.Length - 1)
+						if (i == messageTypeString.Elements.Count - 1)
 						{
-							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.Color,
-								thisElement.IsBold, thisElement.IsItalic, thisElement.IsUnderlined, thisElement.IsObfuscated);
+							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.GetClosestSimpleColor(),
+								thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
 						}
 					}
 					#endregion
@@ -309,10 +309,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    int remainingCharactersToAdd = fullMessageSize;
 			    int charactersOnThisLine = 0;
 
-			    for (int i = 0; i < message.Length; i++)
+			    for (int i = 0; i < message.Count; i++)
 			    {
-				    MessageElement thisElement = message[i];
-				    MessageElement workingElement;
+				    IRichTextElement thisElement = message[i];
+				    IRichTextElement workingElement;
 					#region Limit Size of total message
 				    int maxLineSize = MessageSize;
 				    #region  Break the currrent element across lines if required.
@@ -329,11 +329,12 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 						workingElement = new MessageElement
 					    (
 						    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-							thisElement.Color,
+							thisElement.GetClosestSimpleColor(),
 						    thisElement.IsBold,
-							thisElement.IsItalic,
+							thisElement.IsItallic,
 							thisElement.IsUnderlined,
-							thisElement.IsObfuscated
+							thisElement.IsObfuscated,
+							thisElement.IsStrikeout
 							);
 					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					    charactersOnThisLine += sizeToAdd;
@@ -352,11 +353,12 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 				    workingElement = new MessageElement
 				    (
 					    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-					    thisElement.Color,
+					    thisElement.GetClosestSimpleColor(),
 					    thisElement.IsBold,
-					    thisElement.IsItalic,
+					    thisElement.IsItallic,
 					    thisElement.IsUnderlined,
-					    thisElement.IsObfuscated
+					    thisElement.IsObfuscated,
+						thisElement.IsStrikeout
 				    );
 				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 				    charactersOnThisLine += sizeToAdd;

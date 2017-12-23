@@ -46,8 +46,8 @@ namespace Com.OfficerFlake.Libraries.Color
 
 	public class SimpleColor : ISimpleColor
 	{
-		public IColor Color { get; set; }
-		public char ColorCode { get; set; }
+		public I24BitColor Color { get; set; } = new XRGBColor(255,255,255);
+		public char ColorCode { get; set; } = '?';
 
 		public SimpleColor(I24BitColor color, char colorCode)
 		{
@@ -64,31 +64,11 @@ namespace Com.OfficerFlake.Libraries.Color
 	public static class SimpleColors
 	{
 		#region Colors
-
-		public static readonly List<SimpleColor> List = new List<SimpleColor>()
-		{
-			Color0,
-			Color1,
-			Color2,
-			Color3,
-			Color4,
-			Color5,
-			Color6,
-			Color7,
-			Color8,
-			Color9,
-			ColorA,
-			ColorB,
-			ColorC,
-			ColorD,
-			ColorE,
-			ColorF
-		};
 		public static SimpleColor Black => Color0;
 		public static readonly SimpleColor Color0 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 0, 16),
+				new XRGBColor(0, 0, 0),
 				'0'
 			);
 
@@ -211,6 +191,25 @@ namespace Com.OfficerFlake.Libraries.Color
 				new XRGBColor(255, 255, 255),
 				'F'
 			);
+		public static readonly List<SimpleColor> List = new List<SimpleColor>()
+		{
+			Color0,
+			Color1,
+			Color2,
+			Color3,
+			Color4,
+			Color5,
+			Color6,
+			Color7,
+			Color8,
+			Color9,
+			ColorA,
+			ColorB,
+			ColorC,
+			ColorD,
+			ColorE,
+			ColorF
+		};
 		#endregion
 		#region Extensions
 		public static System.Drawing.Color ToSystemDrawingColor(this SimpleColor simpleColor)
