@@ -82,18 +82,49 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface IDate
 	{
+		IYear Year { get; set; }
+		IMonth Month { get; set; }
+		IDay Day { get; set; }
 
+		DateTime ToDateTime();
 	}
 	public interface ITime
 	{
-		
+		IHour Hour { get; set; }
+		IMinute Minute { get; set; }
+		ISecond Second { get; set; }
+
+		DateTime ToDateTime();
 	}
 	public interface IDateTime
 	{
+		IYear Year { get; set; }
+		IMonth Month { get; set; }
+		IDay Day { get; set; }
+		IHour Hour { get; set; }
+		IMinute Minute { get; set; }
+		ISecond Second { get; set; }
 
+		DateTime ToDateTime();
 	}
 	public interface ITimeSpan
 	{
+		IYear Years { get; set; }
+		IMonth Months { get; set; }
+		IWeek Weeks { get; set; }
+		IDay Days { get; set; }
+		IHour Hours { get; set; }
+		IMinute Minutes { get; set; }
+		ISecond Seconds { get; set; }
 
+		IYear TotalYears();
+		IMonth TotalMonths();
+		IWeek TotalWeeks();
+		IDay TotalDays();
+		IHour TotalHours();
+		IMinute TotalMinutes();
+		ISecond TotalSeconds();
+
+		TimeSpan ToTimeSpan();
 	}
 }

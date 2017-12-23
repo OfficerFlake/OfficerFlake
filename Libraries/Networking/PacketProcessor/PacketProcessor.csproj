@@ -48,6 +48,10 @@
     <Compile Include="Server\Type_00_Login.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Client\Connection\Connection.csproj">
       <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
       <Name>Connection</Name>
@@ -75,6 +79,10 @@
     <ProjectReference Include="..\..\RichText\RichTextString\RichTextString.csproj">
       <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
       <Name>RichTextString</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
+      <Project>{BEB82D31-C638-420B-B388-F79D599F2A3F}</Project>
+      <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\UserInterfaces\UserInterfaces.csproj">
       <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>

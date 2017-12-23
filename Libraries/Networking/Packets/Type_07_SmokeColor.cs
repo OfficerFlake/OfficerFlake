@@ -2,47 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Com.OfficerFlake.Libraries.Color;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Networking;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_07_SmokeColor : GenericPacket
+	public class Type_07_SmokeColor : GenericPacket, IPacket_07_SmokeColor
 	{
 		public Type_07_SmokeColor() : base(7)
 		{
 		}
-		public Type_07_SmokeColor(Int32 entityId, byte smokeGeneratorIndex, byte red, byte green, byte blue) : base(7)
+		public Type_07_SmokeColor(Int32 vehicleID, byte smokeGeneratorID, I24BitColor color) : base(7)
 		{
-			EntityId = entityId;
-			SmokeGeneratorIndex = smokeGeneratorIndex;
-			Red = red;
-			Green = green;
-			Blue = blue;
+			VehicleID = (uint)vehicleID;
+			SmokeGeneratorID = smokeGeneratorID;
+			Red = color.Red;
+			Green = color.Green;
+			Blue = color.Blue;
 		}
 
-		public Int32 EntityId
+		public UInt32 VehicleID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 
-		public Byte SmokeGeneratorIndex
+		public Byte SmokeGeneratorID
 		{
 			get => GetByte(4);
 			set => SetByte(4, value);
 		}
-		public Byte Red
+
+		public I24BitColor Color
+		{
+			get
+			{
+				return new XRGBColor(Red, Green, Blue);
+			}
+			set
+			{
+				Red = value.Red;
+				Green = value.Green;
+				Blue = value.Blue;
+			}
+		}
+		private Byte Red
 		{
 			get => GetByte(5);
 			set => SetByte(5, value);
 		}
-		public Byte Green
+		private Byte Green
 		{
 			get => GetByte(6);
 			set => SetByte(6, value);
 		}
-		public Byte Blue
+		private Byte Blue
 		{
 			get => GetByte(7);
 			set => SetByte(7, value);

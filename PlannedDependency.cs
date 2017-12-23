@@ -26,20 +26,20 @@
 //Database : RichTextString, Permissions
 
 //4
-//Settings : Color, Settings, DiskIO
-//RichTextString : Color, Extensions;
-//Equations : CoordinateSystems;
+//Settings : Color, Settings, DiskIO-
+//RichTextString : Color, Extensions;-
+//Equations : CoordinateSystems;-
 
 //3
 //UnitsOfMeasurement : Extensions-
-//Color : Extensions
-//Permissions : Extensions
-//YSFHQ : Extensions
-//YSTypes : Extensions
-//CoordinateSystems : Extensions
-//Statistics : Extensions
-//Packets : Extensions
-//DiskIO : Extensions
+//Color : Extensions-
+//Permissions : Extensions-
+//YSFHQ : Extensions-
+//YSTypes : Extensions-
+//CoordinateSystems : Extensions-
+//Statistics : Extensions-
+//Packets : Extensions-
+//DiskIO : Extensions+
 //	CommandFile Save/Load
 
 //2-

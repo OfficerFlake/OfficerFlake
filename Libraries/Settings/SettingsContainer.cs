@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.IO;
-
 using Com.OfficerFlake.Libraries.Color;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries
@@ -54,7 +46,7 @@ namespace Com.OfficerFlake.Libraries
 			public static Boolean AllowExternalAirView = false;
 			#endregion
 			#region Radar Altitude
-			public static Distance RadarBaseAltitude = 0.Meters();
+			public static IDistance RadarBaseAltitude = 0.Meters();
 			#endregion
 			#region User List
 			public static Boolean AllowListUsers = true;
@@ -112,24 +104,24 @@ namespace Com.OfficerFlake.Libraries
 			public static class Basic
 			{
 				public static Boolean OverrideSkyColor = false;
-				public static XRGBColor SkyColor = new XRGBColor(180, 184, 186);
+				public static I24BitColor SkyColor = new XRGBColor(180, 184, 186);
 
 				public static Boolean OverrideFogColor = false;
-				public static XRGBColor FogColor = new XRGBColor(120, 140, 160);
+				public static I24BitColor FogColor = new XRGBColor(120, 140, 160);
 
 				public static Boolean OverrideGndColor = false;
-				public static XRGBColor GndColor = new XRGBColor(94, 117, 109);
+				public static I24BitColor GndColor = new XRGBColor(94, 117, 109);
 			}
 
 			public static class Atmosphere
 			{
-				public static XRGBColor MaxAltitudeSkyColor = new XRGBColor(48, 0, 96);
-				public static XRGBColor MaxAltitudeHorizonColor = new XRGBColor(23, 106, 189);
+				public static I24BitColor MaxAltitudeSkyColor = new XRGBColor(48, 0, 96);
+				public static I24BitColor MaxAltitudeHorizonColor = new XRGBColor(23, 106, 189);
 
-				public static XRGBColor NoAtmosphereSkyColor = new XRGBColor(0, 0, 0);
-				public static XRGBColor NoAtmosphereHorizonColor = new XRGBColor(0, 0, 5);
+				public static I24BitColor NoAtmosphereSkyColor = new XRGBColor(0, 0, 0);
+				public static I24BitColor NoAtmosphereHorizonColor = new XRGBColor(0, 0, 5);
 
-				public static XRGBColor WhiteFogColor = new XRGBColor(160, 160, 160);
+				public static I24BitColor WhiteFogColor = new XRGBColor(160, 160, 160);
 
 				public static class Fading
 				{
@@ -140,17 +132,17 @@ namespace Com.OfficerFlake.Libraries
 
 			public static class Time
 			{
-				public static XRGBColor DawnSkyColor = new XRGBColor(200, 85, 200);
-				public static XRGBColor DawnHorizonColor = new XRGBColor(240, 200, 90);
+				public static I24BitColor DawnSkyColor = new XRGBColor(200, 85, 200);
+				public static I24BitColor DawnHorizonColor = new XRGBColor(240, 200, 90);
 
-				public static XRGBColor DaySkyColor = new XRGBColor(23, 106, 189);
-				public static XRGBColor DayHorizonColor = new XRGBColor(120, 140, 160);
+				public static I24BitColor DaySkyColor = new XRGBColor(23, 106, 189);
+				public static I24BitColor DayHorizonColor = new XRGBColor(120, 140, 160);
 
-				public static XRGBColor DuskSkyColor = new XRGBColor(128, 0, 32);
-				public static XRGBColor DuskHorizonColor = new XRGBColor(255, 160, 0);
+				public static I24BitColor DuskSkyColor = new XRGBColor(128, 0, 32);
+				public static I24BitColor DuskHorizonColor = new XRGBColor(255, 160, 0);
 
-				public static XRGBColor NightSkyColor = new XRGBColor(48, 0, 96);
-				public static XRGBColor NightHorizonColor = new XRGBColor(48, 0, 96);
+				public static I24BitColor NightSkyColor = new XRGBColor(48, 0, 96);
+				public static I24BitColor NightHorizonColor = new XRGBColor(48, 0, 96);
 
 				//How much should the colors ber darkened by if the time is night?
 				public static Double NightDarkeningFactor = 0.12;
@@ -162,8 +154,8 @@ namespace Com.OfficerFlake.Libraries
 
 		public static class Time
 		{
-			public static UInt32 DayLength = 0;
-			public static UInt32 CurrentTime = 1200;
+			public static ITime DayLength = new OYSTime(0.Hours(),24.Minutes(),0.Seconds());
+			public static ITime CurrentTime = new OYSTime(12.Hours(), 0.Minutes(), 0.Seconds());
 		}
 
 		public static class Weather
@@ -184,9 +176,9 @@ namespace Com.OfficerFlake.Libraries
 				public static Boolean Fog = true;
 			}
 
-			public static Speed WindX = 0.MetersPerSecond();
-			public static Speed WindY = 0.MetersPerSecond();
-			public static Speed WindZ = 0.MetersPerSecond();
+			public static ISpeed WindX = 0.MetersPerSecond();
+			public static ISpeed WindY = 0.MetersPerSecond();
+			public static ISpeed WindZ = 0.MetersPerSecond();
 			public static Distance Fog = 0.Meters();
 			#endregion
 		}

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Schema;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Networking.Packets;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
-	public class GenericPacket
+	public class GenericPacket : IPacket
 	{
-		public Int32 Size => Data.Length + 4;
-		public Int32 Type = 0;
-		public byte[] Data = new byte[0];
+		public UInt32 Size => (uint)(Data.Length + 4);
+		public UInt32 Type { get; set; }
+		public byte[] Data { get; set; } = new byte[0];
 
 		public byte[] Serialise()
 		{
@@ -33,11 +33,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 		public GenericPacket(int type)
 		{
-			Type = type;
+			Type = (uint)type;
 		}
 		public GenericPacket(int type, byte[] data)
 		{
-			Type = type;
+			Type = (uint)type;
 			Data = data;
 		}
 

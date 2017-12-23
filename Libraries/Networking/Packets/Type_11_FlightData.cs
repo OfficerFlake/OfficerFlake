@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Networking;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_11_FlightData : GenericPacket
+	public class Type_11_FlightData : GenericPacket, IPacket_11_FlightData
 	{
 		public Type_11_FlightData() : base(11)
 		{
@@ -19,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		}
 		private void Initialise(short version)
 		{
-			Version = version;
+			Version = (ushort)version;
 			if (Version == 3)
 			{
 				ResizeData(93);
@@ -30,38 +31,38 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public Single Timestamp
+		public ITime Timestamp
 		{
-			get => GetSingle(0);
-			set => SetSingle(0, value);
+			get => new OYSTime(0.Hours(), 0.Minutes(), GetSingle(0).Seconds());
+			set => SetSingle(0, (Single)value.Second.RawValue);
 		}
 
-		public Int32 EntityID
+		public UInt32 ID
 		{
-			get => GetInt32(4);
-			set => SetInt32(4, value);
+			get => GetUInt32(4);
+			set => SetUInt32(4, value);
 		}
 
-		public Int16 Version
+		public UInt16 Version
 		{
-			get => GetInt16(8);
-			set => SetInt16(8, value);
+			get => GetUInt16(8);
+			set => SetUInt16(8, value);
 		}
 
-		public Single PosX
+		public IDistance PosX
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(12);
+						return GetSingle(12).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(10);
+						return GetSingle(10).Meters();
 					default:
-						return 0;
+						return 0.Meters();
 				}
 			}
 			set
@@ -69,30 +70,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(12, value);
+						SetSingle(12, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(10, value);
+						SetSingle(10, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 				}
 			}
 		}
-		public Single PosY
+		public IDistance PosY
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(16);
+						return GetSingle(16).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(14);
+						return GetSingle(14).Meters();
 					default:
-						return 0;
+						return 0.Meters();
 				}
 			}
 			set
@@ -100,30 +101,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(16, value);
+						SetSingle(16, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(14, value);
+						SetSingle(14, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 				}
 			}
 		}
-		public Single PosZ
+		public IDistance PosZ
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(20);
+						return GetSingle(20).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(18);
+						return GetSingle(18).Meters();
 					default:
-						return 0;
+						return 0.Meters();
 				}
 			}
 			set
@@ -131,125 +132,31 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(20, value);
+						SetSingle(20, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(18, value);
-						break;
-				}
-			}
-		}
-
-		public Int16 HdgX
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetInt16(24);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(22);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetInt16(24, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(22, value);
-						break;
-				}
-			}
-		}
-		public Int16 HdgY
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetInt16(26);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(24);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetInt16(26, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(24, value);
-						break;
-				}
-			}
-		}
-		public Int16 HdgZ
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetInt16(28);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(26);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetInt16(28, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(26, value);
+						SetSingle(18, (Single)value.ConvertToBase().Meters().RawValue);
 						break;
 				}
 			}
 		}
 
-		public Int16 V_PosX
+		public IAngle HdgX
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(30);
+						return GetSingle(24).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(28);
+						return GetSingle(22).Radians();
 					default:
-						return 0;
+						return 0.Radians();
 				}
 			}
 			set
@@ -257,30 +164,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(30, value);
+						SetSingle(24, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(28, value);
+						SetSingle(22, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 				}
 			}
 		}
-		public Int16 V_PosY
+		public IAngle HdgY
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(32);
+						return GetSingle(26).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(30);
+						return GetSingle(24).Radians();
 					default:
-						return 0;
+						return 0.Radians();
 				}
 			}
 			set
@@ -288,30 +195,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(32, value);
+						SetSingle(26, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(30, value);
+						SetSingle(24, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 				}
 			}
 		}
-		public Int16 V_PosZ
+		public IAngle HdgZ
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(34);
+						return GetSingle(28).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(32);
+						return GetSingle(26).Radians();
 					default:
-						return 0;
+						return 0.Radians();
 				}
 			}
 			set
@@ -319,125 +226,31 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(34, value);
+						SetSingle(28, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(32, value);
-						break;
-				}
-			}
-		}
-
-		public Single V_HdgX
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetSingle(79);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(34);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetSingle(79, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(34, (Int16)value);
-						break;
-				}
-			}
-		}
-		public Single V_HdgY
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetSingle(83);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(36);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetSingle(83, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(36, (Int16)value);
-						break;
-				}
-			}
-		}
-		public Single V_HdgZ
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetSingle(87);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(38);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetSingle(87, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(38, (Int16)value);
+						SetSingle(26, (Single)value.ConvertToBase().Radians().RawValue);
 						break;
 				}
 			}
 		}
 
-		public Int16 LoadFactor
+		public ISpeed V_PosX
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(42);
+						return GetInt16(30).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(62);
+						return GetInt16(28).MetersPerSecond();
 					default:
-						return 0;
+						return 0.MetersPerSecond();
 				}
 			}
 			set
@@ -445,29 +258,217 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(42, value);
+						SetInt16(30, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(62, (byte)value);
+						SetInt16(28, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
+						break;
+				}
+			}
+		}
+		public ISpeed V_PosY
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetInt16(32).MetersPerSecond();
+					case 4:
+						goto case 5;
+					case 5:
+						return GetInt16(30).MetersPerSecond();
+					default:
+						return 0.MetersPerSecond();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetInt16(32, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetInt16(30, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
+						break;
+				}
+			}
+		}
+		public ISpeed V_PosZ
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetInt16(34).MetersPerSecond();
+					case 4:
+						goto case 5;
+					case 5:
+						return GetInt16(32).MetersPerSecond();
+					default:
+						return 0.MetersPerSecond();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetInt16(34, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetInt16(32, (Int16)value.ConvertToBase().MetersPerSecond().RawValue);
 						break;
 				}
 			}
 		}
 
-		public Int16 AmmoGUN
+		public IAngle V_HdgX
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(44);
+						return GetSingle(79).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(54);
+						return GetInt16(34).Radians();
+					default:
+						return 0.Radians();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetSingle(79, (Single)value.ConvertToBase().Radians().RawValue);
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetInt16(34, (Int16)value.ConvertToBase().Radians().RawValue);
+						break;
+				}
+			}
+		}
+		public IAngle V_HdgY
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetSingle(83).Radians();
+					case 4:
+						goto case 5;
+					case 5:
+						return GetInt16(36).Radians();
+					default:
+						return 0.Radians();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetSingle(83, (Single)value.ConvertToBase().Radians().RawValue);
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetInt16(36, (Int16)value.ConvertToBase().Radians().RawValue);
+						break;
+				}
+			}
+		}
+		public IAngle V_HdgZ
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetSingle(87).Radians();
+					case 4:
+						goto case 5;
+					case 5:
+						return GetInt16(38).Radians();
+					default:
+						return 0.Radians();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetSingle(87, (Single)value.ConvertToBase().Radians().RawValue);
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetInt16(38, (Int16)value.ConvertToBase().Radians().RawValue);
+						break;
+				}
+			}
+		}
+
+		public Single LoadFactor
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return (Single)(GetInt16(42)/10d);
+					case 4:
+						goto case 5;
+					case 5:
+						return (Single)(GetByte(62)/10d);
+					default:
+						return 0.Radians();
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetInt16(42, (Int16)(value*10));
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetByte(62, (byte)(value*10));
+						break;
+				}
+			}
+		}
+
+		public UInt16 AmmoGUN
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetUInt16(44);
+					case 4:
+						goto case 5;
+					case 5:
+						return GetUInt16(54);
 					default:
 						return 0;
 				}
@@ -477,24 +478,24 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(44, value);
+						SetUInt16(44, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(54, value);
+						SetUInt16(54, value);
 						break;
 				}
 			}
 		}
-		public Int16 AmmoAAM
+		public UInt16 AmmoAAM
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(46);
+						return GetUInt16(46);
 					case 4:
 						goto case 5;
 					case 5:
@@ -508,7 +509,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(46, value);
+						SetUInt16(46, value);
 						break;
 					case 4:
 						goto case 5;
@@ -518,14 +519,14 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public Int16 AmmoAGM
+		public UInt16 AmmoAGM
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(48);
+						return GetUInt16(48);
 					case 4:
 						goto case 5;
 					case 5:
@@ -539,7 +540,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(48, value);
+						SetUInt16(48, value);
 						break;
 					case 4:
 						goto case 5;
@@ -549,14 +550,14 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public Int16 AmmoB500
+		public UInt16 AmmoB500
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(50);
+						return GetUInt16(50);
 					case 4:
 						goto case 5;
 					case 5:
@@ -570,7 +571,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(50, value);
+						SetUInt16(50, value);
 						break;
 					case 4:
 						goto case 5;
@@ -581,20 +582,20 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public Int16 WeightSmokeOil
+		public IMass WeightSmokeOil
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(52);
+						return GetInt16(52).Kilograms();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(40);
+						return GetByte(40).Kilograms();
 					default:
-						return 0;
+						return 0.Kilograms();
 				}
 			}
 			set
@@ -602,30 +603,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(52, value);
+						SetInt16(52, (Int16)value.ConvertToBase().Kilograms().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(40, (byte)value);
+						SetByte(40, (byte)value.ConvertToBase().Kilograms().RawValue);
 						break;
 				}
 			}
 		}
-		public Single WeightFuel
+		public IMass WeightFuel
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(54);
+						return GetSingle(54).Kilograms();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(42);
+						return GetInt32(42).Kilograms();
 					default:
-						return 0;
+						return 0.Kilograms();
 				}
 			}
 			set
@@ -633,30 +634,30 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(54, value);
+						SetSingle(54, (Single)value.ConvertToBase().Kilograms().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(42, (int)value);
+						SetInt32(42, (int)value.ConvertToBase().Kilograms().RawValue);
 						break;
 				}
 			}
 		}
-		public Single WeightEmpty
+		public IMass WeightClean
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(48);
+						return GetSingle(48).Kilograms();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(46);
+						return GetInt32(46).Kilograms();
 					default:
-						return 0;
+						return 0.Kilograms();
 				}
 			}
 			set
@@ -664,12 +665,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(48, value);
+						SetSingle(48, (Single)value.ConvertToBase().Kilograms().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(46, (int)value);
+						SetInt32(46, (int)value.ConvertToBase().Kilograms().RawValue);
 						break;
 				}
 			}
@@ -707,18 +708,18 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public Byte AnimVGW
+		public Single AnimVGW
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(65);
+						return GetByte(65)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(49);
+						return GetByte(49)/100f;
 					default:
 						return 0;
 				}
@@ -728,29 +729,29 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(65, value);
+						SetByte(65, (byte)(value*100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(49, value);
+						SetByte(49, (byte)(value * 100));
 						break;
 				}
 			}
 		}
 
-		public Byte AnimBoards
+		public Single AnimBoards
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(66);
+						return GetByte(66)/255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(50) & 240);
+						return (byte)((GetByte(50) & 240)/16)/15f;
 					default:
 						return 0;
 				}
@@ -760,28 +761,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(66, value);
+						SetByte(66, (byte)(value*255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(50, (byte)((value & 240)|(AnimGear)));
+						SetByte(50, (byte)(((byte)(value*15*16) & 240)|((byte)(AnimGear*15))));
 						break;
 				}
 			}
 		}
-		public Byte AnimGear
+		public Single AnimGear
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(67);
+						return GetByte(67)/255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(50) & 15);
+						return (byte)(GetByte(50) & 15)/15f;
 					default:
 						return 0;
 				}
@@ -791,28 +792,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(67, value);
+						SetByte(67, (byte)(value*255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(50, (byte)((AnimBoards)|(value & 15)));
+						SetByte(50, (byte)((byte)(AnimBoards*16*15)|((byte)(value*15) & 15)));
 						break;
 				}
 			}
 		}
-		public Byte AnimFlap
+		public Single AnimFlaps
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(68);
+						return GetByte(68) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(51) & 240);
+						return (byte)((GetByte(51) & 240) / 16) / 15f;
 					default:
 						return 0;
 				}
@@ -822,28 +823,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(66, value);
+						SetByte(68, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(50, (byte)((value & 240) | (AnimBrake)));
+						SetByte(51, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimGear * 15))));
 						break;
 				}
 			}
 		}
-		public Byte AnimBrake
+		public Single AnimBrake
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(69);
+						return GetByte(69) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(51) & 15);
+						return (byte)(GetByte(51) & 15) / 15f;
 					default:
 						return 0;
 				}
@@ -853,12 +854,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(69, value);
+						SetByte(69, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(51, (byte)((AnimFlap) | (value & 15)));
+						SetByte(51, (byte)((byte)(AnimBoards * 16 * 15) | ((byte)(value * 15) & 15)));
 						break;
 				}
 			}
@@ -895,7 +896,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public Boolean Anim_Light_Land
+		public Boolean AnimLightLand
 		{
 			get => ((byte)(AnimFlags & (1<<7)) == (1<<7));		
 			set
@@ -904,7 +905,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1<<7));
 			}
 		}
-		public Boolean Anim_Light_Strobe
+		public Boolean AnimLightStrobe
 		{
 			get => ((byte)(AnimFlags & (1 << 6)) == (1 << 6));
 			set
@@ -913,7 +914,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 6));
 			}
 		}
-		public Boolean Anim_Light_Nav
+		public Boolean AnimLightNav
 		{
 			get => ((byte)(AnimFlags & (1 << 5)) == (1 << 5));
 			set
@@ -922,7 +923,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 5));
 			}
 		}
-		public Boolean Anim_Light_Beacon
+		public Boolean AnimLightBeacon
 		{
 			get => ((byte)(AnimFlags & (1 << 4)) == (1 << 4));
 			set
@@ -931,7 +932,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 4));
 			}
 		}
-		public Boolean Anim_Guns
+		public Boolean AnimGuns
 		{
 			get => ((byte)(AnimFlags & (1 << 3)) == (1 << 3));
 			set
@@ -940,7 +941,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 3));
 			}
 		}
-		public Boolean Anim_Contrails
+		public Boolean AnimContrails
 		{
 			get => ((byte)(AnimFlags & (1 << 2)) == (1 << 2));
 			set
@@ -949,7 +950,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 2));
 			}
 		}
-		public Boolean Anim_Smoke
+		public Boolean AnimSmoke
 		{
 			get => ((byte)(AnimFlags & (1 << 1)) == (1 << 1));
 			set
@@ -958,7 +959,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else AnimFlags &= (byte)(255 - (1 << 1));
 			}
 		}
-		public Boolean Anim_Burners
+		public Boolean AnimBurners
 		{
 			get => ((byte)(AnimFlags & (1 << 0)) == (1 << 0));
 			set
@@ -1000,18 +1001,18 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public Byte AnimThrottle
+		public Single AnimThrottle
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(72);
+						return GetByte(72)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(63);
+						return GetByte(63)/100f;
 					default:
 						return 0;
 				}
@@ -1021,28 +1022,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(72, value);
+						SetByte(72, (Byte)(value*100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(63, value);
+						SetByte(63, (Byte)(value*100));
 						break;
 				}
 			}
 		}
-		public SByte AnimElevator
+		public Single AnimElevator
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(73);
+						return GetSByte(73)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(64);
+						return GetSByte(64)/100f;
 					default:
 						return 0;
 				}
@@ -1052,28 +1053,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(73, value);
+						SetSByte(73, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(64, value);
+						SetSByte(64, (SByte)(value * 100));
 						break;
 				}
 			}
 		}
-		public SByte AnimAileron
+		public Single AnimAileron
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(74);
+						return GetSByte(74)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(65);
+						return GetSByte(65)/100f;
 					default:
 						return 0;
 				}
@@ -1083,28 +1084,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(74, value);
+						SetSByte(74, (SByte)(value*100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(65, value);
+						SetSByte(65, (SByte)(value * 100));
 						break;
 				}
 			}
 		}
-		public SByte AnimRudder
+		public Single AnimRudder
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(75);
+						return GetSByte(75)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(66);
+						return GetSByte(66)/100f;
 					default:
 						return 0;
 				}
@@ -1114,28 +1115,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(75, value);
+						SetSByte(75, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(66, value);
+						SetSByte(66, (SByte)(value * 100));
 						break;
 				}
 			}
 		}
-		public SByte AnimTrim
+		public Single AnimTrim
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(76);
+						return GetSByte(76)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(67);
+						return GetSByte(67)/100f;
 					default:
 						return 0;
 				}
@@ -1145,61 +1146,29 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(76, value);
+						SetSByte(76, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(67, value);
-						break;
-				}
-			}
-		}
-
-		public Int16 AmmoRKT
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetInt16(77);
-					case 4:
-						goto case 5;
-					case 5:
-						return GetInt16(56);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetInt16(77, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetInt16(56, value);
+						SetSByte(67, (SByte)(value * 100));
 						break;
 				}
 			}
 		}
 
-		public Byte AnimNozzle
+		public UInt16 AmmoRKT
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(91);
+						return GetUInt16(77);
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(68) & 240);
+						return GetUInt16(56);
 					default:
 						return 0;
 				}
@@ -1209,60 +1178,29 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(91, value);
+						SetUInt16(77, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(68, (byte)((value & 240) | (AnimReverse)));
-						break;
-				}
-			}
-		}
-		public Byte AnimReverse
-		{
-			get
-			{
-				switch (Version)
-				{
-					case 3:
-						return GetByte(92);
-					case 4:
-						goto case 5;
-					case 5:
-						return (byte)(GetByte(68) & 15);
-					default:
-						return 0;
-				}
-			}
-			set
-			{
-				switch (Version)
-				{
-					case 3:
-						SetByte(92, value);
-						break;
-					case 4:
-						goto case 5;
-					case 5:
-						SetByte(68, (byte)((AnimNozzle) | (value & 15)));
+						SetUInt16(56, value);
 						break;
 				}
 			}
 		}
 
-		public Byte AnimBombBay
+		public Single AnimThrustVector
 		{
 			get
 			{
 				switch (Version)
 				{
 					case 3:
-						return GetByte(93);
+						return GetByte(91)/100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(69) & 240);
+						return (byte)(GetByte(68) & 240)/16/15f;
 					default:
 						return 0;
 				}
@@ -1272,12 +1210,75 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(93, value);
+						SetByte(91, (Byte)(value*16*15));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(69, (byte)((value & 240) | (GetByte(69) & 15)));
+						SetByte(68, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimThrustReverse * 15))));
+						break;
+				}
+			}
+		}
+		public Single AnimThrustReverse
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetByte(92)/100f;
+					case 4:
+						goto case 5;
+					case 5:
+						return (byte)(GetByte(68) & 15)/15f;
+					default:
+						return 0;
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetByte(92, (byte)(value*15));
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetByte(68, (byte)((byte)(AnimThrustVector * 16 * 15) | ((byte)(value * 15) & 15)));
+						break;
+				}
+			}
+		}
+
+		public Single AnimBombBay
+		{
+			get
+			{
+				switch (Version)
+				{
+					case 3:
+						return GetByte(93)/255f;
+					case 4:
+						goto case 5;
+					case 5:
+						return (byte)(GetByte(69) & 240)/16/15f;
+					default:
+						return 0;
+				}
+			}
+			set
+			{
+				switch (Version)
+				{
+					case 3:
+						SetByte(93, (Byte)(value*16*15));
+						break;
+					case 4:
+						goto case 5;
+					case 5:
+						SetByte(69, (byte)(((byte)(value * 15 * 16) & 240) | (GetByte(69) & 15)));
 						break;
 				}
 			}

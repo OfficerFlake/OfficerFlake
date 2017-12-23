@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Networking
     {
 		#region Properties
 	    public string Username = "<Unknown User>";
-	    public Int32 Version = -1;
+	    public UInt32 Version = 0;
 
 	    #region ConnectionNumber
 	    private static int ConnectionIDIncrementer = 0;
@@ -265,7 +265,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 			{
 				output.ResizeData((int)size);
-				output.Type = (int)type;
+				output.Type = type;
 				output.Data = data;
 				return output;
 			}

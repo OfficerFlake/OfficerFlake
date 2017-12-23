@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Networking;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_05_EntityJoined : GenericPacket
+	public class Type_05_EntityJoined : GenericPacket, IPacket_05_AddVehicle
 	{
 		public Type_05_EntityJoined() : base(5)
 		{
@@ -24,23 +26,43 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			    (char)00 + (char)00 + (char)03 + (char)00 + (char)00 + (char)00 + (char)00 + (char)00);
 		}
 
-		public UInt32 ObjectType
+		public Packet_05VehicleType VehicleType
 		{
-			get => GetUInt32(0);
-			set => SetUInt32(0, value);
+			get
+			{
+				switch (GetUInt32(0))
+				{
+					case 0:
+						return Packet_05VehicleType.Aircraft;
+					default:
+						return Packet_05VehicleType.Ground;
+				}
+			}
+			set
+			{
+				switch (value)
+				{
+					case Packet_05VehicleType.Aircraft:
+						SetUInt32(0, 0);
+						return;
+					default:
+						SetUInt32(0, 65537);
+						return;
+				}
+			}
 		}
 		public Boolean IsAircraft
 		{
-			get => (ObjectType == 0);
+			get => (VehicleType == Packet_05VehicleType.Aircraft);
 			set
 			{
 				if (value)
 				{
-					ObjectType = 0;
+					VehicleType = Packet_05VehicleType.Aircraft;
 				}
 				else
 				{
-					ObjectType = 65537;
+					VehicleType = Packet_05VehicleType.Ground;
 				}
 			}
 		}
@@ -50,47 +72,47 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			set => IsAircraft = !value;
 		}
 
-		public Int32 ID
+		public UInt32 ID
 		{
-			get => GetInt32(4);
-			set => SetInt32(4, value);
+			get => GetUInt32(4);
+			set => SetUInt32(4, value);
 		}
-		public Int32 IFF
+		public UInt32 IFF
 		{
-			get => GetInt32(8);
-			set => SetInt32(8, value);
-		}
-
-		public Single PosX
-		{
-			get => GetSingle(12);
-			set => SetSingle(12, value);
-		}
-		public Single PosY
-		{
-			get => GetSingle(16);
-			set => SetSingle(16, value);
-		}
-		public Single PosZ
-		{
-			get => GetSingle(20);
-			set => SetSingle(20, value);
+			get => GetUInt32(8);
+			set => SetUInt32(8, value);
 		}
 
-		public Single RotX
+		public IDistance PosX
 		{
-			get => GetSingle(24);
-			set => SetSingle(24, value);
+			get => GetSingle(12).Meters();
+			set => SetSingle(12, (Single)value.ConvertToBase().Meters().RawValue);
 		}
-		public Single RotY
+		public IDistance PosY
 		{
-			get => GetSingle(28);
-			set => SetSingle(28, value);
+			get => GetSingle(16).Meters();
+			set => SetSingle(16, (Single)value.ConvertToBase().Meters().RawValue);
 		}
-		public Single RotZ
+		public IDistance PosZ
 		{
-			get => GetSingle(32);
-			set => SetSingle(32, value);
+			get => GetSingle(20).Meters();
+			set => SetSingle(20, (Single)value.ConvertToBase().Meters().RawValue);
+		}
+
+		public IAngle RotX
+		{
+			get => GetSingle(24).Radians();
+			set => SetSingle(24, (Single)value.ConvertToBase().Radians().RawValue);
+		}
+		public IAngle RotY
+		{
+			get => GetSingle(28).Radians();
+			set => SetSingle(28, (Single)value.ConvertToBase().Radians().RawValue);
+		}
+		public IAngle RotZ
+		{
+			get => GetSingle(32).Radians();
+			set => SetSingle(32, (Single)value.ConvertToBase().Radians().RawValue);
 		}
 
 		public String Identify
@@ -101,18 +123,38 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		//Skip 68 => 108 (???)
 
-		public Byte OwnerType
+		public Packet_05OwnerType OwnerType
 		{
-			get => GetByte(108);
-			set => SetByte(108, value);
+			get
+			{
+				switch (GetUInt32(108))
+				{
+					case 3:
+						return Packet_05OwnerType.Self;
+					default:
+						return Packet_05OwnerType.Other;
+				}
+			}
+			set
+			{
+				switch (value)
+				{
+					case Packet_05OwnerType.Self:
+						SetUInt32(108, 3);
+						return;
+					default:
+						SetUInt32(0, 2);
+						return;
+				}
+			}
 		}
 		public Boolean IsOwnedByThisClient
 		{
-			get => (OwnerType == 3);
+			get => (OwnerType == Packet_05OwnerType.Self);
 			set
 			{
-				if (value) OwnerType = 3;
-				else OwnerType = 2;
+				if (value) OwnerType = Packet_05OwnerType.Self;
+				else OwnerType = Packet_05OwnerType.Other;
 			}
 		}
 

@@ -14,22 +14,22 @@ namespace Com.OfficerFlake.Libraries
 		public class OYSDate : IDate
 		{
 			#region Properties
-			public Year YYYY { get; set; }
-			public Month MM { get; set; }
-			public Day DD { get; set; }
+			public IYear Year { get; set; }
+			public IMonth Month { get; set; }
+			public IDay Day { get; set; }
 			#endregion
 			#region CTOR
-			public OYSDate(Year YYYY, Month MM, Day DD)
+			public OYSDate(IYear YYYY, IMonth MM, IDay DD)
 			{
-				this.YYYY = YYYY;
-				this.MM = MM;
-				this.DD = DD;
+				this.Year = YYYY;
+				this.Month = MM;
+				this.Day = DD;
 			}
 			public OYSDate(DateTime datetime)
 			{
-				YYYY = new Year(datetime.Year);
-				MM = new Month(datetime.Month);
-				DD = new Day(datetime.Day);
+				this.Year = new Year(datetime.Year);
+				this.Month = new Month(datetime.Month);
+				this.Day = new Day(datetime.Day);
 			}
 			#endregion
 
@@ -53,12 +53,16 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 
 			#region OYSDate <> DateTime
+			public DateTime ToDateTime()
+			{
+				return (System.DateTime)this;
+			}
 			public static implicit operator System.DateTime(OYSDate thisDate)
 			{
 				return new System.DateTime(
-					(int)thisDate.YYYY.RawValue,
-					(int)thisDate.MM.RawValue,
-					(int)thisDate.DD.RawValue,
+					(int)thisDate.Year.RawValue,
+					(int)thisDate.Month.RawValue,
+					(int)thisDate.Day.RawValue,
 					0,
 					0,
 					0);
@@ -71,9 +75,9 @@ namespace Com.OfficerFlake.Libraries
 			#region OYSDate <> String
 			public override string ToString()
 			{
-				return YYYY.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +
-					   MM.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   DD.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
+				return Year.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +
+					   Month.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Day.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
 			public static bool TryParse(string input, out OYSDate output)
 			{

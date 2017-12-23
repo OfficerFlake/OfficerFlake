@@ -14,22 +14,22 @@ namespace Com.OfficerFlake.Libraries
 		public class OYSTime : ITime
 		{
 			#region Properties
-			public Hour hh;
-			public Minute mm;
-			public Second ss;
+			public IHour Hour { get; set; }
+			public IMinute Minute { get; set; }
+			public ISecond Second { get; set; }
 			#endregion
 			#region CTOR
-			public OYSTime(Hour hh, Minute mm, Second ss)
+			public OYSTime(IHour hh, IMinute mm, ISecond ss)
 			{
-				this.hh = hh;
-				this.mm = mm;
-				this.ss = ss;
+				this.Hour = hh;
+				this.Minute = mm;
+				this.Second = ss;
 			}
 			public OYSTime(DateTime datetime)
 			{
-				hh = new Hour(datetime.Hour);
-				mm = new Minute(datetime.Minute);
-				ss = new Second(datetime.Second);
+				Hour = new Hour(datetime.Hour);
+				Minute = new Minute(datetime.Minute);
+				Second = new Second(datetime.Second);
 			}
 			#endregion
 
@@ -44,18 +44,22 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public static OYSTime operator +(OYSTime t1, OYSTime t2)
 			{
-				return (System.DateTime)t1 + new System.TimeSpan(t2.hh, t2.mm, t2.ss);
+				return (System.DateTime)t1 + new System.TimeSpan((int)(t2.Hour.RawValue), (int)t2.Minute.RawValue, (int)t2.Second.RawValue);
 			}
 			public static OYSTime operator -(OYSTime t1, OYSTime t2)
 			{
-				return (System.DateTime)t1 - new System.TimeSpan(t2.hh, t2.mm, t2.ss);
+				return (System.DateTime)t1 - new System.TimeSpan((int)(t2.Hour.RawValue), (int)t2.Minute.RawValue, (int)t2.Second.RawValue);
 			}
 			#endregion
 
 			#region OYSTime <> DateTime
+			public System.DateTime ToDateTime()
+			{
+				return (System.DateTime)this;
+			}
 			public static implicit operator System.DateTime(OYSTime thistime)
 			{
-				return new System.DateTime(0, 0, 0, thistime.hh, thistime.mm, thistime.ss);
+				return new System.DateTime(0, 0, 0, (int)thistime.Hour.RawValue, (int)thistime.Minute.RawValue, (int)thistime.Second.RawValue);
 			}
 			public static implicit operator OYSTime(System.DateTime thisDate)
 			{
@@ -65,9 +69,9 @@ namespace Com.OfficerFlake.Libraries
 			#region OYSTime <> String
 			public override string ToString()
 			{
-				return hh.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
-					   mm.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
-					   ss.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
+				return Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+					   Second.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
 			public static bool TryParse(string input, out OYSTime output)
 			{

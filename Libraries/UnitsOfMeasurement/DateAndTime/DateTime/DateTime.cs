@@ -15,31 +15,31 @@ namespace Com.OfficerFlake.Libraries
 		public class OYSDateTime : IDateTime
 		{
 			#region Properties
-			public Year YYYY { get; set; }
-			public Month MM { get; set; }
-			public Day DD { get; set; }
-			public Hour hh { get; set; }
-			public Minute mm { get; set; }
-			public Second ss { get; set; }
+			public IYear Year { get; set; }
+			public IMonth Month { get; set; }
+			public IDay Day { get; set; }
+			public IHour Hour { get; set; }
+			public IMinute Minute { get; set; }
+			public ISecond Second { get; set; }
 			#endregion
 			#region CTOR
-			public OYSDateTime(Year YYYY, Month MM, Day DD, Hour hh, Minute mm, Second ss)
+			public OYSDateTime(IYear YYYY, IMonth MM, IDay DD, IHour hh, IMinute mm, ISecond ss)
 			{
-				this.YYYY = YYYY;
-				this.MM = MM;
-				this.DD = DD;
-				this.hh = hh;
-				this.mm = mm;
-				this.ss = ss;
+				this.Year = YYYY;
+				this.Month = MM;
+				this.Day = DD;
+				this.Hour = hh;
+				this.Minute = mm;
+				this.Second = ss;
 			}
 			public OYSDateTime(DateTime datetime)
 			{
-				YYYY = new Year(datetime.Year);
-				MM = new Month(datetime.Month);
-				DD = new Day(datetime.Day);
-				hh = new Hour(datetime.Hour);
-				mm = new Minute(datetime.Minute);
-				ss = new Second(datetime.Second);
+				Year = new Year(datetime.Year);
+				Month = new Month(datetime.Month);
+				Day = new Day(datetime.Day);
+				Hour = new Hour(datetime.Hour);
+				Minute = new Minute(datetime.Minute);
+				Second = new Second(datetime.Second);
 			}
 			#endregion
 
@@ -63,15 +63,20 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 
 			#region OYSDateTime <> DateTime
+
+			public System.DateTime ToDateTime()
+			{
+				return (System.DateTime)this;
+			}
 			public static implicit operator System.DateTime(OYSDateTime thisDate)
 			{
 				return new System.DateTime(
-					(int)thisDate.YYYY.RawValue,
-					(int)thisDate.MM.RawValue,
-					(int)thisDate.DD.RawValue,
-					(int)thisDate.hh.RawValue,
-					(int)thisDate.mm.RawValue,
-					(int)thisDate.ss.RawValue);
+					(int)thisDate.Year.RawValue,
+					(int)thisDate.Month.RawValue,
+					(int)thisDate.Day.RawValue,
+					(int)thisDate.Hour.RawValue,
+					(int)thisDate.Minute.RawValue,
+					(int)thisDate.Second.RawValue);
 			}
 			public static implicit operator OYSDateTime(System.DateTime thisDate)
 			{
@@ -110,12 +115,12 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public override string ToString()
 			{
-				return YYYY.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +
-					   MM.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   DD.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   hh.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   mm.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   ss.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
+				return Year.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +
+					   Month.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Day.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Second.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
 			#endregion
 		}

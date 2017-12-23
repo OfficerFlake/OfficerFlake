@@ -13,31 +13,62 @@ namespace Com.OfficerFlake.Libraries
 		public class OYSTimeSpan : ITimeSpan
 		{
 			#region Properties
-			public Year Y;
-			public Month M;
-			public Day D;
-			public Hour h;
-			public Minute m;
-			public Second s;
+			public IYear Years { get; set; }
+			public IMonth Months { get; set; }
+			public IWeek Weeks { get; set; }
+			public IDay Days { get; set; }
+			public IHour Hours { get; set; }
+			public IMinute Minutes { get; set; }
+			public ISecond Seconds { get; set; }
+
+			public IYear TotalYears()
+			{
+				return new Year(((System.TimeSpan) this).TotalDays / 365);
+			}
+			public IMonth TotalMonths()
+			{
+				return new Month(((System.TimeSpan)this).TotalDays / 365 * 12);
+			}
+			public IWeek TotalWeeks()
+			{
+				return new Week(((System.TimeSpan)this).TotalDays / 365 * 7);
+			}
+			public IDay TotalDays()
+			{
+				return new Day(((System.TimeSpan)this).TotalDays);
+			}
+			public IHour TotalHours()
+			{
+				return new Hour(((System.TimeSpan)this).TotalHours);
+			}
+			public IMinute TotalMinutes()
+			{
+				return new Minute(((System.TimeSpan)this).TotalMinutes);
+			}
+			public ISecond TotalSeconds()
+			{
+				return new Second(((System.TimeSpan)this).TotalSeconds);
+			}
 			#endregion
 			#region CTOR
-			public OYSTimeSpan(Year Y, Month M, Day D, Hour h, Minute m, Second s)
+			public OYSTimeSpan(Year Y, Month M, Week W, Day D, Hour h, Minute m, Second s)
 			{
-				this.Y = Y;
-				this.M = M;
-				this.D = D;
-				this.h = h;
-				this.m = m;
-				this.s = s;
+				this.Years = Y;
+				this.Months = M;
+				this.Days = D;
+				this.Hours = h;
+				this.Minutes = m;
+				this.Seconds = s;
 			}
 			public OYSTimeSpan(TimeSpan timespan)
 			{
-				Y = new Year((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Year);
-				M = new Month((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Month);
-				D = new Day((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Day);
-				h = new Hour((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Hour);
-				m = new Minute((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Minute);
-				s = new Second((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Second);
+				Years = new Year((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Year);
+				Months = new Month((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Month);
+				Weeks = 0.Weeks();
+				Days = new Day((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Day);
+				Hours = new Hour((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Hour);
+				Minutes = new Minute((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Minute);
+				Seconds = new Second((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Second);
 			}
 			#endregion
 
@@ -61,9 +92,19 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 
 			#region OYSTimeSpan <> TimeSpan
+			public System.TimeSpan ToTimeSpan()
+			{
+				return (System.TimeSpan)this;
+			}
 			public static implicit operator System.TimeSpan(OYSTimeSpan thisTimeSpan)
 			{
-				System.DateTime output = new System.DateTime(thisTimeSpan.Y, thisTimeSpan.M, thisTimeSpan.D, thisTimeSpan.h, thisTimeSpan.m, thisTimeSpan.s);
+				System.DateTime output = new System.DateTime(
+					(int)thisTimeSpan.Years.RawValue,
+					(int)thisTimeSpan.Months.RawValue,
+					(int)thisTimeSpan.Days.RawValue,
+					(int)thisTimeSpan.Hours.RawValue,
+					(int)thisTimeSpan.Minutes.RawValue,
+					(int)thisTimeSpan.Seconds.RawValue);
 				return output - new System.DateTime(0, 0, 0, 0, 0, 0);
 			}
 			public static implicit operator OYSTimeSpan(System.TimeSpan thisTimeSpan)
@@ -74,21 +115,22 @@ namespace Com.OfficerFlake.Libraries
 			#region OYSTimeSpan <> String
 			public override string ToString()
 			{
-				return Y.ToString() + "Y" +
-					   M.ToString() + "M" +
-					   D.ToString() + "D" +
-					   h.ToString() + "h" +
-					   m.ToString() + "m" +
-					   s.ToString() + "s";
+				return Years.ToString() + "Y" +
+					   Months.ToString() + "M" +
+					   Days.ToString() + "D" +
+					   Hours.ToString() + "h" +
+					   Minutes.ToString() + "m" +
+					   Seconds.ToString() + "s";
 			}
 			public static bool TryParse(string input, out OYSTimeSpan output)
 			{
 				#region Initialise Output
-				output = new OYSTimeSpan(0.Years(), 0.Months(), 0.Days(), 0.Hours(), 0.Minutes(), 0.Seconds());
+				output = new OYSTimeSpan(0.Years(), 0.Months(), 0.Weeks(), 0.Days(), 0.Hours(), 0.Minutes(), 0.Seconds());
 				#endregion
 				#region Convert
 				Year Y = 0.Years();
 				Month M = 0.Months();
+				Week W = 0.Weeks();
 				Day D = 0.Days();
 				Hour h = 0.Hours();
 				Minute m = 0.Minutes();
@@ -112,6 +154,14 @@ namespace Com.OfficerFlake.Libraries
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
 						failed |= !Duration.TryParse(convertable, out Duration duration);
 						M = duration.ToMonths();
+						continue;
+					}
+					if (remaining.Contains("W"))
+					{
+						string convertable = remaining.Substring(0, remaining.IndexOf("W"));
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						failed |= !Duration.TryParse(convertable, out Duration duration);
+						W = duration.ToWeeks();
 						continue;
 					}
 					if (remaining.Contains("D"))
@@ -150,7 +200,7 @@ namespace Com.OfficerFlake.Libraries
 				}
 				if (failed) return false;
 
-				output = new OYSTimeSpan(Y, M, D, h, m, s);
+				output = new OYSTimeSpan(Y, M, W, D, h, m, s);
 				return true;
 				#endregion
 			}

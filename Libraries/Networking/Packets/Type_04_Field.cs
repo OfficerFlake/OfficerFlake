@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Networking;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_04_Field : GenericPacket
+	public class Type_04_Field : GenericPacket, IPacket_04_Field
 	{
 		public Type_04_Field() : base(4)
 		{
@@ -18,7 +19,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	        ResizeData(60);
 			this.FieldName = fieldName;
 		}
-		public Type_04_Field(string fieldName, float posX, float posY, float posZ, float rotX, float rotY, float rotZ) : base(4)
+		public Type_04_Field(string fieldName, IDistance posX, IDistance posY, IDistance posZ, IAngle rotX, IAngle rotY, IAngle rotZ) : base(4)
         {
 	        ResizeData(60);
 			FieldName = fieldName;
@@ -36,42 +37,42 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			set => SetString(0, 32, value);
 		}
 
-		public Single PosX
+		public IDistance PosX
 		{
-			get => GetSingle(32);
-			set => SetSingle(32, value);
+			get => GetSingle(32).Meters();
+			set => SetSingle(32, (Single)value.ConvertToBase().Meters().RawValue);
 		}
-		public Single PosY
+		public IDistance PosY
 		{
-			get => GetSingle(36);
-			set => SetSingle(36, value);
+			get => GetSingle(36).Meters();
+			set => SetSingle(36, (Single)value.ConvertToBase().Meters().RawValue);
 		}
-		public Single PosZ
+		public IDistance PosZ
 		{
-			get => GetSingle(40);
-			set => SetSingle(40, value);
-		}
-
-		public Single RotX
-		{
-			get => GetSingle(44);
-			set => SetSingle(44, value);
-		}
-		public Single RotY
-		{
-			get => GetSingle(48);
-			set => SetSingle(48, value);
-		}
-		public Single RotZ
-		{
-			get => GetSingle(52);
-			set => SetSingle(52, value);
+			get => GetSingle(40).Meters();
+			set => SetSingle(40, (Single)value.ConvertToBase().Meters().RawValue);
 		}
 
-		public Int32 Unknown
+		public IAngle RotX
 		{
-			get => GetInt32(56);
-			set => SetInt32(56, value);
+			get => GetSingle(44).Radians();
+			set => SetSingle(44, (Single)value.ConvertToBase().Radians().RawValue);
+		}
+		public IAngle RotY
+		{
+			get => GetSingle(48).Radians();
+			set => SetSingle(48, (Single)value.ConvertToBase().Radians().RawValue);
+		}
+		public IAngle RotZ
+		{
+			get => GetSingle(52).Radians();
+			set => SetSingle(52, (Single)value.ConvertToBase().Radians().RawValue);
+		}
+
+		public UInt32 Version
+		{
+			get => GetUInt32(56);
+			set => SetUInt32(56, value);
 		}
 	}
 }

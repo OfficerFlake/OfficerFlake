@@ -15,7 +15,6 @@ using Com.OfficerFlake.Libraries.Extensions;
 using DAT = Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
 using LST = Com.OfficerFlake.Libraries.YSFlight.Files.LST;
 
-using Com.OfficerFlake.Libraries.IO.Log;
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.Networking.Packets;
 using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;

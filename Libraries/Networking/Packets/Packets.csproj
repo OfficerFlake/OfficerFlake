@@ -35,11 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenericPacket.cs" />
@@ -81,12 +76,23 @@
     <Compile Include="Type_05_EntityJoined.cs" />
     <Compile Include="Type_04_Field.cs" />
     <Compile Include="Type_01_Login.cs" />
-    <Compile Include="Type_00_Test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Color\Color.csproj">
+      <Project>{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}</Project>
+      <Name>Color</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
+      <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
+      <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

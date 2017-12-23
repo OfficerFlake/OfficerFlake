@@ -14,7 +14,7 @@ using Debug = System.Diagnostics.Debug;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
-    public partial class File : CommandFile, ILoadable, ISaveable
+    public partial class File : CommandFile
     {
         public List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
 

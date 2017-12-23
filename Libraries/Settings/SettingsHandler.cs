@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -9,7 +8,6 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Color;
-using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.IO;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;

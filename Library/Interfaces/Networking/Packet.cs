@@ -9,11 +9,60 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		UInt32 Type { get; }
 		byte[] Data { get; set; }
 
-		bool SetBit(int position, int index);
-		bool UnSetBit(int position, int index);
+		#region Data Manipulation
+		byte[] GetBytesFromStartToEnd(int start, int end);
+		byte[] GetBytesFromStartToLength(int start, int length);
 
-		byte Get<T>(int position, T type);
-		bool Set<T>(int position, T replacement);
+		void ResizeData(int newsize);
+		bool SetBytesFromStart(int start, byte[] bytesToCopy);
+		#endregion
+
+		#region DataTypes
+		#region Bool
+		bool GetBit(int start, int index);
+		bool SetBit(int start, int index);
+		bool UnsetBit(int start, int index);
+
+		bool SetBit(int start, int index, bool value);
+		#endregion
+
+		#region Byte
+		byte GetByte(int start);
+		bool SetByte(int start, byte input);
+		#endregion
+		#region SByte
+		sbyte GetSByte(int start);
+		bool SetSByte(int start, sbyte input);
+		#endregion
+
+		#region Uint16
+		UInt16 GetUInt16(int start);
+		bool SetUInt16(int start, UInt16 input);
+		#endregion
+		#region Int16
+		Int16 GetInt16(int start);
+		bool SetInt16(int start, Int16 input);
+		#endregion
+
+		#region UInt32
+		UInt32 GetUInt32(int start);
+		bool SetUInt32(int start, UInt32 input);
+		#endregion
+		#region Int32
+		Int32 GetInt32(int start);
+		bool SetInt32(int start, Int32 input);
+		#endregion
+
+		#region Single
+		Single GetSingle(int start);
+		bool SetSingle(int start, Single input);
+		#endregion
+
+		#region String
+		string GetString(int start, int length);
+		bool SetString(int start, int length, string input);
+		#endregion
+		#endregion
 
 		byte[] Serialise();
 	}
@@ -89,6 +138,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		ITime Timestamp { get; set; }
 		UInt32 ID { get; set; }
+		UInt16 Version { get; set; }
 		IDistance PosX { get; set; }
 		IDistance PosY { get; set; }
 		IDistance PosZ { get; set; }
@@ -126,7 +176,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Boolean AnimBurners { get; set; }
 		Byte CPUFlags { get; set; }
 		Single AnimThrottle { get; set; }
-		Single AnimElevagtor { get; set; }
+		Single AnimElevator { get; set; }
 		Single AnimAileron { get; set; }
 		Single AnimRudder { get; set; }
 		Single AnimTrim { get; set; }

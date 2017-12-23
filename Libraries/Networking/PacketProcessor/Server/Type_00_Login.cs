@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Networking.Packets;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using Com.OfficerFlake.Libraries.YSFlight;
 using static Com.OfficerFlake.Libraries.Networking.Connection;
 
@@ -430,16 +431,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 					World.Objects.Ground ThisGround = World.Objects.GroundList[i];
 					Packets.Type_05_EntityJoined GroundJoin = new Packets.Type_05_EntityJoined();
 					GroundJoin.IsGround = true;
-					GroundJoin.ID = (Int32)ThisGround.ID;
+					GroundJoin.ID = ThisGround.ID;
 					GroundJoin.Identify = ThisGround.Identify;
 					GroundJoin.OwnerName = ThisGround.Tag;
-					GroundJoin.IFF = (Int32)ThisGround.IFF;
-					GroundJoin.PosX = ThisGround.Position.X;
-					GroundJoin.PosY = ThisGround.Position.Y;
-					GroundJoin.PosZ = ThisGround.Position.Z;
-					GroundJoin.RotX = (float)(ThisGround.Attitude.X / 180 * System.Math.PI);
-					GroundJoin.RotY = (float)(ThisGround.Attitude.Y / 180 * System.Math.PI);
-					GroundJoin.RotZ = (float)(ThisGround.Attitude.Z / 180 * System.Math.PI);
+					GroundJoin.IFF = ThisGround.IFF;
+					GroundJoin.PosX = ThisGround.Position.X.Meters();
+					GroundJoin.PosY = ThisGround.Position.Y.Meters();
+					GroundJoin.PosZ = ThisGround.Position.Z.Meters();
+					GroundJoin.RotX = (ThisGround.Attitude.X / 180 * System.Math.PI).Radians();
+					GroundJoin.RotY = (ThisGround.Attitude.Y / 180 * System.Math.PI).Radians();
+					GroundJoin.RotZ = (ThisGround.Attitude.Z / 180 * System.Math.PI).Radians();
 
 					thisConnection.Send(GroundJoin);
 				}
