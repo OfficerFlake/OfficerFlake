@@ -34,11 +34,11 @@
 			this.showTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showCrashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showDebugSummaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showDebugDetailToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showDebugWarningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showDebugErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showDebugCrashToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStrip_DebugMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -88,65 +88,65 @@
 			this.showMessageToolStripMenuItem.CheckOnClick = true;
 			this.showMessageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.showMessageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showDebugToolStripMenuItem,
-            this.showInformationToolStripMenuItem,
-            this.showWarningToolStripMenuItem,
-            this.showErrorToolStripMenuItem,
-            this.showCrashToolStripMenuItem});
+            this.showDebugSummaryToolStripMenuItem,
+            this.showDebugDetailToolStripMenuItem,
+            this.showDebugWarningToolStripMenuItem,
+            this.showDebugErrorToolStripMenuItem,
+            this.showDebugCrashToolStripMenuItem});
 			this.showMessageToolStripMenuItem.Name = "showMessageToolStripMenuItem";
 			this.showMessageToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
 			this.showMessageToolStripMenuItem.Text = "Show Messages";
 			this.showMessageToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
-			// showDebugToolStripMenuItem
+			// showDebugSummaryToolStripMenuItem
 			// 
-			this.showDebugToolStripMenuItem.Checked = true;
-			this.showDebugToolStripMenuItem.CheckOnClick = true;
-			this.showDebugToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showDebugToolStripMenuItem.Name = "showDebugToolStripMenuItem";
-			this.showDebugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.showDebugToolStripMenuItem.Text = "Debug";
-			this.showDebugToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+			this.showDebugSummaryToolStripMenuItem.Checked = true;
+			this.showDebugSummaryToolStripMenuItem.CheckOnClick = true;
+			this.showDebugSummaryToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showDebugSummaryToolStripMenuItem.Name = "showDebugSummaryToolStripMenuItem";
+			this.showDebugSummaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.showDebugSummaryToolStripMenuItem.Text = "Summary";
+			this.showDebugSummaryToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
-			// showInformationToolStripMenuItem
+			// showDebugDetailToolStripMenuItem
 			// 
-			this.showInformationToolStripMenuItem.Checked = true;
-			this.showInformationToolStripMenuItem.CheckOnClick = true;
-			this.showInformationToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showInformationToolStripMenuItem.Name = "showInformationToolStripMenuItem";
-			this.showInformationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.showInformationToolStripMenuItem.Text = "Information";
-			this.showInformationToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+			this.showDebugDetailToolStripMenuItem.Checked = true;
+			this.showDebugDetailToolStripMenuItem.CheckOnClick = true;
+			this.showDebugDetailToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showDebugDetailToolStripMenuItem.Name = "showDebugDetailToolStripMenuItem";
+			this.showDebugDetailToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.showDebugDetailToolStripMenuItem.Text = "Detail";
+			this.showDebugDetailToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
-			// showWarningToolStripMenuItem
+			// showDebugWarningToolStripMenuItem
 			// 
-			this.showWarningToolStripMenuItem.Checked = true;
-			this.showWarningToolStripMenuItem.CheckOnClick = true;
-			this.showWarningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showWarningToolStripMenuItem.Name = "showWarningToolStripMenuItem";
-			this.showWarningToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.showWarningToolStripMenuItem.Text = "Warning";
-			this.showWarningToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+			this.showDebugWarningToolStripMenuItem.Checked = true;
+			this.showDebugWarningToolStripMenuItem.CheckOnClick = true;
+			this.showDebugWarningToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showDebugWarningToolStripMenuItem.Name = "showDebugWarningToolStripMenuItem";
+			this.showDebugWarningToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.showDebugWarningToolStripMenuItem.Text = "Warning";
+			this.showDebugWarningToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
-			// showErrorToolStripMenuItem
+			// showDebugErrorToolStripMenuItem
 			// 
-			this.showErrorToolStripMenuItem.Checked = true;
-			this.showErrorToolStripMenuItem.CheckOnClick = true;
-			this.showErrorToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showErrorToolStripMenuItem.Name = "showErrorToolStripMenuItem";
-			this.showErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.showErrorToolStripMenuItem.Text = "Error";
-			this.showErrorToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+			this.showDebugErrorToolStripMenuItem.Checked = true;
+			this.showDebugErrorToolStripMenuItem.CheckOnClick = true;
+			this.showDebugErrorToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showDebugErrorToolStripMenuItem.Name = "showDebugErrorToolStripMenuItem";
+			this.showDebugErrorToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.showDebugErrorToolStripMenuItem.Text = "Error";
+			this.showDebugErrorToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
-			// showCrashToolStripMenuItem
+			// showDebugCrashToolStripMenuItem
 			// 
-			this.showCrashToolStripMenuItem.Checked = true;
-			this.showCrashToolStripMenuItem.CheckOnClick = true;
-			this.showCrashToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showCrashToolStripMenuItem.Name = "showCrashToolStripMenuItem";
-			this.showCrashToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.showCrashToolStripMenuItem.Text = "Crash";
-			this.showCrashToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
+			this.showDebugCrashToolStripMenuItem.Checked = true;
+			this.showDebugCrashToolStripMenuItem.CheckOnClick = true;
+			this.showDebugCrashToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.showDebugCrashToolStripMenuItem.Name = "showDebugCrashToolStripMenuItem";
+			this.showDebugCrashToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.showDebugCrashToolStripMenuItem.Text = "Crash";
+			this.showDebugCrashToolStripMenuItem.Click += new System.EventHandler(this.ToolStripMenuItem_Click);
 			// 
 			// DebugMenu
 			// 
@@ -166,10 +166,11 @@
 		public System.Windows.Forms.ToolStripMenuItem showTimeToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem showTypeToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem showMessageToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showInformationToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showDebugToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showWarningToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showErrorToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showCrashToolStripMenuItem;
+
+		public System.Windows.Forms.ToolStripMenuItem showDebugSummaryToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem showDebugDetailToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem showDebugWarningToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem showDebugErrorToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem showDebugCrashToolStripMenuItem;
 	}
 }

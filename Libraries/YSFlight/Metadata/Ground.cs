@@ -111,11 +111,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					{
 						if (!File.Exists(YSFlightDirectory + ThisMetaGround.GroundPath0Dat))
 						{
-							InformationMessage Error = new InformationMessage
+							DebugWarningMessage Warning = new DebugWarningMessage
 							(
 								"Ground DAT file doesn't exist: " + ThisMetaGround.GroundPath0Dat + "."
 							);
-							DebugInformation.Add(Error);
+							DebugInformation.Add(Warning);
 							continue; //Couldn't find the Ground DAT file, we'll leave it blank!
 						}
 						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaGround.GroundPath0Dat);
@@ -128,12 +128,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								string[] SplitLine = DatFileLine.SplitPresevingQuotes();
 								if (SplitLine.Length <= 1)
 								{
-									InformationMessage Error = new InformationMessage
+									DebugWarningMessage Error = new DebugWarningMessage
 									(
 										"Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.GroundPath0Dat + "."
 									);
 									DebugInformation.Add(Error);
-									InformationMessage Error2 = new InformationMessage
+									DebugWarningMessage Error2 = new DebugWarningMessage
 									(
 										"Ground DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + "."
 									);
@@ -149,7 +149,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						if (ThisMetaGround.Identify == null)
 						{
-							InformationMessage Error = new InformationMessage
+							DebugWarningMessage Error = new DebugWarningMessage
 							(
 								"Ground DAT file doesn't contain IDENTIFY: " + ThisMetaGround.GroundPath0Dat + "."
 							);
@@ -163,9 +163,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					WarningMessage Error = new WarningMessage
+					DebugErrorMessage Error = new DebugErrorMessage
 					(
-						"MetaData.Ground.LoadAll Crashed!" + e.ToString()
+						e, "MetaData.Ground.LoadAll Crashed!" + e.ToString()
 					);
 					DebugInformation.Add(Error);
 				}

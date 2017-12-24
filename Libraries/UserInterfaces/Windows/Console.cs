@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {
-	public partial class _Console : Form
+	public partial class _Console : Form, IConsole
 	{
 		#region Loading
 		private void _Console_Load(object sender, EventArgs e)
@@ -83,54 +83,62 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			Hide();
 			Refresh();
 		}
+
+		public void AddUserMessage(IUser user, string message)
+		{
+			consoleOutput.AddMessage(new UserMessage(user, message));
+		}
+
+		public void AddInformationMessage(string message)
+		{
+			consoleOutput.AddMessage(new ConsoleInformationMessage(message));
+		}
+
 	}
 
 	public static class Console
 	{
-		private static _Console _Console = new _Console();
-		private static bool WaitForLoad() => _Console.WaitForLoad();
-		public static bool WaitForClose() => _Console.WaitForClose();
+		private static _Console _console = new _Console();
+		public static void LinkConsole()
+		{
+			Logger.Console.LinkConsole(_console);
+		}
+
+		private static bool WaitForLoad() => _console.WaitForLoad();
+		public static bool WaitForClose() => _console.WaitForClose();
 
 		static Console()
 		{
-			Thread consoleThread = _Console.NewWindowThread();
+			Thread consoleThread = _console.NewWindowThread();
 			WaitForLoad();
 		}
 
 		public static void Show()
 		{
-			_Console.Invoke((MethodInvoker) delegate()
+			_console.Invoke((MethodInvoker) delegate()
 			{
-				_Console._Show();
+				_console._Show();
 			});
 		}
 		public static void Hide()
 		{
-			_Console.Invoke((MethodInvoker) delegate()
+			_console.Invoke((MethodInvoker) delegate()
 			{
-				_Console._Hide();
+				_console._Hide();
 			});
 		}
 
 		public static void Close()
 		{
-			_Console.Invoke((MethodInvoker)delegate ()
+			_console.Invoke((MethodInvoker)delegate ()
 			{
-				_Console.Close();
+				_console.Close();
 			});
 		}
 
 		#region Messages
-		private static void AddMessage(RichTextMessage thisRichTextMessage)
-		{
-			_Console.consoleOutput.AddMessage(thisRichTextMessage);
-		}
-		public static void AddCrashMessage(string input) => AddMessage(new CrashMessage(input));
-		public static void AddErrorMessage(string input) => AddMessage(new ErrorMessage(input));
-		public static void AddWarningMessage(string input) => AddMessage(new WarningMessage(input));
-		public static void AddDebugMessage(string input) => AddMessage(new DebugMessage(input));
-		public static void AddInformationMessage(string input) => AddMessage(new InformationMessage(input));
-		public static void AddUserMessage(Database.User thisUser, string input) => AddMessage(new UserMessage(thisUser, input));
+		public static void AddConsoleInformationMessage(string input) => _console.AddInformationMessage(input);
+		public static void AddUserMessage(IUser user, string input) => _console.AddUserMessage(user, input);
 		#endregion
 	}
 

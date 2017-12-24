@@ -311,20 +311,20 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			Metadata.Scenery Target = Metadata.Scenery.FindByName(Name);
 			if (Target == Metadata.Scenery.None)
 			{
-				DebugMessages.Add(new WarningMessage("Scenery Not Found: \"" + Name + "\""));
+				DebugMessages.Add(new DebugWarningMessage("Scenery Not Found: \"" + Name + "\""));
 				return false;
 			}
 			else
 			{
 				Load(Target);
-				return (DebugMessages.Count(x => x is WarningMessage) > 0);
+				return (DebugMessages.Count(x => x is DebugWarningMessage) > 0);
 			}
 		}
 		public static bool Load(Metadata.Scenery InputScenery)
 		{
 			#region Start Debug Log
 			DebugMessages.Clear();
-			DebugMessages.Add(new InformationMessage("Starting World.Load"));
+			DebugMessages.Add(new DebugDetailMessage("Starting World.Load"));
 			#endregion
 			#region Clear Objects
 			Objects.GroundList.Clear();
@@ -332,36 +332,36 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			Objects.StartPositionList.Clear();
 			#endregion
 
-			DebugMessages.Add(new InformationMessage("Loading World: " + InputScenery.Identify));
+			DebugMessages.Add(new DebugDetailMessage("Loading World: " + InputScenery.Identify));
 
 			#region LoadFLD
-			DebugMessages.Add(new InformationMessage("Starting World.LoadFLD"));
+			DebugMessages.Add(new DebugDetailMessage("Starting World.LoadFLD"));
 			LoadFLD(InputScenery);
-			DebugMessages.Add(new InformationMessage("Ended World.LoadFLD"));
+			DebugMessages.Add(new DebugDetailMessage("Ended World.LoadFLD"));
 			#endregion
 
-			DebugMessages.Add(new InformationMessage("Loaded " + Objects.GroundList.Count + " Ground Objects from FLD."));
-			DebugMessages.Add(new InformationMessage("Loaded " + Objects.PathList.Count + " Motion Paths from FLD."));
+			DebugMessages.Add(new DebugDetailMessage("Loaded " + Objects.GroundList.Count + " Ground Objects from FLD."));
+			DebugMessages.Add(new DebugDetailMessage("Loaded " + Objects.PathList.Count + " Motion Paths from FLD."));
 
 			#region LoadSTP
-			DebugMessages.Add(new InformationMessage("Starting World.LoadSTP"));
+			DebugMessages.Add(new DebugDetailMessage("Starting World.LoadSTP"));
 			LoadSTP(InputScenery);
-			DebugMessages.Add(new InformationMessage("Ended World.LoadSTP"));
+			DebugMessages.Add(new DebugDetailMessage("Ended World.LoadSTP"));
 			#endregion
 
-			DebugMessages.Add(new InformationMessage("Loaded " + Objects.StartPositionList.Count + " Start Positions from STP."));
+			DebugMessages.Add(new DebugDetailMessage("Loaded " + Objects.StartPositionList.Count + " Start Positions from STP."));
 
 			#region LoadYFS
 			int GroundsLoadedFromFLD = Objects.GroundList.Count;
 
-			DebugMessages.Add(new InformationMessage("Starting World.LoadYFS"));
+			DebugMessages.Add(new DebugDetailMessage("Starting World.LoadYFS"));
 			LoadYFS(InputScenery);
-			DebugMessages.Add(new InformationMessage("Ended World.LoadYFS"));
+			DebugMessages.Add(new DebugDetailMessage("Ended World.LoadYFS"));
 			#endregion
 
-			DebugMessages.Add(new InformationMessage("Loaded " + (Objects.GroundList.Count - GroundsLoadedFromFLD) + " Ground Objects from YFS."));
+			DebugMessages.Add(new DebugDetailMessage("Loaded " + (Objects.GroundList.Count - GroundsLoadedFromFLD) + " Ground Objects from YFS."));
 
-			return (DebugMessages.Count(x => x is WarningMessage) > 0);
+			return (DebugMessages.Count(x => x is DebugWarningMessage) > 0);
 		}
 
 		private static bool LoadFLD(Metadata.Scenery InputScenery)
@@ -369,7 +369,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			#region FLD Not Found on Disk
 			if (!File.Exists(Metadata.YSFlightDirectory + InputScenery.SceneryPath1Fld))
 			{
-				DebugMessages.Add(new WarningMessage("FLD File Not Found: " + InputScenery.SceneryPath1Fld));
+				DebugMessages.Add(new DebugWarningMessage("FLD File Not Found: " + InputScenery.SceneryPath1Fld));
 				return false;
 			}
 			#endregion
@@ -404,7 +404,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				#region Move Back to Root Scenery if Past End Of File.
 				while (i > CurrentScenery.EndLine && CurrentScenery != Objects.RootScenery)
 				{
-					DebugMessages.Add(new InformationMessage("Moving back to root scenry"));
+					DebugMessages.Add(new DebugDetailMessage("Moving back to root scenry"));
 					Indent--;
 					CurrentScenery = CurrentScenery.Parent;
 					if (Indent < 0) Indent = 0;
@@ -422,8 +422,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 7)
 							{
-								DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Ground POS Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Ground POS Line (" + CurrentLineNumber + "): " + ThisLine));
 								continue;
 							}
 
@@ -440,8 +440,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in Ground could not be converted."));
-								DebugMessages.Add(new InformationMessage("Ground POS Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in Ground could not be converted."));
+								DebugMessages.Add(new DebugDetailMessage("Ground POS Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								CurrentGround.Position.X = 0;
 								CurrentGround.Position.Y = 0;
@@ -459,8 +459,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("NAM Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Ground NAM Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("NAM Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Ground NAM Line (" + CurrentLineNumber + "): " + ThisLine));
 								continue;
 							}
 
@@ -469,8 +469,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							CurrentGround.MetaGroundObject = Metadata.Ground.FindByName(CurrentGround.Identify);
 							if (CurrentGround.MetaGroundObject == Metadata.Ground.None)
 							{
-								DebugMessages.Add(new WarningMessage("Ground Name (" + CurrentLineNumber + ") in Ground could not be found in Metadata."));
-								DebugMessages.Add(new InformationMessage("Ground NAM Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("Ground Name (" + CurrentLineNumber + ") in Ground could not be found in Metadata."));
+								DebugMessages.Add(new DebugDetailMessage("Ground NAM Line (" + CurrentLineNumber + "): " + ThisLine));
 							}
 
 							continue;
@@ -482,8 +482,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("TAG Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
-								DebugMessages.Add(new InformationMessage("TAG Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("TAG Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("TAG Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 								continue;
 							}
 
@@ -498,8 +498,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("IFF Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("IFF Line (" + CurrentLineNumber + ") in Ground could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine));
 								continue;
 							}
 
@@ -508,8 +508,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(new WarningMessage("IFF Line (" + CurrentLineNumber + ") in Ground could not be converted."));
-								DebugMessages.Add(new InformationMessage("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("IFF Line (" + CurrentLineNumber + ") in Ground could not be converted."));
+								DebugMessages.Add(new DebugDetailMessage("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								CurrentGround.IFF = 0;
 							}
@@ -522,7 +522,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						{
 							CurrentScenery.GroundObjects.Add(CurrentGround);
 
-							DebugMessages.Add(new InformationMessage("Added Ground Object (" + CurrentLineNumber + "): " + CurrentGround.Identify + " " + ThisLine));
+							DebugMessages.Add(new DebugDetailMessage("Added Ground Object (" + CurrentLineNumber + "): " + CurrentGround.Identify + " " + ThisLine));
 
 							CurrentGround = Objects.NULL_Ground;
 							GOBsHandled++;
@@ -539,8 +539,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 4)
 							{
-								DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path POS Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path POS Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -552,8 +552,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in Path could not be converted."));
-								DebugMessages.Add(new InformationMessage("Path POS Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in Path could not be converted."));
+								DebugMessages.Add(new DebugDetailMessage("Path POS Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								CurrentPath.Position.X = 0;
 								CurrentPath.Position.Y = 0;
@@ -568,8 +568,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 4)
 							{
-								DebugMessages.Add(new WarningMessage("PNT Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("PNT Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -583,8 +583,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(new WarningMessage("PNT Line (" + CurrentLineNumber + ") in Path could not be converted."));
-								DebugMessages.Add(new InformationMessage("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("PNT Line (" + CurrentLineNumber + ") in Path could not be converted."));
+								DebugMessages.Add(new DebugDetailMessage("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								ThisPoint.X = 0;
 								ThisPoint.Y = 0;
@@ -600,8 +600,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("TAG Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path TAG Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("TAG Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path TAG Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -617,8 +617,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("AREA Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path AREA Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("AREA Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path AREA Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -632,8 +632,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("ISLOOP Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path ISLOOP Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("ISLOOP Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path ISLOOP Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -650,8 +650,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(new WarningMessage("ID Line (" + CurrentLineNumber + ") in Path could not be inspected."));
-								DebugMessages.Add(new InformationMessage("Path ID Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("ID Line (" + CurrentLineNumber + ") in Path could not be inspected."));
+								DebugMessages.Add(new DebugDetailMessage("Path ID Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								continue;
 							}
@@ -661,8 +661,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(new WarningMessage("ID Line (" + CurrentLineNumber + ") in Path could not be converted."));
-								DebugMessages.Add(new InformationMessage("Path ID Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("ID Line (" + CurrentLineNumber + ") in Path could not be converted."));
+								DebugMessages.Add(new DebugDetailMessage("Path ID Line (" + CurrentLineNumber + "): " + ThisLine));
 
 								CurrentPath.Type = 0;
 							}
@@ -701,7 +701,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							CurrentScenery.MotionPaths.Add(CurrentPath);
 
-							DebugMessages.Add(new InformationMessage("Added Path (" + CurrentLineNumber + "): " + CurrentPath.Identify + " " + ThisLine));
+							DebugMessages.Add(new DebugDetailMessage("Added Path (" + CurrentLineNumber + "): " + CurrentPath.Identify + " " + ThisLine));
 
 							CurrentPath = Objects.NULL_Path;
 							PSTsHandled++;
@@ -720,8 +720,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
-							DebugMessages.Add(new InformationMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
@@ -732,8 +732,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
 						{
-							DebugMessages.Add(new WarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery does not specify a FLD."));
-							DebugMessages.Add(new InformationMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery does not specify a FLD."));
+							DebugMessages.Add(new DebugDetailMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
@@ -746,14 +746,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						AllSceneries.Add(ChildScenery);
 						#endregion
 
-						DebugMessages.Add(new InformationMessage("Adding Child Scenry (" + ChildScenery.Identify + ") to (" + CurrentScenery.Identify + ")"));
+						DebugMessages.Add(new DebugDetailMessage("Adding Child Scenry (" + ChildScenery.Identify + ") to (" + CurrentScenery.Identify + ")"));
 
 						#region Get Number of Lines in Child Scenery
 						int numberOfLinesInChildScenry = 0;
 						if (!Int32.TryParse(ThisLine.Split(' ')[2].ToUpperInvariant(), out numberOfLinesInChildScenry))
 						{
-							DebugMessages.Add(new WarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery does not specify number of following lines."));
-							DebugMessages.Add(new InformationMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("PCK Line (" + CurrentLineNumber + ") in scenery does not specify number of following lines."));
+							DebugMessages.Add(new DebugDetailMessage("PCK Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 						#endregion
@@ -767,7 +767,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						CurrentScenery = ChildScenery;
 						#endregion
 
-						DebugMessages.Add(new InformationMessage("Now Loading Child Scenry (" + CurrentLineNumber + "): " + CurrentScenery.Identify));
+						DebugMessages.Add(new DebugDetailMessage("Now Loading Child Scenry (" + CurrentLineNumber + "): " + CurrentScenery.Identify));
 
 						continue;
 					}
@@ -778,8 +778,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("FIL Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
-							DebugMessages.Add(new InformationMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("FIL Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
@@ -790,19 +790,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
 						{
-							DebugMessages.Add(new WarningMessage("FIL Line (" + CurrentLineNumber + ") in scenery does not specify a FLD."));
-							DebugMessages.Add(new InformationMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("FIL Line (" + CurrentLineNumber + ") in scenery does not specify a FLD."));
+							DebugMessages.Add(new DebugDetailMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
 						if (AllSceneries.Select(x => x.Identify).Contains(Split[1]))
 						{
-							DebugMessages.Add(new InformationMessage("FIL Line (" + CurrentLineNumber + "): got a FLD."));
+							DebugMessages.Add(new DebugDetailMessage("FIL Line (" + CurrentLineNumber + "): got a FLD."));
 							var ArrayOfTargetSceneries = AllSceneries.Where(x => x.Identify == Split[1]).ToArray();
 							if (ArrayOfTargetSceneries.Length <= 0)
 							{
-								DebugMessages.Add(new WarningMessage("|FIL Line in Scenery: FLD In Scenery (" + CurrentLineNumber + ") Could not find a target."));
-								DebugMessages.Add(new InformationMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
+								DebugMessages.Add(new DebugWarningMessage("|FIL Line in Scenery: FLD In Scenery (" + CurrentLineNumber + ") Could not find a target."));
+								DebugMessages.Add(new DebugDetailMessage("FIL Line (" + CurrentLineNumber + "): " + ThisLine));
 								continue;
 							}
 							TargetScenery = ArrayOfTargetSceneries[0];
@@ -819,8 +819,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 7)
 						{
-							DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
-							DebugMessages.Add(new InformationMessage("POS Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("POS Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
@@ -838,8 +838,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (failed)
 						{
-							DebugMessages.Add(new WarningMessage("POS Line (" + CurrentLineNumber + ") in scenery could not be converted."));
-							DebugMessages.Add(new InformationMessage("POS Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("POS Line (" + CurrentLineNumber + ") in scenery could not be converted."));
+							DebugMessages.Add(new DebugDetailMessage("POS Line (" + CurrentLineNumber + "): " + ThisLine));
 
 							TargetScenery.Position.X = 0;
 							TargetScenery.Position.Y = 0;
@@ -866,8 +866,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						catch
 						{
-							DebugMessages.Add(new WarningMessage("GND Color Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
-							DebugMessages.Add(new InformationMessage("GND Color Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GND Color Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("GND Color Line (" + CurrentLineNumber + "): " + ThisLine));
 						}
 					}
 					#endregion
@@ -885,8 +885,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						catch
 						{
-							DebugMessages.Add(new WarningMessage("SKY Color Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
-							DebugMessages.Add(new InformationMessage("SKY Color Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("SKY Color Line (" + CurrentLineNumber + ") in scenery could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("SKY Color Line (" + CurrentLineNumber + "): " + ThisLine));
 						}
 					}
 					#endregion
@@ -896,8 +896,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					{
 						DebugMessages.Add(
 							CurrentGround == Objects.NULL_Ground
-								? new InformationMessage("Grabbing a Ground Object. (" + CurrentLineNumber + ")")
-								: new InformationMessage("Finished Current Ground. (" + CurrentLineNumber + "): Grabbing another..."));
+								? new DebugDetailMessage("Grabbing a Ground Object. (" + CurrentLineNumber + ")")
+								: new DebugDetailMessage("Finished Current Ground. (" + CurrentLineNumber + "): Grabbing another..."));
 						CurrentGround = new Objects.Ground();
 						CurrentPath = Objects.NULL_Path;
 						continue;
@@ -908,8 +908,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					{
 						DebugMessages.Add(
 							CurrentPath == Objects.NULL_Path
-								? new InformationMessage("Grabbing a Path. (" + CurrentLineNumber + ")")
-								: new InformationMessage("Finished Current Path. (" + CurrentLineNumber + "): Grabbing another..."));
+								? new DebugDetailMessage("Grabbing a Path. (" + CurrentLineNumber + ")")
+								: new DebugDetailMessage("Finished Current Path. (" + CurrentLineNumber + "): Grabbing another..."));
 						if (i + 1 < FLDContents.Length)
 						{
 							string NextLine = FLDContents[i + 1];
@@ -919,7 +919,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							//ALWAYS ADD MOTION PATHS, EVEN IF THEY AREN'T LOOPS!
 							//if (NextLine.ToUpperInvariant().StartsWith("ISLOOP"))
 							//{
-							//	DebugMessages.Add(new InformationMessage("PST Line Encountered(" + CurrentLineNumber + ") Will be a loop. We will try to inspect for a Race Track."));
+							//	DebugMessages.Add(new DebugDetailMessage("PST Line Encountered(" + CurrentLineNumber + ") Will be a loop. We will try to inspect for a Race Track."));
 							//}
 						}
 						continue;
@@ -931,31 +931,31 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			#endregion
 
 			#region Move Objects to Root Scenery
-			DebugMessages.Add(new InformationMessage("Converting Child Sceneries To Root."));
+			DebugMessages.Add(new DebugDetailMessage("Converting Child Sceneries To Root."));
 			foreach (Objects.Scenery ThisScenery in Objects.RootScenery.Children)
 			{
-				DebugMessages.Add(new InformationMessage("Converting Child Scenery To Root:" + ThisScenery.Identify));
+				DebugMessages.Add(new DebugDetailMessage("Converting Child Scenery To Root:" + ThisScenery.Identify));
 				ThisScenery.ProcessGrounds();
 				ThisScenery.ProcessPaths();
-				DebugMessages.Add(new InformationMessage("Converted Child Scenery To Root:" + ThisScenery.Identify));
+				DebugMessages.Add(new DebugDetailMessage("Converted Child Scenery To Root:" + ThisScenery.Identify));
 			}
-			DebugMessages.Add(new InformationMessage("Converted Child Sceneries To Root."));
+			DebugMessages.Add(new DebugDetailMessage("Converted Child Sceneries To Root."));
 
-			DebugMessages.Add(new InformationMessage("Adding Converted Ground Objects."));
+			DebugMessages.Add(new DebugDetailMessage("Adding Converted Ground Objects."));
 			foreach (Objects.Ground ThisGround in Objects.RootScenery.GroundObjects)
 			{
 				Objects.GroundList.Add(ThisGround);
 			}
-			DebugMessages.Add(new InformationMessage("Added Converted Ground Objects."));
+			DebugMessages.Add(new DebugDetailMessage("Added Converted Ground Objects."));
 
-			DebugMessages.Add(new InformationMessage("Adding Converted Paths."));
+			DebugMessages.Add(new DebugDetailMessage("Adding Converted Paths."));
 			foreach (Objects.Path ThisPath in Objects.RootScenery.MotionPaths.ToArray())
 			{
 				if (ThisPath.Identify != "" & ThisPath.Type == 15) Objects.PathList.Add(ThisPath);
 			}
-			DebugMessages.Add(new InformationMessage("Added Converted Paths."));
+			DebugMessages.Add(new DebugDetailMessage("Added Converted Paths."));
 			#endregion
-			return (DebugMessages.Count(x => x is WarningMessage) > 0);
+			return (DebugMessages.Count(x => x is DebugWarningMessage) > 0);
 		}
 		private static bool LoadSTP(Metadata.Scenery InputScenery)
 		{
@@ -997,8 +997,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-							DebugMessages.Add(new InformationMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -1013,8 +1013,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("C Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-							DebugMessages.Add(new InformationMessage("C STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("C Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("C STP Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue;
 						}
@@ -1026,8 +1026,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region POSITION
 								if (Split.Length < 5)
 								{
-									DebugMessages.Add(new WarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 								failed = false;
@@ -1050,8 +1050,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C POSITION Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Position.X = 0;
 									CurrentStartPosition.Position.Y = 0;
 									CurrentStartPosition.Position.Z = 0;
@@ -1063,8 +1063,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (Split.Length < 5)
 								{
-									DebugMessages.Add(new WarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 								failed = false;
@@ -1106,8 +1106,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Attitude.X = 0;
 									CurrentStartPosition.Attitude.Y = 0;
 									CurrentStartPosition.Attitude.Z = 0;
@@ -1118,8 +1118,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region INITSPED
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(new WarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 
@@ -1132,8 +1132,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Speed = 0;
 								}
 								continue;
@@ -1142,8 +1142,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CTLTHROT
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(new WarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 								failed = false;
@@ -1151,8 +1151,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Throttle = 0;
 								}
 								continue;
@@ -1161,8 +1161,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CTLLDGEA
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(new WarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 								failed = false;
@@ -1170,8 +1170,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine));
 									CurrentStartPosition.Gear = true;
 								}
 								continue;
@@ -1186,8 +1186,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("P Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-							DebugMessages.Add(new InformationMessage("P STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("P Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("P STP Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -1200,8 +1200,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CARRIER
 								if (Split.Length < 9)
 								{
-									DebugMessages.Add(new WarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-									DebugMessages.Add(new InformationMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+									DebugMessages.Add(new DebugDetailMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
 									continue;
 								}
 
@@ -1229,8 +1229,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(new WarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be converted."));
-									DebugMessages.Add(new InformationMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
+									DebugMessages.Add(new DebugWarningMessage("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be converted."));
+									DebugMessages.Add(new DebugDetailMessage("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine));
 								}
 								break;
 								#endregion
@@ -1248,8 +1248,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
-							DebugMessages.Add(new InformationMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("N Line (" + CurrentLineNumber + ") in STP could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("N STP Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -1270,7 +1270,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			#endregion
 
-			return (DebugMessages.Count(x => x is WarningMessage) > 0);
+			return (DebugMessages.Count(x => x is DebugWarningMessage) > 0);
 		}
 		private static bool LoadYFS(Metadata.Scenery InputScenery)
 		{
@@ -1305,8 +1305,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue;
 						}
@@ -1324,8 +1324,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 4)
 						{
-							DebugMessages.Add(new WarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue;
 						}
@@ -1348,8 +1348,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (failed)
 						{
-							DebugMessages.Add(new WarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
-							DebugMessages.Add(new InformationMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GNDPOSIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new DebugDetailMessage("GNDPOSIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.Position.X = 0;
 							CurrentGround.Position.Y = 0;
 							CurrentGround.Position.Z = 0;
@@ -1363,8 +1363,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 4)
 						{
-							DebugMessages.Add(new WarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue;
 						}
@@ -1387,8 +1387,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (failed)
 						{
-							DebugMessages.Add(new WarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
-							DebugMessages.Add(new InformationMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GNDATTIT Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new DebugDetailMessage("GNDATTIT YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.Attitude.X = 0;
 							CurrentGround.Attitude.Y = 0;
 							CurrentGround.Attitude.Z = 0;
@@ -1402,8 +1402,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue; //couldn't read the name line - error?
 						}
@@ -1411,8 +1411,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						failed |= !UInt32.TryParse(Split[1], out CurrentGround.IFF);
 						if (failed)
 						{
-							DebugMessages.Add(new WarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
-							DebugMessages.Add(new InformationMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new DebugDetailMessage("IDENTIFY YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.IFF = 0;
 						}
 						continue;
@@ -1424,8 +1424,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 3)
 						{
-							DebugMessages.Add(new WarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							continue;
 						}
 
@@ -1436,8 +1436,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (failed)
 						{
-							DebugMessages.Add(new WarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
-							DebugMessages.Add(new InformationMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("IDANDTAG Line (" + CurrentLineNumber + ") in YFS Ground could not be converted."));
+							DebugMessages.Add(new DebugDetailMessage("IDANDTAG YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround.ID = 0;
 							CurrentGround.Tag = "<CONVERSION_ERROR>";
 						}
@@ -1456,8 +1456,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(new WarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
-							DebugMessages.Add(new InformationMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
+							DebugMessages.Add(new DebugWarningMessage("GROUNDOB Line (" + CurrentLineNumber + ") in YFS Ground could not be inspected."));
+							DebugMessages.Add(new DebugDetailMessage("GROUNDOB YFS Ground Line (" + CurrentLineNumber + "): " + ThisLine));
 							CurrentGround = Objects.NULL_Ground;
 							continue;
 						}
@@ -1479,7 +1479,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			#endregion
 
-			return (DebugMessages.Count(x => x is WarningMessage) > 0);
+			return (DebugMessages.Count(x => x is DebugWarningMessage) > 0);
 		}
 	}
 }

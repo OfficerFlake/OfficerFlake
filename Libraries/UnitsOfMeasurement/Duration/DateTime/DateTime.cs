@@ -113,6 +113,7 @@ namespace Com.OfficerFlake.Libraries
 				return true;
 				#endregion
 			}
+			public string ToSystemString() => ToString();
 			public override string ToString()
 			{
 				return Year.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(4, '0') +

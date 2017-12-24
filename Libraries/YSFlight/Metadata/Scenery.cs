@@ -93,14 +93,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					WarningMessage Error = new WarningMessage
+					DebugErrorMessage Error = new DebugErrorMessage
 					(
-						"MetaData.Scenery.LoadAll Crashed!" + e.ToString()
+						e, "MetaData.Scenery.LoadAll Crashed!" + e.ToString()
 					);
 					DebugInformation.Add(Error);
 				}
 
-				return (DebugInformation.Count <= 0);
+				return (DebugInformation.Count(x=>x is DebugWarningMessage | x is DebugErrorMessage | x is DebugCrashMessage) <= 0);
 			}
 			#endregion
 			#region Find By Name

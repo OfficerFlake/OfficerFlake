@@ -12,17 +12,17 @@
 	{
 		T Z { get; set; }
 	}
-	public interface IDimensionH<T>
+	public interface IDimensionH
 	{
-		T H { get; set; }
+		IAngle H { get; set; }
 	}
-	public interface IDimensionP<T>
+	public interface IDimensionP
 	{
-		T P { get; set; }
+		IAngle P { get; set; }
 	}
-	public interface IDimensionB<T>
+	public interface IDimensionB
 	{
-		T B { get; set; }
+		IAngle B { get; set; }
 	}
 
 	public interface IPoint2 : IDimensionX<IDistance>, IDimensionY<IDistance>
@@ -39,10 +39,17 @@
 	{
 	}
 
-	public interface IOrientation2 : IDimensionH<IAngle>, IDimensionP<IAngle>
+	public interface ICoordinate2 : IDimensionX<double>, IDimensionY<double>
 	{
 	}
-	public interface IOrientation3 : IDimensionH<IAngle>, IDimensionP<IAngle>, IDimensionB<IAngle>
+	public interface ICoordinate3 : IDimensionX<double>, IDimensionY<double>, IDimensionZ<double>
+	{
+	}
+
+	public interface IOrientation2 : IDimensionH, IDimensionP
+	{
+	}
+	public interface IOrientation3 : IDimensionH, IDimensionP, IDimensionB
 	{
 	}
 

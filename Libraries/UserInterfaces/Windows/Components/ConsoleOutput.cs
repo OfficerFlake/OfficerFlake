@@ -41,7 +41,18 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    private const int DateSize = 8;
 	    private const int TimeSize = 6;
 	    private const int UsernameSize = 16;
-	    private const int MessageSize = 56;
+
+	    private int MessageSize =>
+		    91 -
+		    (checkBox_ShowDate.Checked ? DateSize+1 : 0) -
+		    (checkBox_ShowTime.Checked ? TimeSize+1 : 0) -
+		    (checkBox_ShowUsername.Checked ? UsernameSize+1 : 0);
+	    private int OverflowSize =>
+		    91 -
+		    (checkBox_ShowDate.Checked ? DateSize + 1 : 0) -
+		    (checkBox_ShowTime.Checked ? TimeSize + 1 : 0) -
+		    (checkBox_ShowUsername.Checked ? UsernameSize + 1 : 0) -
+		    (checkBox_ShowMessage.Checked ? MessageSize : 0);
 
 
 		#endregion
@@ -62,15 +73,6 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    {
 		    RepopulateRichTextBoxFromList();
 	    }
-
-	    private void Button_TestOutput_Click(object sender, EventArgs e)
-	    {
-		    //AddMessage(new UserMessage(UserDB.TestUser, "&bClicked the \"Test Output\" button!"));
-		    //AddMessage(new UserMessage(UserDB.TestUser, "&bThere are now &e&l" + (richTextMessagesCount+1) + "&r&b messages in the output log!"));
-			//AddMessage(new UserMessage(UserDB.TestUser, "&bSeems fine to me!"));
-
-		    AddMessage(new UserMessage(Users.TestUser, "&eLONG MESSAGE TEST----------------------------------------------------------------------------------------------------------------------------------------------"));
-		}
 
 	    private void richTextBox_ConsoleOutput_MouseUp(object sender, MouseEventArgs e)
 	    {
@@ -205,6 +207,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		#region RichTextBox Updating
 		private void RepopulateRichTextBoxFromList()
 	    {
+
+
 			//The lag is real. Need to clear >100 messages old...
 		    if (richTextMessages.Count > 100)
 		    {
@@ -218,42 +222,91 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			    AppendRichTextMessageDirect(thisRichTextMessageDictionaryItem.Message);
 		    }
 	    }
-	    private void AppendRichTextMessageDirect(RichTextMessage thisRichTextMessage)
-	    {
-			RichTextString.MessageElement date = new RichTextString.MessageElement();
-			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
-		                   thisRichTextMessage.Created.InStandardForm().MM +
-		                   thisRichTextMessage.Created.InStandardForm().DD;
-			date.ForeColor = SimpleColors.White.Color;
-
-		    RichTextString.MessageElement time = new RichTextString.MessageElement();
-			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
-			               thisRichTextMessage.Created.InStandardForm().mm +
-			               thisRichTextMessage.Created.InStandardForm().ss;
-			time.ForeColor = SimpleColors.Yellow.Color;
-
-			List<IRichTextElement> username = thisRichTextMessage.UserObject.Username.Elements;
-
-		    List<IRichTextElement> message = thisRichTextMessage.String.Elements;
-
-			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
-		    int messageIndentSize = GetIndentSize();
-			if (checkBox_ShowDate.Checked)
-		    {
-			    richTextBox_ConsoleOutput.AppendRichTextElement(date);
-			    richTextBox_ConsoleOutput.AppendText(" ");
-		    }
-		    if (checkBox_ShowTime.Checked)
-		    {
-			    richTextBox_ConsoleOutput.AppendRichTextElement(time);
-			    richTextBox_ConsoleOutput.AppendText(" ");
+		private void AppendRichTextMessageDirect(IRichTextMessage thisRichTextMessage)
+		{
+			#region Color Override
+			I24BitColor BackColor = new XRGBColor(16, 16, 16);
+			bool OverrideBackColor = false;
+			I24BitColor ForeColor = new XRGBColor(240, 240, 240);
+			bool OverrideForeColor = false;
+			switch (thisRichTextMessage.Type)
+			{
+				case MessageType.Unknown:
+					return;
+				case MessageType.User:
+					//if (!checkBox_ShowMessage.Checked) return;
+					BackColor = new XRGBColor(16, 16, 16);
+					OverrideBackColor = true;
+					break;
+				case MessageType.ConsoleInformation:
+					//if (!checkBox_ShowDate.Checked) return;
+					BackColor = new XRGBColor(10, 20, 25);
+					OverrideBackColor = true;
+					break;
+				case MessageType.DebugSummary:
+					return;
+				case MessageType.DebugDetail:
+					return;
+				case MessageType.DebugWarning:
+					return;
+				case MessageType.DebugError:
+					return;
+				case MessageType.DebugCrash:
+					return;
 			}
-		    if (checkBox_ShowUsername.Checked)
-		    {
-			    int totalMessageSize = 0;
-				for (int i=0; i<username.Count; i++)
+			#endregion
+
+			#region Date
+			IRichTextElement date = new RichTextString.MessageElement();
+			date.Message = thisRichTextMessage.Datestamp.ToSystemString();
+			date.ForeColor = SimpleColors.White.Color;
+			if (OverrideBackColor) date.BackColor = BackColor;
+			if (OverrideForeColor) date.ForeColor = ForeColor;
+			#endregion
+			#region Time
+			IRichTextElement time = new RichTextString.MessageElement();
+			time.Message = thisRichTextMessage.Timestamp.ToSystemString();
+			time.ForeColor = SimpleColors.DarkGray.Color;
+			if (OverrideBackColor) time.BackColor = BackColor;
+			if (OverrideForeColor) time.ForeColor = ForeColor;
+			#endregion
+			#region User
+			IUser user = thisRichTextMessage.User;
+			#endregion
+			#region Message
+			List<IRichTextElement> message = thisRichTextMessage.String.Elements;
+			#endregion
+
+			#region Start new line
+			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
+			#endregion
+
+			#region Add Date
+			if (checkBox_ShowDate.Checked)
+			{
+				richTextBox_ConsoleOutput.AppendRichTextElement(date);
+				richTextBox_ConsoleOutput.AppendText(" ");
+			}
+			#endregion
+			#region Add Time
+			if (checkBox_ShowTime.Checked)
+			{
+				richTextBox_ConsoleOutput.AppendRichTextElement(time);
+				richTextBox_ConsoleOutput.AppendText(" ");
+			}
+			#endregion
+			#region Add User
+			if (checkBox_ShowUsername.Checked)
+			{
+				int totalMessageSize = 0;
+				foreach (var thisElement in user.UserName.Elements)
 				{
-					IRichTextElement thisElement = username[i];
+					thisElement.BackColor = BackColor;
+				}
+
+				for (int i = 0; i < user.UserName.Elements.Count; i++)
+				{
+					IRichTextElement thisElement = user.UserName.Elements[i];
 					IRichTextElement currentElement;
 					#region Limit Size of total message to 16 Chars
 					int thisElementSize = thisElement.Message.Length;
@@ -267,86 +320,152 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					{
 						currentElement = thisElement;
 						totalMessageSize += currentElement.Message.Length;
-						if (i == username.Count - 1)
+						if (i == user.UserName.Elements.Count - 1)
 						{
-							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.GetClosestSimpleColor(),
+							currentElement = new MessageElement(thisElement.Message + new string(' ', 16 - totalMessageSize), thisElement.GetClosestSimpleColor(),
 								thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
+							currentElement.BackColor = thisElement.BackColor;
+							if (OverrideBackColor) currentElement.BackColor = BackColor;
+							if (OverrideForeColor) currentElement.ForeColor = ForeColor;
 						}
 					}
 					#endregion
 					richTextBox_ConsoleOutput.AppendRichTextElement(currentElement);
 				}
-			    richTextBox_ConsoleOutput.AppendText(" ");
+				richTextBox_ConsoleOutput.AppendText(" ");
 			}
-		    if (checkBox_ShowMessage.Checked)
-		    {
+			#endregion
+			#region Add Message
+			int messageIndentSize = GetIndentSize();
+			if (checkBox_ShowMessage.Checked)
+			{
 				int fullMessageSize = message.Sum(x => x.Message.Length);
-			    int remainingCharactersToAdd = fullMessageSize;
-			    int charactersOnThisLine = 0;
+				int remainingCharactersToAdd = fullMessageSize;
+				int charactersOnThisLine = 0;
 
-			    for (int i = 0; i < message.Count; i++)
-			    {
-				    IRichTextElement thisElement = message[i];
-				    IRichTextElement workingElement;
+				for (int i = 0; i < message.Count; i++)
+				{
+					IRichTextElement thisElement = message[i];
+					IRichTextElement workingElement;
 					#region Limit Size of total message
-				    int maxLineSize = MessageSize;
-				    #region  Break the currrent element across lines if required.
-				    int sizeOfCurrentElement = thisElement.Message.Length;
-					int sizeAlreadyAdded = 0; 
+					int maxLineSize = MessageSize;
+					#region  Break the currrent element across lines if required.
+					int sizeOfCurrentElement = thisElement.Message.Length;
+					int sizeAlreadyAdded = 0;
 					int sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
 					if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
-				    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
-				    int sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+					if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+					int sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
 
 					#region Keep breaking across lines...
 					while (sizeWillRemain > 0)
-				    {
+					{
 						workingElement = new MessageElement
-					    (
-						    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
+						(
+							thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
 							thisElement.GetClosestSimpleColor(),
-						    thisElement.IsBold,
+							thisElement.IsBold,
 							thisElement.IsItallic,
 							thisElement.IsUnderlined,
 							thisElement.IsObfuscated,
 							thisElement.IsStrikeout
 							);
-					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
-					    charactersOnThisLine += sizeToAdd;
-						richTextBox_ConsoleOutput.AppendText("\n ");
+						workingElement.BackColor = BackColor;
+						if (workingElement.Message.Contains("\n"))
+						{
+							workingElement.Message = workingElement.Message.Replace("\n", new string(' ', MessageSize - sizeAlreadyAdded + messageIndentSize));
+						}
+						richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+						charactersOnThisLine += sizeToAdd;
+						richTextBox_ConsoleOutput.AppendText(new string(' ', MessageSize - charactersOnThisLine));
+						richTextBox_ConsoleOutput.AppendText(" ");
 						richTextBox_ConsoleOutput.AppendText(new string(' ', messageIndentSize));
-					    charactersOnThisLine = 0;
-					    sizeAlreadyAdded += sizeToAdd;
+						charactersOnThisLine = 0;
+						sizeAlreadyAdded += sizeToAdd;
 						remainingCharactersToAdd -= sizeToAdd;
-					    sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
-					    sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
-					    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
-					    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
-				    }
+						sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+						sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
+						if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
+						if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+					}
 					#endregion
 					#region Last part of the element, no need to breaklines again.
-				    workingElement = new MessageElement
-				    (
-					    thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-					    thisElement.GetClosestSimpleColor(),
-					    thisElement.IsBold,
-					    thisElement.IsItallic,
-					    thisElement.IsUnderlined,
-					    thisElement.IsObfuscated,
+					workingElement = new MessageElement
+					(
+						thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
+						thisElement.GetClosestSimpleColor(),
+						thisElement.IsBold,
+						thisElement.IsItallic,
+						thisElement.IsUnderlined,
+						thisElement.IsObfuscated,
 						thisElement.IsStrikeout
-				    );
-				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
-				    charactersOnThisLine += sizeToAdd;
+					);
+					if (workingElement.Message.Contains("\n"))
+					{
+						workingElement.Message =
+							workingElement.Message.Split(new[] { '\n' }, 2)[0] +
+
+							new string(' ', MessageSize - workingElement.Message.Split(new[] { '\n' }, 2)[0].Length + 1) +
+
+							"\n" +
+
+							new string(' ', messageIndentSize + 3) +
+
+							workingElement.Message.Split(new[] { '\n' }, 2)[1];
+
+						charactersOnThisLine = thisElement.Message.Split(new[] { '\n' }, 2)[1].Length;
+						remainingCharactersToAdd -= sizeToAdd;
+						sizeToAdd = 0;
+					}
+					workingElement.BackColor = thisElement.BackColor;
+					if (OverrideBackColor) workingElement.BackColor = BackColor;
+					if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+					charactersOnThisLine += sizeToAdd;
+					remainingCharactersToAdd -= sizeToAdd;
+					#endregion
+					#region Finish the line with spaces.
+					workingElement = new MessageElement
+					(
+						new string(' ', MessageSize - charactersOnThisLine),
+						thisElement.GetClosestSimpleColor(),
+						thisElement.IsBold,
+						thisElement.IsItallic,
+						thisElement.IsUnderlined,
+						thisElement.IsObfuscated,
+						thisElement.IsStrikeout
+					);
+					workingElement.BackColor = thisElement.BackColor;
+					if (OverrideBackColor) workingElement.BackColor = BackColor;
+					if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+					charactersOnThisLine += sizeToAdd;
 					remainingCharactersToAdd -= sizeToAdd;
 					#endregion
 					#endregion
 					#endregion
 				}
-			    //richTextBox_ConsoleOutput.AppendText(" ");
 			}
-		    richTextBox_ConsoleOutput.ScrollToCaret();
+			#endregion
+			#region Add Overflow if Required.
+			IRichTextElement overflowElement = new MessageElement
+			(
+				new string(' ', OverflowSize),
+				date.GetClosestSimpleColor(),
+				date.IsBold,
+				date.IsItallic,
+				date.IsUnderlined,
+				date.IsObfuscated,
+				date.IsStrikeout
+			);
+			overflowElement.BackColor = date.BackColor;
+			if (OverrideBackColor) overflowElement.BackColor = BackColor;
+			if (OverrideForeColor) overflowElement.ForeColor = ForeColor;
+			richTextBox_ConsoleOutput.AppendRichTextElement(overflowElement);
+			#endregion
+			richTextBox_ConsoleOutput.ScrollToCaret();
 		}
-	    private void AddMessageDirect(RichTextMessage thisRichTextMessage)
+		private void AddMessageDirect(RichTextMessage thisRichTextMessage)
 	    {
 		    while (richTextMessages.Count >= maximumMessages)
 		    {
@@ -369,7 +488,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			AppendRichTextMessageDirect(thisRichTextMessage);
 	    }
 
-	    private void RichTextBoxUpdaterThread()
+		private void RichTextBoxUpdaterThread()
 	    {
 		    while (!IsFormClosing)
 		    {

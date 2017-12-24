@@ -32,12 +32,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IDate Datestamp { get; set; }
 		ITime Timestamp { get; set; }
 		IUser User { get; set; }
-		IRichTextString Message { get; set; }
+		IRichTextString String { get; set; }
 		MessageType Type { get; set; }
 	}
 
 	public enum MessageType
 	{
+		Unknown,
 		User,
 		ConsoleInformation,
 		DebugSummary,

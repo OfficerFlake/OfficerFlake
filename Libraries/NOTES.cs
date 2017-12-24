@@ -3,11 +3,6 @@ namespace Com.OfficerFlake.PlanningAndNotes
 	public abstract class RoadMap
 	{
 		// TODO : ROADMAP
-		//
-		// Settings
-		// Join/Leave Flight
-		// PacketSniffer
-		// All Packets Read
 	}
 
 	public abstract class OldNotes

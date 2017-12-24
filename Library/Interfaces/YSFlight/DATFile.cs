@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
-	public interface IDATFIle : ICommandFile
+	public interface IDATFile : ICommandFile
 	{
 		new List<IDATFileProperty> Contents { get; set; }
 
-		new bool Load();
-		new bool Save();
+		bool LoadAll();
+		bool SaveAll();
 	}
-	public interface IDATProperty : ICommandFileLine
+
+	public interface IDATFileProperty
 	{
-		object GetParameter<T>(int index);
+		string Command { get; set; }
+		object[] Properties { get; set; }
+		T GetParameter<T>(int index);
 		void SetParameter<T>(int index, T parameter);
+
+		string ToSystemString();
 	}
 }

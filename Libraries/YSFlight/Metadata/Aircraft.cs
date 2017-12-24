@@ -120,11 +120,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#region Ensure .DAT is defined.
 							if (NewMetaAircraft.AircraftPath0Dat.Length < 4)
 							{
-								InformationMessage Error = new InformationMessage
+								DebugWarningMessage Warning = new DebugWarningMessage
 									(
 									"Blank line in Aircraft List: " + thisAircraftListFile + "."
 									);
-								DebugInformation.Add(Error);
+								DebugInformation.Add(Warning);
 								continue;
 							}
 							#endregion
@@ -145,11 +145,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region .DAT Not Found on Disk
 						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat))
 						{
-							WarningMessage Error = new WarningMessage
+							DebugWarningMessage Warning = new DebugWarningMessage
 							(
 								"Aircraft DAT file doesn't exist: " + ThisMetaAircraft.AircraftPath0Dat + "."
 							);
-							DebugInformation.Add(Error);
+							DebugInformation.Add(Warning);
 							continue; //Couldn't find the aircraft DAT file, we'll leave it blank!
 						}
 						#endregion
@@ -164,12 +164,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								string[] SplitLine = DatFileLine.SplitPresevingQuotes();
 								if (SplitLine.Length <= 1)
 								{
-									InformationMessage Error = new InformationMessage
+									DebugWarningMessage Error = new DebugWarningMessage
 									(
 										"Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaAircraft.AircraftPath0Dat + "."
 									);
 									DebugInformation.Add(Error);
-									InformationMessage Error2 = new InformationMessage
+									DebugWarningMessage Error2 = new DebugWarningMessage
 									(
 										"Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + "."
 									);
@@ -187,11 +187,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region Couldn't Find IDENTIFY
 						if (ThisMetaAircraft.Identify == null)
 						{
-							WarningMessage Error = new WarningMessage
+							DebugWarningMessage Warning = new DebugWarningMessage
 							(
 								"Aircraft DAT file doesn't contain IDENTIFY: " + ThisMetaAircraft.AircraftPath0Dat + "."
 							);
-							DebugInformation.Add(Error);
+							DebugInformation.Add(Warning);
 						}
 						#endregion
 					}
@@ -201,9 +201,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					WarningMessage Error = new WarningMessage
+					DebugErrorMessage Error = new DebugErrorMessage
 					(
-						"MetaData.Aircraft.LoadAll Crashed!" + e.ToString()
+						e, "MetaData.Aircraft.LoadAll Crashed!" + e.ToString()
 					);
 					DebugInformation.Add(Error);
 				}

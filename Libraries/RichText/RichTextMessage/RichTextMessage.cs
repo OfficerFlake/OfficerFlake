@@ -6,65 +6,61 @@ using System.Text;
 using Com.OfficerFlake.Libraries.Color;
 using static Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.RichText
 {
-    public abstract class RichTextMessage
+    public abstract class RichTextMessage : IRichTextMessage
     {
 		#region Properties
-		public DateTime Created { get; set; }
-		public User UserObject { get; set; }
-	    public RichTextString String { get; set; }
+		public IDate Datestamp { get; set; }
+	    public ITime Timestamp { get; set; }
+		public IUser User { get; set; }
+	    public IRichTextString String { get; set; }
+		public MessageType Type { get; set; }
 		#endregion
 
-	    public RichTextMessage(RichTextString input)
-	    {
-		    Created = DateTime.Now;
-			UserObject = Users.Unknown;
+		public RichTextMessage(IRichTextString input)
+		{
+			Datestamp = (OYSDate)DateTime.Now;
+			Timestamp = (OYSTime)DateTime.Now;
+			User = Users.Unknown;
 		    String = input;
+			Type = MessageType.Unknown;
 		}
 	    public RichTextMessage(string input)
 	    {
-		    RichTextString _string = input.AsRichTextString();
-
-			Created = DateTime.Now;
-		    UserObject = Users.Unknown;
-		    String = _string;
+		    Datestamp = (OYSDate)DateTime.Now;
+		    Timestamp = (OYSTime)DateTime.Now;
+		    User = Users.Unknown;
+		    String = input.AsRichTextString();
+			Type = MessageType.Unknown;
 		}
 
 		#region MessageTypes
-		public enum MessageType
-        {
-            Unknown, //Not Assigned, don't know what this is.
-            Crash, //Crash error message. When the program crashes entirely.
-            Error, //Error message - function/method has broken.
-            Debug, //A method is being debugged will spit this message. For very verbose output.
-            Warning, //A method is acting strange, or some possible problem.
-            Information, //system generated message.
-            User //user generated message.
-        }
-        public MessageType Type = MessageType.Unknown;
-		
 		public string GetHtmlMessageType()
         {
             switch (Type)
             {
-                default:
-                case RichTextMessage.MessageType.Unknown:
+				default:
+                case MessageType.Unknown:
                     return "unknown";
-                case RichTextMessage.MessageType.Crash:
-                    return "crash";
-                case RichTextMessage.MessageType.Error:
-                    return "error";
-                case RichTextMessage.MessageType.Debug:
-                    return "debug";
-                case RichTextMessage.MessageType.Warning:
-                    return "warning";
-                case RichTextMessage.MessageType.Information:
-                    return "information";
-                case RichTextMessage.MessageType.User:
+                case MessageType.User:
                     return "user";
-            }
+                case MessageType.ConsoleInformation:
+                    return "consoleinformation";
+                case MessageType.DebugSummary:
+                    return "debugsummary";
+                case MessageType.DebugDetail:
+                    return "debugdetail";
+                case MessageType.DebugWarning:
+                    return "debugwarning";
+                case MessageType.DebugError:
+                    return "debugerror";
+	            case MessageType.DebugCrash:
+		            return "debugcrash";
+		}
         }
 		#endregion
 
@@ -76,11 +72,11 @@ namespace Com.OfficerFlake.Libraries.RichText
 		public string ToFormattedString()
         {
 			StringBuilder output = new StringBuilder();
-	        output.Append(Created.InStandardForm().YYYYMMDD);
+	        output.Append(Datestamp.ToSystemString());
 	        output.Append(" ");
-	        output.Append(Created.InStandardForm().hhmmss);
+	        output.Append(Timestamp.ToSystemString());
 	        output.Append(" ");
-	        output.Append(UserObject);
+	        output.Append(User.UserName.ToUnformattedSystemString());
 	        output.Append(" ");
 	        output.Append(String.ToUnformattedSystemString());
 	        return output.ToString();
@@ -91,13 +87,13 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    {
 			StringBuilder output = new StringBuilder();
 		    output.Append("&" + SimpleColors.DarkGray.ColorCode);
-			output.Append(Created.InStandardForm().YYYYMMDD);
+			output.Append(Datestamp);
 		    output.Append(" ");
 		    output.Append("&" + SimpleColors.Gray.ColorCode);
-			output.Append(Created.InStandardForm().hhmmss);
+			output.Append(Timestamp);
 		    output.Append(" ");
 		    output.Append("&" + SimpleColors.Teal.ColorCode);
-			output.Append(UserObject);
+			output.Append(User.UserName.ToInternallyFormattedSystemString());
 		    output.Append(" ");
 		    output.Append("&" + SimpleColors.White.ColorCode);
 			output.Append(String.ToInternallyFormattedSystemString());
@@ -111,53 +107,75 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    }
     }
 
-	public class UserMessage : RichTextMessage
+	public class UnknownMessage : RichTextMessage
 	{
-		public UserMessage(User userObject, string input) : base(input)
+		public UnknownMessage(string input) : base(input)
 		{
-			Type = MessageType.User;
-			UserObject = userObject;
+			Type = MessageType.Unknown;
+			User = Users.Unknown;
 		}
 	}
 
-	public class DebugMessage : RichTextMessage
+	public class UserMessage : RichTextMessage
 	{
-		public DebugMessage(string input) : base("&9&o" + input)
+		public UserMessage(IUser userObject, string input) : base(input)
 		{
-			Type = MessageType.Debug;
-			UserObject = Users.Console;
+			Type = MessageType.User;
+			User = userObject;
 		}
 	}
-	public class InformationMessage : RichTextMessage
+	public class ConsoleInformationMessage : RichTextMessage
 	{
-		public InformationMessage(string input) : base("&b&o" + input)
+		public ConsoleInformationMessage(string input) : base("&3&o" + input)
 		{
-			Type = MessageType.Information;
-			UserObject = Users.Console;
+			Type = MessageType.ConsoleInformation;
+			User = Users.Console;
 		}
 	}
-	public class WarningMessage : RichTextMessage
+
+	public class DebugSummaryMessage : RichTextMessage
 	{
-		public WarningMessage(string input) : base("&e&o" + input)
+		public DebugSummaryMessage(string input) : base("&b&o" + input)
 		{
-			Type = MessageType.Warning;
-			UserObject = Users.Console;
+			Type = MessageType.DebugSummary;
+			User = Users.Console;
 		}
 	}
-	public class ErrorMessage : RichTextMessage
+	public class DebugDetailMessage : RichTextMessage
 	{
-		public ErrorMessage(string input) : base("&4&n" + input)
+		public DebugDetailMessage(string input) : base("&9&o" + input)
 		{
-			Type = MessageType.Error;
-			UserObject = Users.Console;
+			Type = MessageType.DebugDetail;
+			User = Users.Console;
 		}
 	}
-	public class CrashMessage : RichTextMessage
+	public class DebugWarningMessage : RichTextMessage
 	{
-		public CrashMessage(string input) : base("&c&l&n" + input)
+		public DebugWarningMessage(string input) : base("&e&o" + input)
 		{
-			Type = MessageType.Crash;
-			UserObject = Users.Console;
+			Type = MessageType.DebugWarning;
+			User = Users.Console;
+		}
+	}
+	public class DebugErrorMessage : RichTextMessage
+	{
+		public DebugErrorMessage(Exception e, string input) : base("&c&o" + input + "\n" + "&c&o" + e.StackTrace)
+		{
+			Type = MessageType.DebugError;
+			User = Users.Console;
+		}
+	}
+	public class DebugCrashMessage : RichTextMessage
+	{
+		public DebugCrashMessage(Exception e, string input) : base("&c&o" + input + "\n" + "&c&o" + e.StackTrace)
+		{
+			Type = MessageType.DebugCrash;
+			User = Users.Console;
+			foreach (var thisElement in String.Elements)
+			{
+				thisElement.BackColor = new XRGBColor(240, 120, 120);
+				thisElement.ForeColor = new XRGBColor(255, 255, 255);
+			}
 		}
 	}
 }

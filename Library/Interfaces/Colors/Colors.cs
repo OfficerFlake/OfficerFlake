@@ -9,11 +9,15 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		byte Red { get; set; }
 		byte Green { get; set; }
 		byte Blue { get; set; }
+
+		ISimpleColor GetSimpleColor();
+		I24BitColor Get24BitColor();
+		I32BitColor Get32BitColor();
 	}
 
 	public interface ISimpleColor
 	{
-		I24BitColor Color { get; set; }
+		IColor Color { get; set; }
 		char ColorCode { get; set; }
 	}
 
@@ -24,6 +28,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		byte Blue { get; set; }
 
 		string ToHexString();
+		IColor GetColor();
 	}
 
 	public interface I32BitColor
@@ -34,5 +39,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		byte Blue { get; set; }
 
 		string ToHexString();
+		IColor GetColor();
 	}
 }

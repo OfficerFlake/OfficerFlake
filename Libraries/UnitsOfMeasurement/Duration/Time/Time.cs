@@ -67,10 +67,11 @@ namespace Com.OfficerFlake.Libraries
 			}
 			#endregion
 			#region OYSTime <> String
+			public string ToSystemString() => ToString();
 			public override string ToString()
 			{
-				return Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
-					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+				return Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
 					   Second.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
 			public static bool TryParse(string input, out OYSTime output)

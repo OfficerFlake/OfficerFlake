@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{60286C68-AB78-4F34-8199-E8CF255AB284}</ProjectGuid>
+    <ProjectGuid>{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Interfaces</RootNamespace>
-    <AssemblyName>Interfaces</AssemblyName>
+    <RootNamespace>SlaveObjectFactory</RootNamespace>
+    <AssemblyName>SlaveObjectFactory</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,35 +32,25 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildEnvironment\BuildEnvironment.cs" />
-    <Compile Include="Colors\Formatting.cs" />
-    <Compile Include="Colors\Colors.cs" />
-    <Compile Include="ExceptionHandling\ExceptionHandling.cs" />
-    <Compile Include="Files\ListFile.cs" />
-    <Compile Include="ObjectFactory\ObjectFactory.cs" />
-    <Compile Include="YSFlight\DATFile.cs" />
-    <Compile Include="Settings\Settings.cs" />
-    <Compile Include="Networking\Server.cs" />
-    <Compile Include="Networking\PacketProcessor.cs" />
-    <Compile Include="Networking\Packet.cs" />
-    <Compile Include="Networking\Connection.cs" />
-    <Compile Include="Math\Statistic.cs" />
-    <Compile Include="Math\Quadratic.cs" />
-    <Compile Include="Database\Permission.cs" />
-    <Compile Include="Database\Rank.cs" />
-    <Compile Include="Database\User.cs" />
-    <Compile Include="Database\Group.cs" />
-    <Compile Include="Files\CommandFile.cs" />
-    <Compile Include="Files\_File.cs" />
-    <Compile Include="Math\Coordinate.cs" />
-    <Compile Include="Logging\Console.cs" />
-    <Compile Include="RichTexxt\RichText.cs" />
-    <Compile Include="UnitsOfMeasurement\UnitsOfMeasurement.cs" />
-    <Compile Include="Logging\Debug.cs" />
+    <Compile Include="SlaveObjectFactory-Linking.cs" />
+    <Compile Include="SlaveObjectFactory-Variables.cs" />
+    <Compile Include="SlaveObjectFactory-Access.cs" />
+    <Compile Include="DefaultObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -10,57 +10,30 @@ namespace Com.OfficerFlake.Libraries.Logger
 {
     internal class DefaultDebug : IDebug
     {
-	    private IDebug debug = null;
-
-	    internal void LinkDebug(IDebug debug)
-	    {
-		    this.debug = debug;
-	    }
-
 	    public void AddSummaryMessage(string message)
 	    {
-		    if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Debug> Summary: " + message);
-			    return;
-		    }
-		    debug.AddSummaryMessage(message);
+			System.Diagnostics.Debug.WriteLine("Debug> Summary: " + message);
+			return;
 	    }
 		public void AddDetailMessage(string message)
 	    {
-			if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Debug> Detail: " + message);
-			    return;
-		    }
-		    debug.AddDetailMessage(message);
+			System.Diagnostics.Debug.WriteLine("Debug> Detail: " + message);
+			return;
 		}
 	    public void AddWarningMessage(string message)
 	    {
-			if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Debug> Warning: " + message);
-			    return;
-		    }
-		    debug.AddWarningMessage(message);
+			System.Diagnostics.Debug.WriteLine("Debug> Warning: " + message);
+			return;
 		}
 	    public void AddErrorMessage(Exception e, string message)
 	    {
-			if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Debug> Error: " + message);
-			    return;
-		    }
-		    debug.AddErrorMessage(e, message);
+			System.Diagnostics.Debug.WriteLine("Debug> Error: " + message);
+			return;
 		}
 	    public void AddCrashMessage(Exception e, string message)
 	    {
-			if (debug == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Debug> Crash: " + message);
-			    return;
-		    }
-		    debug.AddCrashMessage(e, message);
+			System.Diagnostics.Debug.WriteLine("Debug> Crash: " + message);
+			return;
 		}
     }
 	public static class Debug

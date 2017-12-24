@@ -27,36 +27,36 @@ namespace Com.OfficerFlake.Libraries
 			{
 				Name = "Owner".AsRichTextString(),
 				Index = 4,
-				LocalPermissions = new LocalPermissions(),
-				GlobalPermissions = new GlobalPermissions(),
+				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
+				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
 			};
 			public static IRank ServerRankAdmin = new Rank()
 			{
 				Name = "Admin".AsRichTextString(),
 				Index = 3,
-				LocalPermissions = new LocalPermissions(),
-				GlobalPermissions = new GlobalPermissions(),
+				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
+				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
 			};
 			public static IRank ServerRankModerator = new Rank()
 			{
 				Name = "Moderator".AsRichTextString(),
 				Index = 2,
-				LocalPermissions = new LocalPermissions(),
-				GlobalPermissions = new GlobalPermissions(),
+				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
+				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
 			};
 			public static IRank ServerRankMember = new Rank()
 			{
 				Name = "Member".AsRichTextString(),
 				Index = 1,
-				LocalPermissions = new LocalPermissions(),
-				GlobalPermissions = new GlobalPermissions(),
+				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
+				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
 			};
 			public static IRank ServerRankGuest = new Rank()
 			{
 				Name = "Guest".AsRichTextString(),
 				Index = 0,
-				LocalPermissions = new LocalPermissions(),
-				GlobalPermissions = new GlobalPermissions(),
+				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
+				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
 			};
 
 			public static List<IRank> ServerRanks = new List<IRank>()

@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.RichText;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {
-	public partial class _Debug : Form
+	public partial class _Debug : Form, IDebug
 	{
 		#region Loading
 		private void _Console_Load(object sender, EventArgs e)
@@ -83,11 +83,37 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			Hide();
 			Refresh();
 		}
+
+		public void AddSummaryMessage(string message)
+		{
+			debugOutput.AddMessage(new DebugSummaryMessage(message));
+		}
+		public void AddDetailMessage(string message)
+		{
+			debugOutput.AddMessage(new DebugDetailMessage(message));
+		}
+		public void AddWarningMessage(string message)
+		{
+			debugOutput.AddMessage(new DebugWarningMessage(message));
+		}
+		public void AddErrorMessage(Exception e, string message)
+		{
+			debugOutput.AddMessage(new DebugErrorMessage(e, message));
+		}
+		public void AddCrashMessage(Exception e, string message)
+		{
+			debugOutput.AddMessage(new DebugCrashMessage(e, message));
+		}
 	}
 
 	public static class Debug
 	{
 		private static _Debug _Debug = new _Debug();
+
+		public static void LinkDebug()
+		{
+			Logger.Debug.LinkDebug(_Debug);
+		}
 		private static bool WaitForLoad() => _Debug.WaitForLoad();
 		public static bool WaitForClose() => _Debug.WaitForClose();
 
@@ -113,16 +139,16 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		}
 
 		#region Messages
-		private static void AddMessage(RichTextMessage thisRichTextMessage)
+		private static void AddMessage(IRichTextMessage thisRichTextMessage)
 		{
 			_Debug.debugOutput.AddMessage(thisRichTextMessage);
 		}
 		
-		public static void AddInformationMessage(string input) => AddMessage(new InformationMessage(input));
-		public static void AddDebugMessage(string input) => AddMessage(new DebugMessage(input));
-		public static void AddWarningMessage(string input) => AddMessage(new WarningMessage(input));
-		public static void AddErrorMessage(string input) => AddMessage(new ErrorMessage(input));
-		public static void AddCrashMessage(string input) => AddMessage(new CrashMessage(input));
+		public static void AddSummaryMessage(string input) => AddMessage(new DebugSummaryMessage(input));
+		public static void AddDetailMessage(string input) => AddMessage(new DebugDetailMessage(input));
+		public static void AddWarningMessage(string input) => AddMessage(new DebugWarningMessage(input));
+		public static void AddErrorMessage(Exception e, string input) => AddMessage(new DebugErrorMessage(e, input));
+		public static void AddCrashMessage(Exception e, string input) => AddMessage(new DebugCrashMessage(e, input));
 		#endregion
 	}
 

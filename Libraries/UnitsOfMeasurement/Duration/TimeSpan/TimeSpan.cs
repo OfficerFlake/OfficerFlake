@@ -113,6 +113,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			#endregion
 			#region OYSTimeSpan <> String
+			public string ToSystemString() => ToString();
 			public override string ToString()
 			{
 				return Years.ToString() + "Y" +

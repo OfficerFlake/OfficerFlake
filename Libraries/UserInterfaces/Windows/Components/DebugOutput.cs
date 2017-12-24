@@ -43,7 +43,21 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    private const int DateSize = 8;
 	    private const int TimeSize = 6;
 	    private const int TypeSize = 16;
-	    private const int MessageSize = 56;
+
+		private int MessageSize =>
+			91 -
+			(DebugMenu.showDateToolStripMenuItem.Checked ? DateSize+1 : 0) -
+			(DebugMenu.showTimeToolStripMenuItem.Checked ? TimeSize+1 : 0) -
+			(DebugMenu.showTypeToolStripMenuItem.Checked ? TypeSize+1 : 0);
+
+		private int OverflowSize =>
+			91 -
+			(DebugMenu.showDateToolStripMenuItem.Checked ? DateSize + 1 : 0) -
+			(DebugMenu.showTimeToolStripMenuItem.Checked ? TimeSize + 1 : 0) -
+			(DebugMenu.showTypeToolStripMenuItem.Checked ? TypeSize + 1 : 0) -
+			(DebugMenu.showMessageToolStripMenuItem.Checked ? MessageSize : 0);
+
+
 
 		public DebugMenu DebugMenu = new DebugMenu();
 		#endregion
@@ -90,9 +104,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    {
 		    private static DebugOutput Parent;
 		    public int StartIndex;
-			public RichTextMessage Message;
+			public IRichTextMessage Message;
 
-		    public RichTextMessageDictionaryItem(DebugOutput _Parent, RichTextMessage _Message)
+		    public RichTextMessageDictionaryItem(DebugOutput _Parent, IRichTextMessage _Message)
 		    {
 			    Parent = _Parent;
 				StartIndex = Parent.richTextBox_ConsoleOutput.Lines.Length;
@@ -104,14 +118,14 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    private int maximumMessages = 1000; //Stress tested okay to ~25,000 objects.
 	    private int richTextMessagesCount => richTextMessages.Count + incomingRichTextMessages.Count;
 
-		private ConcurrentQueue<RichTextMessage> incomingRichTextMessages = new ConcurrentQueue<RichTextMessage>();
+		private ConcurrentQueue<IRichTextMessage> incomingRichTextMessages = new ConcurrentQueue<IRichTextMessage>();
 		private ManualResetEvent notifyIncomingRichTextMessages = new ManualResetEvent(false);
 
 		/// <summary>
 		/// Thread safe method of adding a RichTextMessage to the Output Console.
 		/// </summary>
 		/// <param name="thisRichTextMessage"></param>
-	    public void AddMessage(RichTextMessage thisRichTextMessage)
+	    public void AddMessage(IRichTextMessage thisRichTextMessage)
 	    {
 		    incomingRichTextMessages.Enqueue(thisRichTextMessage);
 		    notifyIncomingRichTextMessages.Set();
@@ -135,9 +149,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		/// </summary>
 		/// <param name="Row">Minimum row number.</param>
 		/// <returns>The message object if found, otherwise null.</returns>
-	    private RichTextMessage GetMessageFromPosition(int Row)
+	    private IRichTextMessage GetMessageFromPosition(int Row)
 	    {
-		    RichTextMessage output = null;
+		    IRichTextMessage output = null;
 		    try
 		    {
 			    var output0 = richTextMessages.ToArray();
@@ -199,83 +213,128 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 				AppendRichTextMessageDirect(thisRichTextMessageDictionaryItem.Message);
 			}
 	    }
-	    private void AppendRichTextMessageDirect(RichTextMessage thisRichTextMessage)
+	    private void AppendRichTextMessageDirect(IRichTextMessage thisRichTextMessage)
 	    {
-		    switch (thisRichTextMessage.Type)
+			#region Color Override
+			I24BitColor BackColor = new XRGBColor(16,16,16);
+		    bool OverrideBackColor = false;
+		    I24BitColor ForeColor = new XRGBColor(240, 240, 240);
+		    bool OverrideForeColor = false;
+			switch (thisRichTextMessage.Type)
 		    {
-			    case RichTextMessage.MessageType.Information:
-				    if (!DebugMenu.showInformationToolStripMenuItem.Checked) return;
-				    break;
-			    case RichTextMessage.MessageType.Debug:
-				    if (!DebugMenu.showDebugToolStripMenuItem.Checked) return;
-				    break;
-				case RichTextMessage.MessageType.Warning:
-				    if (!DebugMenu.showWarningToolStripMenuItem.Checked) return;
+			    case MessageType.Unknown:
+					return;
+			    case MessageType.User:
+				    return;
+			    case MessageType.ConsoleInformation:
+				    return;
+				case MessageType.DebugSummary:
+				    if (!DebugMenu.showDebugSummaryToolStripMenuItem.Checked) return;
+					BackColor = new XRGBColor(10, 20, 25);
+					OverrideBackColor = true;
 					break;
-				case RichTextMessage.MessageType.Error:
-				    if (!DebugMenu.showErrorToolStripMenuItem.Checked) return;
+				case MessageType.DebugDetail:
+				    if (!DebugMenu.showDebugDetailToolStripMenuItem.Checked) return;
+					BackColor = new XRGBColor(10, 10, 25);
+					OverrideBackColor = true;
 					break;
-				case RichTextMessage.MessageType.Crash:
-				    if (!DebugMenu.showCrashToolStripMenuItem.Checked) return;
+				case MessageType.DebugWarning:
+				    if (!DebugMenu.showDebugWarningToolStripMenuItem.Checked) return;
+					BackColor = new XRGBColor(25, 25, 10);
+					OverrideBackColor = true;
+					break;
+				case MessageType.DebugError:
+				    if (!DebugMenu.showDebugErrorToolStripMenuItem.Checked) return;
+					BackColor = new XRGBColor(50, 25, 10);
+					OverrideBackColor = true;
+					OverrideForeColor = true;
+					break;
+				case MessageType.DebugCrash:
+				    if (!DebugMenu.showDebugCrashToolStripMenuItem.Checked) return;
+					BackColor = new XRGBColor(50, 10, 10);
+					OverrideBackColor = true;
+					OverrideForeColor = true;
 					break;
 			}
+			#endregion
 
+			#region Date
 			RichTextString.MessageElement date = new RichTextString.MessageElement();
-			date.Message = thisRichTextMessage.Created.InStandardForm().YYYY +
-		                   thisRichTextMessage.Created.InStandardForm().MM +
-		                   thisRichTextMessage.Created.InStandardForm().DD;
+		    date.Message = thisRichTextMessage.Datestamp.ToSystemString();
 			date.ForeColor = SimpleColors.White.Color;
-
-		    RichTextString.MessageElement time = new RichTextString.MessageElement();
-			time.Message = thisRichTextMessage.Created.InStandardForm().hh +
-			               thisRichTextMessage.Created.InStandardForm().mm +
-			               thisRichTextMessage.Created.InStandardForm().ss;
+		    if (OverrideBackColor) date.BackColor = BackColor;
+		    if (OverrideForeColor) date.ForeColor = ForeColor;
+			#endregion
+			#region Time
+			RichTextString.MessageElement time = new RichTextString.MessageElement();
+		    time.Message = thisRichTextMessage.Timestamp.ToSystemString();
 			time.ForeColor = SimpleColors.DarkGray.Color;
-
-		    RichTextMessage.MessageType type = thisRichTextMessage.Type;
-
+		    if (OverrideBackColor) time.BackColor = BackColor;
+		    if (OverrideForeColor) time.ForeColor = ForeColor;
+			#endregion
+			#region Type
+			MessageType type = thisRichTextMessage.Type;
+			#endregion
+			#region Message
 			List<IRichTextElement> message = thisRichTextMessage.String.Elements;
+			#endregion
 
+			#region Start new line
 			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
-		    int messageIndentSize = GetIndentSize();
+			#endregion
+			#region Add Date
 			if (DebugMenu.showDateToolStripMenuItem.Checked)
 		    {
 			    richTextBox_ConsoleOutput.AppendRichTextElement(date);
 			    richTextBox_ConsoleOutput.AppendText(" ");
 		    }
-		    if (DebugMenu.showTimeToolStripMenuItem.Checked)
+			#endregion
+			#region Add Time
+			if (DebugMenu.showTimeToolStripMenuItem.Checked)
 		    {
 			    richTextBox_ConsoleOutput.AppendRichTextElement(time);
 			    richTextBox_ConsoleOutput.AppendText(" ");
 			}
-		    if (DebugMenu.showTypeToolStripMenuItem.Checked)
+			#endregion
+			#region Add Type
+			if (DebugMenu.showTypeToolStripMenuItem.Checked)
 		    {
 			    int totalMessageSize = 0;
-			    RichTextString messageTypeString = ("&d" + "???").AsRichTextString();
+			    IRichTextString messageTypeString = ("&d" + "???").AsRichTextString();
 			    switch (thisRichTextMessage.Type)
 			    {
-				    case RichTextMessage.MessageType.Unknown:
-					    messageTypeString = ("&d" + "???").AsRichTextString(); ;
-						break;
-				    case RichTextMessage.MessageType.Crash:
-					    messageTypeString = ("&c" + "CRASH").AsRichTextString(); ;
-						break;
-				    case RichTextMessage.MessageType.Error:
-					    messageTypeString = ("&4" + "Error").AsRichTextString(); ;
-						break;
-				    case RichTextMessage.MessageType.Debug:
-					    messageTypeString = ("&9" + "Debug").AsRichTextString(); ;
-						break;
-				    case RichTextMessage.MessageType.Warning:
-					    messageTypeString = ("&e" + "Warning").AsRichTextString(); ;
-						break;
-				    case RichTextMessage.MessageType.Information:
-					    messageTypeString = ("&b" + "Information").AsRichTextString(); ;
-						break;
-				    default:
+					default:
+						goto case MessageType.Unknown;
+					case MessageType.Unknown:
 						messageTypeString = ("&d" + "???").AsRichTextString();
-					    break;
+						return;
+				    case MessageType.User:
+					    messageTypeString = ("&d" + "User").AsRichTextString();
+						return;
+				    case MessageType.ConsoleInformation:
+					    messageTypeString = ("&d" + "Console").AsRichTextString();
+						return;
+				    case MessageType.DebugSummary:
+						messageTypeString = ("&b" + "Summary").AsRichTextString();
+						break;
+				    case MessageType.DebugDetail:
+						messageTypeString = ("&9" + "Detail").AsRichTextString();
+						break;
+				    case MessageType.DebugWarning:
+						messageTypeString = ("&e" + "Warning").AsRichTextString();
+						break;
+				    case MessageType.DebugError:
+						messageTypeString = ("&c" + "Error").AsRichTextString();
+						break;
+				    case MessageType.DebugCrash:
+						messageTypeString = ("&c" + "Crash").AsRichTextString();
+						break;
 				}
+			    foreach (var thisElement in messageTypeString.Elements)
+			    {
+				    thisElement.BackColor = BackColor;
+			    }
+
 				for (int i=0; i < messageTypeString.Elements.Count; i++)
 				{
 					IRichTextElement thisElement = messageTypeString.Elements[i];
@@ -296,6 +355,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 						{
 							currentElement = new MessageElement(thisElement.Message + new string(' ', 16-totalMessageSize), thisElement.GetClosestSimpleColor(),
 								thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
+							currentElement.BackColor = thisElement.BackColor;
+							if (OverrideBackColor) currentElement.BackColor = BackColor;
+							if (OverrideForeColor) currentElement.ForeColor = ForeColor;
 						}
 					}
 					#endregion
@@ -303,7 +365,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 				}
 			    richTextBox_ConsoleOutput.AppendText(" ");
 			}
-		    if (DebugMenu.showMessageToolStripMenuItem.Checked)
+			#endregion
+			#region Add Message
+			int messageIndentSize = GetIndentSize();
+			if (DebugMenu.showMessageToolStripMenuItem.Checked)
 		    {
 				int fullMessageSize = message.Sum(x => x.Message.Length);
 			    int remainingCharactersToAdd = fullMessageSize;
@@ -336,9 +401,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 							thisElement.IsObfuscated,
 							thisElement.IsStrikeout
 							);
-					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+					    workingElement.BackColor = BackColor;
+						if (workingElement.Message.Contains("\n"))
+						{
+							workingElement.Message = workingElement.Message.Replace("\n", new string(' ', MessageSize - sizeAlreadyAdded + messageIndentSize));
+						}
+						richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					    charactersOnThisLine += sizeToAdd;
-						richTextBox_ConsoleOutput.AppendText("\n ");
+					    richTextBox_ConsoleOutput.AppendText(new string(' ', MessageSize - charactersOnThisLine));
+						richTextBox_ConsoleOutput.AppendText(" ");
 						richTextBox_ConsoleOutput.AppendText(new string(' ', messageIndentSize));
 					    charactersOnThisLine = 0;
 					    sizeAlreadyAdded += sizeToAdd;
@@ -360,18 +431,72 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					    thisElement.IsObfuscated,
 						thisElement.IsStrikeout
 				    );
-				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+				    if (workingElement.Message.Contains("\n"))
+				    {
+					    workingElement.Message =
+						    workingElement.Message.Split(new[] {'\n'}, 2)[0] +
+
+						    new string(' ', MessageSize - workingElement.Message.Split(new[] {'\n'}, 2)[0].Length + 1) +
+
+						    "\n" +
+
+						    new string(' ', messageIndentSize + 1) +
+
+						    workingElement.Message.Split(new[] {'\n'}, 2)[1];
+
+						charactersOnThisLine = thisElement.Message.Split(new[] { '\n' }, 2)[1].Length;
+					    remainingCharactersToAdd -= sizeToAdd;
+						sizeToAdd = 0;
+				    }
+					workingElement.BackColor = thisElement.BackColor;
+				    if (OverrideBackColor) workingElement.BackColor = BackColor;
+				    if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 				    charactersOnThisLine += sizeToAdd;
 					remainingCharactersToAdd -= sizeToAdd;
+					#endregion
+				    #region Finish the line with spaces.
+				    workingElement = new MessageElement
+				    (
+					    new string(' ', MessageSize - charactersOnThisLine),
+					    thisElement.GetClosestSimpleColor(),
+					    thisElement.IsBold,
+					    thisElement.IsItallic,
+					    thisElement.IsUnderlined,
+					    thisElement.IsObfuscated,
+					    thisElement.IsStrikeout
+				    );
+				    workingElement.BackColor = thisElement.BackColor;
+				    if (OverrideBackColor) workingElement.BackColor = BackColor;
+				    if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+				    charactersOnThisLine += sizeToAdd;
+				    remainingCharactersToAdd -= sizeToAdd;
 					#endregion
 					#endregion
 					#endregion
 				}
-			    //richTextBox_ConsoleOutput.AppendText(" ");
 			}
-		    richTextBox_ConsoleOutput.ScrollToCaret();
+			#endregion
+		    #region Add Overflow if Required.
+		    IRichTextElement overflowElement = new MessageElement
+		    (
+			    new string(' ', OverflowSize),
+			    date.GetClosestSimpleColor(),
+			    date.IsBold,
+			    date.IsItallic,
+			    date.IsUnderlined,
+			    date.IsObfuscated,
+			    date.IsStrikeout
+		    );
+		    overflowElement.BackColor = date.BackColor;
+		    if (OverrideBackColor) overflowElement.BackColor = BackColor;
+		    if (OverrideForeColor) overflowElement.ForeColor = ForeColor;
+		    richTextBox_ConsoleOutput.AppendRichTextElement(overflowElement);
+		    #endregion
+			richTextBox_ConsoleOutput.ScrollToCaret();
 		}
-	    private void AddMessageDirect(RichTextMessage thisRichTextMessage)
+	    private void AddMessageDirect(IRichTextMessage thisRichTextMessage)
 	    {
 		    while (richTextMessages.Count >= maximumMessages)
 		    {
@@ -419,7 +544,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 			    while (notifyIncomingRichTextMessages.WaitOne(0))
 			    {
-				    RichTextMessage thisRichTextMessage = null;
+				    IRichTextMessage thisRichTextMessage = null;
 				    incomingRichTextMessages.TryDequeue(out thisRichTextMessage);
 				    if (IsFormClosing) return;
 				    try

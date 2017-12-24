@@ -95,6 +95,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libararies\IO\Logger\Logger.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Client\Connection\Connection.csproj">
       <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
       <Name>Connection</Name>
@@ -115,6 +119,10 @@
       <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
       <Name>YSFHQ</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\ExceptionHandling\ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>ExceptionHandling</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
       <Name>Extensions</Name>
@@ -122,6 +130,10 @@
     <ProjectReference Include="..\..\Libraries\IO\IO.csproj">
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
       <Name>IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\MasterObjectFactory\MasterObjectFactory.csproj">
+      <Project>{e61ada91-5cb8-49b1-9418-fb353ff5cb7e}</Project>
+      <Name>MasterObjectFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Math\CoordinateSystems\CoordinateSystems.csproj">
       <Project>{714aa2cd-08cb-4610-ae53-fa7994d8a0a2}</Project>
@@ -155,6 +167,10 @@
       <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
       <Name>RichTextString</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Settings\Settings.csproj">
+      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
+      <Name>Settings</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
@@ -182,6 +198,14 @@
     <ProjectReference Include="..\..\Libraries\YSFlight\YSTypes\YSTypes.csproj">
       <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
       <Name>YSTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\Interfaces\Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SlaveObjectFactory\SlaveObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>SlaveObjectFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

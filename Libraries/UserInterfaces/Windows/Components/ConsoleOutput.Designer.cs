@@ -32,7 +32,6 @@
 			this.checkBox_ShowTime = new System.Windows.Forms.CheckBox();
 			this.checkBox_ShowUsername = new System.Windows.Forms.CheckBox();
 			this.checkBox_ShowMessage = new System.Windows.Forms.CheckBox();
-			this.button_TestOutput = new System.Windows.Forms.Button();
 			this.richTextBox_ConsoleOutput = new Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components.RichTextBox_FormattedBlack();
 			this.SuspendLayout();
 			// 
@@ -86,18 +85,6 @@
 			this.checkBox_ShowMessage.UseVisualStyleBackColor = true;
 			this.checkBox_ShowMessage.CheckedChanged += new System.EventHandler(this.CheckBox_ShowMessage_CheckedChanged);
 			// 
-			// button_TestOutput
-			// 
-			this.button_TestOutput.BackColor = System.Drawing.Color.Black;
-			this.button_TestOutput.Location = new System.Drawing.Point(565, 0);
-			this.button_TestOutput.Margin = new System.Windows.Forms.Padding(0);
-			this.button_TestOutput.Name = "button_TestOutput";
-			this.button_TestOutput.Size = new System.Drawing.Size(75, 23);
-			this.button_TestOutput.TabIndex = 4;
-			this.button_TestOutput.Text = "Test Output";
-			this.button_TestOutput.UseVisualStyleBackColor = false;
-			this.button_TestOutput.Click += new System.EventHandler(this.Button_TestOutput_Click);
-			// 
 			// richTextBox_ConsoleOutput
 			// 
 			this.richTextBox_ConsoleOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -125,7 +112,6 @@
 			this.Controls.Add(this.checkBox_ShowTime);
 			this.Controls.Add(this.checkBox_ShowUsername);
 			this.Controls.Add(this.checkBox_ShowMessage);
-			this.Controls.Add(this.button_TestOutput);
 			this.ForeColor = System.Drawing.Color.White;
 			this.Margin = new System.Windows.Forms.Padding(0);
 			this.Name = "ConsoleOutput";
@@ -140,7 +126,6 @@
 		private System.Windows.Forms.CheckBox checkBox_ShowTime;
 		private System.Windows.Forms.CheckBox checkBox_ShowUsername;
 		private System.Windows.Forms.CheckBox checkBox_ShowMessage;
-		private System.Windows.Forms.Button button_TestOutput;
 		private Components.RichTextBox_FormattedBlack richTextBox_ConsoleOutput;
 	}
 }

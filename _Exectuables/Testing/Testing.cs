@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
 using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 using Com.OfficerFlake.Libraries.Extensions;
-
+using Com.OfficerFlake.Libraries.Interfaces;
 using DAT = Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
 using LST = Com.OfficerFlake.Libraries.YSFlight.Files.LST;
 
@@ -148,29 +148,40 @@ namespace Com.OfficerFlake.Executables.Testing
 		private static void MainProgram()
 		{
 			#region Link Objects Together
+			MasterObjectFactory.LinkMasterFactory();
+			Debug.LinkDebug();
+			Console.LinkConsole();
 			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
 			#endregion
 
 			Console.Show();
 			Debug.Show();
 
-			Debug.AddCrashMessage("TEST");
+			Debug.AddCrashMessage(new NotImplementedException("NotImplementedException TEST"), "TEST 1");
+			Debug.AddErrorMessage(new NotImplementedException("NotImplementedException TEST"), "TEST 2");
+			Debug.AddWarningMessage("TEST 3");
+			Debug.AddDetailMessage("TEST 4");
+			Debug.AddSummaryMessage("TEST 5");
+			Debug.AddSummaryMessage("TEST 6\nTEST 7");
+
+			IRichTextElement test = ObjectFactory.Create(typeof(IRichTextElement));
+			Debug.AddSummaryMessage(test.Message);
 
 			#region Load World
-			Console.AddInformationMessage("Loading World");
+			Console.AddConsoleInformationMessage("Loading World");
 
 			Metadata.LoadAll();
 
 			//World.Load("OPENYS_TEST_FIELD");
 			World.Load("HAWAII");
 
-			Console.AddInformationMessage("World Loading Complete!");
+			Console.AddConsoleInformationMessage("World Loading Complete!");
 			#endregion
 
 			#region Start Server
-			Console.AddInformationMessage("Starting Server...");
+			Console.AddConsoleInformationMessage("Starting Server...");
 			Server.Start();
-			Console.AddInformationMessage("Now Listening on Port 7915!");
+			Console.AddConsoleInformationMessage("Now Listening on Port 7915!");
 			#endregion
 
 			Console.WaitForClose();

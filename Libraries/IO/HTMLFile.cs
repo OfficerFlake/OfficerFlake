@@ -180,7 +180,7 @@ namespace Com.OfficerFlake.Libraries.IO
                         dateSpan.Attributes.Add(dateStyle);
                         dateSpan.Contents = input.Datestamp + " " + input.Timestamp + ": ";
                         output.Append(dateSpan);
-                        foreach (var thisElement in input.Message.Elements)
+                        foreach (var thisElement in input.String.Elements)
                         {
 
                             Style thisStyle = new Style();

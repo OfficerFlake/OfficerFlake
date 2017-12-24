@@ -62,11 +62,20 @@ namespace Com.OfficerFlake.Libraries.RichText
 
 		    public string ToInternallyFormattedSystemString()
 		    {
-			    throw new NotImplementedException();
+			    return
+				    "&r" +
+				    ("&" + GetClosestColorCode()) +
+				    (IsBold ? "&l" : "") +
+				    (IsItallic ? "&o" : "") +
+				    (IsUnderlined ? "&n" : "") +
+				    (IsStrikeout ? "&m" : "") +
+				    (IsObfuscated ? "&k" : "") +
+				    Message;
+
 		    }
 		    public string ToUnformattedSystemString()
 		    {
-			    throw new NotImplementedException();
+			    return Message;
 		    }
 
 			public ISimpleColor GetClosestSimpleColor()

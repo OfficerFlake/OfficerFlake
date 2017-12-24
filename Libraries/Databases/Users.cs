@@ -1,5 +1,4 @@
 ﻿using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using System;
 using System.Collections.Generic;
@@ -11,23 +10,23 @@ namespace Com.OfficerFlake.Libraries
     {
 	    public class User : IUser
 	    {
-		    public RichTextString Username;
-
-		    public User(RichTextString _Username)
+		    public IRichTextString UserName { get; set; }
+		    
+			public User(IRichTextString _Username)
 		    {
 				Can = new PermissionsTesting_Can(this);
 				Cannot = new PermissionsTesting_Cannot(this);
 
-			    Username = _Username;
+			    UserName = _Username;
 		    }
 
 		    public override string ToString()
 		    {
-			    return Username.ToUnformattedSystemString();
+			    return UserName.ToUnformattedSystemString();
 		    }
 
-		    #region History
-			//Actions on User level.
+			#region History
+		    public IUserHistory History { get; set; }
 			public class ExpiringAction : IExpiringAction
 		    {
 			    public IUser ActionedBy { get; set; }
@@ -58,42 +57,52 @@ namespace Com.OfficerFlake.Libraries
 		    }
 
 			#region Mute
-			public IExpiringAction MuteHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Muted.".AsRichTextString());
+			public IExpiringAction MuteHistory = new ExpiringAction(
+				Users.Console,
+				(OYSDateTime)DateTime.MinValue,
+				(OYSDateTime)DateTime.MinValue,
+				ObjectFactory.CreateRichTextString("Never Muted."));
 		    public bool isMuted => ((OYSDateTime)DateTime.Now < (OYSDateTime)MuteHistory.Ends);
-		    void Mute(User mutedBy, DateTime starts, DateTime ends, RichTextString reason)
+		    void Mute(User mutedBy, DateTime starts, DateTime ends, IRichTextString reason)
 		    {
 			    throw new NotImplementedException();
 		    }
 			#endregion
 			#region Freeze
-			public ExpiringAction FreezeHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Frozen.".AsRichTextString());
+			public ExpiringAction FreezeHistory = new ExpiringAction(
+				Users.Console,
+				(OYSDateTime)DateTime.MinValue,
+				(OYSDateTime)DateTime.MinValue,
+				ObjectFactory.CreateRichTextString("Never Frozen."));
 		    public bool isFrozen => ((OYSDateTime)DateTime.Now < (OYSDateTime)FreezeHistory.Ends);
-			void Freeze(User frozenby, DateTime starts, DateTime ends, RichTextString reason)
+			void Freeze(User frozenby, DateTime starts, DateTime ends, IRichTextString reason)
 		    {
 			    throw new NotImplementedException();
 		    }
 			#endregion
 			#region Kick
-			public PermanentAction KickHistory = new PermanentAction(Users.Console, (OYSDateTime)DateTime.MinValue,  "Never Kicked.".AsRichTextString());
-			void Kick(User kickedby, DateTime timestamp, RichTextString reason)
+			public PermanentAction KickHistory = new PermanentAction(
+				Users.Console,
+				(OYSDateTime)DateTime.MinValue,
+				ObjectFactory.CreateRichTextString("Never Kicked."));
+			void Kick(User kickedby, DateTime timestamp, IRichTextString reason)
 		    {
 				throw new NotImplementedException();
 			}
 			#endregion
 			#region Ban
-			public ExpiringAction BanHistory = new ExpiringAction(Users.Console, (OYSDateTime)DateTime.MinValue, (OYSDateTime)DateTime.MinValue, "Never Banned.".AsRichTextString());
+			public ExpiringAction BanHistory = new ExpiringAction(
+				Users.Console, (OYSDateTime)DateTime.MinValue,
+				(OYSDateTime)DateTime.MinValue,
+				ObjectFactory.CreateRichTextString("Never Banned."));
 		    public bool isBanned => ((OYSDateTime)DateTime.Now < (OYSDateTime)FreezeHistory.Ends);
-
-			public IRichTextString UserName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-			public IUserHistory History { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-			void Ban(User bannedby, DateTime starts, DateTime ends, RichTextString reason)
+			void Ban(User bannedby, DateTime starts, DateTime ends, IRichTextString reason)
 		    {
 				throw new NotImplementedException();
 			}
 			#endregion
 
-		    #region Groups
+		    #region GroupUpdates
 		    public class GroupUpdate : IUserGroupUpdate
 		    {
 			    public IUser ActionedBy { get; set; }
@@ -164,16 +173,19 @@ namespace Com.OfficerFlake.Libraries
 			    else return false;
 		    }
 		    #endregion
-
 			#endregion
 			#region Perissmions
-		    public ILocalPermissions LocalPermissions { get; set; } = new LocalPermissions();
-			public ILocalPermissionsTester LocalPermissionsTester { get; set; } = new LocalPermissionsTester(Users.Unknown);
+		    public ILocalPermissions LocalPermissions { get; set; }
+				= ObjectFactory.CreateLocalPermissions();
+			public ILocalPermissionsTester LocalPermissionsTester { get; set; }
+				= ObjectFactory.CreateLocalPermissionsTester(Users.Unknown);
 
-		    public IGlobalPermissions GlobalPermissions { get; set; } = new GlobalPermissions();
-		    public IGlobalPermissionsTester GlobalPermissionsTester { get; set; } = new GlobalPermissionsTester(Users.Unknown);
+		    public IGlobalPermissions GlobalPermissions { get; set; }
+				= ObjectFactory.CreateGlobalPermissions();
+		    public IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
+				= ObjectFactory.CreateGlobalPermissionsTester(Users.Unknown);
 
-		    public class PermissionsTesting_Can
+			public class PermissionsTesting_Can
 		    {
 			    private IUser parent;
 
@@ -266,42 +278,42 @@ namespace Com.OfficerFlake.Libraries
 		    public PermissionsTesting_Cannot Cannot;
 			#endregion
 			#region Actions
-		    public void Mute(User mutedBy, TimeSpan? duration = null, RichTextString reason = null)
+		    public void Mute(IUser mutedBy, ITimeSpan duration = null, IRichTextString reason = null)
 		    {
 				MuteHistory = new ExpiringAction(
 					mutedBy,
 					(OYSDateTime)DateTime.Now,
-					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)), 
-					(reason ?? "No Reason.".AsRichTextString())
+					(OYSDateTime)(DateTime.Now + (duration ?? (OYSTimeSpan)TimeSpan.MaxValue).ToTimeSpan()), 
+					reason ?? ObjectFactory.CreateRichTextString("No Reason.")
 					);
 		    }
-			public void Freeze(User frozenBy, TimeSpan? duration = null, RichTextString reason = null)
+			public void Freeze(IUser frozenBy, ITimeSpan duration = null, IRichTextString reason = null)
 			{
 				FreezeHistory = new ExpiringAction(frozenBy,
 					(OYSDateTime)DateTime.Now,
-					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)),
-					(reason ?? "No Reason.".AsRichTextString())
+					(OYSDateTime)(DateTime.Now + (duration ?? (OYSTimeSpan)TimeSpan.MaxValue).ToTimeSpan()),
+					reason ?? ObjectFactory.CreateRichTextString("No Reason.")
 					);
 			}
-			public void Kick(User kickedBy, RichTextString reason = null)
+			public void Kick(IUser kickedBy, IRichTextString reason = null)
 		    {
 			    KickHistory = new PermanentAction(
 					kickedBy,
 					(OYSDateTime)DateTime.Now,
-					(reason ?? "No Reason.".AsRichTextString())
+					reason ?? ObjectFactory.CreateRichTextString("No Reason.")
 					);
 		    }
-		    public void Ban(User bannedBy, TimeSpan? duration = null, RichTextString reason = null)
+		    public void Ban(IUser bannedBy, ITimeSpan duration = null, IRichTextString reason = null)
 		    {
 			    BanHistory = new ExpiringAction(
 					bannedBy,
 					(OYSDateTime)DateTime.Now,
-					(OYSDateTime)(DateTime.Now + (duration ?? TimeSpan.MaxValue)),
-					(reason ?? "No Reason.".AsRichTextString())
+					(OYSDateTime)(DateTime.Now + (duration ?? (OYSTimeSpan)TimeSpan.MaxValue).ToTimeSpan()),
+					reason ?? ObjectFactory.CreateRichTextString("No Reason.")
 					);
 		    }
 
-		    public void AddToGroup(User addedBy, Group group, RichTextString reason = null)
+		    public void AddToGroup(IUser addedBy, IGroup group, IRichTextString reason = null)
 		    {
 			    if (IsCurrentlyInGroup(group)) return; //Currently a member, no need to add again.
 			    GroupUpdateHistory.Add(
@@ -313,11 +325,11 @@ namespace Com.OfficerFlake.Libraries
 						ActionedBy = addedBy,
 						ActionedDateTime = new OYSDateTime(DateTime.Now),
 
-						Reason = (reason ?? "No Reason.".AsRichTextString())
+						Reason = reason ?? ObjectFactory.CreateRichTextString("No Reason.")
 					}
 					);
 		    }
-		    public void RemoveFromGroup(User addedBy, Group group, RichTextString reason = null)
+		    public void RemoveFromGroup(IUser addedBy, IGroup group, IRichTextString reason = null)
 		    {
 			    if (!IsCurrentlyInGroup(group)) return; //Not even in the group.
 			    GroupUpdateHistory.Add(
@@ -329,12 +341,12 @@ namespace Com.OfficerFlake.Libraries
 						ActionedBy = addedBy,
 					    ActionedDateTime = (OYSDateTime)DateTime.Now,
 
-					    Reason = (reason ?? "No Reason.".AsRichTextString())
-				    }
+					    Reason = reason ?? ObjectFactory.CreateRichTextString("No Reason.")
+					}
 			    );
 		    }
 
-		    public void Promote(User promotedBy, Group group, RichTextString reason = null)
+		    public void Promote(IUser promotedBy, IGroup group, IRichTextString reason = null)
 		    {
 				if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't promote!
 			    IRank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
@@ -349,11 +361,11 @@ namespace Com.OfficerFlake.Libraries
 					    ActionedBy = promotedBy,
 					    ActionedDateTime = new OYSDateTime(DateTime.Now),
 
-					    Reason = (reason ?? "No Reason.".AsRichTextString())
-				    }
+					    Reason = reason ?? ObjectFactory.CreateRichTextString("No Reason.")
+					}
 			    );
 			}
-		    public void Demote(User demotedBy, Group group, RichTextString reason = null)
+		    public void Demote(IUser demotedBy, IGroup group, IRichTextString reason = null)
 		    {
 			    if (!IsCurrentlyInGroup(group)) return; //Not in the group. Can't demote!
 			    IRank currentRank = GetRankInGroupOrNull(group) ?? group.GetLowestRank();
@@ -368,8 +380,8 @@ namespace Com.OfficerFlake.Libraries
 					    ActionedBy = demotedBy,
 					    ActionedDateTime = new OYSDateTime(DateTime.Now),
 
-						Reason = (reason ?? "No Reason.".AsRichTextString())
-				    }
+						Reason = reason ?? ObjectFactory.CreateRichTextString("No Reason.")
+					}
 			    );
 		    }
 			#endregion
@@ -377,8 +389,8 @@ namespace Com.OfficerFlake.Libraries
 
 	    public static class Users
 	    {
-		    public static User Unknown = new User("&o&4<UNKNOWN>".AsRichTextString());
-		    public static User Console = new User("&o&3<OpenYS Console>".AsRichTextString())
+		    public static User Unknown = new User(ObjectFactory.CreateRichTextString("&o&4<UNKNOWN>"));
+		    public static User Console = new User(ObjectFactory.CreateRichTextString("&o&3<OpenYS Console>"))
 		    {
 			    GroupUpdateHistory = new List<IUserGroupUpdate>()
 			    {
@@ -389,7 +401,7 @@ namespace Com.OfficerFlake.Libraries
 				    }
 			    }
 		    };
-		    public static User TestUser = new User("TestUser".AsRichTextString());
+		    public static User TestUser = new User(ObjectFactory.CreateRichTextString("TestUser"));
 	    }
     }
 }

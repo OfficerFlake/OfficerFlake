@@ -32,7 +32,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 
 			Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
 
-			BackColor = Color.SimpleColors.Black.ToSystemDrawingColor();
+			BackColor = System.Drawing.Color.FromArgb(255, 16, 16, 16);
 			ForeColor = Color.SimpleColors.White.ToSystemDrawingColor();
 
 			BorderStyle = BorderStyle.None;
@@ -166,9 +166,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 				(int)thisElement.ForeColor.Blue);
 			System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
 				255,
-				16,
-				16,
-				16);
+				(int)thisElement.BackColor.Red,
+				(int)thisElement.BackColor.Green,
+				(int)thisElement.BackColor.Blue);
 
 			SelectionColor = ForeColor;
 			SelectionBackColor = BackColor;

@@ -37,13 +37,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateAndTime\_Duration\Year.cs" />
-    <Compile Include="DateAndTime\_Duration\Month.cs" />
-    <Compile Include="DateAndTime\_Duration\Week.cs" />
-    <Compile Include="DateAndTime\_Duration\Hour.cs" />
-    <Compile Include="DateAndTime\_Duration\Minute.cs" />
-    <Compile Include="DateAndTime\_Duration\Second.cs" />
-    <Compile Include="DateAndTime\_Duration\Day.cs" />
+    <Compile Include="Duration\_Duration\Year.cs" />
+    <Compile Include="Duration\_Duration\Month.cs" />
+    <Compile Include="Duration\_Duration\Week.cs" />
+    <Compile Include="Duration\_Duration\Hour.cs" />
+    <Compile Include="Duration\_Duration\Minute.cs" />
+    <Compile Include="Duration\_Duration\Second.cs" />
+    <Compile Include="Duration\_Duration\Day.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="Angle.cs" />
     <Compile Include="Angle\Gradian.cs" />
@@ -108,10 +108,10 @@
     <Compile Include="Temperature\Fahrenheit.cs" />
     <Compile Include="Temperature\Kelvin.cs" />
     <Compile Include="Temperature\Celcius.cs" />
-    <Compile Include="DateAndTime\TimeSpan\TimeSpan.cs" />
-    <Compile Include="DateAndTime\DateTime\DateTime.cs" />
-    <Compile Include="DateAndTime\Date\Date.cs" />
-    <Compile Include="DateAndTime\Time\Time.cs" />
+    <Compile Include="Duration\TimeSpan\TimeSpan.cs" />
+    <Compile Include="Duration\DateTime\DateTime.cs" />
+    <Compile Include="Duration\Date\Date.cs" />
+    <Compile Include="Duration\Time\Time.cs" />
     <Compile Include="Volume\CubicFoot.cs" />
     <Compile Include="Mass\Kilogram.cs" />
     <Compile Include="Volume\UK\FluidOunce.cs" />
