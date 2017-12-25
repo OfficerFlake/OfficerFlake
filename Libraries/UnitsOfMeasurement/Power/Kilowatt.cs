@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Powers
-        {
-            public class KiloWatt : Power
-            {
-                public KiloWatt(double value) : base(value, Conversion.KiloWatt, "KW") { }
-
-                public static KiloWatt operator +(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
-                {
-                    return new KiloWatt((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static KiloWatt operator -(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
-                {
-                    return new KiloWatt((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static KiloWatt operator *(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
-                {
-                    return new KiloWatt((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static KiloWatt operator /(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
-                {
-                    return new KiloWatt((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static KiloWatt ToKiloWatts(this Measurement input) => new KiloWatt(input.ConvertToBase());
-
-            public static KiloWatt KiloWatts(this byte input) => new KiloWatt(input);
-            public static KiloWatt KiloWatts(this short input) => new KiloWatt(input);
-            public static KiloWatt KiloWatts(this int input) => new KiloWatt(input);
-            public static KiloWatt KiloWatts(this long input) => new KiloWatt(input);
-
-            public static KiloWatt KiloWatts(this float input) => new KiloWatt((double)input);
-            public static KiloWatt KiloWatts(this double input) => new KiloWatt((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Powers
+		{
+			public class KiloWatt : Power, IKiloWatt
+			{
+				#region CTOR
+				public KiloWatt(double value) : base(value, Conversion.KiloWatt, Suffixes.KiloWatt) { }
+				#endregion
+				#region Operators
+				public static KiloWatt operator +(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
+				{
+					return new KiloWatt((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static KiloWatt operator -(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
+				{
+					return new KiloWatt((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static KiloWatt operator *(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
+				{
+					return new KiloWatt((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static KiloWatt operator /(KiloWatt firstMeasurement, KiloWatt secondMeasurement)
+				{
+					return new KiloWatt((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].KiloWatts
+			public static KiloWatt KiloWatts(this Byte input) => new KiloWatt(input);
+			public static KiloWatt KiloWatts(this Int16 input) => new KiloWatt(input);
+			public static KiloWatt KiloWatts(this Int32 input) => new KiloWatt(input);
+			public static KiloWatt KiloWatts(this Int64 input) => new KiloWatt(input);
+			public static KiloWatt KiloWatts(this Single input) => new KiloWatt(input);
+			public static KiloWatt KiloWatts(this Double input) => new KiloWatt(input);
+			#endregion
+		}
+	}
 }

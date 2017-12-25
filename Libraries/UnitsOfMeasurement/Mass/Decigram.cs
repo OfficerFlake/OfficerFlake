@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Decigram : Mass
-            {
-                public Decigram(double value) : base(value, Conversion.Decigram, "DiG") { }
-
-                public static Decigram operator +(Decigram firstMeasurement, Decigram secondMeasurement)
-                {
-                    return new Decigram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Decigram operator -(Decigram firstMeasurement, Decigram secondMeasurement)
-                {
-                    return new Decigram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Decigram operator *(Decigram firstMeasurement, Decigram secondMeasurement)
-                {
-                    return new Decigram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Decigram operator /(Decigram firstMeasurement, Decigram secondMeasurement)
-                {
-                    return new Decigram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Decigram ToDecigrams(this Measurement input) => new Decigram(input.ConvertToBase());
-
-            public static Decigram Decigrams(this byte input) => new Decigram(input);
-            public static Decigram Decigrams(this short input) => new Decigram(input);
-            public static Decigram Decigrams(this int input) => new Decigram(input);
-            public static Decigram Decigrams(this long input) => new Decigram(input);
-
-            public static Decigram Decigrams(this float input) => new Decigram((double)input);
-            public static Decigram Decigrams(this double input) => new Decigram((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Decigram : Mass, IDecigram
+			{
+				#region CTOR
+				public Decigram(double value) : base(value, Conversion.Decigram, Suffixes.Decigram) { }
+				#endregion
+				#region Operators
+				public static Decigram operator +(Decigram firstMeasurement, Decigram secondMeasurement)
+				{
+					return new Decigram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Decigram operator -(Decigram firstMeasurement, Decigram secondMeasurement)
+				{
+					return new Decigram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Decigram operator *(Decigram firstMeasurement, Decigram secondMeasurement)
+				{
+					return new Decigram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Decigram operator /(Decigram firstMeasurement, Decigram secondMeasurement)
+				{
+					return new Decigram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Decigrams
+			public static Decigram Decigrams(this Byte input) => new Decigram(input);
+			public static Decigram Decigrams(this Int16 input) => new Decigram(input);
+			public static Decigram Decigrams(this Int32 input) => new Decigram(input);
+			public static Decigram Decigrams(this Int64 input) => new Decigram(input);
+			public static Decigram Decigrams(this Single input) => new Decigram(input);
+			public static Decigram Decigrams(this Double input) => new Decigram(input);
+			#endregion
+		}
+	}
 }

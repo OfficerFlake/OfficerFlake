@@ -1,282 +1,229 @@
-﻿using System.Diagnostics;
+﻿using System;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Volume : Measurement
-    {
-        #region CTOR
+	public class Volume : Measurement, IVolume
+	{
+		#region CTOR
+		protected Volume(double value, double conversionRatio, string[] unitSuffixes)
+			: base(value, conversionRatio)
+		{
+			CurrentSuffixes = unitSuffixes;
+		}
+		#endregion
+		#region Operators
+		public static Volume operator +(Volume firstMeasurement, Volume secondMeasurement)
+		{
+			return new Volume((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Volume.DefaultSuffixes);
+		}
+		public static Volume operator -(Volume firstMeasurement, Volume secondMeasurement)
+		{
+			return new Volume((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Volume.DefaultSuffixes);
+		}
+		public static Volume operator *(Volume firstMeasurement, Volume secondMeasurement)
+		{
+			return new Volume((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Volume.DefaultSuffixes);
+		}
+		public static Volume operator /(Volume firstMeasurement, Volume secondMeasurement)
+		{
+			return new Volume((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Volume.DefaultSuffixes);
+		}
 
-        protected Volume(double value, double conversionRatio, string unitSuffix)
-            : base(value, conversionRatio)
-        {
-            _unitSuffix = unitSuffix;
-        }
+		public static implicit operator string(Volume thisVolume) => thisVolume.ToString();
+		public override string ToString()
+		{
+			return base.ToString() + CurrentSuffixes[0];
+		}
+		#endregion
+		#region Suffix
+		protected struct Suffixes
+		{
+			public static readonly string[] MilliLitre = { "MILLILITRE", "ML" };
+			public static readonly string[] Litre = { "LITRE", "L" };
 
-        #endregion
-        private readonly string _unitSuffix;
+			public static readonly string[] CubicCentimeter = { "CM^3" };
+			public static readonly string[] CubicMeter = { "M^3" };
 
-        #region Operators
+			public static readonly string[] CubicInch = { "IN^3" };
+			public static readonly string[] CubicFoot = { "FT^3" };
+			public static readonly string[] CubicYard = { "YD^3" };
 
-        public static implicit operator byte(Volume thisVolume) => (byte) thisVolume.ConvertToBase();
-        public static implicit operator short(Volume thisVolume) => (short) thisVolume.ConvertToBase();
-        public static implicit operator int(Volume thisVolume) => (int) thisVolume.ConvertToBase();
-        public static implicit operator long(Volume thisVolume) => (long) thisVolume.ConvertToBase();
+			public struct US
+			{
+				public static readonly string[] TeaSpoon = { "TSP" };
+				public static readonly string[] TableSpoon = { "TBLSP" };
+				public static readonly string[] Cup = { "CUP" };
+				public static readonly string[] Pint = { "PINT" };
+				public static readonly string[] Quart = { "QUART", "QT" };
+				public static readonly string[] Gallon = { "GALLON", "GAL" };
+			}
 
-        public static implicit operator float(Volume thisVolume) => (float) thisVolume.ConvertToBase();
-        public static implicit operator double(Volume thisVolume) => thisVolume.ConvertToBase();
-        public static implicit operator decimal(Volume thisVolume) => (decimal)thisVolume.ConvertToBase();
+			public struct UK
+			{
+				public static readonly string[] TeaSpoon = { "UKTSP" };
+				public static readonly string[] TableSpoon = { "UKTBLSP" };
+				public static readonly string[] FluidOunce = { "FLOZ" };
+				public static readonly string[] Pint = { "UKPINT" };
+				public static readonly string[] Quart = { "UKQUART", "UKQT" };
+				public static readonly string[] Gallon = { "UKGALLON", "UKGAL" };
+			}
+		}
+		private static readonly string[] DefaultSuffixes = Suffixes.Litre;
+		private readonly string[] CurrentSuffixes = DefaultSuffixes;
+		#endregion
 
-        public static Volume operator +(Volume firstMeasurement, Volume secondMeasurement)
-        {
-            return new Volume((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1,
-                DefaultSuffix);
-        }
+		#region Conversion ...
+		protected struct Conversion
+		{
+			public const double MilliLitre = 0.001d;
+			public const double Litre = 1.00d;
 
-        public static Volume operator -(Volume firstMeasurement, Volume secondMeasurement)
-        {
-            return new Volume((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1,
-                DefaultSuffix);
-        }
+			public const double CubicCentimeter = 0.001d;
+			public const double CubicMeter = 1000d;
 
-        public static Volume operator *(Volume firstMeasurement, Volume secondMeasurement)
-        {
-            return new Volume((firstMeasurement.ConvertToBase()*secondMeasurement.ConvertToBase()), 1,
-                DefaultSuffix);
-        }
+			public const double CubicInch = 0.016387d;
+			public const double CubicFoot = 28.31685d;
+			public const double CubicYard = 764.5549d;
 
-        public static Volume operator /(Volume firstMeasurement, Volume secondMeasurement)
-        {
-            return new Volume((firstMeasurement.ConvertToBase()/secondMeasurement.ConvertToBase()), 1,
-                DefaultSuffix);
-        }
+			public struct US
+			{
+				public const double TeaSpoon = 0.004929d;
+				public const double TableSpoon = 0.014787d;
+				public const double Cup = 0.236588d;
+				public const double Pint = 0.473176d;
+				public const double Quart = 0.946353d;
+				public const double Gallon = 3.785412d;
+			}
 
-        #endregion
-        public override string ToString()
-        {
-            return base.ToString() + _unitSuffix;
-        }
+			public struct UK
+			{
+				public const double TeaSpoon = 0.005919d;
+				public const double TableSpoon = 0.017758d;
+				public const double FluidOunce = 0.028413d;
+				public const double Pint = 0.568261d;
+				public const double Quart = 1.136523d;
+				public const double Gallon = 4.54609d;
+			}
+		}
+		public static bool TryParse(string input, out Volume output)
+		{
+			#region Prepare Variables
+			string capInput = input.ToUpperInvariant();
+			string extraction = input.ExtractNumberComponentFromMeasurementString();
+			double conversion = 0;
+			#endregion
 
-        #region Conversion
+			#region Convert To Double
+			bool failed = !double.TryParse(extraction, out conversion);
+			if (failed)
+			{
+				Debug.AddDetailMessage("Measurement Input not successfully converted.");
+				Debug.AddDetailMessage("----" + capInput);
+				output = new Volumes.Litre(0);
+				return false;
+			}
+			#endregion
+			#endregion
+			#region Convert To Volume
+			if (capInput.EndsWithAny(Suffixes.Litre))
+			{
+				output = new Volumes.Litre(conversion);
+				return true;
+			}
+			#endregion
+		#region ... Conversion
+			#region Type Unrecognised
+			Debug.AddDetailMessage("No Type for input Volume conversion. Break here for details...");
+			Debug.AddDetailMessage("----" + capInput);
+			output = new Volumes.Litre(conversion);
+			return false;
+			#endregion
 
-        internal static readonly string DefaultSuffix = "L";
-
-        protected struct Conversion
-        {
-            public const double Millilitre = 0.001d;
-            public const double Litre = 1.00d;
-
-            public const double CubicCentimeter = 0.001d;
-            public const double CubicMeter = 1000d;
-
-            public const double CubicInch = 0.016387d;
-            public const double CubicFoot = 28.31685d;
-            public const double CubicYard = 764.5549d;
-
-            public struct US
-            {
-                public const double TeaSpoon = 0.004929d;
-                public const double TableSpoon = 0.014787d;
-                public const double Cup = 0.236588d;
-                public const double Pint = 0.473176d;
-                public const double Quart = 0.946353d;
-                public const double Gallon = 3.785412d;
-            }
-
-            public struct UK
-            {
-                public const double TeaSpoon = 0.005919d;
-                public const double TableSpoon = 0.017758d;
-                public const double FluidOunce = 0.028413d;
-                public const double Pint = 0.568261d;
-                public const double Quart = 1.136523d;
-                public const double Gallon = 4.54609d;
-            }
-        }
-
-        private struct Suffixes
-        {
-            public static readonly string[] Millilitre = {"MILLILITRE", "ML"};
-            public static readonly string[] Litre = {"LITRE", "L"};
-
-            public static readonly string[] CubicCentimeter = {"CM^3"};
-            public static readonly string[] CubicMeter = {"M^3"};
-
-            public static readonly string[] CubicInch = {"IN^3"};
-            public static readonly string[] CubicFoot = {"FT^3"};
-            public static readonly string[] CubicYard = {"YD^3"};
-
-            public struct US
-            {
-                public static readonly string[] TeaSpoon = {"TSP"};
-                public static readonly string[] TableSpoon = {"TBLSP"};
-                public static readonly string[] Cup = {"CUP"};
-                public static readonly string[] Pint = {"PINT"};
-                public static readonly string[] Quart = {"QUART", "QT"};
-                public static readonly string[] Gallon = {"GALLON", "GAL"};
-            }
-
-            public struct UK
-            {
-                public static readonly string[] TeaSpoon = {"UKTSP"};
-                public static readonly string[] TableSpoon = {"UKTBLSP"};
-                public static readonly string[] FluidOunce = {"FLOZ"};
-                public static readonly string[] Pint = {"UKPINT"};
-                public static readonly string[] Quart = {"UKQUART", "UKQT"};
-                public static readonly string[] Gallon = {"UKGALLON", "UKGAL"};
-            }
-        }
-
-        #endregion
-
-        public static bool TryParse(string input, out Volume output)
-        {
-            var capInput = input.ToUpperInvariant();
-            var extraction = input.ExtractNumberComponentFromMeasurementString();
-            double conversion;
-            var failed = !double.TryParse(extraction, out conversion);
-
-            if (failed)
-            {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
-                output = new Volumes.CubicMeter(0);
-                return false;
-            }
-
-            if (capInput.EndsWith("ML"))
-            {
-
-                output = new Volumes.Millilitre(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("LITRES"))
-            {
-
-                output = new Volumes.Litre(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny("CM^3"))
-            {
-
-                output = new Volumes.CubicCentimeter(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("M^3"))
-            {
-
-                output = new Volumes.CubicMeter(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("IN^3"))
-            {
-
-                output = new Volumes.CubicInch(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("FT^3"))
-            {
-
-                output = new Volumes.CubicFoot(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("YD^3"))
-            {
-
-                output = new Volumes.CubicYard(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWith("TSP"))
-            {
-
-                output = new Volumes.USTeaSpoon(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("TBLSP"))
-            {
-
-                output = new Volumes.USTableSpoon(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("CUPS"))
-            {
-
-                output = new Volumes.USCup(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("PINTS"))
-            {
-
-                output = new Volumes.USPint(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("QUARTS"))
-            {
-
-                output = new Volumes.USQuart(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny("GALLONS"))
-            {
-
-                output = new Volumes.USGallon(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKTSP"))
-            {
-
-                output = new Volumes.UKTeaSpoon(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKTBLSP"))
-            {
-
-                output = new Volumes.UKTableSpoon(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKFLUIDOZ"))
-            {
-
-                output = new Volumes.UKFluidOunce(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKPINT"))
-            {
-
-                output = new Volumes.UKPint(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKQUART"))
-            {
-
-                output = new Volumes.UKQuart(conversion);
-                return true;
-            }
-            if (capInput.EndsWith("UKGALLON"))
-            {
-
-                output = new Volumes.UKGallon(conversion);
-                return true;
-            }
-
-            //Type Unrecognised.
-            Debug.WriteLine("No Type for input volume conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
-            output = new Volumes.CubicMeter(conversion);
-            return false;
-
-        }
-    }
-
-    public static partial class Volumes
-    {
-        public static Volume TryParse(this string input)
-        {
-            Volume result;
-            var success = Volume.TryParse(input, out result);
-            return result;
-        }
-    }
+		}
+		#endregion
+		
+		#region Convert To Subobjects
+		public IFluidOunce ToFluidOunces()
+		{
+			return new Volumes.FluidOunce(ConvertToBase() / Conversion.UK.FluidOunce);
+		}
+		public IUKGallon ToUKGallons()
+		{
+			return new Volumes.UKGallon(ConvertToBase() / Conversion.UK.Gallon);
+		}
+		public IUKPint ToUKPints()
+		{
+			return new Volumes.UKPint(ConvertToBase() / Conversion.UK.Pint);
+		}
+		public IUKQuart ToUKQuarts()
+		{
+			return new Volumes.UKQuart(ConvertToBase() / Conversion.UK.Quart);
+		}
+		public IUKTableSpoon ToUKTableSpoons()
+		{
+			return new Volumes.UKTableSpoon(ConvertToBase() / Conversion.UK.TableSpoon);
+		}
+		public IUKTeaSpoon ToUKTeaSpoons()
+		{
+			return new Volumes.UKTeaSpoon(ConvertToBase() / Conversion.UK.TeaSpoon);
+		}
+		public ICup ToCups()
+		{
+			return new Volumes.USCup(ConvertToBase() / Conversion.US.Cup);
+		}
+		public IUSGallon ToUSGallons()
+		{
+			return new Volumes.USGallon(ConvertToBase() / Conversion.US.Gallon);
+		}
+		public IUSPint ToUSPints()
+		{
+			return new Volumes.USPint(ConvertToBase() / Conversion.US.Pint);
+		}
+		public IUSQuart ToUSQuarts()
+		{
+			return new Volumes.USQuart(ConvertToBase() / Conversion.US.Quart);
+		}
+		public IUSTableSpoon ToUSTableSpoons()
+		{
+			return new Volumes.USTableSpoon(ConvertToBase() / Conversion.US.TableSpoon);
+		}
+		public IUSTeaSpoon ToUSTeaSpoons()
+		{
+			return new Volumes.USTeaSpoon(ConvertToBase() / Conversion.US.TeaSpoon);
+		}
+		public ICubicCentimeter ToCubicCentimeters()
+		{
+			return new Volumes.CubicCentimeter(ConvertToBase() / Conversion.CubicCentimeter);
+		}
+		public ICubicFoot ToCubicFeet()
+		{
+			return new Volumes.CubicFoot(ConvertToBase() / Conversion.CubicFoot);
+		}
+		public ICubicInch ToCubicInches()
+		{
+			return new Volumes.CubicInch(ConvertToBase() / Conversion.CubicInch);
+		}
+		public ICubicMeter ToCubicMeters()
+		{
+			return new Volumes.CubicMeter(ConvertToBase() / Conversion.CubicMeter);
+		}
+		public ICubicYard ToCubicYards()
+		{
+			return new Volumes.CubicYard(ConvertToBase() / Conversion.CubicYard);
+		}
+		public ILitre ToLitres()
+		{
+			return new Volumes.Litre(ConvertToBase() / Conversion.Litre);
+		}
+		public IMilliLitre ToMilliLitres()
+		{
+			return new Volumes.MilliLitre(ConvertToBase() / Conversion.MilliLitre);
+		}
+		#endregion
+	}
 }
+
+

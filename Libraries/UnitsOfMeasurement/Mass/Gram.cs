@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Gram : Mass
-            {
-                public Gram(double value) : base(value, Conversion.Gram, "G") { }
-
-                public static Gram operator +(Gram firstMeasurement, Gram secondMeasurement)
-                {
-                    return new Gram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Gram operator -(Gram firstMeasurement, Gram secondMeasurement)
-                {
-                    return new Gram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Gram operator *(Gram firstMeasurement, Gram secondMeasurement)
-                {
-                    return new Gram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Gram operator /(Gram firstMeasurement, Gram secondMeasurement)
-                {
-                    return new Gram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Gram ToGrams(this Measurement input) => new Gram(input.ConvertToBase());
-
-            public static Gram Grams(this byte input) => new Gram(input);
-            public static Gram Grams(this short input) => new Gram(input);
-            public static Gram Grams(this int input) => new Gram(input);
-            public static Gram Grams(this long input) => new Gram(input);
-
-            public static Gram Grams(this float input) => new Gram((double)input);
-            public static Gram Grams(this double input) => new Gram((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Gram : Mass, IGram
+			{
+				#region CTOR
+				public Gram(double value) : base(value, Conversion.Gram, Suffixes.Gram) { }
+				#endregion
+				#region Operators
+				public static Gram operator +(Gram firstMeasurement, Gram secondMeasurement)
+				{
+					return new Gram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Gram operator -(Gram firstMeasurement, Gram secondMeasurement)
+				{
+					return new Gram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Gram operator *(Gram firstMeasurement, Gram secondMeasurement)
+				{
+					return new Gram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Gram operator /(Gram firstMeasurement, Gram secondMeasurement)
+				{
+					return new Gram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Grams
+			public static Gram Grams(this Byte input) => new Gram(input);
+			public static Gram Grams(this Int16 input) => new Gram(input);
+			public static Gram Grams(this Int32 input) => new Gram(input);
+			public static Gram Grams(this Int64 input) => new Gram(input);
+			public static Gram Grams(this Single input) => new Gram(input);
+			public static Gram Grams(this Double input) => new Gram(input);
+			#endregion
+		}
+	}
 }

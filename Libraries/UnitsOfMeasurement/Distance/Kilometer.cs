@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class Kilometer : Distance
+			public class Kilometer : Distance, IKilometer
 			{
-                public Kilometer(double value) : base(value, Conversion.Kilometer, "KM") { }
-
-                public static Kilometer operator +(Kilometer firstMeasurement, Kilometer secondMeasurement)
-                {
-                    return new Kilometer((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Kilometer operator -(Kilometer firstMeasurement, Kilometer secondMeasurement)
-                {
-                    return new Kilometer((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Kilometer operator *(Kilometer firstMeasurement, Kilometer secondMeasurement)
-                {
-                    return new Kilometer((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Kilometer operator /(Kilometer firstMeasurement, Kilometer secondMeasurement)
-                {
-                    return new Kilometer((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Kilometer ToKilometers(this Measurement input) => new Kilometer(input.ConvertToBase());
-
-            public static Kilometer Kilometers(this byte input) => new Kilometer(input);
-            public static Kilometer Kilometers(this short input) => new Kilometer(input);
-            public static Kilometer Kilometers(this int input) => new Kilometer(input);
-            public static Kilometer Kilometers(this long input) => new Kilometer(input);
-
-            public static Kilometer Kilometers(this float input) => new Kilometer((double)input);
-            public static Kilometer Kilometers(this double input) => new Kilometer((double)input);
-        }
-    }
+				#region CTOR
+				public Kilometer(double value) : base(value, Conversion.Kilometer, Suffixes.Kilometer) { }
+				#endregion
+				#region Operators
+				public static Kilometer operator +(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				{
+					return new Kilometer((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Kilometer operator -(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				{
+					return new Kilometer((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Kilometer operator *(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				{
+					return new Kilometer((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Kilometer operator /(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				{
+					return new Kilometer((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Kilometers
+			public static Kilometer Kilometers(this Byte input) => new Kilometer(input);
+			public static Kilometer Kilometers(this Int16 input) => new Kilometer(input);
+			public static Kilometer Kilometers(this Int32 input) => new Kilometer(input);
+			public static Kilometer Kilometers(this Int64 input) => new Kilometer(input);
+			public static Kilometer Kilometers(this Single input) => new Kilometer(input);
+			public static Kilometer Kilometers(this Double input) => new Kilometer(input);
+			#endregion
+		}
+	}
 }

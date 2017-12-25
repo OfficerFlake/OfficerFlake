@@ -89,9 +89,9 @@ namespace Com.OfficerFlake.Libraries
 				if (input.Length < 8) return false;
 				#endregion
 				#region Convert
-				Int32 YYYY = 0.Years();
-				Int32 MM = 0.Months();
-				Int32 DD = 0.Days();
+				Int32 YYYY = 0;
+				Int32 MM = 0;
+				Int32 DD = 0;
 
 				bool failed = false;
 				failed |= !Int32.TryParse(input.Substring(0, 4), out YYYY);

@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class USGallon : Volume
-            {
-                public USGallon(double value) : base(value, Conversion.US.Gallon, "GALLON") { }
-
-                public static USGallon operator +(USGallon firstMeasurement, USGallon secondMeasurement)
-                {
-                    return new USGallon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static USGallon operator -(USGallon firstMeasurement, USGallon secondMeasurement)
-                {
-                    return new USGallon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static USGallon operator *(USGallon firstMeasurement, USGallon secondMeasurement)
-                {
-                    return new USGallon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static USGallon operator /(USGallon firstMeasurement, USGallon secondMeasurement)
-                {
-                    return new USGallon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static USGallon ToUSGallons(this Measurement input) => new USGallon(input.ConvertToBase());
-
-            public static USGallon USGallons(this byte input) => new USGallon(input);
-            public static USGallon USGallons(this short input) => new USGallon(input);
-            public static USGallon USGallons(this int input) => new USGallon(input);
-            public static USGallon USGallons(this long input) => new USGallon(input);
-
-            public static USGallon USGallons(this float input) => new USGallon((double)input);
-            public static USGallon USGallons(this double input) => new USGallon((double)input);
-        }
-
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class USGallon : Volume, IUSGallon
+			{
+				#region CTOR
+				public USGallon(double value) : base(value, Conversion.US.Gallon, Suffixes.US.Gallon) { }
+				#endregion
+				#region Operators
+				public static USGallon operator +(USGallon firstMeasurement, USGallon secondMeasurement)
+				{
+					return new USGallon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static USGallon operator -(USGallon firstMeasurement, USGallon secondMeasurement)
+				{
+					return new USGallon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static USGallon operator *(USGallon firstMeasurement, USGallon secondMeasurement)
+				{
+					return new USGallon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static USGallon operator /(USGallon firstMeasurement, USGallon secondMeasurement)
+				{
+					return new USGallon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].USGallons
+			public static USGallon USGallons(this Byte input) => new USGallon(input);
+			public static USGallon USGallons(this Int16 input) => new USGallon(input);
+			public static USGallon USGallons(this Int32 input) => new USGallon(input);
+			public static USGallon USGallons(this Int64 input) => new USGallon(input);
+			public static USGallon USGallons(this Single input) => new USGallon(input);
+			public static USGallon USGallons(this Double input) => new USGallon(input);
+			#endregion
+		}
+	}
 }

@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Angles
-        {
-            public class Gradian : Angle
-            {
-                public Gradian(double value) : base(value, Conversion.Gradian, "GRAD") { }
-
-                public static Gradian operator +(Gradian firstMeasurement, Gradian secondMeasurement)
-                {
-                    return new Gradian((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Gradian operator -(Gradian firstMeasurement, Gradian secondMeasurement)
-                {
-                    return new Gradian((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Gradian operator *(Gradian firstMeasurement, Gradian secondMeasurement)
-                {
-                    return new Gradian((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Gradian operator /(Gradian firstMeasurement, Gradian secondMeasurement)
-                {
-                    return new Gradian((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Gradian ToGradians(this Measurement input) => new Gradian(input.ConvertToBase());
-
-            public static Gradian Gradians(this byte input) => new Gradian(input);
-            public static Gradian Gradians(this short input) => new Gradian(input);
-            public static Gradian Gradians(this int input) => new Gradian(input);
-            public static Gradian Gradians(this long input) => new Gradian(input);
-
-            public static Gradian Gradians(this float input) => new Gradian((double)input);
-            public static Gradian Gradians(this double input) => new Gradian(input);
-            public static Gradian Gradians(this decimal input) => new Gradian((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Angles
+		{
+			public class Gradian : Angle, IGradian
+			{
+				#region CTOR
+				public Gradian(double value) : base(value, Conversion.Gradian, "GRAD") { }
+				#endregion
+				#region Operators
+				public static Gradian operator +(Gradian firstMeasurement, Gradian secondMeasurement)
+				{
+					return new Gradian((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Gradian operator -(Gradian firstMeasurement, Gradian secondMeasurement)
+				{
+					return new Gradian((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Gradian operator *(Gradian firstMeasurement, Gradian secondMeasurement)
+				{
+					return new Gradian((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Gradian operator /(Gradian firstMeasurement, Gradian secondMeasurement)
+				{
+					return new Gradian((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Gradians
+			public static Gradian Gradians(this Byte input) => new Gradian(input);
+			public static Gradian Gradians(this Int16 input) => new Gradian(input);
+			public static Gradian Gradians(this Int32 input) => new Gradian(input);
+			public static Gradian Gradians(this Int64 input) => new Gradian(input);
+			public static Gradian Gradians(this Single input) => new Gradian(input);
+			public static Gradian Gradians(this Double input) => new Gradian(input);
+			#endregion
+		}
+	}
 }

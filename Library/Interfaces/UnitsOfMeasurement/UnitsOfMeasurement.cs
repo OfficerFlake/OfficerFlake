@@ -8,7 +8,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		double RawValue { get; set; }
 		double ConversionRatio { get; set; }
 
-		string[] Suffixes { get; set; }
 		string ToString();
 	}
 	#region Angle
@@ -33,7 +32,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Area
 	public interface IArea : IUnitOfMeasurement
 	{
-		IArea ConvertToBase();
 		IAcre ToAcres();
 		ISquareCentimeter ToSquareCentimeters();
 		ISquareFoot ToSquareFeet();
@@ -225,7 +223,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Energy
 	public interface IEnergy : IUnitOfMeasurement
 	{
-		IBritishThemalUnit ToBritishThemalUnits();
+		IBritishThermalUnit ToBritishThermalUnits();
 		IElectronVolt ToElectronVolts();
 		IFoodCalorie ToFoodCalories();
 		IFootPound ToFootPounds();
@@ -233,7 +231,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IKiloJoule ToKiloJoules();
 		IThermalCalorie ToThermalCalories();
 	}
-	public interface IBritishThemalUnit : IEnergy
+	public interface IBritishThermalUnit : IEnergy
 	{
 	}
 	public interface IElectronVolt : IEnergy
@@ -319,13 +317,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		IBTUPerMinute ToBTUsPerMinute();
 		IFootPoundPerMinute ToFootPoundsPerMinute();
-		IKilowatt ToKilowatts();
+		IKiloWatt ToKiloWatts();
 		IUSHorsePower ToUSHorsePower();
 		IWatt ToWatts();
 	}
 	public interface IBTUPerMinute : IPower { }
 	public interface IFootPoundPerMinute : IPower { }
-	public interface IKilowatt : IPower { }
+	public interface IKiloWatt : IPower { }
 	public interface IUSHorsePower : IPower { }
 	public interface IWatt : IPower { }
 	#endregion
@@ -349,7 +347,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Speed
 	public interface ISpeed : IUnitOfMeasurement
 	{
-		ICentimeterPerSecond TocCentimetersPerSecond();
+		ICentimeterPerSecond ToCentimetersPerSecond();
 		IFootPerSecond ToFeetPerSecond();
 		IKilometerPerHour ToKilometersPerHour();
 		IKnot ToKnots();
@@ -368,15 +366,25 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IMillimeterPerSecond : ISpeed { }
 	#endregion
 	#region Temperature
-	public interface ITemperature : IUnitOfMeasurement
+	public interface ITemperature
 	{
-		IDegreeCelcius ToDegreesCelcius();
+		string ToString();
+	}
+	public interface IDegreeCelcius : ITemperature
+	{
 		IDegreeFahrenheit ToDegreeFahrenheit();
 		IDegreeKelvin ToDegreeKelvin();
 	}
-	public interface IDegreeCelcius : ITemperature { }
-	public interface IDegreeFahrenheit : ITemperature { }
-	public interface IDegreeKelvin : ITemperature { }
+	public interface IDegreeFahrenheit : ITemperature
+	{
+		IDegreeCelcius ToDegreeCelcius();
+		IDegreeKelvin ToDegreeKelvin();
+	}
+	public interface IDegreeKelvin : ITemperature
+	{
+		IDegreeCelcius ToDegreeCelcius();
+		IDegreeFahrenheit ToDegreeFahrenheit();
+	}
 	#endregion
 	#region Volume
 	public interface IVolume : IUnitOfMeasurement
@@ -402,7 +410,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		ICubicYard ToCubicYards();
 
 		ILitre ToLitres();
-		IMillilitre ToMillilitres();
+		IMilliLitre ToMilliLitres();
 	}
 	#region UK
 	public interface IFluidOunce : IVolume { }
@@ -426,6 +434,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface ICubicMeter : IVolume { }
 	public interface ICubicYard : IVolume { }
 	public interface ILitre : IVolume { }
-	public interface IMillilitre : IVolume { }
+	public interface IMilliLitre : IVolume { }
 	#endregion
 }

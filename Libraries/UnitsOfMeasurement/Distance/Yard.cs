@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class Yard : Distance
+			public class Yard : Distance, IYard
 			{
-                public Yard(double value) : base(value, Conversion.Yard, "YD") { }
-
-                public static Yard operator +(Yard firstMeasurement, Yard secondMeasurement)
-                {
-                    return new Yard((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Yard operator -(Yard firstMeasurement, Yard secondMeasurement)
-                {
-                    return new Yard((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Yard operator *(Yard firstMeasurement, Yard secondMeasurement)
-                {
-                    return new Yard((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Yard operator /(Yard firstMeasurement, Yard secondMeasurement)
-                {
-                    return new Yard((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Yard ToYards(this Measurement input) => new Yard(input.ConvertToBase());
-
-            public static Yard Yards(this byte input) => new Yard(input);
-            public static Yard Yards(this short input) => new Yard(input);
-            public static Yard Yards(this int input) => new Yard(input);
-            public static Yard Yards(this long input) => new Yard(input);
-
-            public static Yard Yards(this float input) => new Yard((double)input);
-            public static Yard Yards(this double input) => new Yard((double)input);
-        }
-    }
+				#region CTOR
+				public Yard(double value) : base(value, Conversion.Yard, Suffixes.Yard) { }
+				#endregion
+				#region Operators
+				public static Yard operator +(Yard firstMeasurement, Yard secondMeasurement)
+				{
+					return new Yard((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Yard operator -(Yard firstMeasurement, Yard secondMeasurement)
+				{
+					return new Yard((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Yard operator *(Yard firstMeasurement, Yard secondMeasurement)
+				{
+					return new Yard((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Yard operator /(Yard firstMeasurement, Yard secondMeasurement)
+				{
+					return new Yard((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Yards
+			public static Yard Yards(this Byte input) => new Yard(input);
+			public static Yard Yards(this Int16 input) => new Yard(input);
+			public static Yard Yards(this Int32 input) => new Yard(input);
+			public static Yard Yards(this Int64 input) => new Yard(input);
+			public static Yard Yards(this Single input) => new Yard(input);
+			public static Yard Yards(this Double input) => new Yard(input);
+			#endregion
+		}
+	}
 }

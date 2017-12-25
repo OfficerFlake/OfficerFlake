@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Powers
-        {
-            public class USHorsepower : Power
-            {
-                public USHorsepower(double value) : base(value, Conversion.USHorsepower, "HP") { }
-
-                public static USHorsepower operator +(USHorsepower firstMeasurement, USHorsepower secondMeasurement)
-                {
-                    return new USHorsepower((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static USHorsepower operator -(USHorsepower firstMeasurement, USHorsepower secondMeasurement)
-                {
-                    return new USHorsepower((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static USHorsepower operator *(USHorsepower firstMeasurement, USHorsepower secondMeasurement)
-                {
-                    return new USHorsepower((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static USHorsepower operator /(USHorsepower firstMeasurement, USHorsepower secondMeasurement)
-                {
-                    return new USHorsepower((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static USHorsepower ToUSHorsepowers(this Measurement input) => new USHorsepower(input.ConvertToBase());
-
-            public static USHorsepower USHorsepowers(this byte input) => new USHorsepower(input);
-            public static USHorsepower USHorsepowers(this short input) => new USHorsepower(input);
-            public static USHorsepower USHorsepowers(this int input) => new USHorsepower(input);
-            public static USHorsepower USHorsepowers(this long input) => new USHorsepower(input);
-
-            public static USHorsepower USHorsepowers(this float input) => new USHorsepower((double)input);
-            public static USHorsepower USHorsepowers(this double input) => new USHorsepower((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Powers
+		{
+			public class USHorsePower : Power, IUSHorsePower
+			{
+				#region CTOR
+				public USHorsePower(double value) : base(value, Conversion.USHorsePower, Suffixes.USHorsePower) { }
+				#endregion
+				#region Operators
+				public static USHorsePower operator +(USHorsePower firstMeasurement, USHorsePower secondMeasurement)
+				{
+					return new USHorsePower((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static USHorsePower operator -(USHorsePower firstMeasurement, USHorsePower secondMeasurement)
+				{
+					return new USHorsePower((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static USHorsePower operator *(USHorsePower firstMeasurement, USHorsePower secondMeasurement)
+				{
+					return new USHorsePower((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static USHorsePower operator /(USHorsePower firstMeasurement, USHorsePower secondMeasurement)
+				{
+					return new USHorsePower((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].USHorsePowers
+			public static USHorsePower USHorsePowers(this Byte input) => new USHorsePower(input);
+			public static USHorsePower USHorsePowers(this Int16 input) => new USHorsePower(input);
+			public static USHorsePower USHorsePowers(this Int32 input) => new USHorsePower(input);
+			public static USHorsePower USHorsePowers(this Int64 input) => new USHorsePower(input);
+			public static USHorsePower USHorsePowers(this Single input) => new USHorsePower(input);
+			public static USHorsePower USHorsePowers(this Double input) => new USHorsePower(input);
+			#endregion
+		}
+	}
 }

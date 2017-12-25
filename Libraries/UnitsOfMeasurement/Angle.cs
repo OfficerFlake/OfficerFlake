@@ -1,123 +1,124 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Debug = System.Diagnostics.Debug;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
     public class Angle : Measurement, IAngle
     {
-        #region CTOR
-        protected Angle(double value, double conversionRatio, string unitSuffix)
+		#region CTOR
+		protected Angle(double value, double conversionRatio, string[] unitSuffixes)
             : base(value, conversionRatio)
-        {
-            _unitSuffix = unitSuffix;
-        }
+		{
+			CurrentSuffixes = unitSuffixes;
+		}
         #endregion
-        private readonly string _unitSuffix;
-
-        #region Operators
-        public static implicit operator byte(Angle thisAngle) => (byte)thisAngle.ConvertToBase();
-        public static implicit operator short(Angle thisAngle) => (short)thisAngle.ConvertToBase();
-        public static implicit operator int(Angle thisAngle) => (int)thisAngle.ConvertToBase();
-        public static implicit operator long(Angle thisAngle) => (long)thisAngle.ConvertToBase();
-
-        public static implicit operator float(Angle thisAngle) => (float)thisAngle.ConvertToBase();
-        public static implicit operator double(Angle thisAngle) => thisAngle.ConvertToBase();
-        public static implicit operator decimal(Angle thisAngle) => (decimal)thisAngle.ConvertToBase();
-            
+		#region Operators
         public static Angle operator +(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffixes);
         }
         public static Angle operator -(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffixes);
         }
         public static Angle operator *(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffixes);
         }
         public static Angle operator /(Angle firstMeasurement, Angle secondMeasurement)
         {
-            return new Angle((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffix);
+            return new Angle((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Angle.DefaultSuffixes);
         }
 
         public static implicit operator string(Angle thisAngle) => thisAngle.ToString();
-        #endregion
-        public override string ToString()
-        {
-            return base.ToString() + _unitSuffix;
-        }
+	    public override string ToString()
+	    {
+		    return base.ToString() + CurrentSuffixes[0];
+	    }
+		#endregion
+	    #region Suffix
+	    protected struct Suffixes
+	    {
+		    public static readonly string[] Radian = new[] { "RADIANS", "RADIAN", "RAD" };
+		    public static readonly string[] Degree = new[] { "DEGREES", "DEGREE", "DEG" };
+		    public static readonly string[] Gradian = new[] { "GRADIANS", "GRADIAN", "GRAD" };
+	    }
+	    private static readonly string[] DefaultSuffixes = Suffixes.Radian;
+	    private readonly string[] CurrentSuffixes = DefaultSuffixes;
+	    #endregion
 
-        #region Conversion
-        private const string DefaultSuffix = "RAD";
-
-        protected struct Conversion
+		#region Conversion ...
+		protected struct Conversion
         {
             public const double Radian = 1.00d;
             public const double Degree = 0.017453d;
             public const double Gradian = 0.015708d;
         }
+	    public static bool TryParse(string input, out Angle output)
+	    {
+		    #region Prepare Variables
+		    string capInput = input.ToUpperInvariant();
+		    string extraction = input.ExtractNumberComponentFromMeasurementString();
+		    double conversion = 0;
+		    #endregion
 
-        private struct Suffixes
-        {
-            public static readonly string[] Radian = new[] { "RADIANS", "RADIAN", "RAD" };
-            public static readonly string[] Degree = new[] { "DEGREES", "DEGREE", "DEG" };
-            public static readonly string[] Gradian = new[] { "GRADIANS", "GRADIAN", "GRAD" };
-        }
-        #endregion
-        public static bool TryParse(string input, out Angle output)
-        {
-            var capInput = input.ToUpperInvariant();
-            var extraction = input.ExtractNumberComponentFromMeasurementString();
-            double conversion;
-            var failed = !double.TryParse(extraction, out conversion);
+		    #region Convert To Double
+		    bool failed = !double.TryParse(extraction, out conversion);
+		    if (failed)
+		    {
+			    Debug.AddDetailMessage("Measurement Input not successfully converted.");
+			    Debug.AddDetailMessage("----" + capInput);
+			    output = new Angles.Degree(0);
+			    return false;
+		    }
+			#endregion
+			#endregion
+			#region Convert To Angle
+			if (capInput.EndsWithAny(Suffixes.Degree))
+		    {
 
-            if (failed)
-            {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
-                output = new Angles.Degree(0);
-                return false;
-            }
+			    output = new Angles.Degree(conversion);
+			    return true;
+		    }
+		    if (capInput.EndsWithAny(Suffixes.Gradian))
+		    {
 
-            if (capInput.EndsWithAny(Suffixes.Degree))
-            {
+			    output = new Angles.Gradian(conversion);
+			    return true;
+		    }
+		    if (capInput.EndsWithAny(Suffixes.Radian))
+		    {
 
-                output = new Angles.Degree(conversion);
-                return true;
-            }
+			    output = new Angles.Radian(conversion);
+			    return true;
+		    }
+			#endregion
+		#region ... Conversion
+			#region Type Unrecognised
+			Debug.AddDetailMessage("No Type for input angle conversion. Break here for details...");
+		    Debug.AddDetailMessage("----" + capInput);
+		    output = new Angles.Degree(conversion);
+		    return false;
+		    #endregion
 
-            if (capInput.EndsWithAny(Suffixes.Radian))
-            {
+	    }
+		#endregion
 
-                output = new Angles.Radian(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.Gradian))
-            {
-
-                output = new Angles.Gradian(conversion);
-                return true;
-            }
-
-            //Type Unrecognised.
-            Debug.WriteLine("No Type for input angle conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
-            output = new Angles.Degree(conversion);
-            return false;
-
-        }
-    }
-
-    public static partial class Angles
-    {
-        public static Angle TryParse(this string input)
-        {
-            Angle result;
-            var success = Angle.TryParse(input, out result);
-            return result;
-        }
-    }
+		#region Convert To Subobjects
+		public IDegree ToDegrees()
+	    {
+		    return new Angles.Degree(ConvertToBase() / Conversion.Degree);
+	    }
+	    public IGradian ToGradians()
+	    {
+		    return new Angles.Gradian(ConvertToBase() / Conversion.Gradian);
+	    }
+	    public IRadian ToRadians()
+	    {
+		    return new Angles.Radian(ConvertToBase() / Conversion.Radian);
+	    }
+		#endregion
+	}
 }

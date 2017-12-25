@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Areas
-        {
-            public class SquareMile : Area
-            {
-                public SquareMile(double value) : base(value, Conversion.SquareMile, "MI^2") { }
-
-                public static SquareMile operator +(SquareMile firstMeasurement, SquareMile secondMeasurement)
-                {
-                    return new SquareMile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMile operator -(SquareMile firstMeasurement, SquareMile secondMeasurement)
-                {
-                    return new SquareMile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMile operator *(SquareMile firstMeasurement, SquareMile secondMeasurement)
-                {
-                    return new SquareMile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMile operator /(SquareMile firstMeasurement, SquareMile secondMeasurement)
-                {
-                    return new SquareMile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static SquareMile ToSquareMiles(this Measurement input) => new SquareMile(input.ConvertToBase());
-
-            public static SquareMile SquareMiles(this byte input) => new SquareMile(input);
-            public static SquareMile SquareMiles(this short input) => new SquareMile(input);
-            public static SquareMile SquareMiles(this int input) => new SquareMile(input);
-            public static SquareMile SquareMiles(this long input) => new SquareMile(input);
-
-            public static SquareMile SquareMiles(this float input) => new SquareMile((double)input);
-            public static SquareMile SquareMiles(this double input) => new SquareMile((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Areas
+		{
+			public class SquareMile : Area, ISquareMile
+			{
+				#region CTOR
+				public SquareMile(double value) : base(value, Conversion.SquareMile, Suffixes.SquareMile) { }
+				#endregion
+				#region Operators
+				public static SquareMile operator +(SquareMile firstMeasurement, SquareMile secondMeasurement)
+				{
+					return new SquareMile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMile operator -(SquareMile firstMeasurement, SquareMile secondMeasurement)
+				{
+					return new SquareMile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMile operator *(SquareMile firstMeasurement, SquareMile secondMeasurement)
+				{
+					return new SquareMile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMile operator /(SquareMile firstMeasurement, SquareMile secondMeasurement)
+				{
+					return new SquareMile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].SquareMiles
+			public static SquareMile SquareMiles(this Byte input) => new SquareMile(input);
+			public static SquareMile SquareMiles(this Int16 input) => new SquareMile(input);
+			public static SquareMile SquareMiles(this Int32 input) => new SquareMile(input);
+			public static SquareMile SquareMiles(this Int64 input) => new SquareMile(input);
+			public static SquareMile SquareMiles(this Single input) => new SquareMile(input);
+			public static SquareMile SquareMiles(this Double input) => new SquareMile(input);
+			#endregion
+		}
+	}
 }

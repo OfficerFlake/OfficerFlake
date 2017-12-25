@@ -1,45 +1,44 @@
-﻿using Com.OfficerFlake.Libraries.Interfaces;
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Durations
-        {
-            public class Week : Duration, IWeek
-            {
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Durations
+		{
+			public class Week : Duration, IWeek
+			{
 				#region CTOR
-	            public Week(double value) : base(value, Conversion.Week, "W") { }
-	            #endregion
-	            #region Operators
-	            public static Week operator +(Week firstMeasurement, Week secondMeasurement)
-	            {
-		            return new Week((firstMeasurement.RawValue + secondMeasurement.RawValue));
-	            }
-	            public static Week operator -(Week firstMeasurement, Week secondMeasurement)
-	            {
-		            return new Week((firstMeasurement.RawValue - secondMeasurement.RawValue));
-	            }
-	            public static bool operator >(Week firstMeasurement, Week secondMeasurement)
-	            {
-		            return firstMeasurement.RawValue > secondMeasurement.RawValue;
-	            }
-	            public static bool operator <(Week firstMeasurement, Week secondMeasurement)
-	            {
-		            return firstMeasurement.RawValue < secondMeasurement.RawValue;
-	            }
-	            #endregion
+				public Week(double value) : base(value, Conversion.Week, Suffixes.Week) { }
+				#endregion
+				#region Operators
+				public static Week operator +(Week firstMeasurement, Week secondMeasurement)
+				{
+					return new Week((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Week operator -(Week firstMeasurement, Week secondMeasurement)
+				{
+					return new Week((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Week operator *(Week firstMeasurement, Week secondMeasurement)
+				{
+					return new Week((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Week operator /(Week firstMeasurement, Week secondMeasurement)
+				{
+					return new Week((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
 			}
-
-			public static Week ToWeeks(this Duration input) => new Week(input.ConvertToBase());
-
-            public static Week Weeks(this byte input) => new Week(input);
-            public static Week Weeks(this short input) => new Week(input);
-            public static Week Weeks(this int input) => new Week(input);
-            public static Week Weeks(this long input) => new Week(input);
-
-            public static Week Weeks(this float input) => new Week((double)input);
-            public static Week Weeks(this double input) => new Week((double)input);
-        }
-    }
+			#region [Number].Weeks
+			public static Week Weeks(this Byte input) => new Week(input);
+			public static Week Weeks(this Int16 input) => new Week(input);
+			public static Week Weeks(this Int32 input) => new Week(input);
+			public static Week Weeks(this Int64 input) => new Week(input);
+			public static Week Weeks(this Single input) => new Week(input);
+			public static Week Weeks(this Double input) => new Week(input);
+			#endregion
+		}
+	}
 }

@@ -1,142 +1,131 @@
-﻿using System.Diagnostics;
+﻿using System;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Pressure : Measurement
-    {
-        #region CTOR
+	public class Pressure : Measurement, IPressure
+	{
+		#region CTOR
+		protected Pressure(double value, double conversionRatio, string[] unitSuffixes)
+			: base(value, conversionRatio)
+		{
+			CurrentSuffixes = unitSuffixes;
+		}
+		#endregion
+		#region Operators
+		public static Pressure operator +(Pressure firstMeasurement, Pressure secondMeasurement)
+		{
+			return new Pressure((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Pressure.DefaultSuffixes);
+		}
+		public static Pressure operator -(Pressure firstMeasurement, Pressure secondMeasurement)
+		{
+			return new Pressure((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Pressure.DefaultSuffixes);
+		}
+		public static Pressure operator *(Pressure firstMeasurement, Pressure secondMeasurement)
+		{
+			return new Pressure((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Pressure.DefaultSuffixes);
+		}
+		public static Pressure operator /(Pressure firstMeasurement, Pressure secondMeasurement)
+		{
+			return new Pressure((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Pressure.DefaultSuffixes);
+		}
 
-        protected Pressure(double value, double conversionRatio, string unitSuffix)
-: base(value, conversionRatio)
-        {
-            _unitSuffix = unitSuffix;
-        }
+		public static implicit operator string(Pressure thisPressure) => thisPressure.ToString();
+		public override string ToString()
+		{
+			return base.ToString() + CurrentSuffixes[0];
+		}
+		#endregion
+		#region Suffix
+		protected struct Suffixes
+		{
+			public static readonly string[] Atmosphere = new[] { "ATMOSPHERE", "ATM" };
+			public static readonly string[] Bar = new[] { "BAR" };
+			public static readonly string[] KiloPascal = new[] { "KILOPASCAL", "KP" };
+			public static readonly string[] MillimeterOfMercury = new[] { "MMOFMERCURY", "MMHG" };
+			public static readonly string[] Pascal = new[] { "PASCAL", "P" };
+			public static readonly string[] PoundPerSquareInch = new[] { "LBPERSQUAREIN", "LB/IN^2" };
+		}
+		private static readonly string[] DefaultSuffixes = Suffixes.Pascal;
+		private readonly string[] CurrentSuffixes = DefaultSuffixes;
+		#endregion
 
-        #endregion
-        private readonly string _unitSuffix;
+		#region Conversion ...
+		protected struct Conversion
+		{
+			public const double Atmosphere = 101325d;
+			public const double Bar = 100000d;
+			public const double KiloPascal = 1000d;
+			public const double MillimeterOfMercury = 133.3d;
+			public const double Pascal = 1d;
+			public const double PoundPerSquareInch = 6894.757d;
+		}
+		public static bool TryParse(string input, out Pressure output)
+		{
+			#region Prepare Variables
+			string capInput = input.ToUpperInvariant();
+			string extraction = input.ExtractNumberComponentFromMeasurementString();
+			double conversion = 0;
+			#endregion
 
-        #region Operators
+			#region Convert To Double
+			bool failed = !double.TryParse(extraction, out conversion);
+			if (failed)
+			{
+				Debug.AddDetailMessage("Measurement Input not successfully converted.");
+				Debug.AddDetailMessage("----" + capInput);
+				output = new Pressures.Pascal(0);
+				return false;
+			}
+			#endregion
+			#endregion
+			#region Convert To Pressure
+			if (capInput.EndsWithAny(Suffixes.Pascal))
+			{
+				output = new Pressures.Pascal(conversion);
+				return true;
+			}
+			#endregion
+		#region ... Conversion
+			#region Type Unrecognised
+			Debug.AddDetailMessage("No Type for input Pressure conversion. Break here for details...");
+			Debug.AddDetailMessage("----" + capInput);
+			output = new Pressures.Pascal(conversion);
+			return false;
+			#endregion
 
-        public static implicit operator byte(Pressure thisPressure) => (byte)thisPressure.ConvertToBase();
-        public static implicit operator short(Pressure thisPressure) => (short)thisPressure.ConvertToBase();
-        public static implicit operator int(Pressure thisPressure) => (int)thisPressure.ConvertToBase();
-        public static implicit operator long(Pressure thisPressure) => (long)thisPressure.ConvertToBase();
+		}
+		#endregion
 
-        public static implicit operator float(Pressure thisPressure) => (float)thisPressure.ConvertToBase();
-        public static implicit operator double(Pressure thisPressure) => thisPressure.ConvertToBase();
-        public static implicit operator decimal(Pressure thisPressure) => (decimal)thisPressure.ConvertToBase();
-
-        public static Pressure operator +(Pressure firstMeasurement, Pressure secondMeasurement)
-        {
-            return new Pressure((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Pressure operator -(Pressure firstMeasurement, Pressure secondMeasurement)
-        {
-            return new Pressure((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Pressure operator *(Pressure firstMeasurement, Pressure secondMeasurement)
-        {
-            return new Pressure((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Pressure operator /(Pressure firstMeasurement, Pressure secondMeasurement)
-        {
-            return new Pressure((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-
-        #endregion
-        public override string ToString()
-        {
-            return base.ToString() + _unitSuffix;
-        }
-
-        #region Conversion
-
-        internal static readonly string DefaultSuffix = "P";
-
-        public struct Conversion
-        {
-            public const double Atmosphere = 101325d;
-            public const double Bar = 100000d;
-            public const double KiloPascal = 1000d;
-            public const double MillimetersOfMercury = 133.3d;
-            public const double Pascal = 1d;
-            public const double PoundsPerSquareInch = 6894.757d;
-        }
-
-        private struct Suffixes
-        {
-            public static readonly string[] Atmosphere = new[] { "ATMOSPHERE", "ATM" };
-            public static readonly string[] Bar = new[] { "BAR" };
-            public static readonly string[] KiloPascal = new[] { "KILOPASCAL", "KP" };
-            public static readonly string[] MillimetersOfMercury = new[] { "MMOFMERCURY", "MMHG" };
-            public static readonly string[] Pascal = new[] { "PASCAL", "P" };
-            public static readonly string[] PoundsPerSquareInch = new[] { "LBPERSQUAREIN", "LB/IN^2" };
-        }
-
-        #endregion
-        public static bool TryParse(string input, out Pressure output)
-        {
-            var capInput = input.ToUpperInvariant();
-            var extraction = input.ExtractNumberComponentFromMeasurementString();
-            double conversion;
-            var failed = !double.TryParse(extraction, out conversion);
-
-            if (failed)
-            {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
-                output = new Pressures.Pascal(0);
-                return false;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.Atmosphere))
-            {
-                output = new Pressures.Atmosphere(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.Bar))
-            {
-                output = new Pressures.Bar(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.KiloPascal))
-            {
-                output = new Pressures.KiloPascal(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.MillimetersOfMercury))
-            {
-                output = new Pressures.MillimeterOfMercury(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.Pascal))
-            {
-                output = new Pressures.Pascal(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.PoundsPerSquareInch))
-            {
-                output = new Pressures.PoundsPerSquareInch(conversion);
-                return true;
-            }
-
-            //Type Unrecognised.
-            Debug.WriteLine("No Type for input pressure conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
-            output = new Pressures.Pascal(conversion);
-            return false;
-
-        }
-    }
-
-    public static partial class Pressures
-    {
-        public static Pressure TryParse(this string input)
-        {
-            Pressure result;
-            var success = Pressure.TryParse(input, out result);
-            return result;
-        }
-    }
+		#region Convert To Subobjects
+		public IAtmosphere ToAtmospheres()
+		{
+			return new Pressures.Atmosphere(ConvertToBase() / Conversion.Atmosphere);
+		}
+		public IBar ToBars()
+		{
+			return new Pressures.Bar(ConvertToBase() / Conversion.Bar);
+		}
+		public IKiloPascal ToKiloPascals()
+		{
+			return new Pressures.KiloPascal(ConvertToBase() / Conversion.KiloPascal);
+		}
+		public IMillimeterOfMercury ToMillimetersOfMercury()
+		{
+			return new Pressures.MillimeterOfMercury(ConvertToBase() / Conversion.MillimeterOfMercury);
+		}
+		public IPascal ToPascals()
+		{
+			return new Pressures.Pascal(ConvertToBase() / Conversion.Pascal);
+		}
+		public IPoundPerSquareInch ToPoundsPerSquareInch()
+		{
+			return new Pressures.PoundPerSquareInch(ConvertToBase() / Conversion.PoundPerSquareInch);
+		}
+		#endregion
+	}
 }
+
+

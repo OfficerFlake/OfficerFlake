@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class USPint : Volume
-            {
-                public USPint(double value) : base(value, Conversion.US.Pint, "PINT") { }
-
-                public static USPint operator +(USPint firstMeasurement, USPint secondMeasurement)
-                {
-                    return new USPint((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static USPint operator -(USPint firstMeasurement, USPint secondMeasurement)
-                {
-                    return new USPint((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static USPint operator *(USPint firstMeasurement, USPint secondMeasurement)
-                {
-                    return new USPint((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static USPint operator /(USPint firstMeasurement, USPint secondMeasurement)
-                {
-                    return new USPint((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static USPint ToUSPints(this Measurement input) => new USPint(input.ConvertToBase());
-
-            public static USPint USPints(this byte input) => new USPint(input);
-            public static USPint USPints(this short input) => new USPint(input);
-            public static USPint USPints(this int input) => new USPint(input);
-            public static USPint USPints(this long input) => new USPint(input);
-
-            public static USPint USPints(this float input) => new USPint((double)input);
-            public static USPint USPints(this double input) => new USPint((double)input);
-        }
-
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class USPint : Volume, IUSPint
+			{
+				#region CTOR
+				public USPint(double value) : base(value, Conversion.US.Pint, Suffixes.US.Pint) { }
+				#endregion
+				#region Operators
+				public static USPint operator +(USPint firstMeasurement, USPint secondMeasurement)
+				{
+					return new USPint((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static USPint operator -(USPint firstMeasurement, USPint secondMeasurement)
+				{
+					return new USPint((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static USPint operator *(USPint firstMeasurement, USPint secondMeasurement)
+				{
+					return new USPint((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static USPint operator /(USPint firstMeasurement, USPint secondMeasurement)
+				{
+					return new USPint((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].USPints
+			public static USPint USPints(this Byte input) => new USPint(input);
+			public static USPint USPints(this Int16 input) => new USPint(input);
+			public static USPint USPints(this Int32 input) => new USPint(input);
+			public static USPint USPints(this Int64 input) => new USPint(input);
+			public static USPint USPints(this Single input) => new USPint(input);
+			public static USPint USPints(this Double input) => new USPint(input);
+			#endregion
+		}
+	}
 }

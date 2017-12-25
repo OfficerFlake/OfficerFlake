@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Kilogram : Mass
-            {
-                public Kilogram(double value) : base(value, Conversion.Kilogram, "KG") { }
-
-                public static Kilogram operator +(Kilogram firstMeasurement, Kilogram secondMeasurement)
-                {
-                    return new Kilogram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Kilogram operator -(Kilogram firstMeasurement, Kilogram secondMeasurement)
-                {
-                    return new Kilogram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Kilogram operator *(Kilogram firstMeasurement, Kilogram secondMeasurement)
-                {
-                    return new Kilogram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Kilogram operator /(Kilogram firstMeasurement, Kilogram secondMeasurement)
-                {
-                    return new Kilogram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Kilogram ToKilograms(this Measurement input) => new Kilogram(input.ConvertToBase());
-
-            public static Kilogram Kilograms(this byte input) => new Kilogram(input);
-            public static Kilogram Kilograms(this short input) => new Kilogram(input);
-            public static Kilogram Kilograms(this int input) => new Kilogram(input);
-            public static Kilogram Kilograms(this long input) => new Kilogram(input);
-
-            public static Kilogram Kilograms(this float input) => new Kilogram((double)input);
-            public static Kilogram Kilograms(this double input) => new Kilogram((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Kilogram : Mass, IKilogram
+			{
+				#region CTOR
+				public Kilogram(double value) : base(value, Conversion.Kilogram, Suffixes.Kilogram) { }
+				#endregion
+				#region Operators
+				public static Kilogram operator +(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				{
+					return new Kilogram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Kilogram operator -(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				{
+					return new Kilogram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Kilogram operator *(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				{
+					return new Kilogram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Kilogram operator /(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				{
+					return new Kilogram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Kilograms
+			public static Kilogram Kilograms(this Byte input) => new Kilogram(input);
+			public static Kilogram Kilograms(this Int16 input) => new Kilogram(input);
+			public static Kilogram Kilograms(this Int32 input) => new Kilogram(input);
+			public static Kilogram Kilograms(this Int64 input) => new Kilogram(input);
+			public static Kilogram Kilograms(this Single input) => new Kilogram(input);
+			public static Kilogram Kilograms(this Double input) => new Kilogram(input);
+			#endregion
+		}
+	}
 }

@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class CubicCentimeter : Volume
-            {
-                public CubicCentimeter(double value) : base(value, Conversion.CubicCentimeter, "CM^3") { }
-
-                public static CubicCentimeter operator +(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
-                {
-                    return new CubicCentimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static CubicCentimeter operator -(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
-                {
-                    return new CubicCentimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static CubicCentimeter operator *(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
-                {
-                    return new CubicCentimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static CubicCentimeter operator /(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
-                {
-                    return new CubicCentimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static CubicCentimeter ToCubicCentimeters(this Measurement input) => new CubicCentimeter(input.ConvertToBase());
-
-            public static CubicCentimeter CubicCentimeters(this byte input) => new CubicCentimeter(input);
-            public static CubicCentimeter CubicCentimeters(this short input) => new CubicCentimeter(input);
-            public static CubicCentimeter CubicCentimeters(this int input) => new CubicCentimeter(input);
-            public static CubicCentimeter CubicCentimeters(this long input) => new CubicCentimeter(input);
-
-            public static CubicCentimeter CubicCentimeters(this float input) => new CubicCentimeter((double)input);
-            public static CubicCentimeter CubicCentimeters(this double input) => new CubicCentimeter((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class CubicCentimeter : Volume, ICubicCentimeter
+			{
+				#region CTOR
+				public CubicCentimeter(double value) : base(value, Conversion.CubicCentimeter, Suffixes.CubicCentimeter) { }
+				#endregion
+				#region Operators
+				public static CubicCentimeter operator +(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				{
+					return new CubicCentimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static CubicCentimeter operator -(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				{
+					return new CubicCentimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static CubicCentimeter operator *(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				{
+					return new CubicCentimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static CubicCentimeter operator /(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				{
+					return new CubicCentimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].CubicCentimeters
+			public static CubicCentimeter CubicCentimeters(this Byte input) => new CubicCentimeter(input);
+			public static CubicCentimeter CubicCentimeters(this Int16 input) => new CubicCentimeter(input);
+			public static CubicCentimeter CubicCentimeters(this Int32 input) => new CubicCentimeter(input);
+			public static CubicCentimeter CubicCentimeters(this Int64 input) => new CubicCentimeter(input);
+			public static CubicCentimeter CubicCentimeters(this Single input) => new CubicCentimeter(input);
+			public static CubicCentimeter CubicCentimeters(this Double input) => new CubicCentimeter(input);
+			#endregion
+		}
+	}
 }

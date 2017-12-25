@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Pressures
-        {
-            public class Bar : Pressure
-            {
-                public Bar(double value) : base(value, Conversion.Bar, "BAR") { }
-
-                public static Bar operator +(Bar firstMeasurement, Bar secondMeasurement)
-                {
-                    return new Bar((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Bar operator -(Bar firstMeasurement, Bar secondMeasurement)
-                {
-                    return new Bar((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Bar operator *(Bar firstMeasurement, Bar secondMeasurement)
-                {
-                    return new Bar((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Bar operator /(Bar firstMeasurement, Bar secondMeasurement)
-                {
-                    return new Bar((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Bar ToBars(this Measurement input) => new Bar(input.ConvertToBase());
-
-            public static Bar Bars(this byte input) => new Bar(input);
-            public static Bar Bars(this short input) => new Bar(input);
-            public static Bar Bars(this int input) => new Bar(input);
-            public static Bar Bars(this long input) => new Bar(input);
-
-            public static Bar Bars(this float input) => new Bar((double)input);
-            public static Bar Bars(this double input) => new Bar((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Pressures
+		{
+			public class Bar : Pressure, IBar
+			{
+				#region CTOR
+				public Bar(double value) : base(value, Conversion.Bar, Suffixes.Bar) { }
+				#endregion
+				#region Operators
+				public static Bar operator +(Bar firstMeasurement, Bar secondMeasurement)
+				{
+					return new Bar((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Bar operator -(Bar firstMeasurement, Bar secondMeasurement)
+				{
+					return new Bar((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Bar operator *(Bar firstMeasurement, Bar secondMeasurement)
+				{
+					return new Bar((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Bar operator /(Bar firstMeasurement, Bar secondMeasurement)
+				{
+					return new Bar((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Bars
+			public static Bar Bars(this Byte input) => new Bar(input);
+			public static Bar Bars(this Int16 input) => new Bar(input);
+			public static Bar Bars(this Int32 input) => new Bar(input);
+			public static Bar Bars(this Int64 input) => new Bar(input);
+			public static Bar Bars(this Single input) => new Bar(input);
+			public static Bar Bars(this Double input) => new Bar(input);
+			#endregion
+		}
+	}
 }

@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Areas
-        {
-            public class SquareMeter : Area
-            {
-                public SquareMeter(double value) : base(value, Conversion.SquareMeter, "M^2") { }
-
-                public static SquareMeter operator +(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
-                {
-                    return new SquareMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMeter operator -(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
-                {
-                    return new SquareMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMeter operator *(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
-                {
-                    return new SquareMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static SquareMeter operator /(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
-                {
-                    return new SquareMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static SquareMeter ToSquareMeters(this Measurement input) => new SquareMeter(input.ConvertToBase());
-
-            public static SquareMeter SquareMeters(this byte input) => new SquareMeter(input);
-            public static SquareMeter SquareMeters(this short input) => new SquareMeter(input);
-            public static SquareMeter SquareMeters(this int input) => new SquareMeter(input);
-            public static SquareMeter SquareMeters(this long input) => new SquareMeter(input);
-
-            public static SquareMeter SquareMeters(this float input) => new SquareMeter((double)input);
-	        public static SquareMeter SquareMeters(this double input) => new SquareMeter((double) input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Areas
+		{
+			public class SquareMeter : Area, ISquareMeter
+			{
+				#region CTOR
+				public SquareMeter(double value) : base(value, Conversion.SquareMeter, Suffixes.SquareMeter) { }
+				#endregion
+				#region Operators
+				public static SquareMeter operator +(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
+				{
+					return new SquareMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMeter operator -(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
+				{
+					return new SquareMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMeter operator *(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
+				{
+					return new SquareMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static SquareMeter operator /(SquareMeter firstMeasurement, SquareMeter secondMeasurement)
+				{
+					return new SquareMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].SquareMeters
+			public static SquareMeter SquareMeters(this Byte input) => new SquareMeter(input);
+			public static SquareMeter SquareMeters(this Int16 input) => new SquareMeter(input);
+			public static SquareMeter SquareMeters(this Int32 input) => new SquareMeter(input);
+			public static SquareMeter SquareMeters(this Int64 input) => new SquareMeter(input);
+			public static SquareMeter SquareMeters(this Single input) => new SquareMeter(input);
+			public static SquareMeter SquareMeters(this Double input) => new SquareMeter(input);
+			#endregion
+		}
+	}
 }

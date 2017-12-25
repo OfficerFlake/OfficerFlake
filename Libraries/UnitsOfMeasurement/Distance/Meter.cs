@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class Meter : Distance
+			public class Meter : Distance, IMeter
 			{
-                public Meter(double value) : base(value, Conversion.Meter, "M") { }
-
-                public static Meter operator +(Meter firstMeasurement, Meter secondMeasurement)
-                {
-                    return new Meter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Meter operator -(Meter firstMeasurement, Meter secondMeasurement)
-                {
-                    return new Meter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Meter operator *(Meter firstMeasurement, Meter secondMeasurement)
-                {
-                    return new Meter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Meter operator /(Meter firstMeasurement, Meter secondMeasurement)
-                {
-                    return new Meter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Meter ToMeters(this Distance input) => new Meter(input.ConvertToBase());
-
-            public static Meter Meters(this byte input) => new Meter(input);
-            public static Meter Meters(this short input) => new Meter(input);
-            public static Meter Meters(this int input) => new Meter(input);
-            public static Meter Meters(this long input) => new Meter(input);
-
-            public static Meter Meters(this float input) => new Meter((double)input);
-            public static Meter Meters(this double input) => new Meter((double)input);
-        }
-    }
+				#region CTOR
+				public Meter(double value) : base(value, Conversion.Meter, Suffixes.Meter) { }
+				#endregion
+				#region Operators
+				public static Meter operator +(Meter firstMeasurement, Meter secondMeasurement)
+				{
+					return new Meter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Meter operator -(Meter firstMeasurement, Meter secondMeasurement)
+				{
+					return new Meter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Meter operator *(Meter firstMeasurement, Meter secondMeasurement)
+				{
+					return new Meter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Meter operator /(Meter firstMeasurement, Meter secondMeasurement)
+				{
+					return new Meter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Meters
+			public static Meter Meters(this Byte input) => new Meter(input);
+			public static Meter Meters(this Int16 input) => new Meter(input);
+			public static Meter Meters(this Int32 input) => new Meter(input);
+			public static Meter Meters(this Int64 input) => new Meter(input);
+			public static Meter Meters(this Single input) => new Meter(input);
+			public static Meter Meters(this Double input) => new Meter(input);
+			#endregion
+		}
+	}
 }

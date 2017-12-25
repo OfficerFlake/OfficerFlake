@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Areas
-        {
-            public class SquareInch : Area
-            {
-                public SquareInch(double value) : base(value, Conversion.SquareInch, "IN^2") { }
-
-                public static SquareInch operator +(SquareInch firstMeasurement, SquareInch secondMeasurement)
-                {
-                    return new SquareInch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static SquareInch operator -(SquareInch firstMeasurement, SquareInch secondMeasurement)
-                {
-                    return new SquareInch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static SquareInch operator *(SquareInch firstMeasurement, SquareInch secondMeasurement)
-                {
-                    return new SquareInch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static SquareInch operator /(SquareInch firstMeasurement, SquareInch secondMeasurement)
-                {
-                    return new SquareInch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static SquareInch ToSquareInchs(this Measurement input) => new SquareInch(input.ConvertToBase());
-
-            public static SquareInch SquareInchs(this byte input) => new SquareInch(input);
-            public static SquareInch SquareInchs(this short input) => new SquareInch(input);
-            public static SquareInch SquareInchs(this int input) => new SquareInch(input);
-            public static SquareInch SquareInchs(this long input) => new SquareInch(input);
-
-            public static SquareInch SquareInchs(this float input) => new SquareInch((double)input);
-            public static SquareInch SquareInchs(this double input) => new SquareInch((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Areas
+		{
+			public class SquareInch : Area, ISquareInch
+			{
+				#region CTOR
+				public SquareInch(double value) : base(value, Conversion.SquareInch, Suffixes.SquareInch) { }
+				#endregion
+				#region Operators
+				public static SquareInch operator +(SquareInch firstMeasurement, SquareInch secondMeasurement)
+				{
+					return new SquareInch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static SquareInch operator -(SquareInch firstMeasurement, SquareInch secondMeasurement)
+				{
+					return new SquareInch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static SquareInch operator *(SquareInch firstMeasurement, SquareInch secondMeasurement)
+				{
+					return new SquareInch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static SquareInch operator /(SquareInch firstMeasurement, SquareInch secondMeasurement)
+				{
+					return new SquareInch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].SquareInchs
+			public static SquareInch SquareInchs(this Byte input) => new SquareInch(input);
+			public static SquareInch SquareInchs(this Int16 input) => new SquareInch(input);
+			public static SquareInch SquareInchs(this Int32 input) => new SquareInch(input);
+			public static SquareInch SquareInchs(this Int64 input) => new SquareInch(input);
+			public static SquareInch SquareInchs(this Single input) => new SquareInch(input);
+			public static SquareInch SquareInchs(this Double input) => new SquareInch(input);
+			#endregion
+		}
+	}
 }

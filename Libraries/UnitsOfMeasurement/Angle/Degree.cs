@@ -1,14 +1,19 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
     namespace UnitsOfMeasurement
     {
         public static partial class Angles
         {
-            public class Degree : Angle
+            public class Degree : Angle, IDegree
             {
-                public Degree(double value) : base(value, Conversion.Degree, "DEG") { }
-
-                public static Degree operator +(Degree firstMeasurement, Degree secondMeasurement)
+				#region CTOR
+				public Degree(double value) : base(value, Conversion.Degree, Suffixes.Degree) { }
+				#endregion
+				#region Operators
+				public static Degree operator +(Degree firstMeasurement, Degree secondMeasurement)
                 {
                     return new Degree((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
                 }
@@ -24,18 +29,16 @@
                 {
                     return new Degree((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
                 }
-            }
-
-            public static Degree ToDegrees(this Measurement input) => new Degree(input.ConvertToBase());
-
-            public static Degree Degrees(this byte input) => new Degree(input);
-            public static Degree Degrees(this short input) => new Degree(input);
-            public static Degree Degrees(this int input) => new Degree(input);
-            public static Degree Degrees(this long input) => new Degree(input);
-
-            public static Degree Degrees(this float input) => new Degree((double)input);
-            public static Degree Degrees(this double input) => new Degree(input);
-            public static Degree Degrees(this decimal input) => new Degree((double)input);
-        }
+				#endregion
+			}
+			#region [Number].Degrees
+			public static Degree Degrees(this Byte input) => new Degree(input);
+            public static Degree Degrees(this Int16 input) => new Degree(input);
+            public static Degree Degrees(this Int32 input) => new Degree(input);
+            public static Degree Degrees(this Int64 input) => new Degree(input);
+            public static Degree Degrees(this Single input) => new Degree(input);
+            public static Degree Degrees(this Double input) => new Degree(input);
+			#endregion
+		}
     }
 }

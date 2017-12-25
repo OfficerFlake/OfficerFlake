@@ -129,13 +129,13 @@ namespace Com.OfficerFlake.Libraries
 				output = new OYSTimeSpan(0.Years(), 0.Months(), 0.Weeks(), 0.Days(), 0.Hours(), 0.Minutes(), 0.Seconds());
 				#endregion
 				#region Convert
-				Year Y = 0.Years();
-				Month M = 0.Months();
-				Week W = 0.Weeks();
-				Day D = 0.Days();
-				Hour h = 0.Hours();
-				Minute m = 0.Minutes();
-				Second s = 0.Seconds();
+				Int32 Y = 0;
+				Int32 M = 0;
+				Int32 W = 0;
+				Int32 D = 0;
+				Int32 h = 0;
+				Int32 m = 0;
+				Int32 s = 0;
 
 				bool failed = false;
 				string remaining = input;
@@ -145,63 +145,63 @@ namespace Com.OfficerFlake.Libraries
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("Y"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						Y = duration.ToYears();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						Y = duration;
 						continue;
 					}
 					if (remaining.Contains("M"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("M"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						M = duration.ToMonths();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						M = duration;
 						continue;
 					}
 					if (remaining.Contains("W"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("W"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						W = duration.ToWeeks();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						W = duration;
 						continue;
 					}
 					if (remaining.Contains("D"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("D"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						D = duration.ToDays();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						D = duration;
 						continue;
 					}
 					if (remaining.Contains("h"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("h"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						h = duration.ToHours();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						h = duration;
 						continue;
 					}
 					if (remaining.Contains("m"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("m"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						m = duration.ToMinutes();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						m = duration;
 						continue;
 					}
 					if (remaining.Contains("s"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("s"));
 						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
-						failed |= !Duration.TryParse(convertable, out Duration duration);
-						s = duration.ToSeconds();
+						failed |= !Int32.TryParse(convertable, out Int32 duration);
+						s = duration;
 						continue;
 					}
 					break;
 				}
 				if (failed) return false;
 
-				output = new OYSTimeSpan(Y, M, W, D, h, m, s);
+				output = new OYSTimeSpan(Y.Years(), M.Months(), W.Weeks(), D.Days(), h.Hours(), m.Minutes(), s.Seconds());
 				return true;
 				#endregion
 			}

@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Angles
-        {
-            public class Radian : Angle
-            {
-                public Radian(double value) : base(value, Conversion.Radian, "RAD") { }
-
-                public static Radian operator +(Radian firstMeasurement, Radian secondMeasurement)
-                {
-                    return new Radian((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Radian operator -(Radian firstMeasurement, Radian secondMeasurement)
-                {
-                    return new Radian((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Radian operator *(Radian firstMeasurement, Radian secondMeasurement)
-                {
-                    return new Radian((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Radian operator /(Radian firstMeasurement, Radian secondMeasurement)
-                {
-                    return new Radian((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Radian ToRadians(this Measurement input) => new Radian(input.ConvertToBase());
-
-            public static Radian Radians(this byte input) => new Radian(input);
-            public static Radian Radians(this short input) => new Radian(input);
-            public static Radian Radians(this int input) => new Radian(input);
-            public static Radian Radians(this long input) => new Radian(input);
-
-            public static Radian Radians(this float input) => new Radian((double)input);
-            public static Radian Radians(this double input) => new Radian(input);
-            public static Radian Radians(this decimal input) => new Radian((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Angles
+		{
+			public class Radian : Angle, IRadian
+			{
+				#region CTOR
+				public Radian(double value) : base(value, Conversion.Radian, "RAD") { }
+				#endregion
+				#region Operators
+				public static Radian operator +(Radian firstMeasurement, Radian secondMeasurement)
+				{
+					return new Radian((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Radian operator -(Radian firstMeasurement, Radian secondMeasurement)
+				{
+					return new Radian((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Radian operator *(Radian firstMeasurement, Radian secondMeasurement)
+				{
+					return new Radian((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Radian operator /(Radian firstMeasurement, Radian secondMeasurement)
+				{
+					return new Radian((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Radians
+			public static Radian Radians(this Byte input) => new Radian(input);
+			public static Radian Radians(this Int16 input) => new Radian(input);
+			public static Radian Radians(this Int32 input) => new Radian(input);
+			public static Radian Radians(this Int64 input) => new Radian(input);
+			public static Radian Radians(this Single input) => new Radian(input);
+			public static Radian Radians(this Double input) => new Radian(input);
+			#endregion
+		}
+	}
 }

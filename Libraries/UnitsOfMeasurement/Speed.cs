@@ -1,165 +1,143 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Debug = System.Diagnostics.Debug;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Speed : Measurement, ISpeed
-    {
-        #region CTOR
+	public class Speed : Measurement, ISpeed
+	{
+		#region CTOR
+		protected Speed(double value, double conversionRatio, string[] unitSuffixes)
+			: base(value, conversionRatio)
+		{
+			CurrentSuffixes = unitSuffixes;
+		}
+		#endregion
+		#region Operators
+		public static Speed operator +(Speed firstMeasurement, Speed secondMeasurement)
+		{
+			return new Speed((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Speed.DefaultSuffixes);
+		}
+		public static Speed operator -(Speed firstMeasurement, Speed secondMeasurement)
+		{
+			return new Speed((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Speed.DefaultSuffixes);
+		}
+		public static Speed operator *(Speed firstMeasurement, Speed secondMeasurement)
+		{
+			return new Speed((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Speed.DefaultSuffixes);
+		}
+		public static Speed operator /(Speed firstMeasurement, Speed secondMeasurement)
+		{
+			return new Speed((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Speed.DefaultSuffixes);
+		}
 
-        protected Speed(double value, double conversionRatio, string unitSuffix)
-: base(value, conversionRatio)
-        {
-            _unitSuffix = unitSuffix;
-        }
+		public static implicit operator string(Speed thisSpeed) => thisSpeed.ToString();
+		public override string ToString()
+		{
+			return base.ToString() + CurrentSuffixes[0];
+		}
+		#endregion
+		#region Suffix
+		protected struct Suffixes
+		{
+			public static readonly string[] MillimeterPerSecond = new[] { "MM/SEC", "MM/S" };
+			public static readonly string[] CentimeterPerSecond = new[] { "CM/SEC", "CM/S" };
+			public static readonly string[] MeterPerSecond = new[] { "M/SEC", "M/S" };
+			public static readonly string[] KilometerPerHour = new[] { "KM/SEC", "KPH", "KM/H", "KMPH" };
+			public static readonly string[] FootPerSecond = new[] { "FT/SEC", "FPS", "FT/S" };
+			public static readonly string[] MilePerHour = new[] { "MI/HR", "MPH", "MI/H" };
+			public static readonly string[] Knot = new[] { "KNOTS", "KT" };
+			public static readonly string[] MachAtSeaLevel = new[] { "MACH", "M" };
+		}
+		private static readonly string[] DefaultSuffixes = Suffixes.MeterPerSecond;
+		private readonly string[] CurrentSuffixes = DefaultSuffixes;
+		#endregion
 
-        #endregion
-        private readonly string _unitSuffix;
+		#region Conversion ...
+		protected struct Conversion
+		{
+			public const double MillimeterPerSecond = 0.001d;
+			public const double CentimeterPerSecond = 0.01d;
+			public const double MeterPerSecond = 1d;
+			public const double KilometerPerHour = 0.277778d;
+			public const double FootPerSecond = 0.3048d;
+			public const double MilePerHour = 0.447d;
+			public const double Knot = 0.5144d;
+			public const double MachAtSeaLevel = 340.3d;
+		}
+		public static bool TryParse(string input, out Speed output)
+		{
+			#region Prepare Variables
+			string capInput = input.ToUpperInvariant();
+			string extraction = input.ExtractNumberComponentFromMeasurementString();
+			double conversion = 0;
+			#endregion
 
-        #region Operators
+			#region Convert To Double
+			bool failed = !double.TryParse(extraction, out conversion);
+			if (failed)
+			{
+				Debug.AddDetailMessage("Measurement Input not successfully converted.");
+				Debug.AddDetailMessage("----" + capInput);
+				output = new Speeds.MeterPerSecond(0);
+				return false;
+			}
+			#endregion
+			#endregion
+			#region Convert To Speed
+			if (capInput.EndsWithAny(Suffixes.MeterPerSecond))
+			{
+				output = new Speeds.MeterPerSecond(conversion);
+				return true;
+			}
+			#endregion
+		#region ... Conversion
+			#region Type Unrecognised
+			Debug.AddDetailMessage("No Type for input Speed conversion. Break here for details...");
+			Debug.AddDetailMessage("----" + capInput);
+			output = new Speeds.MeterPerSecond(conversion);
+			return false;
+			#endregion
 
-        public static implicit operator byte(Speed thisSpeed) => (byte)thisSpeed.ConvertToBase();
-        public static implicit operator short(Speed thisSpeed) => (short)thisSpeed.ConvertToBase();
-        public static implicit operator int(Speed thisSpeed) => (int)thisSpeed.ConvertToBase();
-        public static implicit operator long(Speed thisSpeed) => (long)thisSpeed.ConvertToBase();
+		}
+		#endregion
 
-        public static implicit operator float(Speed thisSpeed) => (float)thisSpeed.ConvertToBase();
-        public static implicit operator double(Speed thisSpeed) => thisSpeed.ConvertToBase();
-        public static implicit operator decimal(Speed thisSpeed) => (decimal)thisSpeed.ConvertToBase();
-
-        public static Speed operator +(Speed firstMeasurement, Speed secondMeasurement)
-        {
-            return new Speed((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Speed operator -(Speed firstMeasurement, Speed secondMeasurement)
-        {
-            return new Speed((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Speed operator *(Speed firstMeasurement, Speed secondMeasurement)
-        {
-            return new Speed((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Speed operator /(Speed firstMeasurement, Speed secondMeasurement)
-        {
-            return new Speed((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-
-        #endregion
-        public override string ToString()
-        {
-            return base.ToString() + _unitSuffix;
-        }
-
-        #region Conversion
-
-        internal static readonly string DefaultSuffix = "M/S";
-
-        public struct Conversion
-        {
-            public const double MillimetersPerSecond = 0.001d;
-            public const double CentimetersPerSecond = 0.01d;
-            public const double MetersPerSecond = 1d;
-            public const double KilometersPerHour = 0.277778d;
-            public const double FeetPerSecond = 0.3048d;
-            public const double MilesPerHour = 0.447d;
-            public const double Knots = 0.5144d;
-            public const double MachAtSeaLevel = 340.3d;
-        }
-
-        private struct Suffixes
-        {
-            public static readonly string[] MillimetersPerSecond = new[] {"MM/SEC", "MM/S" };
-            public static readonly string[] CentimetersPerSecond = new[] { "CM/SEC", "CM/S" };
-            public static readonly string[] MetersPerSecond = new[] { "M/SEC", "M/S" };
-            public static readonly string[] KilometersPerHour = new[] { "KM/SEC", "KPH", "KM/H", "KMPH" };
-            public static readonly string[] FeetPerSecond = new[] { "FT/SEC", "FPS", "FT/S" };
-            public static readonly string[] MilesPerHour = new[] { "MI/HR", "MPH", "MI/H" };
-            public static readonly string[] Knots = new[] { "KNOTS", "KT" };
-            public static readonly string[] MachAtSeaLevel = new[] { "MACH" };
-        }
-
-        #endregion
-        public static bool TryParse(string input, out Speed output)
-        {
-            var capInput = input.ToUpperInvariant();
-            var extraction = input.ExtractNumberComponentFromMeasurementString();
-            double conversion;
-            var failed = !double.TryParse(extraction, out conversion);
-
-            if (failed)
-            {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
-                output = new Speeds.MeterPerSecond(0);
-                return false;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.MillimetersPerSecond))
-            {
-
-                output = new Speeds.MillimetersPerSecond(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.CentimetersPerSecond))
-            {
-
-                output = new Speeds.CentimetersPerSecond(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.MetersPerSecond))
-            {
-
-                output = new Speeds.MeterPerSecond(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.KilometersPerHour))
-            {
-
-                output = new Speeds.KilometersPerHour(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.FeetPerSecond))
-            {
-
-                output = new Speeds.FeetPerSecond(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.MilesPerHour))
-            {
-
-                output = new Speeds.MilesPerHour(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.Knots))
-            {
-
-                output = new Speeds.Knot(conversion);
-                return true;
-            }
-            if (capInput.EndsWithAny(Suffixes.MachAtSeaLevel))
-            {
-
-                output = new Speeds.MachAtSeaLevel(conversion);
-                return true;
-            }
-
-            //Type Unrecognised.
-            Debug.WriteLine("No Type for input speed conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
-            output = new Speeds.MeterPerSecond(conversion);
-            return false;
-
-        }
-    }
-
-    public static partial class Speeds
-    {
-        public static Speed TryParse(this string input)
-        {
-            Speed result;
-            var success = Speed.TryParse(input, out result);
-            return result;
-        }
-    }
+		#region Convert To Subobjects
+		public ICentimeterPerSecond ToCentimetersPerSecond()
+		{
+			return new Speeds.CentimeterPerSecond(ConvertToBase() / Conversion.CentimeterPerSecond);
+		}
+		public IFootPerSecond ToFeetPerSecond()
+		{
+			return new Speeds.FootPerSecond(ConvertToBase() / Conversion.FootPerSecond);
+		}
+		public IKilometerPerHour ToKilometersPerHour()
+		{
+			return new Speeds.KilometerPerHour(ConvertToBase() / Conversion.KilometerPerHour);
+		}
+		public IKnot ToKnots()
+		{
+			return new Speeds.Knot(ConvertToBase() / Conversion.Knot);
+		}
+		public IMachAtSeaLevel ToMachAtSeaLevel()
+		{
+			return new Speeds.MachAtSeaLevel(ConvertToBase() / Conversion.MachAtSeaLevel);
+		}
+		public IMeterPerSecond ToMetersPerSecond()
+		{
+			return new Speeds.MeterPerSecond(ConvertToBase() / Conversion.MeterPerSecond);
+		}
+		public IMilePerHour ToMilesPerHour()
+		{
+			return new Speeds.MilePerHour(ConvertToBase() / Conversion.MilePerHour);
+		}
+		public IMillimeterPerSecond ToMillimetersPerSecond()
+		{
+			return new Speeds.MillimeterPerSecond(ConvertToBase() / Conversion.MillimeterPerSecond);
+		}
+		#endregion
+	}
 }
+
+

@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class CubicYard : Volume
-            {
-                public CubicYard(double value) : base(value, Conversion.CubicYard, "YD^3") { }
-
-                public static CubicYard operator +(CubicYard firstMeasurement, CubicYard secondMeasurement)
-                {
-                    return new CubicYard((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static CubicYard operator -(CubicYard firstMeasurement, CubicYard secondMeasurement)
-                {
-                    return new CubicYard((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static CubicYard operator *(CubicYard firstMeasurement, CubicYard secondMeasurement)
-                {
-                    return new CubicYard((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static CubicYard operator /(CubicYard firstMeasurement, CubicYard secondMeasurement)
-                {
-                    return new CubicYard((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static CubicYard ToCubicYards(this Measurement input) => new CubicYard(input.ConvertToBase());
-
-            public static CubicYard CubicYards(this byte input) => new CubicYard(input);
-            public static CubicYard CubicYards(this short input) => new CubicYard(input);
-            public static CubicYard CubicYards(this int input) => new CubicYard(input);
-            public static CubicYard CubicYards(this long input) => new CubicYard(input);
-
-            public static CubicYard CubicYards(this float input) => new CubicYard((double)input);
-            public static CubicYard CubicYards(this double input) => new CubicYard((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class CubicYard : Volume, ICubicYard
+			{
+				#region CTOR
+				public CubicYard(double value) : base(value, Conversion.CubicYard, Suffixes.CubicYard) { }
+				#endregion
+				#region Operators
+				public static CubicYard operator +(CubicYard firstMeasurement, CubicYard secondMeasurement)
+				{
+					return new CubicYard((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static CubicYard operator -(CubicYard firstMeasurement, CubicYard secondMeasurement)
+				{
+					return new CubicYard((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static CubicYard operator *(CubicYard firstMeasurement, CubicYard secondMeasurement)
+				{
+					return new CubicYard((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static CubicYard operator /(CubicYard firstMeasurement, CubicYard secondMeasurement)
+				{
+					return new CubicYard((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].CubicYards
+			public static CubicYard CubicYards(this Byte input) => new CubicYard(input);
+			public static CubicYard CubicYards(this Int16 input) => new CubicYard(input);
+			public static CubicYard CubicYards(this Int32 input) => new CubicYard(input);
+			public static CubicYard CubicYards(this Int64 input) => new CubicYard(input);
+			public static CubicYard CubicYards(this Single input) => new CubicYard(input);
+			public static CubicYard CubicYards(this Double input) => new CubicYard(input);
+			#endregion
+		}
+	}
 }

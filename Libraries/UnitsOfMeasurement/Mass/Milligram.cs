@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Milligram : Mass
-            {
-                public Milligram(double value) : base(value, Conversion.Milligram, "MG") { }
-
-                public static Milligram operator +(Milligram firstMeasurement, Milligram secondMeasurement)
-                {
-                    return new Milligram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Milligram operator -(Milligram firstMeasurement, Milligram secondMeasurement)
-                {
-                    return new Milligram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Milligram operator *(Milligram firstMeasurement, Milligram secondMeasurement)
-                {
-                    return new Milligram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Milligram operator /(Milligram firstMeasurement, Milligram secondMeasurement)
-                {
-                    return new Milligram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Milligram ToMilligrams(this Measurement input) => new Milligram(input.ConvertToBase());
-
-            public static Milligram Milligrams(this byte input) => new Milligram(input);
-            public static Milligram Milligrams(this short input) => new Milligram(input);
-            public static Milligram Milligrams(this int input) => new Milligram(input);
-            public static Milligram Milligrams(this long input) => new Milligram(input);
-
-            public static Milligram Milligrams(this float input) => new Milligram((double)input);
-            public static Milligram Milligrams(this double input) => new Milligram((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Miligram : Mass, IMiligram
+			{
+				#region CTOR
+				public Miligram(double value) : base(value, Conversion.Miligram, Suffixes.Miligram) { }
+				#endregion
+				#region Operators
+				public static Miligram operator +(Miligram firstMeasurement, Miligram secondMeasurement)
+				{
+					return new Miligram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Miligram operator -(Miligram firstMeasurement, Miligram secondMeasurement)
+				{
+					return new Miligram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Miligram operator *(Miligram firstMeasurement, Miligram secondMeasurement)
+				{
+					return new Miligram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Miligram operator /(Miligram firstMeasurement, Miligram secondMeasurement)
+				{
+					return new Miligram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Miligrams
+			public static Miligram Miligrams(this Byte input) => new Miligram(input);
+			public static Miligram Miligrams(this Int16 input) => new Miligram(input);
+			public static Miligram Miligrams(this Int32 input) => new Miligram(input);
+			public static Miligram Miligrams(this Int64 input) => new Miligram(input);
+			public static Miligram Miligrams(this Single input) => new Miligram(input);
+			public static Miligram Miligrams(this Double input) => new Miligram(input);
+			#endregion
+		}
+	}
 }

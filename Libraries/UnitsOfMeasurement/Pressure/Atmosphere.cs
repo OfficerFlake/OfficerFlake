@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Pressures
-        {
-            public class Atmosphere : Pressure
-            {
-                public Atmosphere(double value) : base(value, Conversion.Atmosphere, "ATMOSPHERE") { }
-
-                public static Atmosphere operator +(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
-                {
-                    return new Atmosphere((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Atmosphere operator -(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
-                {
-                    return new Atmosphere((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Atmosphere operator *(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
-                {
-                    return new Atmosphere((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Atmosphere operator /(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
-                {
-                    return new Atmosphere((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Atmosphere ToAtmospheres(this Measurement input) => new Atmosphere(input.ConvertToBase());
-
-            public static Atmosphere Atmospheres(this byte input) => new Atmosphere(input);
-            public static Atmosphere Atmospheres(this short input) => new Atmosphere(input);
-            public static Atmosphere Atmospheres(this int input) => new Atmosphere(input);
-            public static Atmosphere Atmospheres(this long input) => new Atmosphere(input);
-
-            public static Atmosphere Atmospheres(this float input) => new Atmosphere((double)input);
-            public static Atmosphere Atmospheres(this double input) => new Atmosphere((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Pressures
+		{
+			public class Atmosphere : Pressure, IAtmosphere
+			{
+				#region CTOR
+				public Atmosphere(double value) : base(value, Conversion.Atmosphere, Suffixes.Atmosphere) { }
+				#endregion
+				#region Operators
+				public static Atmosphere operator +(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
+				{
+					return new Atmosphere((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Atmosphere operator -(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
+				{
+					return new Atmosphere((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Atmosphere operator *(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
+				{
+					return new Atmosphere((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Atmosphere operator /(Atmosphere firstMeasurement, Atmosphere secondMeasurement)
+				{
+					return new Atmosphere((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Atmospheres
+			public static Atmosphere Atmospheres(this Byte input) => new Atmosphere(input);
+			public static Atmosphere Atmospheres(this Int16 input) => new Atmosphere(input);
+			public static Atmosphere Atmospheres(this Int32 input) => new Atmosphere(input);
+			public static Atmosphere Atmospheres(this Int64 input) => new Atmosphere(input);
+			public static Atmosphere Atmospheres(this Single input) => new Atmosphere(input);
+			public static Atmosphere Atmospheres(this Double input) => new Atmosphere(input);
+			#endregion
+		}
+	}
 }

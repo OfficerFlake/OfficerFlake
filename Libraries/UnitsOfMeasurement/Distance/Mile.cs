@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class Mile : Distance
+			public class Mile : Distance, IMile
 			{
-                public Mile(double value) : base(value, Conversion.Mile, "MI") { }
-
-                public static Mile operator +(Mile firstMeasurement, Mile secondMeasurement)
-                {
-                    return new Mile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Mile operator -(Mile firstMeasurement, Mile secondMeasurement)
-                {
-                    return new Mile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Mile operator *(Mile firstMeasurement, Mile secondMeasurement)
-                {
-                    return new Mile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Mile operator /(Mile firstMeasurement, Mile secondMeasurement)
-                {
-                    return new Mile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Mile ToMiles(this Measurement input) => new Mile(input.ConvertToBase());
-
-            public static Mile Miles(this byte input) => new Mile(input);
-            public static Mile Miles(this short input) => new Mile(input);
-            public static Mile Miles(this int input) => new Mile(input);
-            public static Mile Miles(this long input) => new Mile(input);
-
-            public static Mile Miles(this float input) => new Mile((double)input);
-            public static Mile Miles(this double input) => new Mile((double)input);
-        }
-    }
+				#region CTOR
+				public Mile(double value) : base(value, Conversion.Mile, Suffixes.Mile) { }
+				#endregion
+				#region Operators
+				public static Mile operator +(Mile firstMeasurement, Mile secondMeasurement)
+				{
+					return new Mile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Mile operator -(Mile firstMeasurement, Mile secondMeasurement)
+				{
+					return new Mile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Mile operator *(Mile firstMeasurement, Mile secondMeasurement)
+				{
+					return new Mile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Mile operator /(Mile firstMeasurement, Mile secondMeasurement)
+				{
+					return new Mile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Miles
+			public static Mile Miles(this Byte input) => new Mile(input);
+			public static Mile Miles(this Int16 input) => new Mile(input);
+			public static Mile Miles(this Int32 input) => new Mile(input);
+			public static Mile Miles(this Int64 input) => new Mile(input);
+			public static Mile Miles(this Single input) => new Mile(input);
+			public static Mile Miles(this Double input) => new Mile(input);
+			#endregion
+		}
+	}
 }

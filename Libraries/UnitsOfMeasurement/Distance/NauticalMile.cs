@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class NauticalMile : Distance
+			public class NauticalMile : Distance, INauticalMile
 			{
-                public NauticalMile(double value) : base(value, Conversion.NauticalMile, "NM") { }
-
-                public static NauticalMile operator +(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
-                {
-                    return new NauticalMile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static NauticalMile operator -(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
-                {
-                    return new NauticalMile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static NauticalMile operator *(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
-                {
-                    return new NauticalMile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static NauticalMile operator /(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
-                {
-                    return new NauticalMile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static NauticalMile ToNauticalMiles(this Measurement input) => new NauticalMile(input.ConvertToBase());
-
-            public static NauticalMile NauticalMiles(this byte input) => new NauticalMile(input);
-            public static NauticalMile NauticalMiles(this short input) => new NauticalMile(input);
-            public static NauticalMile NauticalMiles(this int input) => new NauticalMile(input);
-            public static NauticalMile NauticalMiles(this long input) => new NauticalMile(input);
-
-            public static NauticalMile NauticalMiles(this float input) => new NauticalMile((double)input);
-            public static NauticalMile NauticalMiles(this double input) => new NauticalMile((double)input);
-        }
-    }
+				#region CTOR
+				public NauticalMile(double value) : base(value, Conversion.NauticalMile, Suffixes.NauticalMile) { }
+				#endregion
+				#region Operators
+				public static NauticalMile operator +(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
+				{
+					return new NauticalMile((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static NauticalMile operator -(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
+				{
+					return new NauticalMile((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static NauticalMile operator *(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
+				{
+					return new NauticalMile((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static NauticalMile operator /(NauticalMile firstMeasurement, NauticalMile secondMeasurement)
+				{
+					return new NauticalMile((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].NauticalMiles
+			public static NauticalMile NauticalMiles(this Byte input) => new NauticalMile(input);
+			public static NauticalMile NauticalMiles(this Int16 input) => new NauticalMile(input);
+			public static NauticalMile NauticalMiles(this Int32 input) => new NauticalMile(input);
+			public static NauticalMile NauticalMiles(this Int64 input) => new NauticalMile(input);
+			public static NauticalMile NauticalMiles(this Single input) => new NauticalMile(input);
+			public static NauticalMile NauticalMiles(this Double input) => new NauticalMile(input);
+			#endregion
+		}
+	}
 }

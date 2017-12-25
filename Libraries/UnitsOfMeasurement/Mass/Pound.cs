@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Pound : Mass
-            {
-                public Pound(double value) : base(value, Conversion.Pound, "LB") { }
-
-                public static Pound operator +(Pound firstMeasurement, Pound secondMeasurement)
-                {
-                    return new Pound((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Pound operator -(Pound firstMeasurement, Pound secondMeasurement)
-                {
-                    return new Pound((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Pound operator *(Pound firstMeasurement, Pound secondMeasurement)
-                {
-                    return new Pound((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Pound operator /(Pound firstMeasurement, Pound secondMeasurement)
-                {
-                    return new Pound((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Pound ToPounds(this Measurement input) => new Pound(input.ConvertToBase());
-
-            public static Pound Pounds(this byte input) => new Pound(input);
-            public static Pound Pounds(this short input) => new Pound(input);
-            public static Pound Pounds(this int input) => new Pound(input);
-            public static Pound Pounds(this long input) => new Pound(input);
-
-            public static Pound Pounds(this float input) => new Pound((double)input);
-            public static Pound Pounds(this double input) => new Pound((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Pound : Mass, IPound
+			{
+				#region CTOR
+				public Pound(double value) : base(value, Conversion.Pound, Suffixes.Pound) { }
+				#endregion
+				#region Operators
+				public static Pound operator +(Pound firstMeasurement, Pound secondMeasurement)
+				{
+					return new Pound((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Pound operator -(Pound firstMeasurement, Pound secondMeasurement)
+				{
+					return new Pound((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Pound operator *(Pound firstMeasurement, Pound secondMeasurement)
+				{
+					return new Pound((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Pound operator /(Pound firstMeasurement, Pound secondMeasurement)
+				{
+					return new Pound((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Pounds
+			public static Pound Pounds(this Byte input) => new Pound(input);
+			public static Pound Pounds(this Int16 input) => new Pound(input);
+			public static Pound Pounds(this Int32 input) => new Pound(input);
+			public static Pound Pounds(this Int64 input) => new Pound(input);
+			public static Pound Pounds(this Single input) => new Pound(input);
+			public static Pound Pounds(this Double input) => new Pound(input);
+			#endregion
+		}
+	}
 }

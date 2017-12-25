@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Area\SquareNauticalMile.cs" />
     <Compile Include="Duration\_Duration\Year.cs" />
     <Compile Include="Duration\_Duration\Month.cs" />
     <Compile Include="Duration\_Duration\Week.cs" />
@@ -49,31 +50,30 @@
     <Compile Include="Angle\Gradian.cs" />
     <Compile Include="Angle\Radian.cs" />
     <Compile Include="Pressure.cs" />
-    <Compile Include="Power\FootPoundsPerMinute.cs" />
-    <Compile Include="Power\BTUsPerMinute.cs" />
-    <Compile Include="Power\USHorsepower.cs" />
-    <Compile Include="Power\Kilowatt.cs" />
+    <Compile Include="Power\FootPoundPerMinute.cs" />
+    <Compile Include="Power\BTUPerMinute.cs" />
+    <Compile Include="Power\USHorsePower.cs" />
+    <Compile Include="Power\KiloWatt.cs" />
     <Compile Include="Power\Watt.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="Angle\Degree.cs" />
     <Compile Include="Pressure\PoundsPerSquareInch.cs" />
     <Compile Include="Pressure\Pascal.cs" />
     <Compile Include="Pressure\MillimetersOfMercury.cs" />
-    <Compile Include="Pressure\Kilopascal.cs" />
+    <Compile Include="Pressure\KiloPascal.cs" />
     <Compile Include="Pressure\Bar.cs" />
     <Compile Include="Pressure\Atmosphere.cs" />
     <Compile Include="Speeds\MachAtSeaLevel.cs" />
-    <Compile Include="Speeds\Knots.cs" />
-    <Compile Include="Speeds\MilesPerHour.cs" />
-    <Compile Include="Speeds\FeetPerSecond.cs" />
-    <Compile Include="Speeds\KilometersPerHour.cs" />
-    <Compile Include="Speeds\MetersPerSecond.cs" />
-    <Compile Include="Speeds\CentimetersPerSecond.cs" />
-    <Compile Include="Speeds\MillimetersPerSecond.cs" />
+    <Compile Include="Speeds\Knot.cs" />
+    <Compile Include="Speeds\MilePerHour.cs" />
+    <Compile Include="Speeds\FootPerSecond.cs" />
+    <Compile Include="Speeds\KilometerPerHour.cs" />
+    <Compile Include="Speeds\MeterPerSecond.cs" />
+    <Compile Include="Speeds\CentimeterPerSecond.cs" />
+    <Compile Include="Speeds\MillimeterPerSecond.cs" />
     <Compile Include="Speed.cs" />
     <Compile Include="Area.cs" />
     <Compile Include="Area\SquareCentimeter.cs" />
-    <Compile Include="Area\Hectare.cs" />
     <Compile Include="Area\SquareKilometer.cs" />
     <Compile Include="Area\SquareInch.cs" />
     <Compile Include="Area\SquareFoot.cs" />
@@ -84,13 +84,12 @@
     <Compile Include="Energy.cs" />
     <Compile Include="Energy\BritishThermalUnits.cs" />
     <Compile Include="Energy\Joule.cs" />
-    <Compile Include="Energy\FoodCalories.cs" />
-    <Compile Include="Energy\FootPounds.cs" />
+    <Compile Include="Energy\FoodCalorie.cs" />
+    <Compile Include="Energy\FootPound.cs" />
     <Compile Include="Area\SquareMeter.cs" />
     <Compile Include="Energy\ThermalCalorie.cs" />
     <Compile Include="Energy\ElectronVolt.cs" />
     <Compile Include="Energy\Kilojoule.cs" />
-    <Compile Include="Temperature.cs" />
     <Compile Include="Mass.cs" />
     <Compile Include="Mass\UKLongTon.cs" />
     <Compile Include="Mass\USShortTon.cs" />
@@ -105,9 +104,9 @@
     <Compile Include="Mass\Carat.cs" />
     <Compile Include="Mass\MetricTonne.cs" />
     <Compile Include="Mass\Milligram.cs" />
-    <Compile Include="Temperature\Fahrenheit.cs" />
-    <Compile Include="Temperature\Kelvin.cs" />
-    <Compile Include="Temperature\Celcius.cs" />
+    <Compile Include="Temperature\DegreeFahrenheit.cs" />
+    <Compile Include="Temperature\DegreeKelvin.cs" />
+    <Compile Include="Temperature\DegreeCelcius.cs" />
     <Compile Include="Duration\TimeSpan\TimeSpan.cs" />
     <Compile Include="Duration\DateTime\DateTime.cs" />
     <Compile Include="Duration\Date\Date.cs" />
@@ -141,7 +140,7 @@
     <Compile Include="Distance\Yard.cs" />
     <Compile Include="Distance\Kilometer.cs" />
     <Compile Include="Distance\Inch.cs" />
-    <Compile Include="Distance\Microns.cs" />
+    <Compile Include="Distance\Micron.cs" />
     <Compile Include="Distance\Nanometer.cs" />
     <Compile Include="Distance\Millimeter.cs" />
     <Compile Include="Distance\Meter.cs" />
@@ -156,6 +155,10 @@
     <ProjectReference Include="..\..\Library\Interfaces\Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SlaveObjectFactory\SlaveObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>SlaveObjectFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\Extensions\Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>

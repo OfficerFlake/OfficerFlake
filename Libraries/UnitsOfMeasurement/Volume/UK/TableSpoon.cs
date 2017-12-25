@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class UKTableSpoon : Volume
-            {
-                public UKTableSpoon(double value) : base(value, Conversion.UK.TableSpoon, "UKTBLSP") { }
-
-                public static UKTableSpoon operator +(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
-                {
-                    return new UKTableSpoon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static UKTableSpoon operator -(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
-                {
-                    return new UKTableSpoon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static UKTableSpoon operator *(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
-                {
-                    return new UKTableSpoon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static UKTableSpoon operator /(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
-                {
-                    return new UKTableSpoon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static UKTableSpoon ToUKTableSpoons(this Measurement input) => new UKTableSpoon(input.ConvertToBase());
-
-            public static UKTableSpoon UKTableSpoons(this byte input) => new UKTableSpoon(input);
-            public static UKTableSpoon UKTableSpoons(this short input) => new UKTableSpoon(input);
-            public static UKTableSpoon UKTableSpoons(this int input) => new UKTableSpoon(input);
-            public static UKTableSpoon UKTableSpoons(this long input) => new UKTableSpoon(input);
-
-            public static UKTableSpoon UKTableSpoons(this float input) => new UKTableSpoon((double)input);
-            public static UKTableSpoon UKTableSpoons(this double input) => new UKTableSpoon((double)input);
-        }
-
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class UKTableSpoon : Volume, IUKTableSpoon
+			{
+				#region CTOR
+				public UKTableSpoon(double value) : base(value, Conversion.UK.TableSpoon, Suffixes.UK.TableSpoon) { }
+				#endregion
+				#region Operators
+				public static UKTableSpoon operator +(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
+				{
+					return new UKTableSpoon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static UKTableSpoon operator -(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
+				{
+					return new UKTableSpoon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static UKTableSpoon operator *(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
+				{
+					return new UKTableSpoon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static UKTableSpoon operator /(UKTableSpoon firstMeasurement, UKTableSpoon secondMeasurement)
+				{
+					return new UKTableSpoon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].UKTableSpoons
+			public static UKTableSpoon UKTableSpoons(this Byte input) => new UKTableSpoon(input);
+			public static UKTableSpoon UKTableSpoons(this Int16 input) => new UKTableSpoon(input);
+			public static UKTableSpoon UKTableSpoons(this Int32 input) => new UKTableSpoon(input);
+			public static UKTableSpoon UKTableSpoons(this Int64 input) => new UKTableSpoon(input);
+			public static UKTableSpoon UKTableSpoons(this Single input) => new UKTableSpoon(input);
+			public static UKTableSpoon UKTableSpoons(this Double input) => new UKTableSpoon(input);
+			#endregion
+		}
+	}
 }

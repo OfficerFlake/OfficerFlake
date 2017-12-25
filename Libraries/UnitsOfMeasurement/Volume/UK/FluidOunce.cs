@@ -1,41 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Volumes
-        {
-            public class UKFluidOunce : Volume
-            {
-                public UKFluidOunce(double value) : base(value, Conversion.UK.FluidOunce, "UKFLOZ") { }
-
-                public static UKFluidOunce operator +(UKFluidOunce firstMeasurement, UKFluidOunce secondMeasurement)
-                {
-                    return new UKFluidOunce((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static UKFluidOunce operator -(UKFluidOunce firstMeasurement, UKFluidOunce secondMeasurement)
-                {
-                    return new UKFluidOunce((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static UKFluidOunce operator *(UKFluidOunce firstMeasurement, UKFluidOunce secondMeasurement)
-                {
-                    return new UKFluidOunce((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static UKFluidOunce operator /(UKFluidOunce firstMeasurement, UKFluidOunce secondMeasurement)
-                {
-                    return new UKFluidOunce((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static UKFluidOunce ToUKFluidOunces(this Measurement input) => new UKFluidOunce(input.ConvertToBase());
-
-            public static UKFluidOunce UKFluidOunces(this byte input) => new UKFluidOunce(input);
-            public static UKFluidOunce UKFluidOunces(this short input) => new UKFluidOunce(input);
-            public static UKFluidOunce UKFluidOunces(this int input) => new UKFluidOunce(input);
-            public static UKFluidOunce UKFluidOunces(this long input) => new UKFluidOunce(input);
-
-            public static UKFluidOunce UKFluidOunces(this float input) => new UKFluidOunce((double)input);
-            public static UKFluidOunce UKFluidOunces(this double input) => new UKFluidOunce((double)input);
-        }
-
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Volumes
+		{
+			public class FluidOunce : Volume, IFluidOunce
+			{
+				#region CTOR
+				public FluidOunce(double value) : base(value, Conversion.UK.FluidOunce, Suffixes.UK.FluidOunce) { }
+				#endregion
+				#region Operators
+				public static FluidOunce operator +(FluidOunce firstMeasurement, FluidOunce secondMeasurement)
+				{
+					return new FluidOunce((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static FluidOunce operator -(FluidOunce firstMeasurement, FluidOunce secondMeasurement)
+				{
+					return new FluidOunce((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static FluidOunce operator *(FluidOunce firstMeasurement, FluidOunce secondMeasurement)
+				{
+					return new FluidOunce((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static FluidOunce operator /(FluidOunce firstMeasurement, FluidOunce secondMeasurement)
+				{
+					return new FluidOunce((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].FluidOunces
+			public static FluidOunce FluidOunces(this Byte input) => new FluidOunce(input);
+			public static FluidOunce FluidOunces(this Int16 input) => new FluidOunce(input);
+			public static FluidOunce FluidOunces(this Int32 input) => new FluidOunce(input);
+			public static FluidOunce FluidOunces(this Int64 input) => new FluidOunce(input);
+			public static FluidOunce FluidOunces(this Single input) => new FluidOunce(input);
+			public static FluidOunce FluidOunces(this Double input) => new FluidOunce(input);
+			#endregion
+		}
+	}
 }

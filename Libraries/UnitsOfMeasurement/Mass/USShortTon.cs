@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class USShortTon : Mass
-            {
-                public USShortTon(double value) : base(value, Conversion.USShortTon, "SHORTTON") { }
-
-                public static USShortTon operator +(USShortTon firstMeasurement, USShortTon secondMeasurement)
-                {
-                    return new USShortTon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static USShortTon operator -(USShortTon firstMeasurement, USShortTon secondMeasurement)
-                {
-                    return new USShortTon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static USShortTon operator *(USShortTon firstMeasurement, USShortTon secondMeasurement)
-                {
-                    return new USShortTon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static USShortTon operator /(USShortTon firstMeasurement, USShortTon secondMeasurement)
-                {
-                    return new USShortTon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static USShortTon ToUSShortTons(this Measurement input) => new USShortTon(input.ConvertToBase());
-
-            public static USShortTon USShortTons(this byte input) => new USShortTon(input);
-            public static USShortTon USShortTons(this short input) => new USShortTon(input);
-            public static USShortTon USShortTons(this int input) => new USShortTon(input);
-            public static USShortTon USShortTons(this long input) => new USShortTon(input);
-
-            public static USShortTon USShortTons(this float input) => new USShortTon((double)input);
-            public static USShortTon USShortTons(this double input) => new USShortTon((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class USShortTon : Mass, IUSShortTon
+			{
+				#region CTOR
+				public USShortTon(double value) : base(value, Conversion.USShortTon, Suffixes.USShortTon) { }
+				#endregion
+				#region Operators
+				public static USShortTon operator +(USShortTon firstMeasurement, USShortTon secondMeasurement)
+				{
+					return new USShortTon((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static USShortTon operator -(USShortTon firstMeasurement, USShortTon secondMeasurement)
+				{
+					return new USShortTon((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static USShortTon operator *(USShortTon firstMeasurement, USShortTon secondMeasurement)
+				{
+					return new USShortTon((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static USShortTon operator /(USShortTon firstMeasurement, USShortTon secondMeasurement)
+				{
+					return new USShortTon((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].USShortTons
+			public static USShortTon USShortTons(this Byte input) => new USShortTon(input);
+			public static USShortTon USShortTons(this Int16 input) => new USShortTon(input);
+			public static USShortTon USShortTons(this Int32 input) => new USShortTon(input);
+			public static USShortTon USShortTons(this Int64 input) => new USShortTon(input);
+			public static USShortTon USShortTons(this Single input) => new USShortTon(input);
+			public static USShortTon USShortTons(this Double input) => new USShortTon(input);
+			#endregion
+		}
+	}
 }

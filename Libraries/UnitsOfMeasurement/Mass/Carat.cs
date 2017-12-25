@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Masses
-        {
-            public class Carat : Mass
-            {
-                public Carat(double value) : base(value, Conversion.Carat, "CT") { }
-
-                public static Carat operator +(Carat firstMeasurement, Carat secondMeasurement)
-                {
-                    return new Carat((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Carat operator -(Carat firstMeasurement, Carat secondMeasurement)
-                {
-                    return new Carat((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Carat operator *(Carat firstMeasurement, Carat secondMeasurement)
-                {
-                    return new Carat((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Carat operator /(Carat firstMeasurement, Carat secondMeasurement)
-                {
-                    return new Carat((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Carat ToCarats(this Measurement input) => new Carat(input.ConvertToBase());
-
-            public static Carat Carats(this byte input) => new Carat(input);
-            public static Carat Carats(this short input) => new Carat(input);
-            public static Carat Carats(this int input) => new Carat(input);
-            public static Carat Carats(this long input) => new Carat(input);
-
-            public static Carat Carats(this float input) => new Carat((double)input);
-            public static Carat Carats(this double input) => new Carat((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Masses
+		{
+			public class Carat : Mass, ICarat
+			{
+				#region CTOR
+				public Carat(double value) : base(value, Conversion.Carat, Suffixes.Carat) { }
+				#endregion
+				#region Operators
+				public static Carat operator +(Carat firstMeasurement, Carat secondMeasurement)
+				{
+					return new Carat((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Carat operator -(Carat firstMeasurement, Carat secondMeasurement)
+				{
+					return new Carat((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Carat operator *(Carat firstMeasurement, Carat secondMeasurement)
+				{
+					return new Carat((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Carat operator /(Carat firstMeasurement, Carat secondMeasurement)
+				{
+					return new Carat((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Carats
+			public static Carat Carats(this Byte input) => new Carat(input);
+			public static Carat Carats(this Int16 input) => new Carat(input);
+			public static Carat Carats(this Int32 input) => new Carat(input);
+			public static Carat Carats(this Int64 input) => new Carat(input);
+			public static Carat Carats(this Single input) => new Carat(input);
+			public static Carat Carats(this Double input) => new Carat(input);
+			#endregion
+		}
+	}
 }

@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Distances
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Distances
 		{
-            public class Inch : Distance
+			public class Inch : Distance, IInch
 			{
-                public Inch(double value) : base(value, Conversion.Inch, "IN") { }
-
-                public static Inch operator +(Inch firstMeasurement, Inch secondMeasurement)
-                {
-                    return new Inch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Inch operator -(Inch firstMeasurement, Inch secondMeasurement)
-                {
-                    return new Inch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Inch operator *(Inch firstMeasurement, Inch secondMeasurement)
-                {
-                    return new Inch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Inch operator /(Inch firstMeasurement, Inch secondMeasurement)
-                {
-                    return new Inch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Inch ToInches(this Measurement input) => new Inch(input.ConvertToBase());
-
-            public static Inch Inches(this byte input) => new Inch(input);
-            public static Inch Inches(this short input) => new Inch(input);
-            public static Inch Inches(this int input) => new Inch(input);
-            public static Inch Inches(this long input) => new Inch(input);
-
-            public static Inch Inches(this float input) => new Inch((double)input);
-            public static Inch Inches(this double input) => new Inch((double)input);
-        }
-    }
+				#region CTOR
+				public Inch(double value) : base(value, Conversion.Inch, Suffixes.Inch) { }
+				#endregion
+				#region Operators
+				public static Inch operator +(Inch firstMeasurement, Inch secondMeasurement)
+				{
+					return new Inch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static Inch operator -(Inch firstMeasurement, Inch secondMeasurement)
+				{
+					return new Inch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static Inch operator *(Inch firstMeasurement, Inch secondMeasurement)
+				{
+					return new Inch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static Inch operator /(Inch firstMeasurement, Inch secondMeasurement)
+				{
+					return new Inch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].Inchs
+			public static Inch Inchs(this Byte input) => new Inch(input);
+			public static Inch Inchs(this Int16 input) => new Inch(input);
+			public static Inch Inchs(this Int32 input) => new Inch(input);
+			public static Inch Inchs(this Int64 input) => new Inch(input);
+			public static Inch Inchs(this Single input) => new Inch(input);
+			public static Inch Inchs(this Double input) => new Inch(input);
+			#endregion
+		}
+	}
 }

@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Pressures
-        {
-            public class PoundsPerSquareInch : Pressure
-            {
-                public PoundsPerSquareInch(double value) : base(value, Conversion.PoundsPerSquareInch, "LB/IN^2") { }
-
-                public static PoundsPerSquareInch operator +(PoundsPerSquareInch firstMeasurement, PoundsPerSquareInch secondMeasurement)
-                {
-                    return new PoundsPerSquareInch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static PoundsPerSquareInch operator -(PoundsPerSquareInch firstMeasurement, PoundsPerSquareInch secondMeasurement)
-                {
-                    return new PoundsPerSquareInch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static PoundsPerSquareInch operator *(PoundsPerSquareInch firstMeasurement, PoundsPerSquareInch secondMeasurement)
-                {
-                    return new PoundsPerSquareInch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static PoundsPerSquareInch operator /(PoundsPerSquareInch firstMeasurement, PoundsPerSquareInch secondMeasurement)
-                {
-                    return new PoundsPerSquareInch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static PoundsPerSquareInch ToPoundsPerSquareInchs(this Measurement input) => new PoundsPerSquareInch(input.ConvertToBase());
-
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this byte input) => new PoundsPerSquareInch(input);
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this short input) => new PoundsPerSquareInch(input);
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this int input) => new PoundsPerSquareInch(input);
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this long input) => new PoundsPerSquareInch(input);
-
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this float input) => new PoundsPerSquareInch((double)input);
-            public static PoundsPerSquareInch PoundsPerSquareInchs(this double input) => new PoundsPerSquareInch((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Pressures
+		{
+			public class PoundPerSquareInch : Pressure, IPoundPerSquareInch
+			{
+				#region CTOR
+				public PoundPerSquareInch(double value) : base(value, Conversion.PoundPerSquareInch, Suffixes.PoundPerSquareInch) { }
+				#endregion
+				#region Operators
+				public static PoundPerSquareInch operator +(PoundPerSquareInch firstMeasurement, PoundPerSquareInch secondMeasurement)
+				{
+					return new PoundPerSquareInch((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static PoundPerSquareInch operator -(PoundPerSquareInch firstMeasurement, PoundPerSquareInch secondMeasurement)
+				{
+					return new PoundPerSquareInch((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static PoundPerSquareInch operator *(PoundPerSquareInch firstMeasurement, PoundPerSquareInch secondMeasurement)
+				{
+					return new PoundPerSquareInch((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static PoundPerSquareInch operator /(PoundPerSquareInch firstMeasurement, PoundPerSquareInch secondMeasurement)
+				{
+					return new PoundPerSquareInch((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].PoundPerSquareInchs
+			public static PoundPerSquareInch PoundPerSquareInchs(this Byte input) => new PoundPerSquareInch(input);
+			public static PoundPerSquareInch PoundPerSquareInchs(this Int16 input) => new PoundPerSquareInch(input);
+			public static PoundPerSquareInch PoundPerSquareInchs(this Int32 input) => new PoundPerSquareInch(input);
+			public static PoundPerSquareInch PoundPerSquareInchs(this Int64 input) => new PoundPerSquareInch(input);
+			public static PoundPerSquareInch PoundPerSquareInchs(this Single input) => new PoundPerSquareInch(input);
+			public static PoundPerSquareInch PoundPerSquareInchs(this Double input) => new PoundPerSquareInch(input);
+			#endregion
+		}
+	}
 }

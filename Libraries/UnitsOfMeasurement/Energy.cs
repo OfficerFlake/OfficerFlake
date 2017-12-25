@@ -1,163 +1,143 @@
-﻿using System.Diagnostics;
+﻿using System;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
-    public class Energy : Measurement
-    {
-        #region CTOR
+	public class Energy : Measurement, IEnergy
+	{
+		#region CTOR
+		protected Energy(double value, double conversionRatio, string[] unitSuffixes)
+			: base(value, conversionRatio)
+		{
+			CurrentSuffixes = unitSuffixes;
+		}
+		#endregion
+		#region Operators
+		public static Energy operator +(Energy firstMeasurement, Energy secondMeasurement)
+		{
+			return new Energy((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, Energy.DefaultSuffixes);
+		}
+		public static Energy operator -(Energy firstMeasurement, Energy secondMeasurement)
+		{
+			return new Energy((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, Energy.DefaultSuffixes);
+		}
+		public static Energy operator *(Energy firstMeasurement, Energy secondMeasurement)
+		{
+			return new Energy((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, Energy.DefaultSuffixes);
+		}
+		public static Energy operator /(Energy firstMeasurement, Energy secondMeasurement)
+		{
+			return new Energy((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, Energy.DefaultSuffixes);
+		}
 
-        protected Energy(double value, double conversionRatio, string unitSuffix)
-: base(value, conversionRatio)
-        {
-            _unitSuffix = unitSuffix;
-        }
+		public static implicit operator string(Energy thisEnergy) => thisEnergy.ToString();
+		public override string ToString()
+		{
+			return base.ToString() + CurrentSuffixes[0];
+		}
+		#endregion
+		#region Suffix
+		protected struct Suffixes
+		{
+			public static readonly string[] ElectronVolt = new[] { "ELECTRONVOLT", "VOLT", "EV", "V" };
 
-        #endregion
-        private readonly string _unitSuffix;
+			public static readonly string[] ThermalCalorie = new[] { "THERMALCALORIE" };
+			public static readonly string[] FoodCalorie = new[] { "FOODCALORIE", "CALORIE", "CAL" };
 
-        #region Operators
+			public static readonly string[] Joule = new[] { "JOULE", "J" };
+			public static readonly string[] KiloJoule = new[] { "KILOJOULE", "KJ" };
 
-        public static implicit operator byte(Energy thisEnergy) => (byte)thisEnergy.ConvertToBase();
-        public static implicit operator short(Energy thisEnergy) => (short)thisEnergy.ConvertToBase();
-        public static implicit operator int(Energy thisEnergy) => (int)thisEnergy.ConvertToBase();
-        public static implicit operator long(Energy thisEnergy) => (long)thisEnergy.ConvertToBase();
+			public static readonly string[] FootPound = new[] { "FOOTPOUND", "FT.LB", "FT*LB", "FTLB" };
 
-        public static implicit operator float(Energy thisEnergy) => (float)thisEnergy.ConvertToBase();
-        public static implicit operator double(Energy thisEnergy) => thisEnergy.ConvertToBase();
-        public static implicit operator decimal(Energy thisEnergy) => (decimal)thisEnergy.ConvertToBase();
+			public static readonly string[] BritishThermalUnit = new[] { "BRITISHTHERMALUNIT", "BTU" };
+		}
+		private static readonly string[] DefaultSuffixes = Suffixes.KiloJoule;
+		private readonly string[] CurrentSuffixes = DefaultSuffixes;
+		#endregion
 
-        public static Energy operator +(Energy firstMeasurement, Energy secondMeasurement)
-        {
-            return new Energy((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Energy operator -(Energy firstMeasurement, Energy secondMeasurement)
-        {
-            return new Energy((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Energy operator *(Energy firstMeasurement, Energy secondMeasurement)
-        {
-            return new Energy((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
-        public static Energy operator /(Energy firstMeasurement, Energy secondMeasurement)
-        {
-            return new Energy((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()), 1, DefaultSuffix);
-        }
+		#region Conversion ...
+		protected struct Conversion
+		{
+			public const double ElectronVolt = 1.602177e-22d;
 
-        #endregion
-        public override string ToString()
-        {
-            return base.ToString() + _unitSuffix;
-        }
+			public const double ThermalCalorie = 0.004184d;
+			public const double FoodCalorie = 4.184d;
 
-        #region Conversion
+			public const double Joule = 0.001d;
+			public const double KiloJoule = 1.0d;
 
-        private static readonly string DefaultSuffix = "KJ";
+			public const double FootPound = 0.001356d;
 
-        protected struct Conversion
-        {
-            public const double ElectronVolt = 1.602177e-22d;
+			public const double BritishThermalUnit = 1.055056d;
+		}
+		public static bool TryParse(string input, out Energy output)
+		{
+			#region Prepare Variables
+			string capInput = input.ToUpperInvariant();
+			string extraction = input.ExtractNumberComponentFromMeasurementString();
+			double conversion = 0;
+			#endregion
 
-            public const double ThermalCalorie = 0.004184d;
-            public const double FoodCalories = 4.184d;
+			#region Convert To Double
+			bool failed = !double.TryParse(extraction, out conversion);
+			if (failed)
+			{
+				Debug.AddDetailMessage("Measurement Input not successfully converted.");
+				Debug.AddDetailMessage("----" + capInput);
+				output = new Energys.KiloJoule(0);
+				return false;
+			}
+			#endregion
+			#endregion
+			#region Convert To Energy
+			if (capInput.EndsWithAny(Suffixes.BritishThermalUnit))
+			{
+				output = new Energys.BritishThermalUnit(conversion);
+				return true;
+			}
+			#endregion
+		#region ... Conversion
+			#region Type Unrecognised
+			Debug.AddDetailMessage("No Type for input Energy conversion. Break here for details...");
+			Debug.AddDetailMessage("----" + capInput);
+			output = new Energys.KiloJoule(conversion);
+			return false;
+			#endregion
 
-            public const double Joule = 0.001d;
-            public const double Kilojoule = 1.0d;
+		}
+		#endregion
 
-            public const double FootPounds = 0.001356d;
-
-            public const double BritishThermalUnits = 1.055056d;
-        }
-
-        private struct Suffixes
-        {
-            public static readonly string[] ElectronVolt = new[] { "ELECTRONVOLT", "VOLT", "EV", "V" };
-
-            public static readonly string[] ThermalCalorie = new[] { "THERMALCALORIE"};
-            public static readonly string[] FoodCalories = new[] { "FOODCALORIE", "CALORIE", "CAL" };
-
-            public static readonly string[] Joule = new[] { "JOULE", "J" };
-            public static readonly string[] Kilojoule = new[] { "KILOJOULE", "KJ"};
-
-            public static readonly string[] FootPounds = new[] { "FOOTPOUND", "FT.LB", "FT*LB", "FTLB" };
-
-            public static readonly string[] BritishThermalUnits = new[] { "BRITISHTHERMALUNIT", "BTU" };
-        }
-
-        #endregion
-        public static bool TryParse(string input, out Energy output)
-        {
-            var capInput = input.ToUpperInvariant();
-            var extraction = input.ExtractNumberComponentFromMeasurementString();
-            double conversion;
-            var failed = !double.TryParse(extraction, out conversion);
-
-            if (failed)
-            {
-                Debug.WriteLine("Measurement Input not successfully converted.");
-                Debug.WriteLine("----" + capInput);
-                output = new Energys.Kilojoule(0);
-                return false;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.ElectronVolt))
-            {
-                output = new Energys.ElectronVolt(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.ThermalCalorie))
-            {
-                output = new Energys.ThermalCalorie(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.FoodCalories))
-            {
-                output = new Energys.FoodCalories(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.Joule))
-            {
-                output = new Energys.Joule(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.Kilojoule))
-            {
-                output = new Energys.Kilojoule(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.FootPounds))
-            {
-                output = new Energys.FootPound(conversion);
-                return true;
-            }
-
-            if (capInput.EndsWithAny(Suffixes.BritishThermalUnits))
-            {
-                output = new Energys.BritishThermalUnits(conversion);
-                return true;
-            }
-
-            //Type Unrecognised.
-            Debug.WriteLine("No Type for input energy conversion. Break here for details...");
-            Debug.WriteLine("----" + capInput);
-            output = new Energys.Kilojoule(conversion);
-            return false;
-
-        }
-    }
-
-    public static partial class Energys
-    {
-        public static Energy TryParse(this string input)
-        {
-            Energy result;
-            var success = Energy.TryParse(input, out result);
-            return result;
-        }
-    }
+		#region Convert To Subobjects
+		public IBritishThermalUnit ToBritishThermalUnits()
+		{
+			return new Energys.BritishThermalUnit(ConvertToBase() / Conversion.BritishThermalUnit);
+		}
+		public IElectronVolt ToElectronVolts()
+		{
+			return new Energys.ElectronVolt(ConvertToBase() / Conversion.ElectronVolt);
+		}
+		public IFoodCalorie ToFoodCalories()
+		{
+			return new Energys.FoodCalorie(ConvertToBase() / Conversion.FoodCalorie);
+		}
+		public IFootPound ToFootPounds()
+		{
+			return new Energys.FootPound(ConvertToBase() / Conversion.FootPound);
+		}
+		public IJoule ToJoules()
+		{
+			return new Energys.Joule(ConvertToBase() / Conversion.Joule);
+		}
+		public IKiloJoule ToKiloJoules()
+		{
+			return new Energys.KiloJoule(ConvertToBase() / Conversion.KiloJoule);
+		}
+		public IThermalCalorie ToThermalCalories()
+		{
+			return new Energys.ThermalCalorie(ConvertToBase() / Conversion.ThermalCalorie);
+		}
+		#endregion
+	}
 }

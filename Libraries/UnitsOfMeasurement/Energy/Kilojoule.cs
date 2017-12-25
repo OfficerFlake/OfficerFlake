@@ -1,40 +1,44 @@
-﻿namespace Com.OfficerFlake.Libraries
+﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries
 {
-    namespace UnitsOfMeasurement
-    {
-        public static partial class Energys
-        {
-            public class Kilojoule : Energy
-            {
-                public Kilojoule(double value) : base(value, Conversion.Kilojoule, "KJ") { }
-
-                public static Kilojoule operator +(Kilojoule firstMeasurement, Kilojoule secondMeasurement)
-                {
-                    return new Kilojoule((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
-                }
-                public static Kilojoule operator -(Kilojoule firstMeasurement, Kilojoule secondMeasurement)
-                {
-                    return new Kilojoule((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
-                }
-                public static Kilojoule operator *(Kilojoule firstMeasurement, Kilojoule secondMeasurement)
-                {
-                    return new Kilojoule((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
-                }
-                public static Kilojoule operator /(Kilojoule firstMeasurement, Kilojoule secondMeasurement)
-                {
-                    return new Kilojoule((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
-                }
-            }
-
-            public static Kilojoule ToKilojoules(this Measurement input) => new Kilojoule(input.ConvertToBase());
-
-            public static Kilojoule Kilojoules(this byte input) => new Kilojoule(input);
-            public static Kilojoule Kilojoules(this short input) => new Kilojoule(input);
-            public static Kilojoule Kilojoules(this int input) => new Kilojoule(input);
-            public static Kilojoule Kilojoules(this long input) => new Kilojoule(input);
-
-            public static Kilojoule Kilojoules(this float input) => new Kilojoule((double)input);
-            public static Kilojoule Kilojoules(this double input) => new Kilojoule((double)input);
-        }
-    }
+	namespace UnitsOfMeasurement
+	{
+		public static partial class Energys
+		{
+			public class KiloJoule : Energy, IKiloJoule
+			{
+				#region CTOR
+				public KiloJoule(double value) : base(value, Conversion.KiloJoule, Suffixes.KiloJoule) { }
+				#endregion
+				#region Operators
+				public static KiloJoule operator +(KiloJoule firstMeasurement, KiloJoule secondMeasurement)
+				{
+					return new KiloJoule((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+				}
+				public static KiloJoule operator -(KiloJoule firstMeasurement, KiloJoule secondMeasurement)
+				{
+					return new KiloJoule((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+				}
+				public static KiloJoule operator *(KiloJoule firstMeasurement, KiloJoule secondMeasurement)
+				{
+					return new KiloJoule((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+				}
+				public static KiloJoule operator /(KiloJoule firstMeasurement, KiloJoule secondMeasurement)
+				{
+					return new KiloJoule((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+				}
+				#endregion
+			}
+			#region [Number].KiloJoules
+			public static KiloJoule KiloJoules(this Byte input) => new KiloJoule(input);
+			public static KiloJoule KiloJoules(this Int16 input) => new KiloJoule(input);
+			public static KiloJoule KiloJoules(this Int32 input) => new KiloJoule(input);
+			public static KiloJoule KiloJoules(this Int64 input) => new KiloJoule(input);
+			public static KiloJoule KiloJoules(this Single input) => new KiloJoule(input);
+			public static KiloJoule KiloJoules(this Double input) => new KiloJoule(input);
+			#endregion
+		}
+	}
 }
