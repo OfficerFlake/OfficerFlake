@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -102,9 +101,64 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Mass
+			if (capInput.EndsWithAny(Suffixes.Carat))
+			{
+				output = new Masses.Carat(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Centigram))
+			{
+				output = new Masses.Centigram(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Decagram))
+			{
+				output = new Masses.Decagram(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Gram))
+			{
+				output = new Masses.Gram(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Hectogram))
+			{
+				output = new Masses.Hectogram(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.Kilogram))
 			{
 				output = new Masses.Kilogram(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MetricTonne))
+			{
+				output = new Masses.MetricTonne(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Ounce))
+			{
+				output = new Masses.Ounce(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Pound))
+			{
+				output = new Masses.Pound(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Stone))
+			{
+				output = new Masses.Stone(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UKLongTon))
+			{
+				output = new Masses.UKLongTon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.USShortTon))
+			{
+				output = new Masses.USShortTon(conversion);
 				return true;
 			}
 			#endregion

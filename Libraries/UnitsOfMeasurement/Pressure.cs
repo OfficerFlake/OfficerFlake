@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -82,9 +81,34 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Pressure
+			if (capInput.EndsWithAny(Suffixes.Atmosphere))
+			{
+				output = new Pressures.Atmosphere(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Bar))
+			{
+				output = new Pressures.Bar(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.KiloPascal))
+			{
+				output = new Pressures.KiloPascal(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MillimeterOfMercury))
+			{
+				output = new Pressures.MillimeterOfMercury(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.Pascal))
 			{
 				output = new Pressures.Pascal(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.PoundPerSquareInch))
+			{
+				output = new Pressures.PoundPerSquareInch(conversion);
 				return true;
 			}
 			#endregion
@@ -95,7 +119,6 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			output = new Pressures.Pascal(conversion);
 			return false;
 			#endregion
-
 		}
 		#endregion
 

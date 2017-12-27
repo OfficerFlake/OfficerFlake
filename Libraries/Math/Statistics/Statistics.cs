@@ -1,77 +1,74 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Math.Statistics
 {
-    public class Statistic
+    public class Statistic : IStatistic
     {
         #region CTOR
-
         public Statistic(string name)
         {
             Name = name;
         }
         #endregion
         public string Name { get;}
-        private List<double> samplesList = new List<double>();
+        public List<double> Samples { get; set; } = new List<double>();
+	    public int n => Samples.Count;
 
-        public double Max()
-        {
-            if (samplesList.Count == 0) return 0;
-            return samplesList.Max();
-        }
+	    public double Sum()
+	    {
+		    if (n == 0) return 0;
+			return Samples.Sum();
+	    }
         public double Min()
         {
-            if (samplesList.Count == 0) return 0;
-            return samplesList.Min();
+            if (n == 0) return 0;
+            return Samples.Min();
         }
-        public double Mode()
+	    public double Max()
+	    {
+		    if (n == 0) return 0;
+		    return Samples.Max();
+	    }
+		public double Mode()
         {
-            if (samplesList.Count == 0) return 0;
-            return samplesList.GroupBy(v => v).OrderByDescending(g => g.Count()).FirstOrDefault().Key;
+            if (n == 0) return 0;
+            return Samples.GroupBy(v => v).OrderByDescending(g => g.Count()).FirstOrDefault().Key;
         }
         public double Mean()
         {
-            if (samplesList.Count == 0) return 0;
-            return samplesList.Select(x => x/samplesList.Count).Sum();
+            if (n == 0) return 0;
+            return Samples.Select(x => x/n).Sum();
         }
-        public double StandardDeviation()
+	    public double Variance()
+	    {
+		    double ret = 0;
+		    if (n > 0)
+		    {
+			    //Compute the Average      
+			    var avg = Mean();
+			    //Perform the Sum of (value-avg)_2_2      
+			    var sum = Samples.Sum(d => ((avg - d) * (avg - d)));
+			    //Put it all together      
+			    ret = sum;
+		    }
+		    return ret;
+	    }
+		public double StandardDeviation()
         {
-	        double ret = 0;
-            if (samplesList.Count() > 0)
-            {
-                //Compute the Average      
-                var avg = Mean();
-                //Perform the Sum of (value-avg)_2_2      
-                var sum = samplesList.Sum(d => ((d - avg) * (d - avg)));
-                //Put it all together      
-                ret = System.Math.Sqrt((double)((sum) / (samplesList.Count() - 1)));
-            }
-            return ret;
-        }
-
-        public void AddSample(double value)
-        {
-            lock (samplesList)
-            {
-                samplesList.Add(value);
-            }
-        }
-
-        public void ClearSamples()
-        {
-            samplesList.Clear();
+            return System.Math.Sqrt(Variance());
         }
 
         public void DebugShowStatistics()
         {
-            Debug.WriteLine(Name + ": ");
-            Debug.WriteLine("----MODE: " + Mode());
-            Debug.WriteLine("----MEAN: " + Mean());
-            Debug.WriteLine("----STDDEV: " + StandardDeviation());
-            Debug.WriteLine("----MAX : " + Max());
-            Debug.WriteLine("----MIN : " + Min());
+            Debug.AddDetailMessage(Name + ": ");
+            Debug.AddDetailMessage("----MODE: " + Mode());
+            Debug.AddDetailMessage("----MEAN: " + Mean());
+            Debug.AddDetailMessage("----STDDEV: " + StandardDeviation());
+            Debug.AddDetailMessage("----MAX : " + Max());
+            Debug.AddDetailMessage("----MIN : " + Min());
         }
     }
 }

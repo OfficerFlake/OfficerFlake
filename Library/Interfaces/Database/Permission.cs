@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Com.OfficerFlake.Libraries.Interfaces
+﻿namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	#region Permissions
 	public interface IPermission

@@ -32,12 +32,12 @@ namespace Com.OfficerFlake.Libraries
 				#endregion
 			}
 			#region [Number].MeterPerSeconds
-			public static MeterPerSecond MeterPerSeconds(this Byte input) => new MeterPerSecond(input);
-			public static MeterPerSecond MeterPerSeconds(this Int16 input) => new MeterPerSecond(input);
-			public static MeterPerSecond MeterPerSeconds(this Int32 input) => new MeterPerSecond(input);
-			public static MeterPerSecond MeterPerSeconds(this Int64 input) => new MeterPerSecond(input);
-			public static MeterPerSecond MeterPerSeconds(this Single input) => new MeterPerSecond(input);
-			public static MeterPerSecond MeterPerSeconds(this Double input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Byte input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Int16 input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Int32 input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Int64 input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Single input) => new MeterPerSecond(input);
+			public static MeterPerSecond MetersPerSecond(this Double input) => new MeterPerSecond(input);
 			#endregion
 		}
 	}

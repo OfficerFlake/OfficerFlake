@@ -36,7 +36,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		ISquareCentimeter ToSquareCentimeters();
 		ISquareFoot ToSquareFeet();
 		ISquareInch ToSquareInches();
-		ISquareKilometer ToSquareKilometerd();
+		ISquareKilometer ToSquareKilometers();
 		ISquareMeter ToSquareMeters();
 		ISquareMile ToSquareMiles();
 		ISquareMillimeter ToSquareMillimeters();

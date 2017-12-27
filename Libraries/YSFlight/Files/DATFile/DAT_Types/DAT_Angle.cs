@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.IO;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
-
-namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
+﻿namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
 	public static partial class PropertyTypes
 	{

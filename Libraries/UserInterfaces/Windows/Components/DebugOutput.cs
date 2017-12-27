@@ -2,18 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-
-using Com.OfficerFlake.Libraries.Color;
-using static Com.OfficerFlake.Libraries.Database;
-using static Com.OfficerFlake.Libraries.RichText.RichTextString;
-using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UserInterfaces.ContextMenus;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
@@ -261,14 +254,14 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			#region Date
 			RichTextString.MessageElement date = new RichTextString.MessageElement();
 		    date.Message = thisRichTextMessage.Datestamp.ToSystemString();
-			date.ForeColor = SimpleColors.White.Color;
+			date.ForeColor = SimpleColors.White.Color.Get24BitColor();
 		    if (OverrideBackColor) date.BackColor = BackColor;
 		    if (OverrideForeColor) date.ForeColor = ForeColor;
 			#endregion
 			#region Time
 			RichTextString.MessageElement time = new RichTextString.MessageElement();
 		    time.Message = thisRichTextMessage.Timestamp.ToSystemString();
-			time.ForeColor = SimpleColors.DarkGray.Color;
+			time.ForeColor = SimpleColors.DarkGray.Color.Get24BitColor();
 		    if (OverrideBackColor) time.BackColor = BackColor;
 		    if (OverrideForeColor) time.ForeColor = ForeColor;
 			#endregion

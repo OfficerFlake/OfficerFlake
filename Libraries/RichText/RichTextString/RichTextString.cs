@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.RichText
@@ -33,7 +31,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 			    bool isObfuscated, bool isStrikeout)
 		    {
 			    Message = message;
-			    ForeColor = GetColor(color.ColorCode);
+			    ForeColor = GetColor(color.ColorCode).Get24BitColor();
 			    IsBold = isBold;
 			    IsItallic = isItallic;
 			    IsUnderlined = isUnderlined;
@@ -54,7 +52,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 				}
 				return charindexes[charindexes.Keys.Min()];
 		    }
-		    public I24BitColor GetColor(char charCode)
+		    public IColor GetColor(char charCode)
 		    {
 			    if (SimpleColors.List.All((x => x.ColorCode != charCode))) return SimpleColors.White.Color;
 			    return SimpleColors.List.Last(x => x.ColorCode == charCode).Color;
@@ -173,52 +171,52 @@ namespace Com.OfficerFlake.Libraries.RichText
 						{
 							#region Cases
 							case '0':
-								currentMessageElement.ForeColor = SimpleColors.Color0.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color0.Color.Get24BitColor();
 								break;
 							case '1':
-								currentMessageElement.ForeColor = SimpleColors.Color1.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color1.Color.Get24BitColor();
 								break;
 							case '2':
-								currentMessageElement.ForeColor = SimpleColors.Color2.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color2.Color.Get24BitColor();
 								break;
 							case '3':
-								currentMessageElement.ForeColor = SimpleColors.Color3.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color3.Color.Get24BitColor();
 								break;
 							case '4':
-								currentMessageElement.ForeColor = SimpleColors.Color4.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color4.Color.Get24BitColor();
 								break;
 							case '5':
-								currentMessageElement.ForeColor = SimpleColors.Color5.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color5.Color.Get24BitColor();
 								break;
 							case '6':
-								currentMessageElement.ForeColor = SimpleColors.Color6.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color6.Color.Get24BitColor();
 								break;
 							case '7':
-								currentMessageElement.ForeColor = SimpleColors.Color7.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color7.Color.Get24BitColor();
 								break;
 							case '8':
-								currentMessageElement.ForeColor = SimpleColors.Color8.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color8.Color.Get24BitColor();
 								break;
 							case '9':
-								currentMessageElement.ForeColor = SimpleColors.Color9.Color;
+								currentMessageElement.ForeColor = SimpleColors.Color9.Color.Get24BitColor();
 								break;
 							case 'A':
-								currentMessageElement.ForeColor = SimpleColors.ColorA.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorA.Color.Get24BitColor();
 								break;
 							case 'B':
-								currentMessageElement.ForeColor = SimpleColors.ColorB.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorB.Color.Get24BitColor();
 								break;
 							case 'C':
-								currentMessageElement.ForeColor = SimpleColors.ColorC.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorC.Color.Get24BitColor();
 								break;
 							case 'D':
-								currentMessageElement.ForeColor = SimpleColors.ColorD.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorD.Color.Get24BitColor();
 								break;
 							case 'E':
-								currentMessageElement.ForeColor = SimpleColors.ColorE.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorE.Color.Get24BitColor();
 								break;
 							case 'F':
-								currentMessageElement.ForeColor = SimpleColors.ColorF.Color;
+								currentMessageElement.ForeColor = SimpleColors.ColorF.Color.Get24BitColor();
 								break;
 
 							case 'K':
@@ -238,7 +236,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 								break;
 
 							case 'R':
-								currentMessageElement.ForeColor = SimpleColors.White.Color;
+								currentMessageElement.ForeColor = SimpleColors.White.Color.Get24BitColor();
 								currentMessageElement.IsObfuscated = false;
 								currentMessageElement.IsBold = false;
 								currentMessageElement.IsStrikeout = false;

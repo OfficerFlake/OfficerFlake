@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -95,6 +94,36 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			if (capInput.EndsWithAny(Suffixes.BritishThermalUnit))
 			{
 				output = new Energys.BritishThermalUnit(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.ElectronVolt))
+			{
+				output = new Energys.ElectronVolt(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.FoodCalorie))
+			{
+				output = new Energys.FoodCalorie(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.FootPound))
+			{
+				output = new Energys.FootPound(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Joule))
+			{
+				output = new Energys.Joule(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.KiloJoule))
+			{
+				output = new Energys.KiloJoule(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.ThermalCalorie))
+			{
+				output = new Energys.ThermalCalorie(conversion);
 				return true;
 			}
 			#endregion

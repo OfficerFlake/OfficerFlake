@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Math;
-using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
-using Com.OfficerFlake.Libraries.Math.Statistics;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
-using Com.OfficerFlake.Libraries.YSFlight.Types;
 using Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties;
-using Com.OfficerFlake.Libraries.IO;
 using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
@@ -37,23 +32,23 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
             public static void Update(SpiderGraph Graph)
             {
-                ThrustToWeightRatio.AddSample(Graph.CalculateThrustToWeightRatio());
+                ThrustToWeightRatio.Samples.Add(Graph.CalculateThrustToWeightRatio());
 
-                ThrustToWeightRatio.AddSample(Graph.CalculateThrustToWeightRatio());
-                MaxCruiseSpeed.AddSample(Graph.CalculateMaxCruiseSpeed());
-                MaxCornerRate.AddSample(Graph.CalculateMaxTurnRate());
-                MaxStrength.AddSample(Graph.CalculateMaxStrength());
-                MaxWeaponLoadout.AddSample(Graph.CalculateWeaponScore());
-                MaxStealth.AddSample(Graph.CalculateStealth());
+                ThrustToWeightRatio.Samples.Add(Graph.CalculateThrustToWeightRatio());
+                MaxCruiseSpeed.Samples.Add(Graph.CalculateMaxCruiseSpeed());
+                MaxCornerRate.Samples.Add(Graph.CalculateMaxTurnRate());
+                MaxStrength.Samples.Add(Graph.CalculateMaxStrength());
+                MaxWeaponLoadout.Samples.Add(Graph.CalculateWeaponScore());
+                MaxStealth.Samples.Add(Graph.CalculateStealth());
             }
             public static void Clear()
             {
-                ThrustToWeightRatio.ClearSamples();
-                MaxCruiseSpeed.ClearSamples();
-                MaxCornerRate.ClearSamples();
-                MaxStrength.ClearSamples();
-                MaxWeaponLoadout.ClearSamples();
-                MaxStealth.ClearSamples();
+                ThrustToWeightRatio.Samples.Clear();
+                MaxCruiseSpeed.Samples.Clear();
+                MaxCornerRate.Samples.Clear();
+                MaxStrength.Samples.Clear();
+                MaxWeaponLoadout.Samples.Clear();
+                MaxStealth.Samples.Clear();
             }
 
             public static void ShowDebug()
@@ -84,7 +79,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                 File.Properties.OfType<PROPELLR>().Max(z => (z.Value.ConversionRatio*magicnumber_propellorpower).Kilograms().ToMetricTonnes())
 
             };
-            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
+            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x).First();
 
             return output;
         }
@@ -94,7 +89,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             {
                 File.Properties.OfType<WEIGHCLN>().Min(z => z.Value)
             };
-            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).Last();
+            var output = (input.All(y => y == null)) ? 0.MetricTonnes() : input.Where(y => y != null).OrderByDescending(x => x).Last();
             return output;
         }
         private Mass GetOperatingWeight()
@@ -109,19 +104,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             };
 	        var weightCleanOut = weightClean.All(y => y == null)
 		        ? 0.MetricTonnes()
-		        : weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).Last().ConvertToBase();
+		        : weightClean.Where(y => y != null).OrderByDescending(x => x).Last();
 
-	        var weightFuel50PercentOut = 0.5 *
+	        var weightFuel50PercentOut = (0.5 *
 	                                     ((weightClean.All(y => y == null))
-		                                     ? 0.MetricTonnes()
-		                                     : weightClean.Where(y => y != null).OrderByDescending(x => x.ConvertToBase())
-												.Last().ConvertToBase()
-	                                     );
-            return (weightCleanOut + weightFuel50PercentOut).Kilograms();
+		                                     ? 0.MetricTonnes().RawValue
+		                                     : weightClean.Where(y => y != null).OrderByDescending(x => x)
+												.Last().ToMetricTonnes().RawValue
+										 )).MetricTonnes();
+            return (weightCleanOut.ToKilograms().RawValue + weightFuel50PercentOut.ToKilograms().RawValue).Kilograms();
         }
         public double CalculateThrustToWeightRatio()
         {
-	        double numerator = GetMaxThrust().ConvertToBase();
+	        double numerator = GetMaxThrust().ToMetricTonnes().RawValue;
 	        double denominator = GetOperatingWeight().ConvertToBase();
             if (denominator == 0) return double.MaxValue;
 	        double output = numerator / denominator;
@@ -138,7 +133,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
                 File.Properties.OfType<REFVCRUS>().Max(z => z.Value),
 
             };
-            var output = (input.All(y => y == null)) ? 0.Knots() : input.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
+            var output = (input.All(y => y == null)) ? 0.Knots() : input.Where(y => y != null).OrderByDescending(x => x).First();
 
             return output;
         }
@@ -154,8 +149,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
         }
         public double CalculateMaxCruiseSpeed()
         {
-	        double numerator = GetCruiseSpeed().ConvertToBase();
-	        double denominator = (double)GetCruiseThrottle();
+	        double numerator = GetCruiseSpeed().ToMetersPerSecond().RawValue;
+	        double denominator = GetCruiseThrottle();
             if (denominator == 0) return 0;
 	        double output = numerator / denominator;
             return output;
@@ -170,7 +165,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             {
                 File.Properties.OfType<MXIPTAOA>().Max(z => z.Value),
             };
-            var MXIPTAOA = (ListOfMXIPTAOA.All(y => y == null)) ? 0.Degrees() : ListOfMXIPTAOA.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
+            var MXIPTAOA = (ListOfMXIPTAOA.All(y => y == null)) ? 0.Degrees() : ListOfMXIPTAOA.Where(y => y != null).OrderByDescending(x => x).First();
 
             return MXIPTAOA;
         }
@@ -180,13 +175,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             {
                 File.Properties.OfType<PSTMPTCH>().Max(z => z.Value),
             };
-            var PSTMPTCH = (ListOfPSTMPTCH.All(y => y == null)) ? 0.Degrees() : ListOfPSTMPTCH.Where(y => y != null).OrderByDescending(x => x.ConvertToBase()).First();
+            var PSTMPTCH = (ListOfPSTMPTCH.All(y => y == null)) ? 0.Degrees() : ListOfPSTMPTCH.Where(y => y != null).OrderByDescending(x => x).First();
 
             return PSTMPTCH;
         }
         public double CalculateMaxTurnRate()
         {
-            return (GetMaxInputAoA().ConvertToBase() + GetPSTMAoA().ConvertToBase()).Radians().ToDegrees();
+            return (GetMaxInputAoA().ToRadians().RawValue + GetPSTMAoA().ToRadians().RawValue).Radians().ToDegrees().RawValue;
         }
 
         #endregion
@@ -393,7 +388,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
 
         public float GetScore(Equations.Quadratic EQ, double Value)
         {
-            float score = EQ.Solve(Value);
+            float score = (float)EQ.SolveForResult(Value);
             if (score < 0) score = 0;
             if (score > 10) score = 10;
             return score;

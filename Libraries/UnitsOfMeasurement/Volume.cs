@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -128,9 +127,99 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Volume
+			if (capInput.EndsWithAny(Suffixes.UK.FluidOunce))
+			{
+				output = new Volumes.FluidOunce(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UK.Gallon))
+			{
+				output = new Volumes.UKGallon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UK.Pint))
+			{
+				output = new Volumes.UKPint(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UK.Quart))
+			{
+				output = new Volumes.UKQuart(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UK.TableSpoon))
+			{
+				output = new Volumes.UKTableSpoon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.UK.TeaSpoon))
+			{
+				output = new Volumes.UKTeaSpoon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.Cup))
+			{
+				output = new Volumes.USCup(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.Gallon))
+			{
+				output = new Volumes.USGallon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.Pint))
+			{
+				output = new Volumes.USPint(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.Quart))
+			{
+				output = new Volumes.USQuart(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.TableSpoon))
+			{
+				output = new Volumes.USTableSpoon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.US.TeaSpoon))
+			{
+				output = new Volumes.USTeaSpoon(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.CubicCentimeter))
+			{
+				output = new Volumes.CubicCentimeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.CubicFoot))
+			{
+				output = new Volumes.CubicFoot(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.CubicInch))
+			{
+				output = new Volumes.CubicInch(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.CubicMeter))
+			{
+				output = new Volumes.CubicMeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.CubicYard))
+			{
+				output = new Volumes.CubicYard(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.Litre))
 			{
 				output = new Volumes.Litre(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MilliLitre))
+			{
+				output = new Volumes.MilliLitre(conversion);
 				return true;
 			}
 			#endregion

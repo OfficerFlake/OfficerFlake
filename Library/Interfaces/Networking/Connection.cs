@@ -6,19 +6,78 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IConnection
 	{
-		String Username { get; set; }
+		IUser User { get; set; }
 		UInt32 Version { get; set; }
 
-		Boolean IsConnected { get; set; }
 		UInt32 ConnectionNumber { get; }
+		ConnectionType ConnectionType { get; set; }
+		Boolean IsConnected { get; set; }
 
-		bool Connect(Socket TCPSocket, IPacketProcessor PacketProcessor);
+		LoginStatus LoginState { get; set; }
+		Boolean IsLoggingIn { get; }
+		Boolean IsLoggedIn { get; }
+
+		FlightStatus FlightStatus { get; set; }
+		Boolean IsFlying { get; }
+
+		bool Connect(Socket TCPSocket);
 		bool Disconnect(string Reason);
+
+		void GivePacket(IPacket thisPacket);
 
 		bool Send(IPacket packet);
 		Task<bool> SendAsync(IPacket packet);
 		bool SendMessage(string message);
 		Task<bool> SendMessageAsync(string message);
+
+
+		IPacketWaiter CreatePacketWaiter(int type);
+		bool GetResponseOrResend(IPacketWaiter waiter, IPacket resendPacket);
+	}
+
+	public interface IPacketWaiter
+	{
+		IPacket RecievedPacket { get; set; }
+		UInt32 RequireType { get; }
+
+		Boolean IsReceived { get; }
+		Boolean WaitUntilReceived(int timeout);
+
+		bool StartListening();
+
+		void Require(int position, Byte[] data);
+		void Require(int position, Byte data);
+		void Require(int position, SByte data);
+		void Require(int position, Int16 data);
+		void Require(int position, Int32 data);
+		void Require(int position, Int64 data);
+		void Require(int position, UInt16 data);
+		void Require(int position, UInt32 data);
+		void Require(int position, UInt64 data);
+		void Require(int position, Single data);
+		void Require(int position, Double data);
+		void Require(int position, String data);
+
+		void Desire(int position, Byte[] data);
+		void Desire(int position, Byte data);
+		void Desire(int position, SByte data);
+		void Desire(int position, Int16 data);
+		void Desire(int position, Int32 data);
+		void Desire(int position, Int64 data);
+		void Desire(int position, UInt16 data);
+		void Desire(int position, UInt32 data);
+		void Desire(int position, UInt64 data);
+		void Desire(int position, Single data);
+		void Desire(int position, Double data);
+		void Desire(int position, String data);
+
+	}
+
+	public interface IPacketWaiterSegmentDescriptor
+	{
+		int Start { get; set; }
+		int End { get; set; }
+		byte[] DataExpected { get; set; }
 	}
 
 	public enum ConnectionType

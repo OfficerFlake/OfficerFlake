@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -25,41 +24,41 @@ namespace Com.OfficerFlake.Libraries
 			#region ServerRanks
 			public static IRank ServerRankOwner = new Rank()
 			{
-				Name = "Owner".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Owner"),
 				Index = 4,
-				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
-				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
+				LocalPermissions = ObjectFactory.CreateLocalPermissions(),
+				GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 			};
 			public static IRank ServerRankAdmin = new Rank()
 			{
-				Name = "Admin".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Admin"),
 				Index = 3,
-				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
-				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
+				LocalPermissions = ObjectFactory.CreateLocalPermissions(),
+				GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 			};
 			public static IRank ServerRankModerator = new Rank()
 			{
-				Name = "Moderator".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Moderator"),
 				Index = 2,
-				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
-				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
+				LocalPermissions = ObjectFactory.CreateLocalPermissions(),
+				GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 			};
 			public static IRank ServerRankMember = new Rank()
 			{
-				Name = "Member".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Member"),
 				Index = 1,
-				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
-				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
+				LocalPermissions = ObjectFactory.CreateLocalPermissions(),
+				GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 			};
 			public static IRank ServerRankGuest = new Rank()
 			{
-				Name = "Guest".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Guest"),
 				Index = 0,
-				LocalPermissions = ObjectFactory.Create(typeof(ILocalPermissions)),
-				GlobalPermissions = ObjectFactory.Create(typeof(IGlobalPermissions))
+				LocalPermissions = ObjectFactory.CreateLocalPermissions(),
+				GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 			};
 
-			public static List<IRank> ServerRanks = new List<IRank>()
+			public static readonly List<IRank> ServerRanks = new List<IRank>()
 			{
 				ServerRankOwner,
 				ServerRankAdmin,

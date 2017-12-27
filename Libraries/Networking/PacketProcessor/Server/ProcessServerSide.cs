@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -10,12 +6,12 @@ namespace Com.OfficerFlake.Libraries.Networking
     {
 	    public static partial class Server
 	    {
-		    public static bool Process(Connection thisConnection, GenericPacket thisPacket)
+		    public static bool Process(IConnection thisConnection, IPacket thisPacket)
 		    {
 			    switch (thisPacket.Type)
 			    {
 				    case 1:
-					    Packets.Type_01_Login thisLogin = new Packets.Type_01_Login();
+					    IPacket_01_Login thisLogin = ObjectFactory.CreatePacket01Login();
 					    thisLogin.Data = thisPacket.Data;
 					    return Process_Type_01_Login(thisConnection, thisLogin);
 				    case 3:
@@ -61,8 +57,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 				    case 31:
 					    break;
 				    case 32:
-						Packets.Type_32_ChatMessage thisChatMessage = new Packets.Type_32_ChatMessage();
-					    thisChatMessage.SetUsername(thisConnection.Username);
+					    IPacket_32_ChatMessage thisChatMessage = ObjectFactory.CreatePacket32ChatMessage(thisConnection.User, "");
+					    thisChatMessage.User = thisConnection.User;
 					    thisChatMessage.Data = thisPacket.Data;
 					    return Process_Type_32_ChatMessage(thisConnection, thisChatMessage);
 				    case 33:

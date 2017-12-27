@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Com.OfficerFlake.Libraries.Interfaces
+﻿namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IConsole
 	{

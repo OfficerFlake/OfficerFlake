@@ -10,7 +10,7 @@ namespace Com.OfficerFlake.Libraries
 			public class Radian : Angle, IRadian
 			{
 				#region CTOR
-				public Radian(double value) : base(value, Conversion.Radian, "RAD") { }
+				public Radian(double value) : base(value, Conversion.Radian, Suffixes.Radian) { }
 				#endregion
 				#region Operators
 				public static Radian operator +(Radian firstMeasurement, Radian secondMeasurement)

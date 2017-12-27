@@ -40,6 +40,8 @@
     <Compile Include="ExceptionHandling\ExceptionHandling.cs" />
     <Compile Include="Files\ListFile.cs" />
     <Compile Include="ObjectFactory\ObjectFactory.cs" />
+    <Compile Include="YSFlight\World.cs" />
+    <Compile Include="YSFlight\MetaData.cs" />
     <Compile Include="YSFlight\DATFile.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Networking\Server.cs" />

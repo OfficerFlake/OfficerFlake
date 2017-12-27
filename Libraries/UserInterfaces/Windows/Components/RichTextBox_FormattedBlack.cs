@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
-using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
-using static Com.OfficerFlake.Libraries.RichText.RichTextString;
-
 using FlakeColors = Com.OfficerFlake.Libraries.Color;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components

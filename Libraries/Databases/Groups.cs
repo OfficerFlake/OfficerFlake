@@ -1,10 +1,7 @@
-﻿using System;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -79,7 +76,7 @@ namespace Com.OfficerFlake.Libraries
 		{
 			public static Group Server = new Group()
 			{
-				Name = "Server".AsRichTextString(),
+				Name = ObjectFactory.CreateRichTextString("Server"),
 
 				CreatedBy = Users.Console,
 				CurrentOwner = Users.Console,

@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -98,9 +97,59 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Distance
+			if (capInput.EndsWithAny(Suffixes.Centimeter))
+			{
+				output = new Distances.Centimeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Foot))
+			{
+				output = new Distances.Foot(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Inch))
+			{
+				output = new Distances.Inch(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Kilometer))
+			{
+				output = new Distances.Kilometer(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.Meter))
 			{
 				output = new Distances.Meter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Micron))
+			{
+				output = new Distances.Micron(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Mile))
+			{
+				output = new Distances.Mile(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Millimeter))
+			{
+				output = new Distances.Millimeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Nanometer))
+			{
+				output = new Distances.Nanometer(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.NauticalMile))
+			{
+				output = new Distances.NauticalMile(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Yard))
+			{
+				output = new Distances.Yard(conversion);
 				return true;
 			}
 			#endregion

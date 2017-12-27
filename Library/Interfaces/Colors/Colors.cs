@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-
-namespace Com.OfficerFlake.Libraries.Interfaces
+﻿namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IColor
 	{

@@ -45,17 +45,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libararies\IO\Logger\Logger.csproj">
+    <ProjectReference Include="..\..\Libararies\IO\Logger\1_Logger.csproj">
       <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
-      <Name>Logger</Name>
+      <Name>1_Logger</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Library\Interfaces\Interfaces.csproj">
+    <ProjectReference Include="..\..\Library\Interfaces\0__Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
-      <Name>Interfaces</Name>
+      <Name>0__Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Extensions\Extensions.csproj">
+    <ProjectReference Include="..\Extensions\4_Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>Extensions</Name>
+      <Name>4_Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,88 +1,61 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.IO.Pipes;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Com.OfficerFlake.Libraries.Networking.Packets;
 
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
-    public class Connection
+    public class Connection : IConnection
     {
 		#region Properties
-	    public string Username = "<Unknown User>";
-	    public UInt32 Version = 0;
+	    public IUser User { get; set; } = ObjectFactory.CreateUser(ObjectFactory.CreateRichTextString("<Unknown User>"));
+	    public UInt32 Version { get; set; } = 0;
 
 	    #region ConnectionNumber
-	    private static int ConnectionIDIncrementer = 0;
-	    public int ConnectionNumber
+	    private static uint ConnectionIDIncrementer = 0;
+	    public UInt32 ConnectionNumber
 	    {
 		    get;
 		    private set;
 	    }
 	    #endregion
 		#region ConnectionType
-		public enum ConnectionType
-	    {
-		    YSFlightClient,
-			OpenYSClient
-	    }
-	    private ConnectionType _connectionType = ConnectionType.YSFlightClient;
-	    public void SetConnectionType(ConnectionType ConectionType)
-	    {
-		    _connectionType = ConectionType;
-	    }
+	    public ConnectionType ConnectionType { get; set; }= ConnectionType.YSFlight;
+	    public bool IsConnected { get; set; } = false;
 		#endregion
 
 		#region LoginStatus
-	    public enum LoginStatus
-	    {
-			Disconnected,
-		    LoggingIn,
-			LoggedIn,
-	    }
-		private LoginStatus _loginState = LoginStatus.Disconnected;
-	    public void SetLoggingIn() => _loginState = LoginStatus.LoggingIn;
-	    public void SetLoggedIn() => _loginState = LoginStatus.LoggedIn;
-	    public bool IsLoggingIn => _loginState == LoginStatus.LoggingIn;
-	    public bool IsLoggedIn => _loginState == LoginStatus.LoggedIn;
+		public LoginStatus LoginState { get; set; } = LoginStatus.Disconnected;
+	    public bool IsLoggingIn => LoginState == LoginStatus.LoggingIn;
+	    public bool IsLoggedIn => LoginState == LoginStatus.LoggedIn;
 		#endregion
 		#region FlightStatus
-	    public enum FlightStatus
-	    {
-		    Idle,
-			Flying
-	    }
-	    private FlightStatus _flightStatus = FlightStatus.Idle;
-		public bool IsFlying => _flightStatus == FlightStatus.Flying;
-	    public void SetIsFlightIdle() => _flightStatus = FlightStatus.Idle;
-	    public void SetIsFlying() => _flightStatus = FlightStatus.Flying;
+	    public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
+		public bool IsFlying => FlightStatus == FlightStatus.Flying;
 		#endregion
 		#endregion
 
 		#region DataFlow
 		#region Connect
-		public void Connect()
+		public bool Connect(Socket incomingSocket)
 	    {
 			ConnectionNumber = ConnectionIDIncrementer++;
-		    AddToServerList();
-		}
+		    SetTCPSocket(incomingSocket).ConfigureAwait(false);
+			AddToServerList();
+		    return true;
+	    }
 		#endregion
 
 		#region Sockets
 		#region TCP/IP
 		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		private Socket TCPSocket = BlankTCPSocket;
-		public async Task<bool> SetTCPSocket(Socket incomingSocket)
+		private async Task<bool> SetTCPSocket(Socket incomingSocket)
 		{
 			if (TCPSocket == BlankTCPSocket)
 			{
@@ -179,10 +152,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return bodyBuffer;
 		}
-		private async Task<GenericPacket> TCPGetPacketAsync()
+		private async Task<IPacket> TCPGetPacketAsync()
 		{
 			#region Init
-			GenericPacket output = Packet.NoPacket;
+			IPacket output = null;
 
 			UInt32 size;
 			byte[] body;
@@ -272,19 +245,19 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (ArgumentNullException)
 			{
 				//output is null.
-				output = Packet.NoPacket;
+				output = null;
 				return output;
 			}
 			#endregion
 		}
 		private async Task TCPGetPacket()
 		{
-			GenericPacket receivedPacket = Packet.NoPacket;
+			IPacket receivedPacket = null;
 			receivedPacket = await TCPGetPacketAsync();
-			if (receivedPacket.Serialise().SequenceEqual(Packet.NoPacket.Serialise()))
+			if (receivedPacket == null)
 			{
 				//Disconnect! Got Nothing!
-				Disconnect();
+				Disconnect("End of datastream.");
 
 				return;
 			}
@@ -293,7 +266,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 		#region Send
-		private bool TCPSend(GenericPacket thisPacket)
+		private bool TCPSend(IPacket thisPacket)
 		{
 			try
 			{
@@ -314,16 +287,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-	    public bool Send(GenericPacket Input)
+	    public bool Send(IPacket Input)
 	    {
 		    return TCPSend(Input);
 	    }
 		public bool SendMessage(string Input)
 	    {
-		    Type_32_ChatMessage thisChatMessage = new Type_32_ChatMessage(Input);
+		    IPacket_32_ServerMessage thisChatMessage = ObjectFactory.CreatePacket32ServerMessage(Input);
 		    return TCPSend(thisChatMessage);
 	    }
-		public async Task<bool> SendAsync(GenericPacket thisPacket)
+		public async Task<bool> SendAsync(IPacket thisPacket)
 		{
 			try
 			{
@@ -357,8 +330,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 		#region Processing
 		#region Pass In A Packet
-		public void GivePacket(GenericPacket thisPacket) => GivePacketToConnection(this, thisPacket);
-	    private static void GivePacketToConnection(Connection thisConncetion, GenericPacket thisPacket)
+		public void GivePacket(IPacket thisPacket) => GivePacketToConnection(this, thisPacket);
+	    private static void GivePacketToConnection(Connection thisConncetion, IPacket thisPacket)
 	    {
 		    if (thisPacket == null)
 		    {
@@ -370,21 +343,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    }
 		#endregion
 		#region Wait For A Packet
-		public class PacketWaiter
+		public class PacketWaiter : IPacketWaiter
 		{
-			public PacketWaiter(Int32 type)
+			public PacketWaiter(UInt32 type)
 			{
-				Type = type;
+				RequireType = type;
 			}
 
-			public Int32 Type { get; private set; }
-			public class PacketSegmentDescriptor
+			public UInt32 RequireType { get; }
+			public class PacketWaiterSegmentDescriptor : IPacketWaiterSegmentDescriptor
 			{
-				public int Start = 0;
-				public int End = 0;
-				public byte[] DataExpected = new byte[0];
+				public int Start { get; set; } = 0;
+				public int End { get; set; } = 0;
+				public byte[] DataExpected { get; set; } = new byte[0];
 
-				public PacketSegmentDescriptor(int start, byte[] dataExpected)
+				public PacketWaiterSegmentDescriptor(int start, byte[] dataExpected)
 				{
 					Start = start;
 					End = Start + dataExpected.Length;
@@ -392,16 +365,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 				}
 			}
 
-			public GenericPacket RecievedPacket = null;
+			public IPacket RecievedPacket { get; set; } = null;
 
 			#region Require
-			private List<PacketSegmentDescriptor> Required = new List<PacketSegmentDescriptor>();
+			private List<PacketWaiterSegmentDescriptor> Required = new List<PacketWaiterSegmentDescriptor>();
 			public void Require(int start, byte[] description)
 			{
-				PacketSegmentDescriptor thisDescriptor = new PacketSegmentDescriptor(start, description);
+				PacketWaiterSegmentDescriptor thisDescriptor = new PacketWaiterSegmentDescriptor(start, description);
 				Required.Add(thisDescriptor);
 			}
-			public void Require(int start, byte description)
+			public void Require(int start, Byte description)
 			{
 				Require(start, new byte[] { description });
 			}
@@ -417,6 +390,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				Require(start, BitConverter.GetBytes(description));
 			}
+			public void Require(int start, Int64 description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
 			public void Require(int start, UInt16 description)
 			{
 				Require(start, BitConverter.GetBytes(description));
@@ -425,7 +402,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				Require(start, BitConverter.GetBytes(description));
 			}
+			public void Require(int start, UInt64 description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
 			public void Require(int start, Single description)
+			{
+				Require(start, BitConverter.GetBytes(description));
+			}
+			public void Require(int start, Double description)
 			{
 				Require(start, BitConverter.GetBytes(description));
 			}
@@ -436,13 +421,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			#endregion
 			#region Desire
-			private List<PacketSegmentDescriptor> Desired = new List<PacketSegmentDescriptor>();
+			private List<PacketWaiterSegmentDescriptor> Desired = new List<PacketWaiterSegmentDescriptor>();
 			public void Desire(int start, byte[] description)
 			{
-				PacketSegmentDescriptor thisDescriptor = new PacketSegmentDescriptor(start, description);
+				PacketWaiterSegmentDescriptor thisDescriptor = new PacketWaiterSegmentDescriptor(start, description);
 				Desired.Add(thisDescriptor);
 			}
-			public void Desire(int start, byte description)
+			public void Desire(int start, Byte description)
 			{
 				Desire(start, new byte[] { description });
 			}
@@ -458,6 +443,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				Desire(start, BitConverter.GetBytes(description));
 			}
+			public void Desire(int start, Int64 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
 			public void Desire(int start, UInt16 description)
 			{
 				Desire(start, BitConverter.GetBytes(description));
@@ -466,7 +455,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				Desire(start, BitConverter.GetBytes(description));
 			}
+			public void Desire(int start, UInt64 description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
 			public void Desire(int start, Single description)
+			{
+				Desire(start, BitConverter.GetBytes(description));
+			}
+			public void Desire(int start, Double description)
 			{
 				Desire(start, BitConverter.GetBytes(description));
 			}
@@ -477,7 +474,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			#endregion
 			#region Receiving
-			private ManualResetEvent Received = new ManualResetEvent(false);
+			private ManualResetEvent Received { get; set; }= new ManualResetEvent(false);
+			public bool IsReceived => Received.WaitOne(0);
 			public bool StartListening()
 			{
 				if (RecievedPacket != null) return false;
@@ -489,7 +487,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				Received.Set();
 				PacketWaiters.RemoveAll(x => x == this);
 			}
-			internal void CheckIfReceived(GenericPacket thisPacket)
+			internal void CheckIfReceived(IPacket thisPacket)
 			{
 				bool GetDesired = (false | Desired.Count <= 0);
 				foreach (var desiredPacketSegment in Desired)
@@ -538,7 +536,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			#endregion
 
-			public bool WaitUntilRecived(int microseconds)
+			public bool WaitUntilReceived(int microseconds)
 			{
 				if (Received.WaitOne(0)) return true;
 				StartListening();
@@ -546,10 +544,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 		}
 		private static List<PacketWaiter> PacketWaiters = new List<PacketWaiter>();
-		public bool GetResponseOrResend(PacketWaiter response, GenericPacket resend)
+
+	    public IPacketWaiter CreatePacketWaiter(int type)
+	    {
+		    return new PacketWaiter((uint)type);
+	    }
+		public bool GetResponseOrResend(IPacketWaiter response, IPacket resend)
 		{
 			int resends = 0;
-			while (!response.WaitUntilRecived(3000))
+			while (!response.WaitUntilReceived(3000))
 			{
 				if (resends >= 3) return false;
 
@@ -561,8 +564,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Set Up Packet Processor
-		public delegate bool DelegatePacketProcessor(Connection thisConnection, GenericPacket thisPacket);
-	    private static bool DummyPacketProcessor(Connection thisConnection, GenericPacket thisPacket)
+		public delegate bool DelegatePacketProcessor(Connection thisConnection, IPacket thisPacket);
+	    private static bool DummyPacketProcessor(Connection thisConnection, IPacket thisPacket)
 	    {
 		    throw new NotImplementedException();
 	    }
@@ -574,7 +577,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    }
 		#endregion
 		#region Process Packet
-		private void ProcessPacket(GenericPacket thisPacket)
+		private void ProcessPacket(IPacket thisPacket)
 		{
 			if (thisPacket == null)
 			{
@@ -593,11 +596,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Disconnect
-		public bool Disconnect()
+		public bool Disconnect(string reason)
 	    {
 		    RemoveFromServerList();
-		    AllConnections.SendMessageAsync(this.Username + " left the server.").ConfigureAwait(false);
-		    if (TCPSocket.Connected)
+		    AllConnections.Except(new []{this}).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+		    SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
+		    SendMessageAsync("Disconnection reason: " + reason).ConfigureAwait(false);
+			if (TCPSocket.Connected)
 		    {
 			    try
 			    {
@@ -620,10 +625,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Connections List
-		private static List<Connection> _connections = new List<Connection>();
-	    public static List<Connection> AllConnections => _connections;
+		private static List<IConnection> _connections = new List<IConnection>();
+	    public static List<IConnection> AllConnections => _connections;
 
-	    private void AddToServerList()
+		private void AddToServerList()
 	    {
 			_connections.Add(this);
 		}
@@ -633,9 +638,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 
-		public Connection()
+		public Connection(Socket incomingSocket)
 	    {
-		    Connect();
+		    Connect(incomingSocket);
 		}
 	    ~Connection()
 	    {
@@ -680,10 +685,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 		#region Send
-		public static async Task<bool> SendAsync(this List<Connection> connections, GenericPacket thisPacket)
+		public static async Task<bool> SendAsync(this List<IConnection> connections, IPacket thisPacket)
 		{
 			List<Task<bool>> tasks = new List<Task<bool>>();
-			foreach (Connection thisConnection in connections)
+			foreach (IConnection thisConnection in connections)
 			{
 				tasks.Add(thisConnection.SendAsync(thisPacket));
 			}
@@ -694,10 +699,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return !AnyErrors;
 		}
-		public static async Task<bool> SendMessageAsync(this List<Connection> connections, string message)
+		public static async Task<bool> SendMessageAsync(this List<IConnection> connections, string message)
 		{
 			List<Task<bool>> tasks = new List<Task<bool>>();
-			foreach (Connection thisConnection in connections)
+			foreach (IConnection thisConnection in connections)
 			{
 				tasks.Add(thisConnection.SendMessageAsync(message));
 			}

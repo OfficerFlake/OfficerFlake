@@ -6,7 +6,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket
 	{
 		UInt32 Size { get; }
-		UInt32 Type { get; }
+		UInt32 Type { get; set; }
 		byte[] Data { get; set; }
 
 		#region Data Manipulation
@@ -289,6 +289,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_32_ChatMessage : IPacket
 	{
 		String Message { get; set; }
+		IUser User { get; set; }
 	}
 	public interface IPacket_32_ServerMessage : IPacket
 	{
@@ -363,7 +364,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		String Command { get; set; }
 		String Parameters { get; set; }
 	}
-	public interface IPacket_44_AircraftList
+	public interface IPacket_44_AircraftList : IPacket
 	{
 		Byte Version { get; set; }
 		Byte Count { get; set; }

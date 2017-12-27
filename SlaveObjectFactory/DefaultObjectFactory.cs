@@ -1,9 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
@@ -12,6 +8,8 @@ namespace Com.OfficerFlake.Libraries
 	{
 		private class DefaultObjectFactory : IObjectFactory
 		{
+			public List<IConnection> AllConnections => throw new NotImplementedException();
+
 			public IColor CreateColor(char colorCode)
 			{
 				throw new NotImplementedException();
@@ -42,12 +40,12 @@ namespace Com.OfficerFlake.Libraries
 				throw new NotImplementedException();
 			}
 
-			public ICoordinate2 CreateCoordinate2(IDimensionX<double> x, IDimensionY<double> y)
+			public ICoordinate2 CreateCoordinate2(double x, double y)
 			{
 				throw new NotImplementedException();
 			}
 
-			public ICoordinate3 CreateCoordinate3(IDimensionX<double> x, IDimensionY<double> y, IDimensionZ<double> z)
+			public ICoordinate3 CreateCoordinate3(double x, double y, double z)
 			{
 				throw new NotImplementedException();
 			}
@@ -147,12 +145,12 @@ namespace Com.OfficerFlake.Libraries
 				throw new NotImplementedException();
 			}
 
-			public IOrientation2 CreateOrientation2(IDimensionH h, IDimensionP p)
+			public IOrientation2 CreateOrientation2(IAngle h, IAngle p)
 			{
 				throw new NotImplementedException();
 			}
 
-			public IOrientation3 CreateOrientation3(IDimensionH h, IDimensionP p, IDimensionB b)
+			public IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b)
 			{
 				throw new NotImplementedException();
 			}
@@ -342,17 +340,17 @@ namespace Com.OfficerFlake.Libraries
 				throw new NotImplementedException();
 			}
 
-			public IPoint2 CreatePoint2<T>(IDimensionX<T> x, IDimensionY<T> y)
+			public IPoint2 CreatePoint2(IDistance x, IDistance y)
 			{
 				throw new NotImplementedException();
 			}
 
-			public IPoint3 CreatePoint3<T>(IDimensionX<T> x, IDimensionY<T> y, IDimensionZ<T> z)
+			public IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z)
 			{
 				throw new NotImplementedException();
 			}
 
-			public IPacket_04_Field CreatepPacket04Field()
+			public IPacket_04_Field CreatePacket04Field()
 			{
 				throw new NotImplementedException();
 			}
@@ -422,27 +420,52 @@ namespace Com.OfficerFlake.Libraries
 				throw new NotImplementedException();
 			}
 
-			public IVector2 CreateVector2<T>(IDimensionX<T> x, IDimensionY<T> y)
+			public IVector2 CreateVector2(IDistance x, IDistance y)
 			{
 				throw new NotImplementedException();
 			}
 
-			public IVector3 CreateVector3<T>(IDimensionX<T> x, IDimensionY<T> y, IDimensionZ<T> z)
+			public IVector3 CreateVector3(IDistance x, IDistance y, IDistance z)
 			{
 				throw new NotImplementedException();
 			}
 
-			public IPacket_48_FogColor CreatPacket48FogColor()
+			public IPacket_48_FogColor CreatePacket48FogColor()
 			{
 				throw new NotImplementedException();
 			}
 
-			public IPacket_20_OrdinanceSpawn CreattePacket20OrdinanceSpawn()
+			public IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn()
 			{
 				throw new NotImplementedException();
 			}
 
-			public IPacket_31_MissilesOption CretatePacket31MissilesOption()
+			public IPacket_31_MissilesOption CreatePacket31MissilesOption()
+			{
+				throw new NotImplementedException();
+			}
+
+			public List<IConnection> ExcludeConnections(List<IConnection> connections, IConnection exlude)
+			{
+				throw new NotImplementedException();
+			}
+
+			public List<IConnection> ExcludeConnections(List<IConnection> connections, List<IConnection> exlude)
+			{
+				throw new NotImplementedException();
+			}
+
+			public List<IConnection> IncludeConnections(List<IConnection> connections, IConnection include)
+			{
+				throw new NotImplementedException();
+			}
+
+			public List<IConnection> IncludeConnections(List<IConnection> connections, List<IConnection> include)
+			{
+				throw new NotImplementedException();
+			}
+
+			public IPacketWaiter CreatePacketWaiter(IConnection thisConnection, uint type)
 			{
 				throw new NotImplementedException();
 			}

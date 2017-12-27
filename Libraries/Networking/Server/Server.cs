@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using Com.OfficerFlake.Libraries.Networking.Packets;
-using static Com.OfficerFlake.Libraries.Networking.Connection;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -72,11 +69,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 			    if (received.Length >= 12)
 			    {
-				    int ConnectionID = BitConverter.ToInt32(received, 0);
-					int Type = BitConverter.ToInt32(received, 8);
-					GenericPacket thisPacket = new GenericPacket(Type, received.Skip(12).ToArray());
+				    int connectionID = BitConverter.ToInt32(received, 0);
+					uint type = BitConverter.ToUInt32(received, 8);
+				    IPacket thisPacket = ObjectFactory.CreateGenericPacket();
+				    thisPacket.Type = type;
+					thisPacket.Data = received.Skip(12).ToArray();
 
-				    foreach (Connection thisConnection in AllConnections.Where(x => x.ConnectionNumber == ConnectionID))
+				    foreach (IConnection thisConnection in ObjectFactory.AllConnections.Where(x => x.ConnectionNumber == connectionID))
 				    {
 					    thisConnection.GivePacket(thisPacket);
 				    }
@@ -99,8 +98,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 		    {
 			    Socket newSocket = listener.EndAcceptSocket(ar);
-			    Connection newConnection = new Connection();
-			    newConnection.SetTCPSocket(newSocket);
+			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket);
 			    TCPBeginAccept();
 			}
 		    catch (ObjectDisposedException)

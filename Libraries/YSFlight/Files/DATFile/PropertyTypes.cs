@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.IO;
+﻿using System.Text;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {

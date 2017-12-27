@@ -7,10 +7,10 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Miligram : Mass, IMiligram
+			public class Miligram : Mass, IMilligram
 			{
 				#region CTOR
-				public Miligram(double value) : base(value, Conversion.Miligram, Suffixes.Miligram) { }
+				public Miligram(double value) : base(value, Conversion.Milligram, Suffixes.Milligram) { }
 				#endregion
 				#region Operators
 				public static Miligram operator +(Miligram firstMeasurement, Miligram secondMeasurement)

@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -86,9 +85,44 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Speed
+			if (capInput.EndsWithAny(Suffixes.CentimeterPerSecond))
+			{
+				output = new Speeds.CentimeterPerSecond(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.FootPerSecond))
+			{
+				output = new Speeds.FootPerSecond(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.KilometerPerHour))
+			{
+				output = new Speeds.KilometerPerHour(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Knot))
+			{
+				output = new Speeds.Knot(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MachAtSeaLevel))
+			{
+				output = new Speeds.MachAtSeaLevel(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.MeterPerSecond))
 			{
 				output = new Speeds.MeterPerSecond(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MilePerHour))
+			{
+				output = new Speeds.MilePerHour(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.MillimeterPerSecond))
+			{
+				output = new Speeds.MillimeterPerSecond(conversion);
 				return true;
 			}
 			#endregion

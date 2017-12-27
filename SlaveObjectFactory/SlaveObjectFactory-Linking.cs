@@ -1,10 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Com.OfficerFlake.Libraries.Interfaces;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -13,7 +7,7 @@ namespace Com.OfficerFlake.Libraries
 		#region Linking
 		public static void LinkSlaveFactory(IObjectFactory newFactory)
 		{
-			factory = newFactory;
+			slaveFactory = newFactory;
 		}
 		#endregion
 	}

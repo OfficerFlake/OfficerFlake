@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
@@ -86,33 +81,33 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		public IDistance PosX
 		{
 			get => GetSingle(12).Meters();
-			set => SetSingle(12, (Single)value.ConvertToBase().Meters().RawValue);
+			set => SetSingle(12, (Single)value.ToMeters().RawValue);
 		}
 		public IDistance PosY
 		{
 			get => GetSingle(16).Meters();
-			set => SetSingle(16, (Single)value.ConvertToBase().Meters().RawValue);
+			set => SetSingle(16, (Single)value.ToMeters().RawValue);
 		}
 		public IDistance PosZ
 		{
 			get => GetSingle(20).Meters();
-			set => SetSingle(20, (Single)value.ConvertToBase().Meters().RawValue);
+			set => SetSingle(20, (Single)value.ToMeters().RawValue);
 		}
 
 		public IAngle RotX
 		{
 			get => GetSingle(24).Radians();
-			set => SetSingle(24, (Single)value.ConvertToBase().Radians().RawValue);
+			set => SetSingle(24, (Single)value.ToRadians().RawValue);
 		}
 		public IAngle RotY
 		{
 			get => GetSingle(28).Radians();
-			set => SetSingle(28, (Single)value.ConvertToBase().Radians().RawValue);
+			set => SetSingle(28, (Single)value.ToRadians().RawValue);
 		}
 		public IAngle RotZ
 		{
 			get => GetSingle(32).Radians();
-			set => SetSingle(32, (Single)value.ConvertToBase().Radians().RawValue);
+			set => SetSingle(32, (Single)value.ToRadians().RawValue);
 		}
 
 		public String Identify

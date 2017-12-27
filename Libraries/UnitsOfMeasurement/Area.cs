@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -96,6 +95,46 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Areas.Acre(conversion);
 				return true;
 			}
+			if (capInput.EndsWithAny(Suffixes.SquareCentimeter))
+			{
+				output = new Areas.SquareCentimeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareFoot))
+			{
+				output = new Areas.SquareFoot(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareKilometer))
+			{
+				output = new Areas.SquareKilometer(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareMeter))
+			{
+				output = new Areas.SquareMeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareMile))
+			{
+				output = new Areas.SquareMile(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareMillimeter))
+			{
+				output = new Areas.SquareMillimeter(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareNauticalMile))
+			{
+				output = new Areas.SquareNauticalMile(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.SquareYard))
+			{
+				output = new Areas.SquareYard(conversion);
+				return true;
+			}
 			#endregion
 		#region ... Conversion
 			#region Type Unrecognised
@@ -125,7 +164,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Areas.SquareInch(ConvertToBase() / Conversion.SquareInch);
 		}
-		public ISquareKilometer ToSquareKilometerd()
+		public ISquareKilometer ToSquareKilometers()
 		{
 			return new Areas.SquareKilometer(ConvertToBase() / Conversion.SquareKilometer);
 		}

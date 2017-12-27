@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -80,9 +79,29 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Power
+			if (capInput.EndsWithAny(Suffixes.BTUPerMinute))
+			{
+				output = new Powers.BTUPerMinute(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.FootPoundPerMinute))
+			{
+				output = new Powers.FootPoundPerMinute(conversion);
+				return true;
+			}
 			if (capInput.EndsWithAny(Suffixes.KiloWatt))
 			{
 				output = new Powers.KiloWatt(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.USHorsePower))
+			{
+				output = new Powers.USHorsePower(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Watt))
+			{
+				output = new Powers.Watt(conversion);
 				return true;
 			}
 			#endregion

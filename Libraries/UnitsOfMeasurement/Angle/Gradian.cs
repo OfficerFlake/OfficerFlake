@@ -10,7 +10,7 @@ namespace Com.OfficerFlake.Libraries
 			public class Gradian : Angle, IGradian
 			{
 				#region CTOR
-				public Gradian(double value) : base(value, Conversion.Gradian, "GRAD") { }
+				public Gradian(double value) : base(value, Conversion.Gradian, Suffixes.Gradian) { }
 				#endregion
 				#region Operators
 				public static Gradian operator +(Gradian firstMeasurement, Gradian secondMeasurement)

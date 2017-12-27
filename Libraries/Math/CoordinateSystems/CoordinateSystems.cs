@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Com.OfficerFlake.Libraries.Interfaces;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 {
@@ -49,7 +46,6 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			Z = z;
 		}
 	}
-
 	public class Vector2 : IVector2
 	{
 		public IDistance X
@@ -95,6 +91,50 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		}
 	}
 
+	public class Coordinate2 : ICoordinate2
+	{
+		public double X
+		{
+			get;
+			set;
+		}
+		public double Y
+		{
+			get;
+			set;
+		}
+
+		public Coordinate2(double x, double y)
+		{
+			X = x;
+			Y = y;
+		}
+	}
+	public class Coordinate3 : ICoordinate3
+	{
+		public double X
+		{
+			get;
+			set;
+		}
+		public double Y
+		{
+			get;
+			set;
+		}
+		public double Z
+		{
+			get;
+			set;
+		}
+
+		public Coordinate3(double x, double y, double z)
+		{
+			X = x;
+			Y = y;
+			Z = z;
+		}
+	}
 	public class Orientation2 : IOrientation2
 	{
 		public IAngle H

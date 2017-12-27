@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Com.OfficerFlake.Libraries.IO;
-
-namespace Com.OfficerFlake.Libraries
+﻿namespace Com.OfficerFlake.Libraries
 {
 	public static partial class Settings
 	{

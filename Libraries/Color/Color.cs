@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
@@ -7,16 +6,21 @@ namespace Com.OfficerFlake.Libraries.Color
 {
 	public class XRGBColor : I24BitColor
 	{
-		public XRGBColor(byte red, byte green, byte blue)
-        {
-            Red = red;
-            Green = green;
-            Blue = blue;
-        }
-
 		public byte Red { get; set; }
 		public byte Green { get; set; }
 		public byte Blue { get; set; }
+
+		public XRGBColor(byte red, byte green, byte blue)
+		{
+			Red = red;
+			Green = green;
+			Blue = blue;
+		}
+
+		public IColor GetColor()
+		{
+			return ObjectFactory.CreateColor(Red, Green, Blue);
+		}
 
 		public string ToHexString()
 		{
@@ -38,6 +42,11 @@ namespace Com.OfficerFlake.Libraries.Color
 			Blue = blue;
 		}
 
+		public IColor GetColor()
+		{
+			return ObjectFactory.CreateColor(Alpha, Red, Green, Blue);
+		}
+
 		public string ToHexString()
 		{
 			return "#" + Red.ToHexString() + Green.ToHexString() + Blue.ToHexString();
@@ -46,13 +55,18 @@ namespace Com.OfficerFlake.Libraries.Color
 
 	public class SimpleColor : ISimpleColor
 	{
-		public I24BitColor Color { get; set; } = new XRGBColor(255,255,255);
-		public char ColorCode { get; set; } = '?';
-
-		public SimpleColor(I24BitColor color, char colorCode)
+		public SimpleColor(IColor color, char colorCode)
 		{
 			Color = color;
 			ColorCode = colorCode;
+		}
+
+		public IColor Color { get; set; } = new XRGBColor(255,255,255).GetColor();
+		public char ColorCode { get; set; } = '?';
+
+		public IColor GetColor()
+		{
+			return ObjectFactory.CreateColor(Color.Red, Color.Green, Color.Blue);
 		}
 
 		public override string ToString()
@@ -68,7 +82,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color0 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 0, 0),
+				new XRGBColor(0, 0, 0).GetColor(),
 				'0'
 			);
 
@@ -76,7 +90,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color1 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 0, 170),
+				new XRGBColor(0, 0, 170).GetColor(),
 				'1'
 			);
 
@@ -84,7 +98,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color2 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 170, 0),
+				new XRGBColor(0, 170, 0).GetColor(),
 				'2'
 			);
 
@@ -92,7 +106,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color3 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 170, 170),
+				new XRGBColor(0, 170, 170).GetColor(),
 				'3'
 			);
 
@@ -100,7 +114,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color4 =
 			new SimpleColor
 			(
-				new XRGBColor(170, 0, 0),
+				new XRGBColor(170, 0, 0).GetColor(),
 				'4'
 			);
 
@@ -108,7 +122,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color5 =
 			new SimpleColor
 			(
-				new XRGBColor(170, 0, 170),
+				new XRGBColor(170, 0, 170).GetColor(),
 				'5'
 			);
 
@@ -116,7 +130,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color6 =
 			new SimpleColor
 			(
-				new XRGBColor(0, 170, 0),
+				new XRGBColor(0, 170, 0).GetColor(),
 				'6'
 			);
 
@@ -124,7 +138,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color7 =
 			new SimpleColor
 			(
-				new XRGBColor(170, 170, 170),
+				new XRGBColor(170, 170, 170).GetColor(),
 				'7'
 			);
 
@@ -132,7 +146,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color8 =
 			new SimpleColor
 			(
-				new XRGBColor(85, 85, 85),
+				new XRGBColor(85, 85, 85).GetColor(),
 				'8'
 			);
 
@@ -140,7 +154,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor Color9 =
 			new SimpleColor
 			(
-				new XRGBColor(85, 85, 255),
+				new XRGBColor(85, 85, 255).GetColor(),
 				'9'
 			);
 
@@ -148,7 +162,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorA =
 			new SimpleColor
 			(
-				new XRGBColor(85, 255, 85),
+				new XRGBColor(85, 255, 85).GetColor(),
 				'A'
 			);
 
@@ -156,7 +170,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorB =
 			new SimpleColor
 			(
-				new XRGBColor(85, 255, 255),
+				new XRGBColor(85, 255, 255).GetColor(),
 				'B'
 			);
 
@@ -164,7 +178,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorC =
 			new SimpleColor
 			(
-				new XRGBColor(255, 85, 85),
+				new XRGBColor(255, 85, 85).GetColor(),
 				'C'
 			);
 
@@ -172,7 +186,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorD =
 			new SimpleColor
 			(
-				new XRGBColor(255, 85, 255),
+				new XRGBColor(255, 85, 255).GetColor(),
 				'D'
 			);
 
@@ -180,7 +194,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorE =
 			new SimpleColor
 			(
-				new XRGBColor(255, 255, 85),
+				new XRGBColor(255, 255, 85).GetColor(),
 				'E'
 			);
 
@@ -188,7 +202,7 @@ namespace Com.OfficerFlake.Libraries.Color
 		public static readonly SimpleColor ColorF =
 			new SimpleColor
 			(
-				new XRGBColor(255, 255, 255),
+				new XRGBColor(255, 255, 255).GetColor(),
 				'F'
 			);
 		public static readonly List<SimpleColor> List = new List<SimpleColor>()

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Networking;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {

@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserInterfaces", "UserInterfaces", "{B85F99E4-3F77-4828-80C1-DE0099CD5E28}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_UnitsOfMeasurement", "3_UnitsOfMeasurement", "{78D66966-73BA-4B16-B452-52C712FC8F9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitsOfMeasurement", "UnitsOfMeasurement", "{78D66966-73BA-4B16-B452-52C712FC8F9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitsOfMeasurement", "Libraries\UnitsOfMeasurement\UnitsOfMeasurement.csproj", "{BEB82D31-C638-420B-B388-F79D599F2A3F}"
 EndProject
@@ -31,11 +31,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{11174DE1-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Equations", "Libraries\Math\Equations\Equations.csproj", "{9D0D870C-93E5-4BAA-8387-200A0CC2395D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_Extensions", "0_Extensions", "{904C8082-1AA0-48AB-ADD3-51A0D69E0278}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4_Extensions", "4_Extensions", "{904C8082-1AA0-48AB-ADD3-51A0D69E0278}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IO", "IO", "{B03110EC-C35D-4C63-A911-99B152854A0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Libraries\Extensions\Extensions.csproj", "{BB8DD7CB-3E53-4E98-907E-115AD4FADFB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4_Extensions", "Libraries\Extensions\4_Extensions.csproj", "{BB8DD7CB-3E53-4E98-907E-115AD4FADFB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IO", "Libraries\IO\IO.csproj", "{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}"
 EndProject
@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinateSystems", "Librar
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RichText", "RichText", "{121A9A3E-3D2B-4335-BA07-92C54C41230C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_Color", "1_Color", "{312948DC-3326-4FEE-B93F-3DE8AA021093}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Color", "Color", "{312948DC-3326-4FEE-B93F-3DE8AA021093}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Color", "Libraries\Color\Color.csproj", "{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}"
 EndProject
@@ -92,23 +92,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Libraries\Setti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0__Interfaces", "0__Interfaces", "{2645CB3B-B051-4242-BCF3-FCFC3AD4FBC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Library\Interfaces\Interfaces.csproj", "{60286C68-AB78-4F34-8199-E8CF255AB284}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0__Interfaces", "Library\Interfaces\0__Interfaces.csproj", "{60286C68-AB78-4F34-8199-E8CF255AB284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Libararies\IO\Logger\Logger.csproj", "{F1CA4A7F-8272-4D8E-8569-4D72E55F314B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1_Logger", "Libararies\IO\Logger\1_Logger.csproj", "{F1CA4A7F-8272-4D8E-8569-4D72E55F314B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_Logger", "1_Logger", "{0AA90E5B-9078-4C8A-8FD6-4D71CFEE88A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_ExceptionHandling", "2_ExceptionHandling", "{752E1E80-4B98-408F-8D0D-9D9736B5B43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionHandling", "Libraries\ExceptionHandling\ExceptionHandling.csproj", "{091E7A9F-085E-427A-8679-07C1E4490D7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2_ExceptionHandling", "Libraries\ExceptionHandling\2_ExceptionHandling.csproj", "{091E7A9F-085E-427A-8679-07C1E4490D7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Z_MasterObjectFactory", "Z_MasterObjectFactory", "{D2A955B0-266F-48DE-A686-D479CB944D9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterObjectFactory", "Libraries\MasterObjectFactory\MasterObjectFactory.csproj", "{E61ADA91-5CB8-49B1-9418-FB353FF5CB7E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_SlaveObjectFactory", "0_SlaveObjectFactory", "{FEB42109-5C5B-41B5-8B0A-AD6CFB25AA97}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_SlaveObjectFactory", "3_SlaveObjectFactory", "{FEB42109-5C5B-41B5-8B0A-AD6CFB25AA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlaveObjectFactory", "SlaveObjectFactory\SlaveObjectFactory.csproj", "{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3_SlaveObjectFactory", "SlaveObjectFactory\3_SlaveObjectFactory.csproj", "{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

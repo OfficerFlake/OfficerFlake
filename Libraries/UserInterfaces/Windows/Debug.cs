@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.RichText;
-using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {

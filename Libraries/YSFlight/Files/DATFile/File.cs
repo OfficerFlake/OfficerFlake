@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.IO;
-using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
-using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties;
-using Com.OfficerFlake.Libraries.YSFlight.Types;
 using Debug = System.Diagnostics.Debug;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT

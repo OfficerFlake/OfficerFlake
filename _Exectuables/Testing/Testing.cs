@@ -1,30 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
-using static Com.OfficerFlake.Libraries.RichText.RichTextMessage;
-using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.Interfaces;
-using DAT = Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
-using LST = Com.OfficerFlake.Libraries.YSFlight.Files.LST;
-
 using Com.OfficerFlake.Libraries.Networking;
-using Com.OfficerFlake.Libraries.Networking.Packets;
-using static Com.OfficerFlake.Libraries.UserInterfaces.Windows.Extensions;
-
 using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
-using Paragraph = Com.OfficerFlake.Libraries.IO.HtmlFile.Dom.Body.Paragraph;
-
-using static Com.OfficerFlake.Libraries.Database;
-using Com.OfficerFlake.Libraries.RichText;
-using Com.OfficerFlake.Libraries.YSFHQ;
 using Com.OfficerFlake.Libraries.YSFlight;
 using Debug = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Debug;
 
@@ -156,16 +137,6 @@ namespace Com.OfficerFlake.Executables.Testing
 
 			Console.Show();
 			Debug.Show();
-
-			Debug.AddCrashMessage(new NotImplementedException("NotImplementedException TEST"), "TEST 1");
-			Debug.AddErrorMessage(new NotImplementedException("NotImplementedException TEST"), "TEST 2");
-			Debug.AddWarningMessage("TEST 3");
-			Debug.AddDetailMessage("TEST 4");
-			Debug.AddSummaryMessage("TEST 5");
-			Debug.AddSummaryMessage("TEST 6\nTEST 7");
-
-			IRichTextElement test = ObjectFactory.Create(typeof(IRichTextElement));
-			Debug.AddSummaryMessage(test.Message);
 
 			#region Load World
 			Console.AddConsoleInformationMessage("Loading World");

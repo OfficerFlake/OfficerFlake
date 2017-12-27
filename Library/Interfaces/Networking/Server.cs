@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Com.OfficerFlake.Libraries.Interfaces
+﻿namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IServer
 	{

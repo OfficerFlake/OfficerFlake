@@ -1,5 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Extensions;
+﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -87,6 +86,36 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			if (capInput.EndsWithAny(Suffixes.Second))
 			{
 				output = new Durations.Second(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Minute))
+			{
+				output = new Durations.Minute(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Hour))
+			{
+				output = new Durations.Hour(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Day))
+			{
+				output = new Durations.Day(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Week))
+			{
+				output = new Durations.Week(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Month))
+			{
+				output = new Durations.Month(conversion);
+				return true;
+			}
+			if (capInput.EndsWithAny(Suffixes.Year))
+			{
+				output = new Durations.Year(conversion);
 				return true;
 			}
 			#endregion

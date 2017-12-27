@@ -1,7 +1,4 @@
-﻿using System;
-using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.IO;
-using static Com.OfficerFlake.Libraries.YSFlight.Files.DAT.PropertyTypes;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {

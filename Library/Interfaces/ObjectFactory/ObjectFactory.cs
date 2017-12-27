@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
@@ -42,9 +39,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region Files
 		IFile CreateFileReference(string filename);
-		ICommandFile CreateCommandFileReference(string filename);
+
 		ICommandFileLine CreateCommandFileLine(string contents);
-		IListFile CreateListFileReference(string filename);
 		IListFileLine CreateListFileLine(string contents);
 		#endregion
 		#region Logging
@@ -59,14 +55,14 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IDimensionP CreateDimensionP(IAngle type);
 		IDimensionB CreateDimensionB(IAngle type);
 
-		IPoint2 CreatePoint2(IDimensionX<IDistance> x, IDimensionY<IDistance> y);
-		IPoint3 CreatePoint3(IDimensionX<IDistance> x, IDimensionY<IDistance> y, IDimensionZ<IDistance> z);
-		IVector2 CreateVector2(IDimensionX<IDistance> x, IDimensionY<IDistance> y);
-		IVector3 CreateVector3(IDimensionX<IDistance> x, IDimensionY<IDistance> y, IDimensionZ<IDistance> z);
-		ICoordinate2 CreateCoordinate2(IDimensionX<double> x, IDimensionY<double> y);
-		ICoordinate3 CreateCoordinate3(IDimensionX<double> x, IDimensionY<double> y, IDimensionZ<double> z);
-		IOrientation2 CreateOrientation2(IDimensionH h, IDimensionP p);
-		IOrientation3 CreateOrientation3(IDimensionH h, IDimensionP p, IDimensionB b);
+		IPoint2 CreatePoint2(IDistance x, IDistance y);
+		IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z);
+		IVector2 CreateVector2(IDistance x,IDistance y);
+		IVector3 CreateVector3(IDistance x, IDistance y, IDistance z);
+		ICoordinate2 CreateCoordinate2(double x, double y);
+		ICoordinate3 CreateCoordinate3(double x, double y, double z);
+		IOrientation2 CreateOrientation2(IAngle h, IAngle p);
+		IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b);
 
 		//Quadratic
 		IQuadraticEquation CreateQuadraticEquation(double y, double x, double a, double b, double c);
@@ -78,11 +74,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#region Networking
 		//Connection
 		IConnection CreateConnection();
+		IPacketWaiter CreatePacketWaiter(IConnection thisConnection, UInt32 type);
+		List<IConnection> ExcludeConnections(List<IConnection> connections, IConnection exlude);
+		List<IConnection> ExcludeConnections(List<IConnection> connections, List<IConnection> exlude);
+		List<IConnection> IncludeConnections(List<IConnection> connections, IConnection include);
+		List<IConnection> IncludeConnections(List<IConnection> connections, List<IConnection> include);
 		//Packets
 		IPacket CreateGenericPacket();
 		IPacket_01_Login CreatePacket01Login();
 		IPacket_03_Error CreatePacket03Error();
-		IPacket_04_Field CreatepPacket04Field();
+		IPacket_04_Field CreatePacket04Field();
 		IPacket_05_AddVehicle CreatePacket05AddVehicle();
 		IPacket_06_Acknowledgement CreatePacket06Acknowledgement();
 		IPacket_07_SmokeColor CreatePacket07SmokeColor();
@@ -96,12 +97,12 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_17_HeartBeat CreatePacket17HeartBeat();
 		IPacket_18_LockOn CreatePacket18LockOn();
 		IPacket_19_RemoveGround CreatePacket19RemoveGround();
-		IPacket_20_OrdinanceSpawn CreattePacket20OrdinanceSpawn();
+		IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn();
 		IPacket_21_GroundData CreatePacket21GroundData();
 		IPacket_22_Damage CreatePacket22Damage();
 		IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion();
 		IPacket_30_AircraftCommand CreatePacket30AircraftCommand();
-		IPacket_31_MissilesOption CretatePacket31MissilesOption();
+		IPacket_31_MissilesOption CreatePacket31MissilesOption();
 		IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message);
 		IPacket_32_ServerMessage CreatePacket32ServerMessage(string message);
 		IPacket_33_Weather CreatePacket33Weather();
@@ -115,7 +116,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_44_AircraftList CreatePacket44AircraftList();
 		IPacket_45_GroundCommand CreatePacket45GroundCommand();
 		IPacket_47_ForceJoin CreatePacket47ForceJoin();
-		IPacket_48_FogColor CreatPacket48FogColor();
+		IPacket_48_FogColor CreatePacket48FogColor();
 		IPacket_49_SkyColor CreatePacket49SkyColor();
 		IPacket_50_GroundColor CreatePacket50GroundColor();
 		//PacketProcessor

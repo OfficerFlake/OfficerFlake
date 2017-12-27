@@ -1,25 +1,19 @@
 ﻿using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Math
 {
     public abstract class Equations
     {
-        public class Quadratic
+        public class Quadratic : IQuadraticEquation
         {
             #region Properties
-
-            public double Result;
-            public double A;
-            public double B;
-            public double C;
-
-            #endregion
-            #region Constructors
-            public Quadratic()
-            {
-            }
+            public double Result { get; set; }
+			public double A { get; set; }
+			public double B { get; set; }
+			public double C { get; set; }
+			#endregion
+			#region Constructors
+			public Quadratic(){}
             public Quadratic(double x, double y)
             {
                 Result = y;
@@ -27,13 +21,6 @@ namespace Com.OfficerFlake.Libraries.Math
                 B = x;
                 C = 1;
             }
-	        public Quadratic(IDistance x, IDistance y)
-	        {
-		        Result = y.RawValue / y.ConversionRatio;
-		        A = x.RawValue/x.ConversionRatio * x.RawValue / x.ConversionRatio;
-		        B = x.RawValue / x.ConversionRatio;
-		        C = 1;
-	        }
 			public Quadratic(Quadratic duplicate)
             {
                 Result = duplicate.Result;
@@ -42,7 +29,7 @@ namespace Com.OfficerFlake.Libraries.Math
                 C = duplicate.C;
             }
 
-            public static Quadratic From3Point2s(Point2 A, Point2 B, Point2 C)
+            public static Quadratic From3Coordinate2(ICoordinate2 A, ICoordinate2 B, ICoordinate2 C)
             {
                 //Convert the 3 points to quadratic equations.
                 var equation1 = new Quadratic(A.X, A.Y);
@@ -50,16 +37,16 @@ namespace Com.OfficerFlake.Libraries.Math
                 var equation3 = new Quadratic(C.X, C.Y);
 
                 //Cancel out "C"
-                var equation4 = equation1.MakeSubject(equation1.C) - equation2.MakeSubject(equation2.C);
-                var equation5 = equation2.MakeSubject(equation2.C) - equation3.MakeSubject(equation3.C);
+	            var equation4 = equation1.MakeSubject(equation1.C).Subtract(equation2.MakeSubject(equation1.C));
+	            var equation5 = equation2.MakeSubject(equation2.C).Subtract(equation3.MakeSubject(equation3.C));
 
-                //Cancel out "B"
-                var equation6 = equation4.MakeSubject(equation4.B) - equation5.MakeSubject(equation5.B);
+				//Cancel out "B"
+				var equation6 = equation4.MakeSubject(equation4.B).Subtract(equation5.MakeSubject(equation5.B));
 
-                //Solve for A then B then C
-                var a = equation6.MakeSubject(equation6.A).Result; //Substitute into EQ 6
+				//Solve for A then B then C
+				var a = equation6.MakeSubject(equation6.A).Result; //Substitute into EQ 6
                 var b = (equation4.Result - equation4.A*a)/equation4.B; //Into EQ 4
-                var c = (A.Y.RawValue / A.Y.ConversionRatio) - (a * (A.X.RawValue/A.X.ConversionRatio) * (A.X.RawValue / A.X.ConversionRatio)) - (b * (A.X.RawValue / A.X.ConversionRatio)); //Into EQ 1
+                var c = (A.Y) - (a * (A.X) * (A.X)) - (b * (A.X)); //Into EQ 1
 
                 //Create new Quadratic solver based on A, B and C.
                 var output = new Quadratic
@@ -72,7 +59,7 @@ namespace Com.OfficerFlake.Libraries.Math
             }
             #endregion
             #region Methods
-            public Quadratic MakeSubject(double value)
+            public IQuadraticEquation MakeSubject(double value)
             {
                 Quadratic output = new Quadratic(this);
                 //No adjustment for X, this is intrinsic 
@@ -82,40 +69,56 @@ namespace Com.OfficerFlake.Libraries.Math
                 output.C /= value;
                 return output;
             }
-            public float Solve(double X)
-            {
-                return (float)(A * (X * X) + B * X + C);
-            }
-            #endregion
-            #region Operators
-            public static Quadratic operator -(Quadratic Eq1, Quadratic Eq2)
-            {
-                return new Quadratic()
-                {
-                    A = Eq1.A - Eq2.A,
-                    B = Eq1.B - Eq2.B,
-                    C = Eq1.C - Eq2.C,
-                    Result = Eq1.Result - Eq2.Result,
-                };
-            }
-            public static Quadratic operator +(Quadratic Eq1, Quadratic Eq2)
-            {
-                return new Quadratic()
-                {
-                    A = Eq1.A + Eq2.A,
-                    B = Eq1.B + Eq2.B,
-                    C = Eq1.C + Eq2.C,
-                    Result = Eq1.Result + Eq2.Result,
-                };
-            }
-            #endregion
-
-	        public static Quadratic StatisticCurve(double x1, double x2, double x3)
+	        public double SolveForResult(double X)
 	        {
-		        return Quadratic.From3Point2s(
-					new Point2(x1.Meters(), 0.Meters()),
-					new Point2(x2.Meters(), 0.5.Meters()),
-					new Point2(x3.Meters(), 1.Meters()));
+		        return MakeSubject(Result).Result;
+	        }
+	        public double SolveForA(double X)
+	        {
+		        return MakeSubject(A).A;
+	        }
+	        public double SolveForB(double X)
+	        {
+		        return MakeSubject(B).B;
+	        }
+	        public double SolveForC(double X)
+	        {
+		        return MakeSubject(C).C;
+	        }
+			#endregion
+			#region Operators
+	        public IQuadraticEquation Subtract(IQuadraticEquation subtractQuadraticEquation)
+	        {
+		        var output = new Quadratic();
+		        output.Result = Result - subtractQuadraticEquation.Result;
+		        output.A = A - subtractQuadraticEquation.A;
+		        output.B = B - subtractQuadraticEquation.B;
+				output.C = C - subtractQuadraticEquation.C;
+		        return output;
+	        }
+	        public IQuadraticEquation Add(IQuadraticEquation subtractQuadraticEquation)
+	        {
+		        var output = new Quadratic();
+		        output.Result = Result + subtractQuadraticEquation.Result;
+		        output.A = A + subtractQuadraticEquation.A;
+		        output.B = B + subtractQuadraticEquation.B;
+		        output.C = C + subtractQuadraticEquation.C;
+		        return output;
+	        }
+			#endregion
+
+			public static Quadratic StatisticCurve(double x1, double x2, double x3)
+	        {
+		        return Quadratic.From3Coordinate2(
+			        ObjectFactory.CreateCoordinate2(
+						ObjectFactory.CreateDimensionX(x1),
+						ObjectFactory.CreateDimensionY(0.0d)),
+			        ObjectFactory.CreateCoordinate2(
+				        ObjectFactory.CreateDimensionX(x2),
+				        ObjectFactory.CreateDimensionY(0.5d)),
+			        ObjectFactory.CreateCoordinate2(
+				        ObjectFactory.CreateDimensionX(x3),
+				        ObjectFactory.CreateDimensionY(1.0d)));
 	        }
         }
     }

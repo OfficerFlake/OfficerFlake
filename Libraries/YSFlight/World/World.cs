@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
-
-using Com.OfficerFlake.Libraries.RichText;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
 	public static class World
 	{
-		public static List<RichTextMessage> DebugMessages = new List<RichTextMessage>();
+		public static List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
 
-		public static Color.XRGBColor GroundColor = null;
-		public static Color.XRGBColor SkyColor = null;
-		public static Color.XRGBColor FogColor = null;
+		public static I24BitColor GroundColor { get; set; }
+		public static I24BitColor SkyColor { get; set; }
+		public static I24BitColor FogColor { get; set; }
 
 		public static class Objects
 		{
@@ -59,19 +56,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public double Throttle = 0.00;
 				public bool Gear = true;
 
-				public class _Position
-				{
-					public double X = 0.00;
-					public double Y = 0.00;
-					public double Z = 0.00;
-				}
-				public _Position Position = new _Position();
+				public IPoint3 Position = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
 
 				public class _Attitude
 				{
-					public double X = 0.00;
-					public double Y = 0.00;
-					public double Z = 0.00;
+					public IAngle H = 0.Degrees();
+					public IAngle P = 0.Degrees();
+					public IAngle B = 0.Degrees();
 				}
 				public _Attitude Attitude = new _Attitude();
 			}
@@ -85,7 +76,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public uint Strength = 240;
 				public uint IFF = 0;
 				public uint ID = World.Objects.GetNextID();
-				public Metadata.Ground MetaGroundObject = Metadata.Ground.None;
+				public IMetaDataGround MetaGroundObject = null;
 
 				public class _Position
 				{
@@ -308,10 +299,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 		public static bool Load(string Name)
 		{
 			DebugMessages.Clear();
-			Metadata.Scenery Target = Metadata.Scenery.FindByName(Name);
-			if (Target == Metadata.Scenery.None)
+			IMetaDataScenery Target = ObjectFactory.FindSceneryByName(Name);
+			if (Target == null)
 			{
-				DebugMessages.Add(new DebugWarningMessage("Scenery Not Found: \"" + Name + "\""));
+				DebugMessages.Add(new Debug.AddDetailMessage("Scenery Not Found: \"" + Name + "\""));
 				return false;
 			}
 			else
@@ -1074,9 +1065,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								failed |= !Angle.TryParse(Split[2].ToUpperInvariant(), out outx);
 								failed |= !Angle.TryParse(Split[3].ToUpperInvariant(), out outy);
 								failed |= !Angle.TryParse(Split[4].ToUpperInvariant(), out outz);
-								CurrentStartPosition.Attitude.X += (double)outx.ToDegrees().ConvertToBase();
-								CurrentStartPosition.Attitude.Y += (double)outy.ToDegrees().ConvertToBase();
-								CurrentStartPosition.Attitude.Z += (double)outz.ToDegrees().ConvertToBase();
+								CurrentStartPosition.Attitude.H += (double)outx.ToDegrees();
+								CurrentStartPosition.Attitude.P += (double)outy.ToDegrees();
+								CurrentStartPosition.Attitude.B += (double)outz.ToDegrees());
 
 								while (CurrentStartPosition.Attitude.X <= -180)
 								{
