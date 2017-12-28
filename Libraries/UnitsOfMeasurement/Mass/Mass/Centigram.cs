@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Centigram : Mass, ICentigram
+			public class CentiGram : Mass, ICentiGram
 			{
 				#region CTOR
-				public Centigram(double value) : base(value, Conversion.Centigram, Suffixes.Centigram) { }
+				public CentiGram(double value) : base(value, Conversion.CentiGram, Suffixes.CentiGram) { }
 				#endregion
 				#region Operators
-				public static Centigram operator +(Centigram firstMeasurement, Centigram secondMeasurement)
+				public static CentiGram operator +(CentiGram firstMeasurement, CentiGram secondMeasurement)
 				{
-					return new Centigram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new CentiGram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Centigram operator -(Centigram firstMeasurement, Centigram secondMeasurement)
+				public static CentiGram operator -(CentiGram firstMeasurement, CentiGram secondMeasurement)
 				{
-					return new Centigram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new CentiGram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Centigram operator *(Centigram firstMeasurement, Centigram secondMeasurement)
+				public static CentiGram operator *(CentiGram firstMeasurement, CentiGram secondMeasurement)
 				{
-					return new Centigram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new CentiGram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Centigram operator /(Centigram firstMeasurement, Centigram secondMeasurement)
+				public static CentiGram operator /(CentiGram firstMeasurement, CentiGram secondMeasurement)
 				{
-					return new Centigram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new CentiGram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Centigrams
-			public static Centigram Centigrams(this Byte input) => new Centigram(input);
-			public static Centigram Centigrams(this Int16 input) => new Centigram(input);
-			public static Centigram Centigrams(this Int32 input) => new Centigram(input);
-			public static Centigram Centigrams(this Int64 input) => new Centigram(input);
-			public static Centigram Centigrams(this Single input) => new Centigram(input);
-			public static Centigram Centigrams(this Double input) => new Centigram(input);
+			#region [Number].CentiGrams
+			public static CentiGram CentiGrams(this Byte input) => new CentiGram(input);
+			public static CentiGram CentiGrams(this Int16 input) => new CentiGram(input);
+			public static CentiGram CentiGrams(this Int32 input) => new CentiGram(input);
+			public static CentiGram CentiGrams(this Int64 input) => new CentiGram(input);
+			public static CentiGram CentiGrams(this Single input) => new CentiGram(input);
+			public static CentiGram CentiGrams(this Double input) => new CentiGram(input);
 			#endregion
 		}
 	}

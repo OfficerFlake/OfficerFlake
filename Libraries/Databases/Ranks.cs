@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Database
 {
-	public class Rank : IRank, IHasPermissions
+	public class Rank : IRank, IPermissions
 	{
 		public IRichTextString Name { get; set; }
 		public int Index { get; set; }
 
 		public ILocalPermissions LocalPermissions { get; set; }
 		public IGlobalPermissions GlobalPermissions { get; set; }
+		public ILocalPermissionsTester LocalPermissionsTester { get; set; }
+		public IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
 
 		public override string ToString()
 		{
@@ -22,38 +25,28 @@ namespace Com.OfficerFlake.Libraries.Database
 		#region ServerRanks
 		public static IRank ServerRankOwner = new Rank()
 		{
-			Name = ObjectFactory.CreateRichTextString("Owner"),
+			Name = "Owner".AsRichTextString(),
 			Index = 4,
-			LocalPermissions = ObjectFactory.CreateLocalPermissions(),
-			GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 		};
 		public static IRank ServerRankAdmin = new Rank()
 		{
-			Name = ObjectFactory.CreateRichTextString("Admin"),
+			Name = "Admin".AsRichTextString(),
 			Index = 3,
-			LocalPermissions = ObjectFactory.CreateLocalPermissions(),
-			GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 		};
 		public static IRank ServerRankModerator = new Rank()
 		{
-			Name = ObjectFactory.CreateRichTextString("Moderator"),
+			Name = "Moderator".AsRichTextString(),
 			Index = 2,
-			LocalPermissions = ObjectFactory.CreateLocalPermissions(),
-			GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 		};
 		public static IRank ServerRankMember = new Rank()
 		{
-			Name = ObjectFactory.CreateRichTextString("Member"),
+			Name = "Member".AsRichTextString(),
 			Index = 1,
-			LocalPermissions = ObjectFactory.CreateLocalPermissions(),
-			GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 		};
 		public static IRank ServerRankGuest = new Rank()
 		{
-			Name = ObjectFactory.CreateRichTextString("Guest"),
+			Name = "Guest".AsRichTextString(),
 			Index = 0,
-			LocalPermissions = ObjectFactory.CreateLocalPermissions(),
-			GlobalPermissions = ObjectFactory.CreateGlobalPermissions()
 		};
 
 		public static readonly List<IRank> ServerRanks = new List<IRank>()

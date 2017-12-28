@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.RichText
 {
@@ -13,8 +14,8 @@ namespace Com.OfficerFlake.Libraries.RichText
 	    {
 			#region Properties
 		    public string Message { get; set; } = "";
-		    public I24BitColor ForeColor { get; set; } = (I24BitColor)SimpleColors.White.Color;
-		    public I24BitColor BackColor { get; set; } = (I24BitColor)SimpleColors.Black.Color;
+		    public IColor ForeColor { get; set; } = SimpleColors.White.Color;
+		    public IColor BackColor { get; set; } = SimpleColors.Black.Color;
 
 			public bool IsObfuscated { get; set; }
 		    public bool IsBold { get; set; }
@@ -27,11 +28,11 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 		    }
 
-		    public MessageElement(string message, ISimpleColor color, bool isBold, bool isItallic, bool isUnderlined,
+		    public MessageElement(string message, ISimpleColor simpleColor, bool isBold, bool isItallic, bool isUnderlined,
 			    bool isObfuscated, bool isStrikeout)
 		    {
 			    Message = message;
-			    ForeColor = GetColor(color.ColorCode).Get24BitColor();
+			    ForeColor = simpleColor.Color;
 			    IsBold = isBold;
 			    IsItallic = isItallic;
 			    IsUnderlined = isUnderlined;
@@ -39,19 +40,6 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    }
 			#endregion
 
-		    public char GetClosestColorCode()
-			{
-				Dictionary<double, char> charindexes = new Dictionary<double, char>();
-				foreach (SimpleColor thiscolor in SimpleColors.List)
-				{
-					double distance = 
-						Math.Pow((thiscolor.Color.Red - ForeColor.Red) * 0.30, 2) +
-						Math.Pow((thiscolor.Color.Green - ForeColor.Green) * 0.59, 2) +
-						Math.Pow((thiscolor.Color.Blue - ForeColor.Blue) * 0.11, 2);
-					charindexes[distance] = thiscolor.ColorCode;
-				}
-				return charindexes[charindexes.Keys.Min()];
-		    }
 		    public IColor GetColor(char charCode)
 		    {
 			    if (SimpleColors.List.All((x => x.ColorCode != charCode))) return SimpleColors.White.Color;
@@ -62,7 +50,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 			    return
 				    "&r" +
-				    ("&" + GetClosestColorCode()) +
+				    ("&" + ForeColor.GetSimpleColor().ColorCode) +
 				    (IsBold ? "&l" : "") +
 				    (IsItallic ? "&o" : "") +
 				    (IsUnderlined ? "&n" : "") +
@@ -75,12 +63,6 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    {
 			    return Message;
 		    }
-
-			public ISimpleColor GetClosestSimpleColor()
-			{
-				if (SimpleColors.List.All(x => x.ColorCode != GetClosestColorCode())) return SimpleColors.White;
-				return SimpleColors.List.First(x => x.ColorCode == GetClosestColorCode());
-			}
 		}
 		public List<IRichTextElement> Elements
 	    {
@@ -127,151 +109,6 @@ namespace Com.OfficerFlake.Libraries.RichText
 
 	public static class Extensions
 	{
-		#region Formatted System String => RichTextString
-		/// <summary>
-		/// Converts the formatted System String into a RichTextString object, preserving internal formatting.
-		/// </summary>
-		/// <param name="thisString">An internally formatted System String.</param>
-		/// <returns>A RichTextString.</returns>
-		public static RichTextString AsRichTextString(this string thisString)
-		{
-			char[] splittablechars = new[]
-			{
-				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'K', 'L', 'M', 'N', 'O', 'R'
-			};
-
-			List<IRichTextElement> elements = new List<IRichTextElement>();
-
-			RichTextString.MessageElement currentMessageElement = new RichTextString.MessageElement();
-
-			bool isExpectingSplittableChar = false;
-			for (int i = 0; i < thisString.Length; i++)
-			{
-				char thisCharUpperCase = thisString.ToUpperInvariant()[i];
-
-				if (isExpectingSplittableChar)
-				{
-					if (splittablechars.Contains(thisCharUpperCase))
-					{
-						if (currentMessageElement.Message.Length > 0) elements.Add(currentMessageElement);
-						currentMessageElement = new RichTextString.MessageElement()
-						{
-							Message = "",
-							ForeColor = currentMessageElement.ForeColor,
-							IsObfuscated = currentMessageElement.IsObfuscated,
-							IsBold = currentMessageElement.IsBold,
-							IsStrikeout = currentMessageElement.IsStrikeout,
-							IsUnderlined = currentMessageElement.IsUnderlined,
-							IsItallic = currentMessageElement.IsItallic,
-						};
-
-						#region SWITCH
-
-						switch (thisCharUpperCase)
-						{
-							#region Cases
-							case '0':
-								currentMessageElement.ForeColor = SimpleColors.Color0.Color.Get24BitColor();
-								break;
-							case '1':
-								currentMessageElement.ForeColor = SimpleColors.Color1.Color.Get24BitColor();
-								break;
-							case '2':
-								currentMessageElement.ForeColor = SimpleColors.Color2.Color.Get24BitColor();
-								break;
-							case '3':
-								currentMessageElement.ForeColor = SimpleColors.Color3.Color.Get24BitColor();
-								break;
-							case '4':
-								currentMessageElement.ForeColor = SimpleColors.Color4.Color.Get24BitColor();
-								break;
-							case '5':
-								currentMessageElement.ForeColor = SimpleColors.Color5.Color.Get24BitColor();
-								break;
-							case '6':
-								currentMessageElement.ForeColor = SimpleColors.Color6.Color.Get24BitColor();
-								break;
-							case '7':
-								currentMessageElement.ForeColor = SimpleColors.Color7.Color.Get24BitColor();
-								break;
-							case '8':
-								currentMessageElement.ForeColor = SimpleColors.Color8.Color.Get24BitColor();
-								break;
-							case '9':
-								currentMessageElement.ForeColor = SimpleColors.Color9.Color.Get24BitColor();
-								break;
-							case 'A':
-								currentMessageElement.ForeColor = SimpleColors.ColorA.Color.Get24BitColor();
-								break;
-							case 'B':
-								currentMessageElement.ForeColor = SimpleColors.ColorB.Color.Get24BitColor();
-								break;
-							case 'C':
-								currentMessageElement.ForeColor = SimpleColors.ColorC.Color.Get24BitColor();
-								break;
-							case 'D':
-								currentMessageElement.ForeColor = SimpleColors.ColorD.Color.Get24BitColor();
-								break;
-							case 'E':
-								currentMessageElement.ForeColor = SimpleColors.ColorE.Color.Get24BitColor();
-								break;
-							case 'F':
-								currentMessageElement.ForeColor = SimpleColors.ColorF.Color.Get24BitColor();
-								break;
-
-							case 'K':
-								currentMessageElement.IsObfuscated = true;
-								break;
-							case 'L':
-								currentMessageElement.IsBold = true;
-								break;
-							case 'M':
-								currentMessageElement.IsStrikeout = true;
-								break;
-							case 'N':
-								currentMessageElement.IsUnderlined = true;
-								break;
-							case 'O':
-								currentMessageElement.IsItallic = true;
-								break;
-
-							case 'R':
-								currentMessageElement.ForeColor = SimpleColors.White.Color.Get24BitColor();
-								currentMessageElement.IsObfuscated = false;
-								currentMessageElement.IsBold = false;
-								currentMessageElement.IsStrikeout = false;
-								currentMessageElement.IsItallic = false;
-								currentMessageElement.IsUnderlined = false;
-								break;
-
-							#endregion
-
-							default:
-								currentMessageElement.Message += "&";
-								goto End;
-						}
-						isExpectingSplittableChar = (thisCharUpperCase == '&');
-						continue;
-						#endregion
-					}
-
-					else
-					{
-						goto End;
-					}
-				}
-				End:
-				isExpectingSplittableChar = (thisCharUpperCase == '&');
-				if (isExpectingSplittableChar) continue;
-				currentMessageElement.Message += thisString[i];
-			}
-			if (currentMessageElement.Message.Length > 0) elements.Add(currentMessageElement);
-
-			RichTextString output = new RichTextString(elements);
-
-			return output;
-		}
-		#endregion
 		#region MessageElements => Formatted System String
 		/// <summary>
 		/// Converts an array of MessageElements to a System String.
@@ -293,7 +130,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 				if (!thisElement.IsItallic && prevElement.IsItallic) shouldReset = true;
 				if (shouldReset) output.Append("&" + 'R');
 
-				if (thisElement.ForeColor != prevElement.ForeColor) output.Append("&" + thisElement.GetClosestColorCode());
+				if (thisElement.ForeColor != prevElement.ForeColor) output.Append("&" + thisElement.ForeColor.GetSimpleColor().ColorCode);
 
 				if (thisElement.IsObfuscated && !prevElement.IsObfuscated) output.Append("&" + 'K');
 				if (thisElement.IsBold && !prevElement.IsBold) output.Append("&" + 'L');

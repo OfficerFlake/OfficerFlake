@@ -5,9 +5,9 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.IO
 {
-	public class ListFile : File, Com.OfficerFlake.Libraries.Interfaces.IListFile
+	public class ListFile : File, IListFile
 	{
-		public List<IListFileLine> Lines { get; set; }
+		public new List<IListFileLine> Contents { get; set; }
 
 		protected ListFile(string filename) : base(filename)
         {
@@ -15,7 +15,7 @@ namespace Com.OfficerFlake.Libraries.IO
 
 		public class Line : IListFileLine
 		{
-			private List<string> Contents = new List<string>();
+			public List<string> Contents { get; set; }
 
 			public Line(string[] contents)
 			{
@@ -44,17 +44,17 @@ namespace Com.OfficerFlake.Libraries.IO
 		public new bool Load()
         {
             base.Load();
-            Lines.Clear();
-            foreach (var thisLine in Contents)
+            Contents.Clear();
+            foreach (var thisLine in base.Contents)
             {
 	            var contents = thisLine.SplitPresevingQuotes();
-	            Lines.Add(new Line(contents));
+	            Contents.Add(new Line(contents));
             }
             return true;
         }
         public new bool Save()
         {
-	        Contents = Lines.Select(x => x.ToString()).ToArray();
+	        base.Contents = Contents.Select(x => x.ToString()).ToArray();
 			return base.Save();
         }
     }

@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Decagram : Mass, IDecagram
+			public class DecaGram : Mass, IDecaGram
 			{
 				#region CTOR
-				public Decagram(double value) : base(value, Conversion.Decagram, Suffixes.Decagram) { }
+				public DecaGram(double value) : base(value, Conversion.DecaGram, Suffixes.DecaGram) { }
 				#endregion
 				#region Operators
-				public static Decagram operator +(Decagram firstMeasurement, Decagram secondMeasurement)
+				public static DecaGram operator +(DecaGram firstMeasurement, DecaGram secondMeasurement)
 				{
-					return new Decagram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new DecaGram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Decagram operator -(Decagram firstMeasurement, Decagram secondMeasurement)
+				public static DecaGram operator -(DecaGram firstMeasurement, DecaGram secondMeasurement)
 				{
-					return new Decagram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new DecaGram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Decagram operator *(Decagram firstMeasurement, Decagram secondMeasurement)
+				public static DecaGram operator *(DecaGram firstMeasurement, DecaGram secondMeasurement)
 				{
-					return new Decagram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new DecaGram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Decagram operator /(Decagram firstMeasurement, Decagram secondMeasurement)
+				public static DecaGram operator /(DecaGram firstMeasurement, DecaGram secondMeasurement)
 				{
-					return new Decagram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new DecaGram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Decagrams
-			public static Decagram Decagrams(this Byte input) => new Decagram(input);
-			public static Decagram Decagrams(this Int16 input) => new Decagram(input);
-			public static Decagram Decagrams(this Int32 input) => new Decagram(input);
-			public static Decagram Decagrams(this Int64 input) => new Decagram(input);
-			public static Decagram Decagrams(this Single input) => new Decagram(input);
-			public static Decagram Decagrams(this Double input) => new Decagram(input);
+			#region [Number].DecaGrams
+			public static DecaGram DecaGrams(this Byte input) => new DecaGram(input);
+			public static DecaGram DecaGrams(this Int16 input) => new DecaGram(input);
+			public static DecaGram DecaGrams(this Int32 input) => new DecaGram(input);
+			public static DecaGram DecaGrams(this Int64 input) => new DecaGram(input);
+			public static DecaGram DecaGrams(this Single input) => new DecaGram(input);
+			public static DecaGram DecaGrams(this Double input) => new DecaGram(input);
 			#endregion
 		}
 	}

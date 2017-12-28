@@ -35,15 +35,20 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colors\Colors.cs" />
     <Compile Include="Database\Ranks.cs" />
+    <Compile Include="Networking\Connection.cs" />
     <Compile Include="RichText\RichText.cs" />
     <Compile Include="Database\Groups.cs" />
     <Compile Include="Database\Users.cs" />
+    <Compile Include="YSFlight\World.cs" />
+    <Compile Include="YSFlight\MetaData.cs" />
     <Compile Include="_System\Byte.cs" />
     <Compile Include="_System\Int.cs" />
-    <Compile Include="UnitsOfMeasurement\UnitsOfMeasurement.cs" />
+    <Compile Include="UnitsOfMeasurement\Duration.cs" />
     <Compile Include="_System\Time.cs" />
     <Compile Include="_System\Reflection.cs" />
     <Compile Include="_System\Single.cs" />
@@ -74,13 +79,10 @@
     <Folder Include="2_ExceptionHandling\" />
     <Folder Include="3_SlaveFactory\" />
     <Folder Include="4_Extensions\" />
-    <Folder Include="Colors\" />
     <Folder Include="IO\" />
     <Folder Include="Math\" />
-    <Folder Include="Networking\" />
     <Folder Include="Settings\" />
     <Folder Include="UserInterfaces\" />
-    <Folder Include="YSFlight\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

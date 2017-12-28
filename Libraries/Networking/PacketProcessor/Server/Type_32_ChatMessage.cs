@@ -1,4 +1,5 @@
-﻿using Com.OfficerFlake.Libraries.Interfaces;
+﻿using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -8,7 +9,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_32_ChatMessage(IConnection thisConnection, IPacket_32_ChatMessage ChatMessagePacket)
 			{
-				foreach (IConnection otherConnection in ObjectFactory.AllConnections)
+				foreach (IConnection otherConnection in Connections.AllConnections)
 				{
 					otherConnection.SendMessageAsync("(" + ChatMessagePacket.User.UserName.ToUnformattedSystemString() + ")" + ChatMessagePacket.Message).ConfigureAwait(false);
 				}

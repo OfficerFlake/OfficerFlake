@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Miligram : Mass, IMilligram
+			public class MilliGram : Mass, IMilliGram
 			{
 				#region CTOR
 				public Miligram(double value) : base(value, Conversion.Milligram, Suffixes.Milligram) { }
 				#endregion
 				#region Operators
-				public static Miligram operator +(Miligram firstMeasurement, Miligram secondMeasurement)
+				public static MilliGram operator +(MilliGram firstMeasurement, MilliGram secondMeasurement)
 				{
-					return new Miligram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new MilliGram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Miligram operator -(Miligram firstMeasurement, Miligram secondMeasurement)
+				public static MilliGram operator -(MilliGram firstMeasurement, MilliGram secondMeasurement)
 				{
-					return new Miligram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new MilliGram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Miligram operator *(Miligram firstMeasurement, Miligram secondMeasurement)
+				public static MilliGram operator *(MilliGram firstMeasurement, MilliGram secondMeasurement)
 				{
-					return new Miligram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new MilliGram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Miligram operator /(Miligram firstMeasurement, Miligram secondMeasurement)
+				public static MilliGram operator /(MilliGram firstMeasurement, MilliGram secondMeasurement)
 				{
-					return new Miligram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new MilliGram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
 			#region [Number].Miligrams
-			public static Miligram Miligrams(this Byte input) => new Miligram(input);
-			public static Miligram Miligrams(this Int16 input) => new Miligram(input);
-			public static Miligram Miligrams(this Int32 input) => new Miligram(input);
-			public static Miligram Miligrams(this Int64 input) => new Miligram(input);
-			public static Miligram Miligrams(this Single input) => new Miligram(input);
-			public static Miligram Miligrams(this Double input) => new Miligram(input);
+			public static MilliGram Miligrams(this Byte input) => new MilliGram(input);
+			public static MilliGram Miligrams(this Int16 input) => new MilliGram(input);
+			public static MilliGram Miligrams(this Int32 input) => new MilliGram(input);
+			public static MilliGram Miligrams(this Int64 input) => new MilliGram(input);
+			public static MilliGram Miligrams(this Single input) => new MilliGram(input);
+			public static MilliGram Miligrams(this Double input) => new MilliGram(input);
 			#endregion
 		}
 	}

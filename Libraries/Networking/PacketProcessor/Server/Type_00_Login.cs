@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
@@ -15,7 +16,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Get Login(01)
 				var username = LoginPacket.Username.Split('\0')[0];
-				thisConnection.User = ObjectFactory.CreateUser(ObjectFactory.CreateRichTextString(username));
+				thisConnection.User = ObjectFactory.CreateUser(username.AsRichTextString());
 				thisConnection.Version = LoginPacket.Version;
 				thisConnection.LoginState = LoginStatus.LoggingIn;
 				thisConnection.FlightStatus = FlightStatus.Idle;
@@ -147,8 +148,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Inform Players
-				foreach (IConnection otherConnection in ObjectFactory.ExcludeConnections(ObjectFactory.AllConnections,
-					thisConnection))
+				foreach (IConnection otherConnection in Connections.AllConnections.Exclude(thisConnection))
 				{
 					otherConnection.SendMessageAsync(thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.").ConfigureAwait(false);
 				}
@@ -166,7 +166,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				VersionPacket.Version = 20110207;
 
 				IPacketWaiter PacketWaiter_AcknowledgeVersionPacket = thisConnection.CreatePacketWaiter(6);
-				PacketWaiter_AcknowledgeVersionPacket.Require(0, (Int32)9);
+				PacketWaiter_AcknowledgeVersionPacket.Require(0, (UInt32)9);
 				PacketWaiter_AcknowledgeVersionPacket.StartListening();
 
 				thisConnection.Send(VersionPacket);
@@ -179,7 +179,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				MissilesOption.Enabled = true;
 
 				IPacketWaiter PacketWaiter_AcknowledgeMissileOption = thisConnection.CreatePacketWaiter(6);
-				PacketWaiter_AcknowledgeMissileOption.Require(0, (Int32)10);
+				PacketWaiter_AcknowledgeMissileOption.Require(0, (UInt32)10);
 				PacketWaiter_AcknowledgeMissileOption.StartListening();
 
 				thisConnection.Send(MissilesOption);
@@ -190,7 +190,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				WeaponsOption.Enabled = true;
 
 				IPacketWaiter PacketWaiter_AcknowledgeWeaponsOption = thisConnection.CreatePacketWaiter(6);
-				PacketWaiter_AcknowledgeWeaponsOption.Require(0, (Int32)11);
+				PacketWaiter_AcknowledgeWeaponsOption.Require(0, (UInt32)11);
 				PacketWaiter_AcknowledgeWeaponsOption.StartListening();
 
 				thisConnection.Send(WeaponsOption);
@@ -284,13 +284,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#region Send AircraftList(44)
 				//Process the Aircraft List.
 				List<IMetaDataAircraft> MetaAircraftList = new List<IMetaDataAircraft>();
-				IMetaDataAircraft[] AllMetaDataIdentities = null; //TODO:LINK
 				int Percentage = 0;
-				for (int i = 0; i < AllMetaDataIdentities.Length; i++)
+				for (int i = 0; i < YSFlight.MetaData.AllAircraft.Count; i++)
 				{
 					#region Tell YSClient the Percentage
 					bool UpdatedPercentage = false;
-					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(AllMetaDataIdentities.Length)) * 100;
+					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(YSFlight.MetaData.AllAircraft.Count)) * 100;
 					while (CurrentPercent >= Percentage+10)
 					{
 						Percentage += 10;
@@ -303,7 +302,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					#endregion
 
-					MetaAircraftList.Add(AllMetaDataIdentities[i]);
+					MetaAircraftList.Add(YSFlight.MetaData.AllAircraft[i]);
 					if (MetaAircraftList.Count >= 32)
 					{
 						#region Prepare Aircraft List
@@ -411,11 +410,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				//Create all the ground objects.
 				Percentage = 0;
-				for (int i = 0; i < ObjectFactory.WorldAllGrounds.Count; i++)
+				for (int i = 0; i < YSFlight.World.AllGrounds.Count; i++)
 				{
 					#region Tell YSClient the Percentage
 					bool UpdatedPercentage = false;
-					double CurrentPercent = (((double)i + 1) / (double)(ObjectFactory.WorldAllGrounds.Count)) * 100;
+					double CurrentPercent = (((double)i + 1) / (double)(YSFlight.World.AllGrounds.Count)) * 100;
 					while (CurrentPercent >= Percentage + 10)
 					{
 						Percentage += 10;
@@ -428,7 +427,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					#endregion
 
-					IWorldGroundObject ThisGround = ObjectFactory.WorldAllGrounds[i];
+					IWorldGround ThisGround = YSFlight.World.AllGrounds[i];
 					IPacket_05_AddVehicle GroundJoin = ObjectFactory.CreatePacket05AddVehicle();
 					GroundJoin.VehicleType = Packet_05VehicleType.Ground;
 					GroundJoin.ID = ThisGround.ID;

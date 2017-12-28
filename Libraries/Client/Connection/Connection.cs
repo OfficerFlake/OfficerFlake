@@ -599,7 +599,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public bool Disconnect(string reason)
 	    {
 		    RemoveFromServerList();
-		    AllConnections.Except(new []{this}).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+		    Connections.AllConnections.Except(new []{this}).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
 		    SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
 		    SendMessageAsync("Disconnection reason: " + reason).ConfigureAwait(false);
 			if (TCPSocket.Connected)
@@ -625,16 +625,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Connections List
-		private static List<IConnection> _connections = new List<IConnection>();
-	    public static List<IConnection> AllConnections => _connections;
-
 		private void AddToServerList()
 	    {
-			_connections.Add(this);
+			Connections.AllConnections.Add(this);
 		}
 	    private void RemoveFromServerList()
 	    {
-			_connections.RemoveAll(x => x == this);
+		    Connections.AllConnections.RemoveAll(x => x == this);
 		}
 		#endregion
 
@@ -646,73 +643,5 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    {
 			//This is currently being called!
 	    }
-	}
-
-	public static class ConnectionExtensions
-	{
-		#region Include
-		public static List<Connection> Include(this List<Connection> originalList, Connection includeConnection)
-		{
-			var Output = new List<Connection>();
-			Output.AddRange(originalList);
-			Output.RemoveAll(x => x == includeConnection);
-			Output.Add(includeConnection);
-			return Output;
-		}
-		public static List<Connection> Include(this List<Connection> originalList, List<Connection> includeConnections)
-		{
-			var Output = new List<Connection>();
-			Output.AddRange(originalList);
-			Output.RemoveAll(includeConnections.Contains);
-			Output.AddRange(includeConnections);
-			return Output;
-		}
-		#endregion
-		#region Exclude
-		public static List<Connection> Exclude(this List<Connection> originalList, Connection excludeConnection)
-		{
-			var Output = new List<Connection>();
-			Output.AddRange(originalList);
-			Output.RemoveAll(x => x == excludeConnection);
-			return Output;
-		}
-		public static List<Connection> Exclude(this List<Connection> originalList, List<Connection> excludeConnections)
-		{
-			var Output = new List<Connection>();
-			Output.AddRange(originalList);
-			Output.RemoveAll(excludeConnections.Contains);
-			return Output;
-		}
-		#endregion
-		#region Send
-		public static async Task<bool> SendAsync(this List<IConnection> connections, IPacket thisPacket)
-		{
-			List<Task<bool>> tasks = new List<Task<bool>>();
-			foreach (IConnection thisConnection in connections)
-			{
-				tasks.Add(thisConnection.SendAsync(thisPacket));
-			}
-			bool AnyErrors = false;
-			foreach (Task<bool> thisTask in tasks)
-			{
-				AnyErrors |= !(await thisTask);
-			}
-			return !AnyErrors;
-		}
-		public static async Task<bool> SendMessageAsync(this List<IConnection> connections, string message)
-		{
-			List<Task<bool>> tasks = new List<Task<bool>>();
-			foreach (IConnection thisConnection in connections)
-			{
-				tasks.Add(thisConnection.SendMessageAsync(message));
-			}
-			bool AnyErrors = false;
-			foreach (Task<bool> thisTask in tasks)
-			{
-				AnyErrors |= !(await thisTask);
-			}
-			return !AnyErrors;
-		}
-		#endregion
 	}
 }

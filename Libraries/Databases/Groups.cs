@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.Database
 {
 	public class Group : IGroup
 	{
 		#region Creation
-		public IUser CreatedBy { get; set; } = Users.Unknown;
-		public IDateTime CreatedDateTime { get; set; } = new OYSDateTime(DateTime.Now);
+		public IUser CreatedBy { get; set; } = Users.None;
+		public IDateTime CreatedDateTime { get; set; } = System.DateTime.Now.ToDateTime();
 		#endregion
 		#region Last Owner Info
 		public IUser CurrentOwner { get; set; }

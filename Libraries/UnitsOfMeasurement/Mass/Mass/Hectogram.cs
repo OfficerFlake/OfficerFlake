@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Hectogram : Mass, IHectogram
+			public class HectoGram : Mass, IHectoGram
 			{
 				#region CTOR
-				public Hectogram(double value) : base(value, Conversion.Hectogram, Suffixes.Hectogram) { }
+				public HectoGram(double value) : base(value, Conversion.HectoGram, Suffixes.HectoGram) { }
 				#endregion
 				#region Operators
-				public static Hectogram operator +(Hectogram firstMeasurement, Hectogram secondMeasurement)
+				public static HectoGram operator +(HectoGram firstMeasurement, HectoGram secondMeasurement)
 				{
-					return new Hectogram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new HectoGram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Hectogram operator -(Hectogram firstMeasurement, Hectogram secondMeasurement)
+				public static HectoGram operator -(HectoGram firstMeasurement, HectoGram secondMeasurement)
 				{
-					return new Hectogram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new HectoGram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Hectogram operator *(Hectogram firstMeasurement, Hectogram secondMeasurement)
+				public static HectoGram operator *(HectoGram firstMeasurement, HectoGram secondMeasurement)
 				{
-					return new Hectogram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new HectoGram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Hectogram operator /(Hectogram firstMeasurement, Hectogram secondMeasurement)
+				public static HectoGram operator /(HectoGram firstMeasurement, HectoGram secondMeasurement)
 				{
-					return new Hectogram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new HectoGram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Hectograms
-			public static Hectogram Hectograms(this Byte input) => new Hectogram(input);
-			public static Hectogram Hectograms(this Int16 input) => new Hectogram(input);
-			public static Hectogram Hectograms(this Int32 input) => new Hectogram(input);
-			public static Hectogram Hectograms(this Int64 input) => new Hectogram(input);
-			public static Hectogram Hectograms(this Single input) => new Hectogram(input);
-			public static Hectogram Hectograms(this Double input) => new Hectogram(input);
+			#region [Number].HectoGrams
+			public static HectoGram HectoGrams(this Byte input) => new HectoGram(input);
+			public static HectoGram HectoGrams(this Int16 input) => new HectoGram(input);
+			public static HectoGram HectoGrams(this Int32 input) => new HectoGram(input);
+			public static HectoGram HectoGrams(this Int64 input) => new HectoGram(input);
+			public static HectoGram HectoGrams(this Single input) => new HectoGram(input);
+			public static HectoGram HectoGrams(this Double input) => new HectoGram(input);
 			#endregion
 		}
 	}

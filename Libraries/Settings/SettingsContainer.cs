@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -77,7 +76,7 @@ namespace Com.OfficerFlake.Libraries
 			public static IPAddress ProxyRedirectAddress = IPAddress.Parse("127.0.0.1");
 			#endregion
 
-			public static Duration RestartTimer = 120.Minutes();
+			public static IDuration RestartTimer = 120.Minutes();
 		}
 
 		public static class Flight

@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		ICentimeter ToCentimeters();
 		IFoot ToFeet();
 		IInch ToInches();
-		IKilometer ToKilometers();
+		IKiloMeter ToKiloMeters();
 		IMeter ToMeters();
 		IMicron ToMicrons();
 		IMile ToMiles();
@@ -101,7 +101,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 
 	}
-	public interface IKilometer : IDistance
+	public interface IKiloMeter : IDistance
 	{
 
 	}
@@ -257,11 +257,11 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IMass : IUnitOfMeasurement
 	{
 		ICarat ToCarats();
-		ICentigram ToCentigrams();
-		IDecagram ToDecagrams();
+		ICentiGram ToCentiGrams();
+		IDecaGram ToDecaGrams();
 		IGram ToGrams();
-		IHectogram ToHectograms();
-		IKilogram ToKilograms();
+		IHectoGram ToHectoGrams();
+		IKiloGram ToKiloGrams();
 		IMetricTonne ToMetricTonnes();
 		IOunce ToOunces();
 		IPound ToPounds();
@@ -272,28 +272,28 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface ICarat : IMass
 	{
 	}
-	public interface ICentigram : IMass
+	public interface ICentiGram : IMass
 	{
 	}
-	public interface IDecagram : IMass
+	public interface IDecaGram : IMass
 	{
 	}
-	public interface IDecigram : IMass
+	public interface IDeciGram : IMass
 	{
 	}
 	public interface IGram : IMass
 	{
 	}
-	public interface IHectogram : IMass
+	public interface IHectoGram : IMass
 	{
 	}
-	public interface IKilogram : IMass
+	public interface IKiloGram : IMass
 	{
 	}
 	public interface IMetricTonne : IMass
 	{
 	}
-	public interface IMilligram : IMass
+	public interface IMilliGram : IMass
 	{
 	}
 	public interface IOunce : IMass

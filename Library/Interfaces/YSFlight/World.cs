@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
-	public interface IWorldAircraftObject
+	public interface IWorldAircraft
 	{
 		String Identify { get; set; }
 		String Tag { get; set; }
@@ -13,6 +13,28 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		IUser Owner { get; set; }
 		IMetaDataAircraft MetaData { get; set; }
+
+		IPoint3 Position { get; set; }
+		IOrientation3 Attitude { get; set; }
+	}
+	public interface IWorldGround
+	{
+		String Identify { get; set; }
+		String Tag { get; set; }
+		UInt32 Strength { get; set; }
+		UInt32 IFF { get; set; }
+		UInt32 ID { get; set; }
+
+		IUser Owner { get; set; }
+		IMetaDataGround MetaData { get; set; }
+
+		IPoint3 Position { get; set; }
+		IOrientation3 Attitude { get; set; }
+	}
+
+	public interface IWorldScenery
+	{
+		String Identify { get; set; }
 
 		IPoint3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
@@ -33,30 +55,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPoint3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
-
-	public interface IWorldGroundObject
-	{
-		String Identify { get; set; }
-		String Tag { get; set; }
-		UInt32 Strength { get; set; }
-		UInt32 IFF { get; set; }
-		UInt32 ID { get; set; }
-
-		IUser Owner { get; set; }
-		IMetaDataGround MetaData { get; set; }
-		
-		IPoint3 Position { get; set; }
-		IOrientation3 Attitude { get; set; }
-	}
-
-	public interface IWorldScenery
-	{
-		String Identify { get; set; }
-
-		IPoint3 Position { get; set; }
-		IOrientation3 Attitude { get; set; }
-	}
-
+	
 	public interface IWorldMotionPath
 	{
 		String Identify { get; set; }

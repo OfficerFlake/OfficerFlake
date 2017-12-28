@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
+
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.RichText
 {
@@ -17,18 +18,18 @@ namespace Com.OfficerFlake.Libraries.RichText
 
 		public RichTextMessage(IRichTextString input)
 		{
-			Datestamp = (OYSDate)DateTime.Now;
-			Timestamp = (OYSTime)DateTime.Now;
-			User = Users.Unknown;
+			Datestamp = DateTime.Now.ToDate();
+			Timestamp = DateTime.Now.ToTime();
+			User = Users.None;
 		    String = input;
 			Type = MessageType.Unknown;
 		}
 	    public RichTextMessage(string input)
 	    {
-		    Datestamp = (OYSDate)DateTime.Now;
-		    Timestamp = (OYSTime)DateTime.Now;
-		    User = Users.Unknown;
-		    String = input.AsRichTextString();
+			Datestamp = DateTime.Now.ToDate();
+		    Timestamp = DateTime.Now.ToTime();
+		    User = Users.None;
+			String = input.AsRichTextString();
 			Type = MessageType.Unknown;
 		}
 
@@ -106,7 +107,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		public UnknownMessage(string input) : base(input)
 		{
 			Type = MessageType.Unknown;
-			User = Users.Unknown;
+			User = Users.None;
 		}
 	}
 
@@ -165,11 +166,6 @@ namespace Com.OfficerFlake.Libraries.RichText
 		{
 			Type = MessageType.DebugCrash;
 			User = Users.Console;
-			foreach (var thisElement in String.Elements)
-			{
-				thisElement.BackColor = new XRGBColor(240, 120, 120);
-				thisElement.ForeColor = new XRGBColor(255, 255, 255);
-			}
 		}
 	}
 }

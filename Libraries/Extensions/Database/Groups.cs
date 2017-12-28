@@ -4,6 +4,6 @@ namespace Com.OfficerFlake.Libraries.Extensions
 {
     public static class Groups
     {
-	    public static IGroup None => ObjectFactory.GetGroupNone;
-	}
+	    public static IGroup None { get; }  = ObjectFactory.CreateGroup("None".AsRichTextString());
+    }
 }

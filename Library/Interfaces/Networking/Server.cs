@@ -2,11 +2,8 @@
 {
 	public interface IServer
 	{
-		bool Start();
+		bool Start(uint TCPPort, uint UDPPort);
 		bool Stop();
-		bool IsShuttingDown { get; set; }
-
-		bool UDPRecieveDatagram();
-		bool TCPAcceptNewConnection();
+		bool IsShuttingDown { get; }
 	}
 }

@@ -2,72 +2,103 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
-    public static class Server
+    public class OpenYSServer : IServer
     {
 		#region Start/Stop
-		public static bool Start()
-	    {
-		    //UDPReciever = new UdpClient(UDPEndPoint);
-		    try
+		public bool Start(uint TCPPort, uint UDPPort)
+		{
+			_TCPPort = TCPPort;
+			_UDPPort = UDPPort;
+			_TCPListener = new TcpListener(IPAddress.Any, (Int32)_TCPPort);
+			_UDPEndPoint = new IPEndPoint(IPAddress.Any, (Int32)_UDPPort);
+
+			try
 		    {
-			    UDPStartRecieve();
-			    _listener.Start();
-			    TCPBeginAccept();
-			    return true;
+				_TCPListener.Start();
+			    Task.Run(() => TCPAcceptNewConnection());
+			    Task.Run(() => UDPRecieve());
+				return true;
 			}
 		    catch
 		    {
-			    ShutDown();
+			    Stop();
 			    return false;
 		    }
 	    }
-
-	    private static bool ShuttingDown = false;
-	    public static bool ShutDown()
+	    public bool Stop()
 	    {
-		    if (ShuttingDown) return false;
+		    if (IsShuttingDown) return false;
 		    try
 		    {
 			    UDPReciever.Close();
-			    _listener.Stop();
-			    ShuttingDown = true;
-			}
+			    _TCPListener.Stop();
+			    IsShuttingDown = true;
+		    }
 		    catch
 		    {
-				//???
+			    //???
 		    }
-		    return ShuttingDown;
+		    return IsShuttingDown;
 	    }
+	    public bool IsShuttingDown { get; private set; }
 		#endregion
 
-		#region UDP Input
-		private static IPEndPoint UDPEndPoint = new IPEndPoint(IPAddress.Any, 7916);
-		private static UdpClient UDPReciever = new UdpClient(UDPEndPoint);
+	    #region TCP/IP
+	    private uint _TCPPort = 7915;
+	    private static TcpListener _TCPListener = new TcpListener(IPAddress.Any, 7915);
 
-	    private static bool UDPStartRecieve()
+	    private bool TCPAcceptNewConnection()
 	    {
+		    if (IsShuttingDown) return false;
 		    try
 		    {
-			    UDPReciever.BeginReceive(UDPEndRecieve, null);
-			    return true;
+			    Socket newSocket = _TCPListener.AcceptSocket();
+			    IConnection newConnection = ObjectFactory.CreateConnection();
+			    newConnection.Connect(newSocket);
 		    }
-		    catch
+		    catch (InvalidOperationException)
 		    {
 			    return false;
 		    }
+		    Task.Run(() => TCPAcceptNewConnection());
+		    return true;
 	    }
-	    private static void UDPEndRecieve(IAsyncResult res)
-	    {
-		    if (!ShuttingDown)
-		    {
-				//TODO : Graceful Close...
-			    byte[] received = UDPReciever.EndReceive(res, ref UDPEndPoint);
+	    #endregion
+		#region UDP
+		private uint _UDPPort = 7916;
+		private IPEndPoint _UDPEndPoint = new IPEndPoint(IPAddress.Any, 7916);
+		private UdpClient UDPReciever { get; set; }
 
-			    if (received.Length >= 12)
+	    private void UDPRecieve()
+	    {
+		    if (!IsShuttingDown)
+		    {
+				#region Recieve
+				byte[] received;
+				try
+			    {
+				    received = UDPReciever.Receive(ref _UDPEndPoint);
+			    }
+			    catch (ObjectDisposedException)
+			    {
+					//Socket Closed.
+				    return;
+			    }
+			    catch (SocketException)
+			    {
+					//Error.
+				    return;
+			    }
+			    if (received == null) return;
+				#endregion
+				#region Send To Connection
+				if (received.Length >= 12)
 			    {
 				    int connectionID = BitConverter.ToInt32(received, 0);
 					uint type = BitConverter.ToUInt32(received, 8);
@@ -75,46 +106,24 @@ namespace Com.OfficerFlake.Libraries.Networking
 				    thisPacket.Type = type;
 					thisPacket.Data = received.Skip(12).ToArray();
 
-				    foreach (IConnection thisConnection in ObjectFactory.AllConnections.Where(x => x.ConnectionNumber == connectionID))
+				    foreach (IConnection thisConnection in Connections.AllConnections.Where(x => x.ConnectionNumber == connectionID))
 				    {
 					    thisConnection.GivePacket(thisPacket);
 				    }
 			    }
-
-			    UDPStartRecieve();
+				#endregion
+				Task.Run(() => UDPRecieve());
 			}
 	    }
 		#endregion
-		#region TCP/IP
-		private static TcpListener _listener = new TcpListener(IPAddress.Any, 7915);
-	    private static void TCPBeginAccept()
-	    {
-		    _listener.BeginAcceptSocket(TCPEndAccept, _listener);
-	    }
-	    private static void TCPEndAccept(IAsyncResult ar)
-	    {
-		    TcpListener listener = (TcpListener)ar.AsyncState;
+	}
 
-			try
-		    {
-			    Socket newSocket = listener.EndAcceptSocket(ar);
-			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket);
-			    TCPBeginAccept();
-			}
-		    catch (ObjectDisposedException)
-		    {
-			    return;
-		    }
+	public static class Server
+	{
+		private static IServer server = new OpenYSServer();
 
-
-	    }
-		#endregion
-
-		//List<Connection> Clients
-
-		//Callback for TCPListener to Method to get a new Connection
-		//Callback for UDPListener to get a new packet and assign to correct connection.
-
-		//PacketProcess in Seperate Class.
+		public static bool Start(uint TCPPort = 7915, uint UDPPort = 7916) => server.Start(TCPPort, UDPPort);
+		public static bool Stop() => server.Stop();
+		public static bool IsShuttingDown => server.IsShuttingDown;
 	}
 }

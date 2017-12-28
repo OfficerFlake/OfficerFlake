@@ -94,24 +94,23 @@ namespace Com.OfficerFlake.Libraries.IO
                 return string.Join(" ", Elements);
             }
 		}
-        public readonly List<ICommandFileLine> Lines = new List<ICommandFileLine>();
 
-		List<ICommandFileLine> ICommandFile.Lines { get; set; } = new List<ICommandFileLine>();
+	    public new List<ICommandFileLine> Contents { get; set; } = new List<ICommandFileLine>();
 
 		public new bool Load()
         {
             base.Load();
-            Lines.Clear();
-            foreach (var thisLine in Contents)
+	        Contents.Clear();
+            foreach (var thisLine in base.Contents)
             {
                 var thisLinePrepared = string.Join(" ", thisLine.SplitPresevingQuotes());
-                Lines.Add(new Line(thisLinePrepared));
+	            Contents.Add(new Line(thisLinePrepared));
             }
             return true;
         }
         public new bool Save()
         {
-	        Contents = Lines.Select(x => x.ToString()).ToArray();
+	        base.Contents = Contents.Select(x => x.ToString()).ToArray();
 			return base.Save();
         }
     }

@@ -23,9 +23,9 @@ namespace Com.OfficerFlake.Libraries
 
 		//UNITS
 		#region Color
-		public static  ISimpleColor GetSimpleColor(char colorCode) => throw new NotImplementedException();
-		public static  I24BitColor CreateColor(int red, int green, int blue) => throw new NotImplementedException();
-		public static  I32BitColor CreateColor(int alpha, int red, int green, int blue) => throw new NotImplementedException();
+		public static  ISimpleColor CreateSimpleColor(IColor color, char colorCode) => throw new NotImplementedException();
+		public static  IColor CreateColor(int red, int green, int blue) => throw new NotImplementedException();
+		public static IColor CreateColor(int alpha, int red, int green, int blue) => throw new NotImplementedException();
 		#endregion
 		#region Database
 		//Group
@@ -116,7 +116,8 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacketProcessor CreatePacketProcessor() => throw new NotImplementedException();
 
 		//Server
-		public static IServer CreateServer() => throw new NotImplementedException();
+		public static Boolean ServerStart() => throw new NotImplementedException();
+		public static Boolean ServerStop() => throw new NotImplementedException();
 		#endregion
 		#region RichText
 		public static IRichTextString CreateRichTextString(string formattedString) => throw new NotImplementedException();

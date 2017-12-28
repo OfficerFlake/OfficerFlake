@@ -18,13 +18,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#region 3_ObjectFactory
 		//ObjectFactory can't create self!
 		#endregion
-		
+
 		//UNITS
 		#region Colors
 		//Colors
-		ISimpleColor GetSimpleColor(char colorCode);
-		I24BitColor CreateColor(int red, int green, int blue);
-		I32BitColor CreateColor(int alpha, int red, int green, int blue);
+		ISimpleColor CreateSimpleColor(IColor color, char colorCode);
+		IColor CreateColor(int red, int green, int blue);
+		IColor CreateColor(int alpha, int red, int green, int blue);
 
 		//Formatting
 
@@ -32,19 +32,12 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#region Database
 		//Group
 		IGroup CreateGroup(IRichTextString groupName);
-		IUser GetGroupNone { get; }
-
 		//Permission
 		IPermissions CreatePermissions();
-
 		//Rank
 		IRank CreateRank(IRichTextString rankName);
-		IUser GetRankNone { get; }
-
 		//User
 		IUser CreateUser(IRichTextString userName);
-		IUser GetUserConsole { get; }
-		IUser GetUserNone { get; }
 		#endregion
 		#region Files
 		IFile CreateFileReference(string filename);
@@ -118,7 +111,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacketProcessor CreatePacketProcessor();
 
 		//Server
-		IServer CreateServer();
+		Boolean ServerStart();
+		Boolean ServerEnd();
 		#endregion
 		#region RichText
 		IRichTextString CreateRichTextString(string formattedString);
@@ -130,17 +124,81 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region UnitsOfMeasurement
 		//Angle
+		IDegree CreateDegree(double value);
+		IGradian CreateGradian(double value);
+		IRadian CreateRadian(double value);
 		//Area
+		IAcre CreateAcre(double value);
+		ISquareCentimeter CreateSquareCentimeter(double value);
+		ISquareFoot CreateSquareFoot(double value);
+		ISquareInch CreateSquareInch(double value);
+		ISquareKilometer CreateSquareKilometer(double value);
+		ISquareMeter CreateSquareMeter(double value);
+		ISquareMile CreateSquareMile(double value);
+		ISquareMillimeter CreateSquareMillimeter(double value);
+		ISquareNauticalMile CreateSquareNauticalMile(double value);
+		ISquareYard CreateSquareYard(double value);
 		//Distance
+		ICentimeter CreateCentimeter(double value);
+		IFoot CreateFoot(double value);
+		IInch CreateInch(double value);
+		IKiloMeter CreateKiloMeter(double value);
+		IMeter CreateMeter(double value);
+		IMicron CreateMicron(double value);
+		IMile CreateMile(double value);
+		IMillimeter CreateMillimeter(double value);
+		INanometer CreateNanometer(double value);
+		INauticalMile CreateNauticalMile(double value);
+		IYard CreateYard(double value);
 		//Duration
+		ISecond CreateSecond(double value);
+		IMinute CreateMinute(double value);
+		IHour CreateHour(double value);
+		IDay CreateDay(double value);
+		IWeek CreateWeek(double value);
+		IMonth CreateMonth(double value);
+		IYear CreateYear(double value);
+
 		IDate CreateDate(System.DateTime dateTime);
 		ITime CreateTime(System.DateTime dateTime);
 		IDateTime CreateDateTime(System.DateTime dateTime);
 		ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan);
 		//Energy
+		IBritishThermalUnit CreateBritishThermalUnit(double value);
+		IElectronVolt CreatElectronVolt(double value);
+		IFoodCalorie CreateFoodCalorie(double value);
+		IFootPound CreateFootPound(double value);
+		IJoule CreateJoule(double value);
+		IKiloJoule CreateKiloJoule(double value);
+		IThermalCalorie CreateThermalCalorie(double value);
 		//Mass
+		ICarat CreateCarat(double value);
+		ICentiGram CreateCentigram(double value);
+		IDecaGram CreateDecagram(double value);
+		IDeciGram CreateDecigram(double value);
+		IGram CreateGram(double value);
+		IHectoGram CreateHectoGram(double value);
+		IKiloGram CreateKiloGram(double value);
+		IMetricTonne CreateMetricTonne(double value);
+		IMilliGram CreateMilligram(double value);
+		IOunce CreateOunce(double value);
+		IPound CreatePound(double value);
+		IStone CreateStone(double value);
+		IUKLongTon CreateUKLongTon(double value);
+		IUSShortTon CreateUSShortTon(double value);
 		//Power
+		IBTUPerMinute CreateBTUPerMinute(double value);
+		IFootPoundPerMinute CreateFootPoundPerMinute(double value);
+		IKiloWatt CreateKiloWatt(double value);
+		IUSHorsePower CreateUSHorsePower(double value);
+		IWatt CreateWatt(double value);
 		//Pressure
+		IAtmosphere CreateAtmosphere(double value);
+		IBar CreateBar(double value);
+		IKiloPascal CreateKiloPascal(double value);
+		IMillimeterOfMercury CreateMillimeterOfMercury(double value);
+		IPascal CreatePascal(double value);
+		IPoundPerSquareInch CreatePoundPerSquareInch(double value);
 		//Speed
 		//Temperature
 		//Volume
