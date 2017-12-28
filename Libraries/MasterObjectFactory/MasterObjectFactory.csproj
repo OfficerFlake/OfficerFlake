@@ -70,10 +70,6 @@
       <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
       <Name>Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Databases\Permissions\Permissions.csproj">
-      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
-      <Name>Permissions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Databases\YSFHQ\YSFHQ.csproj">
       <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
       <Name>YSFHQ</Name>

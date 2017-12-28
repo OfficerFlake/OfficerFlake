@@ -3,13 +3,14 @@
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	#region Users
-	public interface IUser : IHasPermissions
+	public interface IUser
 	{
 		IRichTextString UserName { get; set; }
-		IUserHistory History { get; set; }
 
-		ILocalPermissionsTester LocalPermissionsTester { get; set; }
-		IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
+		IConnection Connection { get; set; }
+
+		IUserHistory History { get; set; }
+		IPermissions Permissions { get; set; }
 
 		string ToString();
 	}

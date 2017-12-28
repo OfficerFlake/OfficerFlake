@@ -82,7 +82,6 @@ namespace Com.OfficerFlake.Libraries.IO
 				return false;
 			}
 		}
-
 		public bool Save()
 		{
 			try

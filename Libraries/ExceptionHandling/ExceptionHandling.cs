@@ -5,7 +5,7 @@ namespace Com.OfficerFlake.Libraries
 {
 	internal class DefaultExceptionHandler : IExceptionHandler
 	{
-		public bool Handle<T>(T e) where T : System.Exception
+		public bool Handle(System.Exception e)
 		{
 			Debug.AddErrorMessage(e, "Exception handled by default handler.");
 			return true;
@@ -18,18 +18,9 @@ namespace Com.OfficerFlake.Libraries
 
 	    public static void LinkExceptionHandler(IExceptionHandler handler)
 	    {
-		    _handler = handler;
+		    if (handler != null) _handler = handler;
 	    }
 
-	    public static bool Handle<T>(T e) where T : System.Exception
-	    {
-		    if (_handler == null)
-		    {
-			    System.Diagnostics.Debug.WriteLine("Exception> " + e.ToString());
-			    System.Diagnostics.Debug.WriteLine("Exception StackTrace> " + e.StackTrace);
-			    return false;
-		    }
-		    return _handler.Handle(e);
-	    }
+	    public static bool Handle(System.Exception e) => _handler.Handle(e);
 	}
 }

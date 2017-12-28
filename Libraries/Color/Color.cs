@@ -61,8 +61,8 @@ namespace Com.OfficerFlake.Libraries.Color
 			ColorCode = colorCode;
 		}
 
-		public IColor Color { get; set; } = new XRGBColor(255,255,255).GetColor();
-		public char ColorCode { get; set; } = '?';
+		public IColor Color { get; } = new XRGBColor(255,255,255).GetColor();
+		public char ColorCode { get; } = '?';
 
 		public IColor GetColor()
 		{

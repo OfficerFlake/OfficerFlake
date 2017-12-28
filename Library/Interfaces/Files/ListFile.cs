@@ -4,7 +4,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IListFile : IFile
 	{
-		List<IListFileLine> Lines { get; set; }
+		new List<IListFileLine> Contents { get; set; }
 
 		new bool Load();
 		new bool Save();

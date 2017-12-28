@@ -173,7 +173,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMonth Month { get; set; }
 		IDay Day { get; set; }
 
-		DateTime ToDateTime();
+		DateTime ToSystemDateTime();
 		string ToSystemString();
 	}
 	public interface ITime
@@ -182,7 +182,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMinute Minute { get; set; }
 		ISecond Second { get; set; }
 
-		DateTime ToDateTime();
+		DateTime ToSystemDateTime();
 		string ToSystemString();
 	}
 	public interface IDateTime
@@ -194,7 +194,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMinute Minute { get; set; }
 		ISecond Second { get; set; }
 
-		DateTime ToDateTime();
+		DateTime ToSystemDateTime();
 		string ToSystemString();
 	}
 
@@ -216,7 +216,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMinute TotalMinutes();
 		ISecond TotalSeconds();
 
-		TimeSpan ToTimeSpan();
+		TimeSpan ToSystemTimeSpan();
 		string ToSystemString();
 	}
 	#endregion
@@ -368,22 +368,27 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Temperature
 	public interface ITemperature
 	{
-		string ToString();
+		double Value { get; set; }
+
+		IDegreeCelsius ToDegreesCelsius();
+		IDegreeFahrenheit ToDegreesFahrenheit();
+		IDegreeKelvin ToDegreesKelvin();
 	}
-	public interface IDegreeCelcius : ITemperature
+	public interface IDegreeCelsius : ITemperature
 	{
-		IDegreeFahrenheit ToDegreeFahrenheit();
-		IDegreeKelvin ToDegreeKelvin();
+		new IDegreeFahrenheit ToDegreesFahrenheit();
+		new IDegreeKelvin ToDegreesKelvin();
 	}
 	public interface IDegreeFahrenheit : ITemperature
 	{
-		IDegreeCelcius ToDegreeCelcius();
-		IDegreeKelvin ToDegreeKelvin();
+		new IDegreeCelsius ToDegreesCelsius();
+		new IDegreeKelvin ToDegreesKelvin();
+
 	}
 	public interface IDegreeKelvin : ITemperature
 	{
-		IDegreeCelcius ToDegreeCelcius();
-		IDegreeFahrenheit ToDegreeFahrenheit();
+		new IDegreeCelsius ToDegreesCelsius();
+		new IDegreeFahrenheit ToDegreesFahrenheit();
 	}
 	#endregion
 	#region Volume

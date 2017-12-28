@@ -14,8 +14,8 @@
 
 	public interface ISimpleColor
 	{
-		IColor Color { get; set; }
-		char ColorCode { get; set; }
+		IColor Color { get; }
+		char ColorCode { get; }
 	}
 
 	public interface I24BitColor

@@ -5,9 +5,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IDATFile : ICommandFile
 	{
 		new List<IDATFileProperty> Contents { get; set; }
-
-		bool LoadAll();
-		bool SaveAll();
 	}
 
 	public interface IDATFileProperty

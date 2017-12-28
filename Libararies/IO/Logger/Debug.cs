@@ -35,7 +35,10 @@ namespace Com.OfficerFlake.Libraries.Logger
 	{
 		private static IDebug _debug = new DefaultDebug();
 
-		public static void LinkDebug(IDebug debug) => _debug = debug;
+		public static void LinkDebug(IDebug debug)
+		{
+			if (debug != null) _debug = debug;
+		}
 
 		public static void AddDetailMessage(string message) => _debug.AddDetailMessage(message);
 		public static void AddSummaryMessage(string message) => _debug.AddSummaryMessage(message);

@@ -34,12 +34,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildEnvironment\BuildEnvironment.cs" />
+    <Compile Include="0__BuildEnvironment\BuildEnvironment.cs" />
     <Compile Include="Colors\Formatting.cs" />
     <Compile Include="Colors\Colors.cs" />
-    <Compile Include="ExceptionHandling\ExceptionHandling.cs" />
+    <Compile Include="2_ExceptionHandling\ExceptionHandling.cs" />
     <Compile Include="Files\ListFile.cs" />
-    <Compile Include="ObjectFactory\ObjectFactory.cs" />
+    <Compile Include="3_ObjectFactory\ObjectFactory.cs" />
+    <Compile Include="YSFlight\LSTFile.cs" />
     <Compile Include="YSFlight\World.cs" />
     <Compile Include="YSFlight\MetaData.cs" />
     <Compile Include="YSFlight\DATFile.cs" />
@@ -57,12 +58,14 @@
     <Compile Include="Files\CommandFile.cs" />
     <Compile Include="Files\_File.cs" />
     <Compile Include="Math\Coordinate.cs" />
-    <Compile Include="Logging\Console.cs" />
+    <Compile Include="1_Logger\Console.cs" />
     <Compile Include="RichTexxt\RichText.cs" />
     <Compile Include="UnitsOfMeasurement\UnitsOfMeasurement.cs" />
-    <Compile Include="Logging\Debug.cs" />
+    <Compile Include="1_Logger\Debug.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="0__Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

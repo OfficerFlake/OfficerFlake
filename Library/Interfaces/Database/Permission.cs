@@ -12,7 +12,7 @@
 	#region Local Permissions
 	public interface ILocalPermissions
 	{
-		IHasPermissions Owner { get; set; }
+		IPermissions Owner { get; set; }
 
 		#region Manage User
 		IPermission Hide { get; set; }
@@ -45,7 +45,7 @@
 	#region Global Permissions
 	public interface IGlobalPermissions
 	{
-		IHasPermissions Owner { get; set; }
+		IPermissions Owner { get; set; }
 
 		#region Manage User
 		IPermission Mute { get; set; }
@@ -75,16 +75,19 @@
 	}
 	#endregion
 
-	public interface IHasPermissions
+	public interface IPermissions
 	{
 		ILocalPermissions LocalPermissions { get; set; }
 		IGlobalPermissions GlobalPermissions { get; set; }
+
+		ILocalPermissionsTester LocalPermissionsTester { get; set; }
+		IGlobalPermissionsTester GlobalPermissionsTester { get; set; }
 	}
 
 	#region Local Permissions Testing
 	public interface ILocalPermissionsTester
 	{
-		IHasPermissions Owner { get; set; }
+		IPermissions Owner { get; set; }
 
 		#region Manage User
 		bool Hide(IUser user);
@@ -117,7 +120,7 @@
 	#region Global Permissions Testing
 	public interface IGlobalPermissionsTester
 	{
-		IHasPermissions Owner { get; set; }
+		IPermissions Owner { get; set; }
 
 		#region Manage User
 		bool Mute(IUser user);

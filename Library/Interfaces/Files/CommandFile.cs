@@ -4,10 +4,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface ICommandFile : IFile
 	{
-		List<ICommandFileLine> Lines { get; set; }
-
-		new bool Load();
-		new bool Save();
+		new List<ICommandFileLine> Contents { get; set; }
 	}
 	public interface ICommandFileLine
 	{

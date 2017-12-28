@@ -43,7 +43,7 @@ namespace Com.OfficerFlake.Libraries
 
 	public class LocalPermissions : ILocalPermissions
 	{
-		public IHasPermissions Owner { get; set; }
+		public IPermissions Owner { get; set; }
 
 		#region Users
 		public IPermission Hide { get; set; } = new Permission(0,0,true);
@@ -74,7 +74,7 @@ namespace Com.OfficerFlake.Libraries
 	}
 	public class GlobalPermissions : IGlobalPermissions
 	{
-		public IHasPermissions Owner { get; set; }
+		public IPermissions Owner { get; set; }
 
 		#region Users
 		public IPermission Mute { get; set; } = new Permission(0, 0, true);
@@ -110,7 +110,7 @@ namespace Com.OfficerFlake.Libraries
 
 	public class LocalPermissionsTester : ILocalPermissionsTester
 	{
-		public IHasPermissions Owner { get; set; }
+		public IPermissions Owner { get; set; }
 
 		#region Manage User
 		public bool Hide(IUser user) { throw new NotImplementedException(); }
@@ -139,14 +139,14 @@ namespace Com.OfficerFlake.Libraries
 		public bool ChangePermissionsMustOutrank(IPermission permission) { throw new NotImplementedException(); }
 		#endregion
 
-		public LocalPermissionsTester(IHasPermissions owner)
+		public LocalPermissionsTester(IPermissions owner)
 		{
 			Owner = owner;
 		}
 	}
 	public class GlobalPermissionsTester : IGlobalPermissionsTester
 	{
-		public IHasPermissions Owner { get; set; }
+		public IPermissions Owner { get; set; }
 
 		#region Manage User
 		public bool Mute(IUser user) { throw new NotImplementedException(); }
@@ -180,7 +180,7 @@ namespace Com.OfficerFlake.Libraries
 		public bool ChangePermissionMustOutrank(IPermission permission, bool mustOutrank) { throw new NotImplementedException(); }
 		#endregion
 
-		public GlobalPermissionsTester(IHasPermissions owner)
+		public GlobalPermissionsTester(IPermissions owner)
 		{
 			Owner = owner;
 		}
