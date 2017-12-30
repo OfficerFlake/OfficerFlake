@@ -38,9 +38,10 @@
     <Compile Include="Colors\Formatting.cs" />
     <Compile Include="Colors\Colors.cs" />
     <Compile Include="2_ExceptionHandling\ExceptionHandling.cs" />
-    <Compile Include="Files\ListFile.cs" />
-    <Compile Include="3_ObjectFactory\ObjectFactory.cs" />
+    <Compile Include="3_FileIO\ListFile.cs" />
+    <Compile Include="4_ObjectFactory\ObjectFactory.cs" />
     <Compile Include="YSFlight\LSTFile.cs" />
+    <Compile Include="YSFlight\YSTypes.cs" />
     <Compile Include="YSFlight\World.cs" />
     <Compile Include="YSFlight\MetaData.cs" />
     <Compile Include="YSFlight\DATFile.cs" />
@@ -55,8 +56,8 @@
     <Compile Include="Database\Rank.cs" />
     <Compile Include="Database\User.cs" />
     <Compile Include="Database\Group.cs" />
-    <Compile Include="Files\CommandFile.cs" />
-    <Compile Include="Files\_File.cs" />
+    <Compile Include="3_FileIO\CommandFile.cs" />
+    <Compile Include="3_FileIO\_File.cs" />
     <Compile Include="Math\Coordinate.cs" />
     <Compile Include="1_Logger\Console.cs" />
     <Compile Include="RichTexxt\RichText.cs" />

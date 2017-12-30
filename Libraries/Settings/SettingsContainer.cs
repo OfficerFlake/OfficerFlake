@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
@@ -102,45 +103,45 @@ namespace Com.OfficerFlake.Libraries
 			public static class Basic
 			{
 				public static Boolean OverrideSkyColor = false;
-				public static I24BitColor SkyColor = new XRGBColor(180, 184, 186);
+				public static IColor SkyColor = ObjectFactory.CreateColor(180, 184, 186);
 
 				public static Boolean OverrideFogColor = false;
-				public static I24BitColor FogColor = new XRGBColor(120, 140, 160);
+				public static IColor FogColor = ObjectFactory.CreateColor(120, 140, 160);
 
 				public static Boolean OverrideGndColor = false;
-				public static I24BitColor GndColor = new XRGBColor(94, 117, 109);
+				public static IColor GndColor = ObjectFactory.CreateColor(94, 117, 109);
 			}
 
 			public static class Atmosphere
 			{
-				public static I24BitColor MaxAltitudeSkyColor = new XRGBColor(48, 0, 96);
-				public static I24BitColor MaxAltitudeHorizonColor = new XRGBColor(23, 106, 189);
+				public static IColor MaxAltitudeSkyColor = ObjectFactory.CreateColor(48, 0, 96);
+				public static IColor MaxAltitudeHorizonColor = ObjectFactory.CreateColor(23, 106, 189);
 
-				public static I24BitColor NoAtmosphereSkyColor = new XRGBColor(0, 0, 0);
-				public static I24BitColor NoAtmosphereHorizonColor = new XRGBColor(0, 0, 5);
+				public static IColor NoAtmosphereSkyColor = ObjectFactory.CreateColor(0, 0, 0);
+				public static IColor NoAtmosphereHorizonColor = ObjectFactory.CreateColor(0, 0, 5);
 
-				public static I24BitColor WhiteFogColor = new XRGBColor(160, 160, 160);
+				public static IColor WhiteFogColor = ObjectFactory.CreateColor(160, 160, 160);
 
 				public static class Fading
 				{
-					public static Distance MinimumAltitude = 12000.Meters();
-					public static Distance MaximumAltitude = 30000.Meters();
+					public static IDistance MinimumAltitude = 12000.Meters();
+					public static IDistance MaximumAltitude = 30000.Meters();
 				}
 			}
 
 			public static class Time
 			{
-				public static I24BitColor DawnSkyColor = new XRGBColor(200, 85, 200);
-				public static I24BitColor DawnHorizonColor = new XRGBColor(240, 200, 90);
+				public static IColor DawnSkyColor = ObjectFactory.CreateColor(200, 85, 200);
+				public static IColor DawnHorizonColor = ObjectFactory.CreateColor(240, 200, 90);
 
-				public static I24BitColor DaySkyColor = new XRGBColor(23, 106, 189);
-				public static I24BitColor DayHorizonColor = new XRGBColor(120, 140, 160);
+				public static IColor DaySkyColor = ObjectFactory.CreateColor(23, 106, 189);
+				public static IColor DayHorizonColor = ObjectFactory.CreateColor(120, 140, 160);
 
-				public static I24BitColor DuskSkyColor = new XRGBColor(128, 0, 32);
-				public static I24BitColor DuskHorizonColor = new XRGBColor(255, 160, 0);
+				public static IColor DuskSkyColor = ObjectFactory.CreateColor(128, 0, 32);
+				public static IColor DuskHorizonColor = ObjectFactory.CreateColor(255, 160, 0);
 
-				public static I24BitColor NightSkyColor = new XRGBColor(48, 0, 96);
-				public static I24BitColor NightHorizonColor = new XRGBColor(48, 0, 96);
+				public static IColor NightSkyColor = ObjectFactory.CreateColor(48, 0, 96);
+				public static IColor NightHorizonColor = ObjectFactory.CreateColor(48, 0, 96);
 
 				//How much should the colors ber darkened by if the time is night?
 				public static Double NightDarkeningFactor = 0.12;
@@ -152,8 +153,8 @@ namespace Com.OfficerFlake.Libraries
 
 		public static class Time
 		{
-			public static ITime DayLength = new OYSTime(0.Hours(),24.Minutes(),0.Seconds());
-			public static ITime CurrentTime = new OYSTime(12.Hours(), 0.Minutes(), 0.Seconds());
+			public static ITime DayLength = 24.Minutes().ToTime();
+			public static ITime CurrentTime = 12.Hours().ToTime();
 		}
 
 		public static class Weather
@@ -177,7 +178,7 @@ namespace Com.OfficerFlake.Libraries
 			public static ISpeed WindX = 0.MetersPerSecond();
 			public static ISpeed WindY = 0.MetersPerSecond();
 			public static ISpeed WindZ = 0.MetersPerSecond();
-			public static Distance Fog = 0.Meters();
+			public static IDistance Fog = 0.Meters();
 			#endregion
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
@@ -307,5 +308,37 @@ namespace Com.OfficerFlake.Libraries.IO
 		#endregion
 		*/
 		#endregion
+	}
+
+	public static class IOExtensions
+	{
+		public static string[] SplitPresevingQuotes(this string input)
+		{
+			var cleanstr = input
+				.Replace("\t", "    ")
+				.Replace("\r", "")
+				.Replace('\u2013', '-')
+				.Replace('\u2014', '-')
+				.Replace('\u2015', '-')
+				.Replace('\u2017', '_')
+				.Replace('\u2018', '\'')
+				.Replace('\u2019', '\'')
+				.Replace('\u201a', ',')
+				.Replace('\u201b', '\'')
+				.Replace('\u201c', '\"')
+				.Replace('\u201d', '\"')
+				.Replace('\u201e', '\"')
+				.Replace("\u2026", "...")
+				.Replace('\u2032', '\'')
+				.Replace('\u2033', '\"');
+			while (cleanstr.Contains("  ")) cleanstr = cleanstr.Replace("  ", " ");
+			if (cleanstr.Count(x => x == '\"') == 1) cleanstr = cleanstr.Replace("\"", "");
+			var result = cleanstr.Split('"')
+				.Select((element, index) => index % 2 == 0  // If even index
+					? element.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
+					: new[] { element })  // Keep the entire item
+				.SelectMany(element => element).ToArray();
+			return result;
+		}
 	}
 }

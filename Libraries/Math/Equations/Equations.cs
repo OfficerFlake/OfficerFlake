@@ -14,13 +14,21 @@ namespace Com.OfficerFlake.Libraries.Math
 			#endregion
 			#region Constructors
 			public Quadratic(){}
-            public Quadratic(double x, double y)
+            public Quadratic(double result, double a, double b, double c)
             {
-                Result = y;
-                A = x*x;
-                B = x;
-                C = 1;
+                Result = result;
+                A = a;
+                B = b;
+                C = c;
             }
+
+	        public Quadratic(double x, double y)
+	        {
+		        Result = y;
+		        A = x * x;
+		        B = x;
+		        C = 1;
+	        }
 			public Quadratic(Quadratic duplicate)
             {
                 Result = duplicate.Result;
@@ -110,15 +118,9 @@ namespace Com.OfficerFlake.Libraries.Math
 			public static Quadratic StatisticCurve(double x1, double x2, double x3)
 	        {
 		        return Quadratic.From3Coordinate2(
-			        ObjectFactory.CreateCoordinate2(
-						ObjectFactory.CreateDimensionX(x1),
-						ObjectFactory.CreateDimensionY(0.0d)),
-			        ObjectFactory.CreateCoordinate2(
-				        ObjectFactory.CreateDimensionX(x2),
-				        ObjectFactory.CreateDimensionY(0.5d)),
-			        ObjectFactory.CreateCoordinate2(
-				        ObjectFactory.CreateDimensionX(x3),
-				        ObjectFactory.CreateDimensionY(1.0d)));
+			        ObjectFactory.CreateCoordinate2(x1, 0.0d),
+			        ObjectFactory.CreateCoordinate2(x2, 0.5d),
+			        ObjectFactory.CreateCoordinate2(x3, 1.0d));
 	        }
         }
     }

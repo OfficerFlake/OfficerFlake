@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Speeds
 		{
-			public class KilometerPerHour : Speed, IKilometerPerHour
+			public class KiloMeterPerHour : Speed, IKiloMeterPerHour
 			{
 				#region CTOR
-				public KilometerPerHour(double value) : base(value, Conversion.KilometerPerHour, Suffixes.KilometerPerHour) { }
+				public KiloMeterPerHour(double value) : base(value, Conversion.KiloMeterPerHour, Suffixes.KiloMeterPerHour) { }
 				#endregion
 				#region Operators
-				public static KilometerPerHour operator +(KilometerPerHour firstMeasurement, KilometerPerHour secondMeasurement)
+				public static KiloMeterPerHour operator +(KiloMeterPerHour firstMeasurement, KiloMeterPerHour secondMeasurement)
 				{
-					return new KilometerPerHour((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new KiloMeterPerHour((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static KilometerPerHour operator -(KilometerPerHour firstMeasurement, KilometerPerHour secondMeasurement)
+				public static KiloMeterPerHour operator -(KiloMeterPerHour firstMeasurement, KiloMeterPerHour secondMeasurement)
 				{
-					return new KilometerPerHour((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new KiloMeterPerHour((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static KilometerPerHour operator *(KilometerPerHour firstMeasurement, KilometerPerHour secondMeasurement)
+				public static KiloMeterPerHour operator *(KiloMeterPerHour firstMeasurement, KiloMeterPerHour secondMeasurement)
 				{
-					return new KilometerPerHour((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new KiloMeterPerHour((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static KilometerPerHour operator /(KilometerPerHour firstMeasurement, KilometerPerHour secondMeasurement)
+				public static KiloMeterPerHour operator /(KiloMeterPerHour firstMeasurement, KiloMeterPerHour secondMeasurement)
 				{
-					return new KilometerPerHour((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new KiloMeterPerHour((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].KilometerPerHours
-			public static KilometerPerHour KilometerPerHours(this Byte input) => new KilometerPerHour(input);
-			public static KilometerPerHour KilometerPerHours(this Int16 input) => new KilometerPerHour(input);
-			public static KilometerPerHour KilometerPerHours(this Int32 input) => new KilometerPerHour(input);
-			public static KilometerPerHour KilometerPerHours(this Int64 input) => new KilometerPerHour(input);
-			public static KilometerPerHour KilometerPerHours(this Single input) => new KilometerPerHour(input);
-			public static KilometerPerHour KilometerPerHours(this Double input) => new KilometerPerHour(input);
+			#region [Number].KiloMeterPerHours
+			public static KiloMeterPerHour KiloMeterPerHours(this Byte input) => new KiloMeterPerHour(input);
+			public static KiloMeterPerHour KiloMeterPerHours(this Int16 input) => new KiloMeterPerHour(input);
+			public static KiloMeterPerHour KiloMeterPerHours(this Int32 input) => new KiloMeterPerHour(input);
+			public static KiloMeterPerHour KiloMeterPerHours(this Int64 input) => new KiloMeterPerHour(input);
+			public static KiloMeterPerHour KiloMeterPerHours(this Single input) => new KiloMeterPerHour(input);
+			public static KiloMeterPerHour KiloMeterPerHours(this Double input) => new KiloMeterPerHour(input);
 			#endregion
 		}
 	}

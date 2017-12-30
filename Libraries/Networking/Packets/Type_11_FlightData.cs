@@ -1,6 +1,6 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
@@ -29,7 +29,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public ITime Timestamp
 		{
-			get => new OYSTime(0.Hours(), 0.Minutes(), GetSingle(0).Seconds());
+			get => GetSingle(0).Seconds().ToTime();
 			set => SetSingle(0, (Single)value.Second.RawValue);
 		}
 
@@ -585,13 +585,13 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(52).Kilograms();
+						return GetInt16(52).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(40).Kilograms();
+						return GetByte(40).KiloGrams();
 					default:
-						return 0.Kilograms();
+						return 0.KiloGrams();
 				}
 			}
 			set
@@ -599,12 +599,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(52, (Int16)value.ToKilograms().RawValue);
+						SetInt16(52, (Int16)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(40, (byte)value.ToKilograms().RawValue);
+						SetByte(40, (byte)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}
@@ -616,13 +616,13 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(54).Kilograms();
+						return GetSingle(54).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(42).Kilograms();
+						return GetInt32(42).KiloGrams();
 					default:
-						return 0.Kilograms();
+						return 0.KiloGrams();
 				}
 			}
 			set
@@ -630,12 +630,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(54, (Single)value.ToKilograms().RawValue);
+						SetSingle(54, (Single)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(42, (int)value.ToKilograms().RawValue);
+						SetInt32(42, (int)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}
@@ -647,13 +647,13 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(48).Kilograms();
+						return GetSingle(48).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(46).Kilograms();
+						return GetInt32(46).KiloGrams();
 					default:
-						return 0.Kilograms();
+						return 0.KiloGrams();
 				}
 			}
 			set
@@ -661,12 +661,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(48, (Single)value.ToKilograms().RawValue);
+						SetSingle(48, (Single)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(46, (int)value.ToKilograms().RawValue);
+						SetInt32(46, (int)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}

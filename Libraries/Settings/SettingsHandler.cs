@@ -4,8 +4,9 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Security.Permissions;
+
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
+using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -44,7 +45,6 @@ namespace Com.OfficerFlake.Libraries
 			try
 			{
 				//DO NOT ADD CUTSOM CLASSES TO CONVERT TYPE! USE A DATABASE PRIMARY KEY INSTEAD!
-
 
 				//System Objects
 				#region Boolean
@@ -122,92 +122,92 @@ namespace Com.OfficerFlake.Libraries
 
 				//Units Of Measurement
 				#region Angle				
-				if (desiredType == typeof(Angle))
+				if (desiredType == typeof(IAngle))
 				{
-					Angle thisAngle;
-					Angle.TryParse(parameters, out thisAngle);
+					IAngle thisAngle;
+					ObjectFactory.TryParse(parameters, out thisAngle);
 					return Convert.ChangeType(thisAngle, desiredType);
 				}
 				#endregion
 				#region Area
-				if (desiredType == typeof(Area))
+				if (desiredType == typeof(IArea))
 				{
-					Area thisArea;
-					Area.TryParse(parameters, out thisArea);
+					IArea thisArea;
+					ObjectFactory.TryParse(parameters, out thisArea);
 					return Convert.ChangeType(thisArea, desiredType);
 				}
 				#endregion
 				#region Energy				
-				if (desiredType == typeof(Energy))
+				if (desiredType == typeof(IEnergy))
 				{
-					Energy thisEnergy;
-					Energy.TryParse(parameters, out thisEnergy);
+					IEnergy thisEnergy;
+					ObjectFactory.TryParse(parameters, out thisEnergy);
 					return Convert.ChangeType(thisEnergy, desiredType);
 				}
 
 				#endregion
 				#region Distance				
-				if (desiredType == typeof(Distance))
+				if (desiredType == typeof(IDistance))
 				{
-					Distance thisDistance;
-					Distance.TryParse(parameters, out thisDistance);
+					IDistance thisDistance;
+					ObjectFactory.TryParse(parameters, out thisDistance);
 					return Convert.ChangeType(thisDistance, desiredType);
 				}
 
 				#endregion
 				#region Mass				
-				if (desiredType == typeof(Mass))
+				if (desiredType == typeof(IMass))
 				{
-					Mass thisMass;
-					Mass.TryParse(parameters, out thisMass);
+					IMass thisMass;
+					ObjectFactory.TryParse(parameters, out thisMass);
 					return Convert.ChangeType(thisMass, desiredType);
 				}
 
 				#endregion
 				#region Power				
-				if (desiredType == typeof(Power))
+				if (desiredType == typeof(IPower))
 				{
-					Power thisPower;
-					Power.TryParse(parameters, out thisPower);
+					IPower thisPower;
+					ObjectFactory.TryParse(parameters, out thisPower);
 					return Convert.ChangeType(thisPower, desiredType);
 				}
 				#endregion
 				#region Pressure				
-				if (desiredType == typeof(Pressure))
+				if (desiredType == typeof(IPressure))
 				{
-					Pressure thisPressure;
-					Pressure.TryParse(parameters, out thisPressure);
+					IPressure thisPressure;
+					ObjectFactory.TryParse(parameters, out thisPressure);
 					return Convert.ChangeType(thisPressure, desiredType);
 				}
 				#endregion
 				#region Speed				
-				if (desiredType == typeof(Speed))
+				if (desiredType == typeof(ISpeed))
 				{
-					Speed thisSpeed;
-					Speed.TryParse(parameters, out thisSpeed);
+					ISpeed thisSpeed;
+					ObjectFactory.TryParse(parameters, out thisSpeed);
 					return Convert.ChangeType(thisSpeed, desiredType);
 				}
 				#endregion
 				#region Temperature				
-				if (desiredType == typeof(Temperature))
+				if (desiredType == typeof(ITemperature))
 				{
-					Temperature thisTemperature;
-					Temperature.TryParse(parameters, out thisTemperature);
+					ITemperature thisTemperature;
+					ObjectFactory.TryParse(parameters, out thisTemperature);
 					return Convert.ChangeType(thisTemperature, desiredType);
 				}
 				#endregion
 				#region Volume				
-				if (desiredType == typeof(Volume))
+				if (desiredType == typeof(IVolume))
 				{
-					Volume thisVolume;
-					Volume.TryParse(parameters, out thisVolume);
+					IVolume thisVolume;
+					ObjectFactory.TryParse(parameters, out thisVolume);
 					return Convert.ChangeType(thisVolume, desiredType);
 				}
 				#endregion
 
 				//Colors
 				#region XRGBColor
-				if (desiredType == typeof(XRGBColor))
+				if (desiredType == typeof(I24BitColor))
 				{
 					string[] split = parameters.Split(' ');
 
@@ -215,7 +215,7 @@ namespace Com.OfficerFlake.Libraries
 					byte green = 255;
 					byte blue = 255;
 
-					XRGBColor White = new XRGBColor(255, 255, 255);
+					I24BitColor White = ObjectFactory.CreateColor(255, 255, 255).Get24BitColor();
 
 					if (split.Length < 3)
 					{
@@ -238,7 +238,7 @@ namespace Com.OfficerFlake.Libraries
 						//Debug
 						return Convert.ChangeType(White, desiredType);
 					}
-					return Convert.ChangeType(new XRGBColor(red, green, blue), desiredType);
+					return Convert.ChangeType(ObjectFactory.CreateColor(red, green, blue).Get24BitColor(), desiredType);
 				}
 				#endregion
 
@@ -298,9 +298,9 @@ namespace Com.OfficerFlake.Libraries
 			#region Iterate over Contents, Update Settings
 			try
 			{
-				for (int i = 0; i < Settings.SettingsFile.Lines.Count; i++)
+				for (int i = 0; i < Settings.SettingsFile.Contents.Count; i++)
 				{
-					ICommandFileLine thisLine = Settings.SettingsFile.Lines[i];
+					ICommandFileLine thisLine = Settings.SettingsFile.Contents[i];
 
 					string command = thisLine.Command;
 					List<string> parameters = new List<string>();

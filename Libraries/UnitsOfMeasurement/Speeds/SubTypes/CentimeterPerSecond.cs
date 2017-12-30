@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Speeds
 		{
-			public class CentimeterPerSecond : Speed, ICentimeterPerSecond
+			public class CentiMeterPerSecond : Speed, ICentiMeterPerSecond
 			{
 				#region CTOR
-				public CentimeterPerSecond(double value) : base(value, Conversion.CentimeterPerSecond, Suffixes.CentimeterPerSecond) { }
+				public CentiMeterPerSecond(double value) : base(value, Conversion.CentiMeterPerSecond, Suffixes.CentiMeterPerSecond) { }
 				#endregion
 				#region Operators
-				public static CentimeterPerSecond operator +(CentimeterPerSecond firstMeasurement, CentimeterPerSecond secondMeasurement)
+				public static CentiMeterPerSecond operator +(CentiMeterPerSecond firstMeasurement, CentiMeterPerSecond secondMeasurement)
 				{
-					return new CentimeterPerSecond((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new CentiMeterPerSecond((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static CentimeterPerSecond operator -(CentimeterPerSecond firstMeasurement, CentimeterPerSecond secondMeasurement)
+				public static CentiMeterPerSecond operator -(CentiMeterPerSecond firstMeasurement, CentiMeterPerSecond secondMeasurement)
 				{
-					return new CentimeterPerSecond((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new CentiMeterPerSecond((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static CentimeterPerSecond operator *(CentimeterPerSecond firstMeasurement, CentimeterPerSecond secondMeasurement)
+				public static CentiMeterPerSecond operator *(CentiMeterPerSecond firstMeasurement, CentiMeterPerSecond secondMeasurement)
 				{
-					return new CentimeterPerSecond((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new CentiMeterPerSecond((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static CentimeterPerSecond operator /(CentimeterPerSecond firstMeasurement, CentimeterPerSecond secondMeasurement)
+				public static CentiMeterPerSecond operator /(CentiMeterPerSecond firstMeasurement, CentiMeterPerSecond secondMeasurement)
 				{
-					return new CentimeterPerSecond((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new CentiMeterPerSecond((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].CentimeterPerSeconds
-			public static CentimeterPerSecond CentimeterPerSeconds(this Byte input) => new CentimeterPerSecond(input);
-			public static CentimeterPerSecond CentimeterPerSeconds(this Int16 input) => new CentimeterPerSecond(input);
-			public static CentimeterPerSecond CentimeterPerSeconds(this Int32 input) => new CentimeterPerSecond(input);
-			public static CentimeterPerSecond CentimeterPerSeconds(this Int64 input) => new CentimeterPerSecond(input);
-			public static CentimeterPerSecond CentimeterPerSeconds(this Single input) => new CentimeterPerSecond(input);
-			public static CentimeterPerSecond CentimeterPerSeconds(this Double input) => new CentimeterPerSecond(input);
+			#region [Number].CentiMeterPerSeconds
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Byte input) => new CentiMeterPerSecond(input);
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Int16 input) => new CentiMeterPerSecond(input);
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Int32 input) => new CentiMeterPerSecond(input);
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Int64 input) => new CentiMeterPerSecond(input);
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Single input) => new CentiMeterPerSecond(input);
+			public static CentiMeterPerSecond CentiMeterPerSeconds(this Double input) => new CentiMeterPerSecond(input);
 			#endregion
 		}
 	}

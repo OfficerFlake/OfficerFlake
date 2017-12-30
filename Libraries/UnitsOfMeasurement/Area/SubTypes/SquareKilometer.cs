@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Areas
 		{
-			public class SquareKilometer : Area, ISquareKilometer
+			public class SquareKiloMeter : Area, ISquareKiloMeter
 			{
 				#region CTOR
-				public SquareKilometer(double value) : base(value, Conversion.SquareKilometer, Suffixes.SquareKilometer) { }
+				public SquareKiloMeter(double value) : base(value, Conversion.SquareKiloMeter, Suffixes.SquareKiloMeter) { }
 				#endregion
 				#region Operators
-				public static SquareKilometer operator +(SquareKilometer firstMeasurement, SquareKilometer secondMeasurement)
+				public static SquareKiloMeter operator +(SquareKiloMeter firstMeasurement, SquareKiloMeter secondMeasurement)
 				{
-					return new SquareKilometer((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new SquareKiloMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static SquareKilometer operator -(SquareKilometer firstMeasurement, SquareKilometer secondMeasurement)
+				public static SquareKiloMeter operator -(SquareKiloMeter firstMeasurement, SquareKiloMeter secondMeasurement)
 				{
-					return new SquareKilometer((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new SquareKiloMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static SquareKilometer operator *(SquareKilometer firstMeasurement, SquareKilometer secondMeasurement)
+				public static SquareKiloMeter operator *(SquareKiloMeter firstMeasurement, SquareKiloMeter secondMeasurement)
 				{
-					return new SquareKilometer((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new SquareKiloMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static SquareKilometer operator /(SquareKilometer firstMeasurement, SquareKilometer secondMeasurement)
+				public static SquareKiloMeter operator /(SquareKiloMeter firstMeasurement, SquareKiloMeter secondMeasurement)
 				{
-					return new SquareKilometer((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new SquareKiloMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].SquareKilometers
-			public static SquareKilometer SquareKilometers(this Byte input) => new SquareKilometer(input);
-			public static SquareKilometer SquareKilometers(this Int16 input) => new SquareKilometer(input);
-			public static SquareKilometer SquareKilometers(this Int32 input) => new SquareKilometer(input);
-			public static SquareKilometer SquareKilometers(this Int64 input) => new SquareKilometer(input);
-			public static SquareKilometer SquareKilometers(this Single input) => new SquareKilometer(input);
-			public static SquareKilometer SquareKilometers(this Double input) => new SquareKilometer(input);
+			#region [Number].SquareKiloMeters
+			public static SquareKiloMeter SquareKiloMeters(this Byte input) => new SquareKiloMeter(input);
+			public static SquareKiloMeter SquareKiloMeters(this Int16 input) => new SquareKiloMeter(input);
+			public static SquareKiloMeter SquareKiloMeters(this Int32 input) => new SquareKiloMeter(input);
+			public static SquareKiloMeter SquareKiloMeters(this Int64 input) => new SquareKiloMeter(input);
+			public static SquareKiloMeter SquareKiloMeters(this Single input) => new SquareKiloMeter(input);
+			public static SquareKiloMeter SquareKiloMeters(this Double input) => new SquareKiloMeter(input);
 			#endregion
 		}
 	}

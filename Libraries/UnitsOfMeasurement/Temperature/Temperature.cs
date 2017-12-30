@@ -49,7 +49,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 	    #endregion
 
 		#region Conversion ...
-		public static bool TryParse(string input, out Temperature output)
+		public static bool TryParse(string input, out ITemperature output)
 	    {
 		    #region Prepare Variables
 		    string capInput = input.ToUpperInvariant();

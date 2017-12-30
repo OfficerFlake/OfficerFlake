@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Distances
 		{
-			public class Nanometer : Distance, INanometer
+			public class NanoMeter : Distance, INanoMeter
 			{
 				#region CTOR
-				public Nanometer(double value) : base(value, Conversion.Nanometer, Suffixes.Nanometer) { }
+				public NanoMeter(double value) : base(value, Conversion.NanoMeter, Suffixes.NanoMeter) { }
 				#endregion
 				#region Operators
-				public static Nanometer operator +(Nanometer firstMeasurement, Nanometer secondMeasurement)
+				public static NanoMeter operator +(NanoMeter firstMeasurement, NanoMeter secondMeasurement)
 				{
-					return new Nanometer((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new NanoMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Nanometer operator -(Nanometer firstMeasurement, Nanometer secondMeasurement)
+				public static NanoMeter operator -(NanoMeter firstMeasurement, NanoMeter secondMeasurement)
 				{
-					return new Nanometer((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new NanoMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Nanometer operator *(Nanometer firstMeasurement, Nanometer secondMeasurement)
+				public static NanoMeter operator *(NanoMeter firstMeasurement, NanoMeter secondMeasurement)
 				{
-					return new Nanometer((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new NanoMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Nanometer operator /(Nanometer firstMeasurement, Nanometer secondMeasurement)
+				public static NanoMeter operator /(NanoMeter firstMeasurement, NanoMeter secondMeasurement)
 				{
-					return new Nanometer((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new NanoMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Nanometers
-			public static Nanometer Nanometers(this Byte input) => new Nanometer(input);
-			public static Nanometer Nanometers(this Int16 input) => new Nanometer(input);
-			public static Nanometer Nanometers(this Int32 input) => new Nanometer(input);
-			public static Nanometer Nanometers(this Int64 input) => new Nanometer(input);
-			public static Nanometer Nanometers(this Single input) => new Nanometer(input);
-			public static Nanometer Nanometers(this Double input) => new Nanometer(input);
+			#region [Number].NanoMeters
+			public static NanoMeter NanoMeters(this Byte input) => new NanoMeter(input);
+			public static NanoMeter NanoMeters(this Int16 input) => new NanoMeter(input);
+			public static NanoMeter NanoMeters(this Int32 input) => new NanoMeter(input);
+			public static NanoMeter NanoMeters(this Int64 input) => new NanoMeter(input);
+			public static NanoMeter NanoMeters(this Single input) => new NanoMeter(input);
+			public static NanoMeter NanoMeters(this Double input) => new NanoMeter(input);
 			#endregion
 		}
 	}

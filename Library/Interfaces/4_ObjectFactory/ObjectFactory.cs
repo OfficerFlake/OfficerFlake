@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
@@ -15,16 +16,25 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#region 2_ExceptionHandling
 		//ObjectFactory has direct access.
 		#endregion
-		#region 3_ObjectFactory
+		#region 3_FileIO
+		IFile CreateFileReference(string filename);
+		#endregion
+		#region 4_ObjectFactory
 		//ObjectFactory can't create self!
+		#endregion
+		#region 5_Extensions
+		//No objects to create in interfaces!
+		#endregion
+		#region 6_Settings
+		//No objects to create in interfaces!
 		#endregion
 
 		//UNITS
 		#region Colors
 		//Colors
 		ISimpleColor CreateSimpleColor(IColor color, char colorCode);
-		IColor CreateColor(int red, int green, int blue);
-		IColor CreateColor(int alpha, int red, int green, int blue);
+		IColor CreateColor(byte red, byte green, byte blue);
+		IColor CreateColor(byte alpha, byte red, byte green, byte blue);
 
 		//Formatting
 
@@ -38,9 +48,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IRank CreateRank(IRichTextString rankName);
 		//User
 		IUser CreateUser(IRichTextString userName);
-		#endregion
-		#region Files
-		IFile CreateFileReference(string filename);
 		#endregion
 		#region Math
 		//Coordinates
@@ -56,15 +63,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b);
 
 		//Quadratic
-		IQuadraticEquation CreateQuadraticEquation(double y, double x, double a, double b, double c);
+		IQuadraticEquation CreateQuadraticEquation(double result, double a, double b, double c);
 		IQuadraticEquation CreateQuadraticEquationFrom3Coordinate2(ICoordinate2 coordinate1, ICoordinate2 coordinate2, ICoordinate2 coordinate3);
+		IQuadraticEquation CreateStatisticsCurve(double minimum, double center, double maximum);
 
 		//Statastic
-		IStatistic CreateStatsticTracker();
+		IStatistic CreateStatsticTracker(string name);
 		#endregion
 		#region Networking
 		//Connection
-		IConnection CreateConnection();
+		IConnection CreateConnection(Socket TCPSocket);
 
 		//Packets
 		IPacket CreateGenericPacket();
@@ -108,49 +116,62 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_50_GroundColor CreatePacket50GroundColor();
 
 		//PacketProcessor
-		IPacketProcessor CreatePacketProcessor();
 
 		//Server
 		Boolean ServerStart();
-		Boolean ServerEnd();
+		Boolean ServerStop();
 		#endregion
 		#region RichText
+		IRichTextElement CreateRichTextElement(string unformattedString);
 		IRichTextString CreateRichTextString(string formattedString);
 		IRichTextMessage CreateRichTextMessage(IRichTextString richTextString);
+
+		IConsoleUserMessage CreateConsoleUserMessage(IUser user, IRichTextString message);
+		IConsoleInformationMessage CreateConsoleInformationMessage(IRichTextString message);
+
+		IDebugSummaryMessage CreateDebugSummaryMessage(IRichTextString message);
+		IDebugDetailMessage CreateDebugDetailMessage(IRichTextString message);
+		IDebugWarningMessage CreateDebugWarningMessage(IRichTextString message);
+		IDebugErrorMessage CreateDebugErrorMessage(Exception e, IRichTextString message);
+		IDebugCrashMessage CreateDebugCrashMessage(Exception e, IRichTextString message);
 		#endregion
-		#region Settings
-		ISettingsFile CreateSettingsFileReference(string filename);
-		ISettingsHandler GetSettingsHandler();
-		#endregion
+
 		#region UnitsOfMeasurement
-		//Angle
+		#region Angle
+		bool TryParse(string value, out IAngle output);
 		IDegree CreateDegree(double value);
 		IGradian CreateGradian(double value);
 		IRadian CreateRadian(double value);
-		//Area
+		#endregion
+		#region Area
+		bool TryParse(string value, out IArea output);
 		IAcre CreateAcre(double value);
-		ISquareCentimeter CreateSquareCentimeter(double value);
+		ISquareCentiMeter CreateSquareCentiMeter(double value);
 		ISquareFoot CreateSquareFoot(double value);
 		ISquareInch CreateSquareInch(double value);
-		ISquareKilometer CreateSquareKilometer(double value);
+		ISquareKiloMeter CreateSquareKiloMeter(double value);
 		ISquareMeter CreateSquareMeter(double value);
 		ISquareMile CreateSquareMile(double value);
-		ISquareMillimeter CreateSquareMillimeter(double value);
+		ISquareMilliMeter CreateSquareMilliMeter(double value);
 		ISquareNauticalMile CreateSquareNauticalMile(double value);
 		ISquareYard CreateSquareYard(double value);
-		//Distance
-		ICentimeter CreateCentimeter(double value);
+		#endregion
+		#region Distance
+		bool TryParse(string value, out IDistance output);
+		ICentiMeter CreateCentiMeter(double value);
 		IFoot CreateFoot(double value);
 		IInch CreateInch(double value);
 		IKiloMeter CreateKiloMeter(double value);
 		IMeter CreateMeter(double value);
 		IMicron CreateMicron(double value);
 		IMile CreateMile(double value);
-		IMillimeter CreateMillimeter(double value);
-		INanometer CreateNanometer(double value);
+		IMilliMeter CreateMilliMeter(double value);
+		INanoMeter CreateNanoMeter(double value);
 		INauticalMile CreateNauticalMile(double value);
 		IYard CreateYard(double value);
-		//Duration
+		#endregion
+		#region Duration
+		bool TryParse(string value, out IDuration output);
 		ISecond CreateSecond(double value);
 		IMinute CreateMinute(double value);
 		IHour CreateHour(double value);
@@ -163,49 +184,106 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		ITime CreateTime(System.DateTime dateTime);
 		IDateTime CreateDateTime(System.DateTime dateTime);
 		ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan);
-		//Energy
+		#endregion
+		#region Energy
+		bool TryParse(string value, out IEnergy output);
 		IBritishThermalUnit CreateBritishThermalUnit(double value);
-		IElectronVolt CreatElectronVolt(double value);
+		IElectronVolt CreateElectronVolt(double value);
 		IFoodCalorie CreateFoodCalorie(double value);
 		IFootPound CreateFootPound(double value);
 		IJoule CreateJoule(double value);
 		IKiloJoule CreateKiloJoule(double value);
 		IThermalCalorie CreateThermalCalorie(double value);
-		//Mass
+		#endregion
+		#region Mass
+		bool TryParse(string value, out IMass output);
 		ICarat CreateCarat(double value);
-		ICentiGram CreateCentigram(double value);
-		IDecaGram CreateDecagram(double value);
-		IDeciGram CreateDecigram(double value);
+		ICentiGram CreateCentiGram(double value);
+		IDecaGram CreateDecaGram(double value);
+		IDeciGram CreateDeciGram(double value);
 		IGram CreateGram(double value);
 		IHectoGram CreateHectoGram(double value);
 		IKiloGram CreateKiloGram(double value);
 		IMetricTonne CreateMetricTonne(double value);
-		IMilliGram CreateMilligram(double value);
+		IMilliGram CreateMilliGram(double value);
 		IOunce CreateOunce(double value);
 		IPound CreatePound(double value);
 		IStone CreateStone(double value);
 		IUKLongTon CreateUKLongTon(double value);
 		IUSShortTon CreateUSShortTon(double value);
-		//Power
+		#endregion
+		#region Power
+		bool TryParse(string value, out IPower output);
 		IBTUPerMinute CreateBTUPerMinute(double value);
 		IFootPoundPerMinute CreateFootPoundPerMinute(double value);
 		IKiloWatt CreateKiloWatt(double value);
 		IUSHorsePower CreateUSHorsePower(double value);
 		IWatt CreateWatt(double value);
-		//Pressure
+		#endregion
+		#region Pressure
+		bool TryParse(string value, out IPressure output);
 		IAtmosphere CreateAtmosphere(double value);
 		IBar CreateBar(double value);
 		IKiloPascal CreateKiloPascal(double value);
-		IMillimeterOfMercury CreateMillimeterOfMercury(double value);
+		IMilliMeterOfMercury CreateMilliMeterOfMercury(double value);
 		IPascal CreatePascal(double value);
 		IPoundPerSquareInch CreatePoundPerSquareInch(double value);
-		//Speed
-		//Temperature
-		//Volume
 		#endregion
+		#region Speed
+		bool TryParse(string value, out ISpeed output);
+		ICentiMeterPerSecond CreateCentiMeterPerSecond(double value);
+		IFootPerSecond CreateFootPerSecond(double value);
+		IKiloMeterPerHour CreateKiloMeterPerHour(double value);
+		IKnot CreateKnot(double value);
+		IMachAtSeaLevel CreateMachAtSeaLevel(double value);
+		IMeterPerSecond CreateMeterPerSecond(double value);
+		IMilePerHour CreateMilePerHour(double value);
+		IMilliMeterPerSecond CreateMilliMeterPerSecond(double value);
+		#endregion
+		#region Temperature
+		bool TryParse(string value, out ITemperature output);
+		IDegreeCelsius CreateDegreeCelsius(double value);
+		IDegreeFahrenheit CreateDegreeFahrenheit(double value);
+		IDegreeKelvin CreateDegreeKelvin(double value);
+		#endregion
+		#region Volume
+		bool TryParse(string value, out IVolume output);
+		IFluidOunce CreateFluidOunce(double value);
+		IUKGallon CreateUKGallon(double value);
+		IUKPint CreateUKPint(double value);
+		IUKQuart CreateUKQuart(double value);
+		IUKTableSpoon CreateUKTableSpoon(double value);
+		IUKTeaSpoon CreateUKTeaSpoon(double value);
+
+		ICup CreateCup(double value);
+		IUSGallon CreateUSGallon(double value);
+		IUSPint CreateUSPint(double value);
+		IUSQuart CreateUSQuart(double value);
+		IUSTableSpoon CreateUSTableSpoon(double value);
+		IUSTeaSpoon CreateUSTeaSpoon(double value);
+
+		ICubicCentiMeter CreateCubicCentiMeter(double value);
+		ICubicFoot CreateCubicFoot(double value);
+		ICubicInch CreateCubicInch(double value);
+		ICubicMeter CreateCubicMeter(double value);
+		ICubicYard CreateCubicYard(double value);
+		ILitre CreateLitre(double value);
+		IMilliLitre CreateMilliLitre(double value);
+		#endregion
+		#endregion
+
 		#region YSFlight
 		IDATFile CreateDATFileReference(string filename);
 		ILSTFile CreateLSTFileReference(string filename);
+
+		IYSTypeAircraftCategory CreateYSTypeAircraftCategory(string[] values);
+		IYSTypeHardpointDescription CreateYSTypeHardpointDescription(string value);
+		IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values);
+		IYSTypeWeaponType CreateYSTypeWeaponType(string[] values);
+
+		IMetaDataAircraft CreateMetaDataAircraft(string identify);
+		IMetaDataGround CreateMetaDataGround(string identify);
+		IMetaDataScenery CreateMetaDataScenery(string identify);
 		#endregion
 	}
 }

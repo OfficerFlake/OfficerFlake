@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		public class Scenery
+		public class Scenery : IO.ListFile.Line, IMetaDataScenery
 		{
 			#region Variables
-			public string SceneryPath1Fld;
-			public string SceneryPath2Stp;
-			public string SceneryPath3Yfs;
+			public string Path_1_FieldFile { get; set; }
+			public string Path_2_StartPositionFile { get; set; }
+			public string Path_3_YFSFile { get; set; }
 			#endregion
 			#region Cached Information
-			public string Identify;
+			public string Identify { get; set; }
 			#endregion
 
-			public static Scenery None = new Scenery() { Identify = "NULL" };
-			public static List<Scenery> List = new List<Scenery>();
-			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
-			
+			public Scenery(string[] parameters) : base(parameters) { }
+			public Scenery(string identify) : base(new string[] { })
+			{
+				Identify = identify;
+			}
+			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
+
 			#region Load All
 			/// <summary>
 			/// Searches the YSFlightDirectory for the Scenery Folder, and loads all Scenery Lists from it.
@@ -31,7 +35,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			public static bool LoadAll()
 			{
 				//Invalidate the old Scenery list!
-				List.Clear();
+				Extensions.YSFlight.MetaData.Scenery.List.Clear();
 				DebugInformation.Clear();
 
 				try
@@ -72,15 +76,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									break;
 							}
 
-							Scenery NewMetaScenery = new Scenery
-							{
-								Identify = Identify,
-								SceneryPath1Fld = SceneryPath1Fld,
-								SceneryPath2Stp = SceneryPath2Stp,
-								SceneryPath3Yfs = SceneryPath3Yfs
-							};
+							Scenery NewMetaScenery = new Scenery(
+								new[]
+								{
+									SceneryPath1Fld,
+									SceneryPath2Stp,
+									SceneryPath3Yfs
+								});
 
-							List.Add(NewMetaScenery);
+							Extensions.YSFlight.MetaData.Scenery.List.Add(NewMetaScenery);
 						}
 					}
 
@@ -89,46 +93,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					DebugErrorMessage Error = new DebugErrorMessage
-					(
-						e, "MetaData.Scenery.LoadAll Crashed!" + e.ToString()
-					);
+					var Error = ("MetaData.Scenery.LoadAll Crashed!").AsDebugErrorMessage(e);
 					DebugInformation.Add(Error);
 				}
 
-				return (DebugInformation.Count(x=>x is DebugWarningMessage | x is DebugErrorMessage | x is DebugCrashMessage) <= 0);
-			}
-			#endregion
-			#region Find By Name
-			/// <summary>
-			/// Finds the desired MetaObject by name. If no meta object is found, NoMetaScenery is returned.
-			/// </summary>
-			/// <param name="Name">Scenery name to search for.</param>
-			/// <returns>
-			/// Match: Last Matching MetaScenery Object
-			/// Else:  "NoMetaScenery" Psuedo-Object.
-			/// </returns>
-			public static Scenery FindByName(string Name)
-			{
-				Scenery Output = None;
-				if (Name == null) return Output;
-
-				foreach (Scenery ThisMetaScenery in List)
-				{
-					if (ThisMetaScenery == null) continue;
-					if (ThisMetaScenery.Identify == null) continue;
-					if (System.String.Equals(
-						ThisMetaScenery.Identify.ToUpperInvariant().ResizeOnRight(31),
-						Name.ToUpperInvariant().ResizeOnRight(31)))
-					{
-						Output = ThisMetaScenery;
-					}
-				}
-				if (Output == None)
-				{
-					//Log.Warning("Failed to find MetaData for Scenery: " + Name + ".");
-				}
-				return Output;
+				return (DebugInformation.Count(x=>x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
 			}
 			#endregion
 		}

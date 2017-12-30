@@ -43,7 +43,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public static readonly string[] MilliLitre = { "MILLILITRE", "ML" };
 			public static readonly string[] Litre = { "LITRE", "L" };
 
-			public static readonly string[] CubicCentimeter = { "CM^3" };
+			public static readonly string[] CubicCentiMeter = { "CM^3" };
 			public static readonly string[] CubicMeter = { "M^3" };
 
 			public static readonly string[] CubicInch = { "IN^3" };
@@ -80,7 +80,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public const double MilliLitre = 0.001d;
 			public const double Litre = 1.00d;
 
-			public const double CubicCentimeter = 0.001d;
+			public const double CubicCentiMeter = 0.001d;
 			public const double CubicMeter = 1000d;
 
 			public const double CubicInch = 0.016387d;
@@ -107,7 +107,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				public const double Gallon = 4.54609d;
 			}
 		}
-		public static bool TryParse(string input, out Volume output)
+		public static bool TryParse(string input, out IVolume output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -159,7 +159,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			}
 			if (capInput.EndsWithAny(Suffixes.US.Cup))
 			{
-				output = new Volumes.USCup(conversion);
+				output = new Volumes.Cup(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.US.Gallon))
@@ -187,9 +187,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Volumes.USTeaSpoon(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.CubicCentimeter))
+			if (capInput.EndsWithAny(Suffixes.CubicCentiMeter))
 			{
-				output = new Volumes.CubicCentimeter(conversion);
+				output = new Volumes.CubicCentiMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.CubicFoot))
@@ -261,7 +261,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		}
 		public ICup ToCups()
 		{
-			return new Volumes.USCup(ConvertToBase() / Conversion.US.Cup);
+			return new Volumes.Cup(ConvertToBase() / Conversion.US.Cup);
 		}
 		public IUSGallon ToUSGallons()
 		{
@@ -283,9 +283,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Volumes.USTeaSpoon(ConvertToBase() / Conversion.US.TeaSpoon);
 		}
-		public ICubicCentimeter ToCubicCentimeters()
+		public ICubicCentiMeter ToCubicCentiMeters()
 		{
-			return new Volumes.CubicCentimeter(ConvertToBase() / Conversion.CubicCentimeter);
+			return new Volumes.CubicCentiMeter(ConvertToBase() / Conversion.CubicCentiMeter);
 		}
 		public ICubicFoot ToCubicFeet()
 		{

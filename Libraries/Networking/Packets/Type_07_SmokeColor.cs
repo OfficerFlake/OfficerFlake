@@ -33,7 +33,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get
 			{
-				return new XRGBColor(Red, Green, Blue);
+				return ObjectFactory.CreateColor(Red, Green, Blue).Get24BitColor();
 			}
 			set
 			{

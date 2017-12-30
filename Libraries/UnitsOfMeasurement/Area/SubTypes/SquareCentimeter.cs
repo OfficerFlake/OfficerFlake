@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Areas
 		{
-			public class SquareCentimeter : Area, ISquareCentimeter
+			public class SquareCentiMeter : Area, ISquareCentiMeter
 			{
 				#region CTOR
-				public SquareCentimeter(double value) : base(value, Conversion.SquareCentimeter, Suffixes.SquareCentimeter) { }
+				public SquareCentiMeter(double value) : base(value, Conversion.SquareCentiMeter, Suffixes.SquareCentiMeter) { }
 				#endregion
 				#region Operators
-				public static SquareCentimeter operator +(SquareCentimeter firstMeasurement, SquareCentimeter secondMeasurement)
+				public static SquareCentiMeter operator +(SquareCentiMeter firstMeasurement, SquareCentiMeter secondMeasurement)
 				{
-					return new SquareCentimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new SquareCentiMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static SquareCentimeter operator -(SquareCentimeter firstMeasurement, SquareCentimeter secondMeasurement)
+				public static SquareCentiMeter operator -(SquareCentiMeter firstMeasurement, SquareCentiMeter secondMeasurement)
 				{
-					return new SquareCentimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new SquareCentiMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static SquareCentimeter operator *(SquareCentimeter firstMeasurement, SquareCentimeter secondMeasurement)
+				public static SquareCentiMeter operator *(SquareCentiMeter firstMeasurement, SquareCentiMeter secondMeasurement)
 				{
-					return new SquareCentimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new SquareCentiMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static SquareCentimeter operator /(SquareCentimeter firstMeasurement, SquareCentimeter secondMeasurement)
+				public static SquareCentiMeter operator /(SquareCentiMeter firstMeasurement, SquareCentiMeter secondMeasurement)
 				{
-					return new SquareCentimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new SquareCentiMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].SquareCentimeters
-			public static SquareCentimeter SquareCentimeters(this Byte input) => new SquareCentimeter(input);
-			public static SquareCentimeter SquareCentimeters(this Int16 input) => new SquareCentimeter(input);
-			public static SquareCentimeter SquareCentimeters(this Int32 input) => new SquareCentimeter(input);
-			public static SquareCentimeter SquareCentimeters(this Int64 input) => new SquareCentimeter(input);
-			public static SquareCentimeter SquareCentimeters(this Single input) => new SquareCentimeter(input);
-			public static SquareCentimeter SquareCentimeters(this Double input) => new SquareCentimeter(input);
+			#region [Number].SquareCentiMeters
+			public static SquareCentiMeter SquareCentiMeters(this Byte input) => new SquareCentiMeter(input);
+			public static SquareCentiMeter SquareCentiMeters(this Int16 input) => new SquareCentiMeter(input);
+			public static SquareCentiMeter SquareCentiMeters(this Int32 input) => new SquareCentiMeter(input);
+			public static SquareCentiMeter SquareCentiMeters(this Int64 input) => new SquareCentiMeter(input);
+			public static SquareCentiMeter SquareCentiMeters(this Single input) => new SquareCentiMeter(input);
+			public static SquareCentiMeter SquareCentiMeters(this Double input) => new SquareCentiMeter(input);
 			#endregion
 		}
 	}

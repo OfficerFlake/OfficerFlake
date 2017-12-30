@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Speeds
 		{
-			public class MillimeterPerSecond : Speed, IMillimeterPerSecond
+			public class MilliMeterPerSecond : Speed, IMilliMeterPerSecond
 			{
 				#region CTOR
-				public MillimeterPerSecond(double value) : base(value, Conversion.MillimeterPerSecond, Suffixes.MillimeterPerSecond) { }
+				public MilliMeterPerSecond(double value) : base(value, Conversion.MilliMeterPerSecond, Suffixes.MilliMeterPerSecond) { }
 				#endregion
 				#region Operators
-				public static MillimeterPerSecond operator +(MillimeterPerSecond firstMeasurement, MillimeterPerSecond secondMeasurement)
+				public static MilliMeterPerSecond operator +(MilliMeterPerSecond firstMeasurement, MilliMeterPerSecond secondMeasurement)
 				{
-					return new MillimeterPerSecond((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new MilliMeterPerSecond((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterPerSecond operator -(MillimeterPerSecond firstMeasurement, MillimeterPerSecond secondMeasurement)
+				public static MilliMeterPerSecond operator -(MilliMeterPerSecond firstMeasurement, MilliMeterPerSecond secondMeasurement)
 				{
-					return new MillimeterPerSecond((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new MilliMeterPerSecond((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterPerSecond operator *(MillimeterPerSecond firstMeasurement, MillimeterPerSecond secondMeasurement)
+				public static MilliMeterPerSecond operator *(MilliMeterPerSecond firstMeasurement, MilliMeterPerSecond secondMeasurement)
 				{
-					return new MillimeterPerSecond((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new MilliMeterPerSecond((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterPerSecond operator /(MillimeterPerSecond firstMeasurement, MillimeterPerSecond secondMeasurement)
+				public static MilliMeterPerSecond operator /(MilliMeterPerSecond firstMeasurement, MilliMeterPerSecond secondMeasurement)
 				{
-					return new MillimeterPerSecond((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new MilliMeterPerSecond((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].MillimeterPerSeconds
-			public static MillimeterPerSecond MillimeterPerSeconds(this Byte input) => new MillimeterPerSecond(input);
-			public static MillimeterPerSecond MillimeterPerSeconds(this Int16 input) => new MillimeterPerSecond(input);
-			public static MillimeterPerSecond MillimeterPerSeconds(this Int32 input) => new MillimeterPerSecond(input);
-			public static MillimeterPerSecond MillimeterPerSeconds(this Int64 input) => new MillimeterPerSecond(input);
-			public static MillimeterPerSecond MillimeterPerSeconds(this Single input) => new MillimeterPerSecond(input);
-			public static MillimeterPerSecond MillimeterPerSeconds(this Double input) => new MillimeterPerSecond(input);
+			#region [Number].MilliMeterPerSeconds
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Byte input) => new MilliMeterPerSecond(input);
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Int16 input) => new MilliMeterPerSecond(input);
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Int32 input) => new MilliMeterPerSecond(input);
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Int64 input) => new MilliMeterPerSecond(input);
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Single input) => new MilliMeterPerSecond(input);
+			public static MilliMeterPerSecond MilliMeterPerSeconds(this Double input) => new MilliMeterPerSecond(input);
 			#endregion
 		}
 	}

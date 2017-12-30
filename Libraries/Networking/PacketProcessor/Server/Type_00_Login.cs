@@ -285,11 +285,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//Process the Aircraft List.
 				List<IMetaDataAircraft> MetaAircraftList = new List<IMetaDataAircraft>();
 				int Percentage = 0;
-				for (int i = 0; i < YSFlight.MetaData.AllAircraft.Count; i++)
+				for (int i = 0; i < YSFlight.MetaData.Aircraft.List.Count; i++)
 				{
 					#region Tell YSClient the Percentage
 					bool UpdatedPercentage = false;
-					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(YSFlight.MetaData.AllAircraft.Count)) * 100;
+					decimal CurrentPercent = (((decimal)i + 1) / (decimal)(YSFlight.MetaData.Aircraft.List.Count)) * 100;
 					while (CurrentPercent >= Percentage+10)
 					{
 						Percentage += 10;
@@ -302,7 +302,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					#endregion
 
-					MetaAircraftList.Add(YSFlight.MetaData.AllAircraft[i]);
+					MetaAircraftList.Add(YSFlight.MetaData.Aircraft.List[i]);
 					if (MetaAircraftList.Count >= 32)
 					{
 						#region Prepare Aircraft List

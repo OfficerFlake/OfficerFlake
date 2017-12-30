@@ -1,21 +1,25 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using System.ComponentModel;
+using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Types
 {
-    public class WeaponDescription
+    public class HardPointDescription : IYSTypeHardpointDescription
     {
-        public WeaponCategory Weapon = WeaponCategory.BLANK;
-        public int Quantity = 1;
+        public IYSTypeWeaponCategory Weapon { get; set; } = Extensions.YSFlight.WeaponCategories.BLANK;
+        public UInt32 Quantity { get; set; } = 0;
 
-        public WeaponDescription(string value)
+        public HardPointDescription(string value)
         {
             var strings = GetStrings(value);
             Weapon = (strings.Length > 0)
-                ? WeaponCategory.GetCategoryFromStringOrBlank(strings[0])
-                : WeaponCategory.BLANK;
-            Quantity = 1;
-            if (strings.Length > 1) int.TryParse(
-                strings[1].ExtractNumberComponentFromMeasurementString(), out Quantity);
+                ? Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(strings[0])
+                : Extensions.YSFlight.WeaponCategories.BLANK;
+	        uint _Quantity = 0;
+            if (strings.Length > 1) uint.TryParse(
+                strings[1].ExtractNumberComponentFromMeasurementString(), out _Quantity);
+	        Quantity = _Quantity;
         }
 
         private string[] GetStrings(string input) => (input.Split('*', '&').Length < 2) ? new[] { input, "1" } : input.Split('*', '&');

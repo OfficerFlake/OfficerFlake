@@ -33,7 +33,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IRichTextString String { get; set; }
 		MessageType Type { get; set; }
 	}
-
 	public enum MessageType
 	{
 		Unknown,
@@ -45,4 +44,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		DebugError,
 		DebugCrash
 	}
+
+	public interface IConsoleUserMessage : IRichTextMessage { }
+	public interface IConsoleInformationMessage : IRichTextMessage { }
+
+	public interface IDebugSummaryMessage : IRichTextMessage { }
+	public interface IDebugDetailMessage : IRichTextMessage { }
+	public interface IDebugWarningMessage : IRichTextMessage { }
+	public interface IDebugErrorMessage : IRichTextMessage { }
+	public interface IDebugCrashMessage : IRichTextMessage { }
 }

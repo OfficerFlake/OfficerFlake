@@ -119,13 +119,13 @@
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
       <Name>2_ExceptionHandling</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Extensions\4_Extensions.csproj">
+    <ProjectReference Include="..\..\Libraries\Extensions\5_Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>4_Extensions</Name>
+      <Name>5_Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\IO\IO.csproj">
+    <ProjectReference Include="..\..\Libraries\IO\3_FileIO.csproj">
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
-      <Name>IO</Name>
+      <Name>3_FileIO</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\MasterObjectFactory\MasterObjectFactory.csproj">
       <Project>{e61ada91-5cb8-49b1-9418-fb353ff5cb7e}</Project>
@@ -163,9 +163,9 @@
       <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
       <Name>RichTextString</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Settings\Settings.csproj">
+    <ProjectReference Include="..\..\Libraries\Settings\6_Settings.csproj">
       <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
-      <Name>Settings</Name>
+      <Name>6_Settings</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\UnitsOfMeasurement\UnitsOfMeasurement.csproj">
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
@@ -199,9 +199,9 @@
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>0__Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SlaveObjectFactory\3_SlaveObjectFactory.csproj">
+    <ProjectReference Include="..\..\SlaveObjectFactory\4_SlaveObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
-      <Name>3_SlaveObjectFactory</Name>
+      <Name>4_SlaveObjectFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -11,8 +11,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		string Command { get; set; }
 		object[] Properties { get; set; }
+
 		T GetParameter<T>(int index);
-		void SetParameter<T>(int index, T parameter);
+		void SetParameter(int index, object parameter);
 
 		string ToSystemString();
 	}

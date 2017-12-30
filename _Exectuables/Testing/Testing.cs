@@ -3,11 +3,16 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 using Com.OfficerFlake.Libraries;
+using Com.OfficerFlake.Libraries.Logger;
+
 using Com.OfficerFlake.Libraries.Networking;
-using Console = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Console;
+using Com.OfficerFlake.Libraries.UserInterfaces.Windows;
 using Com.OfficerFlake.Libraries.YSFlight;
-using Debug = Com.OfficerFlake.Libraries.UserInterfaces.Windows.Debug;
+
+using Console = Com.OfficerFlake.Libraries.Logger.Console;
+using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
 
 namespace Com.OfficerFlake.Executables.Testing
 {
@@ -130,35 +135,41 @@ namespace Com.OfficerFlake.Executables.Testing
 		{
 			#region Link Objects Together
 			MasterObjectFactory.LinkMasterFactory();
-			Debug.LinkDebug();
-			Console.LinkConsole();
+			DebugUI.LinkDebug();
+			ConsoleUI.LinkConsole();
 			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
 			#endregion
 
-			Console.Show();
-			Debug.Show();
+			ConsoleUI.Show();
+			DebugUI.Show();
+
+			Debug.AddCrashMessage(new NotImplementedException("CRASH TEST"), "TEST");
+			Debug.AddErrorMessage(new NotImplementedException("CRASH TEST"), "TEST");
+			Debug.AddWarningMessage("TEST");
+			Debug.AddDetailMessage("TEST");
+			Debug.AddSummaryMessage("TEST");
 
 			#region Load World
-			Console.AddConsoleInformationMessage("Loading World");
-
+			Console.AddInformationMessage("Loading World");
+			
 			Metadata.LoadAll();
 
 			//World.Load("OPENYS_TEST_FIELD");
 			World.Load("HAWAII");
 
-			Console.AddConsoleInformationMessage("World Loading Complete!");
+			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
 
 			#region Start Server
-			Console.AddConsoleInformationMessage("Starting Server...");
+			Console.AddInformationMessage("Starting Server...");
 			Server.Start();
-			Console.AddConsoleInformationMessage("Now Listening on Port 7915!");
+			Console.AddInformationMessage("Now Listening on Port 7915!");
 			#endregion
 
-			Console.WaitForClose();
-			Debug.WaitForClose();
+			ConsoleUI.WaitForClose();
+			DebugUI.WaitForClose();
 
-			Server.ShutDown();
+			Server.Stop();
 		}
 	}
 }

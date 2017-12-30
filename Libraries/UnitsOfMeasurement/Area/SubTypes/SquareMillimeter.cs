@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Areas
 		{
-			public class SquareMillimeter : Area, ISquareMillimeter
+			public class SquareMilliMeter : Area, ISquareMilliMeter
 			{
 				#region CTOR
-				public SquareMillimeter(double value) : base(value, Conversion.SquareMillimeter, Suffixes.SquareMillimeter) { }
+				public SquareMilliMeter(double value) : base(value, Conversion.SquareMilliMeter, Suffixes.SquareMilliMeter) { }
 				#endregion
 				#region Operators
-				public static SquareMillimeter operator +(SquareMillimeter firstMeasurement, SquareMillimeter secondMeasurement)
+				public static SquareMilliMeter operator +(SquareMilliMeter firstMeasurement, SquareMilliMeter secondMeasurement)
 				{
-					return new SquareMillimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new SquareMilliMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static SquareMillimeter operator -(SquareMillimeter firstMeasurement, SquareMillimeter secondMeasurement)
+				public static SquareMilliMeter operator -(SquareMilliMeter firstMeasurement, SquareMilliMeter secondMeasurement)
 				{
-					return new SquareMillimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new SquareMilliMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static SquareMillimeter operator *(SquareMillimeter firstMeasurement, SquareMillimeter secondMeasurement)
+				public static SquareMilliMeter operator *(SquareMilliMeter firstMeasurement, SquareMilliMeter secondMeasurement)
 				{
-					return new SquareMillimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new SquareMilliMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static SquareMillimeter operator /(SquareMillimeter firstMeasurement, SquareMillimeter secondMeasurement)
+				public static SquareMilliMeter operator /(SquareMilliMeter firstMeasurement, SquareMilliMeter secondMeasurement)
 				{
-					return new SquareMillimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new SquareMilliMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].SquareMillimeters
-			public static SquareMillimeter SquareMillimeters(this Byte input) => new SquareMillimeter(input);
-			public static SquareMillimeter SquareMillimeters(this Int16 input) => new SquareMillimeter(input);
-			public static SquareMillimeter SquareMillimeters(this Int32 input) => new SquareMillimeter(input);
-			public static SquareMillimeter SquareMillimeters(this Int64 input) => new SquareMillimeter(input);
-			public static SquareMillimeter SquareMillimeters(this Single input) => new SquareMillimeter(input);
-			public static SquareMillimeter SquareMillimeters(this Double input) => new SquareMillimeter(input);
+			#region [Number].SquareMilliMeters
+			public static SquareMilliMeter SquareMilliMeters(this Byte input) => new SquareMilliMeter(input);
+			public static SquareMilliMeter SquareMilliMeters(this Int16 input) => new SquareMilliMeter(input);
+			public static SquareMilliMeter SquareMilliMeters(this Int32 input) => new SquareMilliMeter(input);
+			public static SquareMilliMeter SquareMilliMeters(this Int64 input) => new SquareMilliMeter(input);
+			public static SquareMilliMeter SquareMilliMeters(this Single input) => new SquareMilliMeter(input);
+			public static SquareMilliMeter SquareMilliMeters(this Double input) => new SquareMilliMeter(input);
 			#endregion
 		}
 	}

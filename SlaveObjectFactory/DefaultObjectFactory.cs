@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Net.Sockets;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries
@@ -19,16 +19,25 @@ namespace Com.OfficerFlake.Libraries
 			#region 2_ExceptionHandling
 			//ObjectFactory has direct access.
 			#endregion
-			#region 3_ObjectFactory
+			#region 3_FileIO
+			public IFile CreateFileReference(string filename) => throw new NotImplementedException();
+			#endregion
+			#region 4_ObjectFactory
 			//ObjectFactory can't create self!
+			#endregion
+			#region 5_Extensions
+			//No objects to create in interfaces!
+			#endregion
+			#region 6_Settings
+			//No objects to create in interfaces!
 			#endregion
 
 			//UNITS
 			#region Colors
 			//Colors
 			public ISimpleColor CreateSimpleColor(IColor color, char colorCode) => throw new NotImplementedException();
-			public IColor CreateColor(int red, int green, int blue) => throw new NotImplementedException();
-			public IColor CreateColor(int alpha, int red, int green, int blue) => throw new NotImplementedException();
+			public IColor CreateColor(byte red, byte green, byte blue) => throw new NotImplementedException();
+			public IColor CreateColor(byte alpha, byte red, byte green, byte blue) => throw new NotImplementedException();
 
 			//Formatting
 
@@ -42,9 +51,6 @@ namespace Com.OfficerFlake.Libraries
 			public IRank CreateRank(IRichTextString rankName) => throw new NotImplementedException();
 			//User
 			public IUser CreateUser(IRichTextString userName) => throw new NotImplementedException();
-			#endregion
-			#region Files
-			public IFile CreateFileReference(string filename) => throw new NotImplementedException();
 			#endregion
 			#region Math
 			//Coordinates
@@ -60,15 +66,15 @@ namespace Com.OfficerFlake.Libraries
 			public IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b) => throw new NotImplementedException();
 
 			//Quadratic
-			public IQuadraticEquation CreateQuadraticEquation(double y, double x, double a, double b, double c) => throw new NotImplementedException();
+			public IQuadraticEquation CreateQuadraticEquation(double result, double a, double b, double c) => throw new NotImplementedException();
 			public IQuadraticEquation CreateQuadraticEquationFrom3Coordinate2(ICoordinate2 coordinate1, ICoordinate2 coordinate2, ICoordinate2 coordinate3) => throw new NotImplementedException();
-
+			public IQuadraticEquation CreateStatisticsCurve(double minimum, double center, double maximum) => throw new NotImplementedException();
 			//Statastic
-			public IStatistic CreateStatsticTracker() => throw new NotImplementedException();
+			public IStatistic CreateStatsticTracker(string name) => throw new NotImplementedException();
 			#endregion
 			#region Networking
 			//Connection
-			public IConnection CreateConnection() => throw new NotImplementedException();
+			public IConnection CreateConnection(Socket TCPSocket) => throw new NotImplementedException();
 
 			//Packets
 			public IPacket CreateGenericPacket() => throw new NotImplementedException();
@@ -112,40 +118,173 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_50_GroundColor CreatePacket50GroundColor() => throw new NotImplementedException();
 
 			//PacketProcessor
-			public IPacketProcessor CreatePacketProcessor() => throw new NotImplementedException();
 
 			//Server
 			public Boolean ServerStart() => throw new NotImplementedException();
-			public Boolean ServerEnd() => throw new NotImplementedException();
+			public Boolean ServerStop() => throw new NotImplementedException();
 			#endregion
 			#region RichText
+			public IRichTextElement CreateRichTextElement(string unformattedString) => throw new NotImplementedException();
 			public IRichTextString CreateRichTextString(string formattedString) => throw new NotImplementedException();
 			public IRichTextMessage CreateRichTextMessage(IRichTextString richTextString) => throw new NotImplementedException();
-			#endregion
-			#region Settings
-			public ISettingsFile CreateSettingsFileReference(string filename) => throw new NotImplementedException();
-			public ISettingsHandler GetSettingsHandler() => throw new NotImplementedException();
+
+			public IConsoleUserMessage CreateConsoleUserMessage(IUser user, IRichTextString message) => throw new NotImplementedException();
+			public IConsoleInformationMessage CreateConsoleInformationMessage(IRichTextString message) => throw new NotImplementedException();
+
+			public IDebugSummaryMessage CreateDebugSummaryMessage(IRichTextString message) => throw new NotImplementedException();
+			public IDebugDetailMessage CreateDebugDetailMessage(IRichTextString message) => throw new NotImplementedException();
+			public IDebugWarningMessage CreateDebugWarningMessage(IRichTextString message) => throw new NotImplementedException();
+			public IDebugErrorMessage CreateDebugErrorMessage(Exception e, IRichTextString message) => throw new NotImplementedException();
+			public IDebugCrashMessage CreateDebugCrashMessage(Exception e, IRichTextString message) => throw new NotImplementedException();
 			#endregion
 			#region UnitsOfMeasurement
-			//Angle
-			//Area
-			//Distance
-			//Duration
+			#region Angle
+			public bool TryParse(string value, out IAngle output) => throw new NotImplementedException();
+			public IDegree CreateDegree(double value) => throw new NotImplementedException();
+			public IGradian CreateGradian(double value) => throw new NotImplementedException();
+			public IRadian CreateRadian(double value) => throw new NotImplementedException();
+			#endregion
+			#region Area
+			public bool TryParse(string value, out IArea output) => throw new NotImplementedException();
+			public IAcre CreateAcre(double value) => throw new NotImplementedException();
+			public ISquareCentiMeter CreateSquareCentiMeter(double value) => throw new NotImplementedException();
+			public ISquareFoot CreateSquareFoot(double value) => throw new NotImplementedException();
+			public ISquareInch CreateSquareInch(double value) => throw new NotImplementedException();
+			public ISquareKiloMeter CreateSquareKiloMeter(double value) => throw new NotImplementedException();
+			public ISquareMeter CreateSquareMeter(double value) => throw new NotImplementedException();
+			public ISquareMile CreateSquareMile(double value) => throw new NotImplementedException();
+			public ISquareMilliMeter CreateSquareMilliMeter(double value) => throw new NotImplementedException();
+			public ISquareNauticalMile CreateSquareNauticalMile(double value) => throw new NotImplementedException();
+			public ISquareYard CreateSquareYard(double value) => throw new NotImplementedException();
+			#endregion
+			#region Distance
+			public bool TryParse(string value, out IDistance output) => throw new NotImplementedException();
+			public ICentiMeter CreateCentiMeter(double value) => throw new NotImplementedException();
+			public IFoot CreateFoot(double value) => throw new NotImplementedException();
+			public IInch CreateInch(double value) => throw new NotImplementedException();
+			public IKiloMeter CreateKiloMeter(double value) => throw new NotImplementedException();
+			public IMeter CreateMeter(double value) => throw new NotImplementedException();
+			public IMicron CreateMicron(double value) => throw new NotImplementedException();
+			public IMile CreateMile(double value) => throw new NotImplementedException();
+			public IMilliMeter CreateMilliMeter(double value) => throw new NotImplementedException();
+			public INanoMeter CreateNanoMeter(double value) => throw new NotImplementedException();
+			public INauticalMile CreateNauticalMile(double value) => throw new NotImplementedException();
+			public IYard CreateYard(double value) => throw new NotImplementedException();
+			#endregion
+			#region Duration
+			public bool TryParse(string value, out IDuration output) => throw new NotImplementedException();
+			public ISecond CreateSecond(double value) => throw new NotImplementedException();
+			public IMinute CreateMinute(double value) => throw new NotImplementedException();
+			public IHour CreateHour(double value) => throw new NotImplementedException();
+			public IDay CreateDay(double value) => throw new NotImplementedException();
+			public IWeek CreateWeek(double value) => throw new NotImplementedException();
+			public IMonth CreateMonth(double value) => throw new NotImplementedException();
+			public IYear CreateYear(double value) => throw new NotImplementedException();
+
 			public IDate CreateDate(System.DateTime dateTime) => throw new NotImplementedException();
 			public ITime CreateTime(System.DateTime dateTime) => throw new NotImplementedException();
 			public IDateTime CreateDateTime(System.DateTime dateTime) => throw new NotImplementedException();
 			public ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan) => throw new NotImplementedException();
-			//Energy
-			//Mass
-			//Power
-			//Pressure
-			//Speed
-			//Temperature
-			//Volume
 			#endregion
+			#region Energy
+			public bool TryParse(string value, out IEnergy output) => throw new NotImplementedException();
+			public IBritishThermalUnit CreateBritishThermalUnit(double value) => throw new NotImplementedException();
+			public IElectronVolt CreateElectronVolt(double value) => throw new NotImplementedException();
+			public IFoodCalorie CreateFoodCalorie(double value) => throw new NotImplementedException();
+			public IFootPound CreateFootPound(double value) => throw new NotImplementedException();
+			public IJoule CreateJoule(double value) => throw new NotImplementedException();
+			public IKiloJoule CreateKiloJoule(double value) => throw new NotImplementedException();
+			public IThermalCalorie CreateThermalCalorie(double value) => throw new NotImplementedException();
+			#endregion
+			#region Mass
+			public bool TryParse(string value, out IMass output) => throw new NotImplementedException();
+			public ICarat CreateCarat(double value) => throw new NotImplementedException();
+			public ICentiGram CreateCentiGram(double value) => throw new NotImplementedException();
+			public IDecaGram CreateDecaGram(double value) => throw new NotImplementedException();
+			public IDeciGram CreateDeciGram(double value) => throw new NotImplementedException();
+			public IGram CreateGram(double value) => throw new NotImplementedException();
+			public IHectoGram CreateHectoGram(double value) => throw new NotImplementedException();
+			public IKiloGram CreateKiloGram(double value) => throw new NotImplementedException();
+			public IMetricTonne CreateMetricTonne(double value) => throw new NotImplementedException();
+			public IMilliGram CreateMilliGram(double value) => throw new NotImplementedException();
+			public IOunce CreateOunce(double value) => throw new NotImplementedException();
+			public IPound CreatePound(double value) => throw new NotImplementedException();
+			public IStone CreateStone(double value) => throw new NotImplementedException();
+			public IUKLongTon CreateUKLongTon(double value) => throw new NotImplementedException();
+			public IUSShortTon CreateUSShortTon(double value) => throw new NotImplementedException();
+			#endregion
+			#region Power
+			public bool TryParse(string value, out IPower output) => throw new NotImplementedException();
+			public IBTUPerMinute CreateBTUPerMinute(double value) => throw new NotImplementedException();
+			public IFootPoundPerMinute CreateFootPoundPerMinute(double value) => throw new NotImplementedException();
+			public IKiloWatt CreateKiloWatt(double value) => throw new NotImplementedException();
+			public IUSHorsePower CreateUSHorsePower(double value) => throw new NotImplementedException();
+			public IWatt CreateWatt(double value) => throw new NotImplementedException();
+			#endregion
+			#region Pressure
+			public bool TryParse(string value, out IPressure output) => throw new NotImplementedException();
+			public IAtmosphere CreateAtmosphere(double value) => throw new NotImplementedException();
+			public IBar CreateBar(double value) => throw new NotImplementedException();
+			public IKiloPascal CreateKiloPascal(double value) => throw new NotImplementedException();
+			public IMilliMeterOfMercury CreateMilliMeterOfMercury(double value) => throw new NotImplementedException();
+			public IPascal CreatePascal(double value) => throw new NotImplementedException();
+			public IPoundPerSquareInch CreatePoundPerSquareInch(double value) => throw new NotImplementedException();
+			#endregion
+			#region Speed
+			public bool TryParse(string value, out ISpeed output) => throw new NotImplementedException();
+			public ICentiMeterPerSecond CreateCentiMeterPerSecond(double value) => throw new NotImplementedException();
+			public IFootPerSecond CreateFootPerSecond(double value) => throw new NotImplementedException();
+			public IKiloMeterPerHour CreateKiloMeterPerHour(double value) => throw new NotImplementedException();
+			public IKnot CreateKnot(double value) => throw new NotImplementedException();
+			public IMachAtSeaLevel CreateMachAtSeaLevel(double value) => throw new NotImplementedException();
+			public IMeterPerSecond CreateMeterPerSecond(double value) => throw new NotImplementedException();
+			public IMilePerHour CreateMilePerHour(double value) => throw new NotImplementedException();
+			public IMilliMeterPerSecond CreateMilliMeterPerSecond(double value) => throw new NotImplementedException();
+			#endregion
+			#region Temperature
+			public bool TryParse(string value, out ITemperature output) => throw new NotImplementedException();
+			public IDegreeCelsius CreateDegreeCelsius(double value) => throw new NotImplementedException();
+			public IDegreeFahrenheit CreateDegreeFahrenheit(double value) => throw new NotImplementedException();
+			public IDegreeKelvin CreateDegreeKelvin(double value) => throw new NotImplementedException();
+			#endregion
+			#region Volume
+			public bool TryParse(string value, out IVolume output) => throw new NotImplementedException();
+			public IFluidOunce CreateFluidOunce(double value) => throw new NotImplementedException();
+			public IUKGallon CreateUKGallon(double value) => throw new NotImplementedException();
+			public IUKPint CreateUKPint(double value) => throw new NotImplementedException();
+			public IUKQuart CreateUKQuart(double value) => throw new NotImplementedException();
+			public IUKTableSpoon CreateUKTableSpoon(double value) => throw new NotImplementedException();
+			public IUKTeaSpoon CreateUKTeaSpoon(double value) => throw new NotImplementedException();
+
+			public ICup CreateCup(double value) => throw new NotImplementedException();
+			public IUSGallon CreateUSGallon(double value) => throw new NotImplementedException();
+			public IUSPint CreateUSPint(double value) => throw new NotImplementedException();
+			public IUSQuart CreateUSQuart(double value) => throw new NotImplementedException();
+			public IUSTableSpoon CreateUSTableSpoon(double value) => throw new NotImplementedException();
+			public IUSTeaSpoon CreateUSTeaSpoon(double value) => throw new NotImplementedException();
+
+			public ICubicCentiMeter CreateCubicCentiMeter(double value) => throw new NotImplementedException();
+			public ICubicFoot CreateCubicFoot(double value) => throw new NotImplementedException();
+			public ICubicInch CreateCubicInch(double value) => throw new NotImplementedException();
+			public ICubicMeter CreateCubicMeter(double value) => throw new NotImplementedException();
+			public ICubicYard CreateCubicYard(double value) => throw new NotImplementedException();
+			public ILitre CreateLitre(double value) => throw new NotImplementedException();
+			public IMilliLitre CreateMilliLitre(double value) => throw new NotImplementedException();
+			#endregion
+			#endregion
+
 			#region YSFlight
 			public IDATFile CreateDATFileReference(string filename) => throw new NotImplementedException();
 			public ILSTFile CreateLSTFileReference(string filename) => throw new NotImplementedException();
+
+			public IYSTypeAircraftCategory CreateYSTypeAircraftCategory(string[] values) => throw new NotImplementedException();
+			public IYSTypeHardpointDescription CreateYSTypeHardpointDescription(string value) => throw new NotImplementedException();
+			public IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values) => throw new NotImplementedException();
+			public IYSTypeWeaponType CreateYSTypeWeaponType(string[] values) => throw new NotImplementedException();
+
+			public IMetaDataAircraft CreateMetaDataAircraft(string identify) => throw new NotImplementedException();
+			public IMetaDataGround CreateMetaDataGround(string identify) => throw new NotImplementedException();
+			public IMetaDataScenery CreateMetaDataScenery(string identify) => throw new NotImplementedException();
 			#endregion
 		}
 	}

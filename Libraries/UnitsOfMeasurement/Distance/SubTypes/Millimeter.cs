@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Distances
 		{
-			public class Millimeter : Distance, IMillimeter
+			public class MilliMeter : Distance, IMilliMeter
 			{
 				#region CTOR
-				public Millimeter(double value) : base(value, Conversion.Millimeter, Suffixes.Millimeter) { }
+				public MilliMeter(double value) : base(value, Conversion.MilliMeter, Suffixes.MilliMeter) { }
 				#endregion
 				#region Operators
-				public static Millimeter operator +(Millimeter firstMeasurement, Millimeter secondMeasurement)
+				public static MilliMeter operator +(MilliMeter firstMeasurement, MilliMeter secondMeasurement)
 				{
-					return new Millimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new MilliMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Millimeter operator -(Millimeter firstMeasurement, Millimeter secondMeasurement)
+				public static MilliMeter operator -(MilliMeter firstMeasurement, MilliMeter secondMeasurement)
 				{
-					return new Millimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new MilliMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Millimeter operator *(Millimeter firstMeasurement, Millimeter secondMeasurement)
+				public static MilliMeter operator *(MilliMeter firstMeasurement, MilliMeter secondMeasurement)
 				{
-					return new Millimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new MilliMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Millimeter operator /(Millimeter firstMeasurement, Millimeter secondMeasurement)
+				public static MilliMeter operator /(MilliMeter firstMeasurement, MilliMeter secondMeasurement)
 				{
-					return new Millimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new MilliMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Millimeters
-			public static Millimeter Millimeters(this Byte input) => new Millimeter(input);
-			public static Millimeter Millimeters(this Int16 input) => new Millimeter(input);
-			public static Millimeter Millimeters(this Int32 input) => new Millimeter(input);
-			public static Millimeter Millimeters(this Int64 input) => new Millimeter(input);
-			public static Millimeter Millimeters(this Single input) => new Millimeter(input);
-			public static Millimeter Millimeters(this Double input) => new Millimeter(input);
+			#region [Number].MilliMeters
+			public static MilliMeter MilliMeters(this Byte input) => new MilliMeter(input);
+			public static MilliMeter MilliMeters(this Int16 input) => new MilliMeter(input);
+			public static MilliMeter MilliMeters(this Int32 input) => new MilliMeter(input);
+			public static MilliMeter MilliMeters(this Int64 input) => new MilliMeter(input);
+			public static MilliMeter MilliMeters(this Single input) => new MilliMeter(input);
+			public static MilliMeter MilliMeters(this Double input) => new MilliMeter(input);
 			#endregion
 		}
 	}

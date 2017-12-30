@@ -1,6 +1,6 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
@@ -80,33 +80,33 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public IDistance PosX
 		{
-			get => GetSingle(12).Meters();
+			get => ((double)GetSingle(12)).Meters();
 			set => SetSingle(12, (Single)value.ToMeters().RawValue);
 		}
 		public IDistance PosY
 		{
-			get => GetSingle(16).Meters();
+			get => ((double)GetSingle(16)).Meters();
 			set => SetSingle(16, (Single)value.ToMeters().RawValue);
 		}
 		public IDistance PosZ
 		{
-			get => GetSingle(20).Meters();
+			get => ((double)GetSingle(20)).Meters();
 			set => SetSingle(20, (Single)value.ToMeters().RawValue);
 		}
 
 		public IAngle RotX
 		{
-			get => GetSingle(24).Radians();
+			get => ((double)GetSingle(24)).Radians();
 			set => SetSingle(24, (Single)value.ToRadians().RawValue);
 		}
 		public IAngle RotY
 		{
-			get => GetSingle(28).Radians();
+			get => ((double)GetSingle(28)).Radians();
 			set => SetSingle(28, (Single)value.ToRadians().RawValue);
 		}
 		public IAngle RotZ
 		{
-			get => GetSingle(32).Radians();
+			get => ((double)GetSingle(32)).Radians();
 			set => SetSingle(32, (Single)value.ToRadians().RawValue);
 		}
 

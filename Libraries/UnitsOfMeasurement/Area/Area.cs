@@ -40,11 +40,11 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] SquareMillimeter = { "SQUAREMILLIMETERS", "SQMM", "MM^2" };
-			public static readonly string[] SquareCentimeter = { "SQUARECENTIMETERS", "SQCM", "CM^2" };
+			public static readonly string[] SquareMilliMeter = { "SQUAREMilliMeterS", "SQMM", "MM^2" };
+			public static readonly string[] SquareCentiMeter = { "SQUARECentiMeterS", "SQCM", "CM^2" };
 			public static readonly string[] SquareMeter = { "SQUAREMETERS", "SQM", "M^2" };
 			public static readonly string[] SquareNauticalMile = { "SQUARENAUTICALMILE" };
-			public static readonly string[] SquareKilometer = { "SQUAREKILOMETERS", "SQKM", "KM^2" };
+			public static readonly string[] SquareKiloMeter = { "SQUAREKiloMeterS", "SQKM", "KM^2" };
 			public static readonly string[] SquareInch = { "SQUAREINCHES", "SQIN", "IN^2" };
 			public static readonly string[] SquareFoot = { "SQUAREFEET", "SQFT", "FT^2" };
 			public static readonly string[] SquareYard = { "SQUAREYARDS", "SQYD", "YD^2" };
@@ -59,18 +59,18 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		protected struct Conversion
 		{
 			public const double Acre = 4046.856d;
-			public const double SquareMillimeter = 0.000001d;
-			public const double SquareCentimeter = 0.0001d;
+			public const double SquareMilliMeter = 0.000001d;
+			public const double SquareCentiMeter = 0.0001d;
 			public const double SquareMeter = 1d;
 			public const double SquareNauticalMile = 3429904d;
-			public const double SquareKilometer = 1000000d;
+			public const double SquareKiloMeter = 1000000d;
 			public const double SquareInch = 0.000645d;
 			public const double SquareFoot = 0.092903d;
 			public const double SquareYard = 0.836127d;
 			
 			public const double SquareMile = 2589988d;
 		}
-		public static bool TryParse(string input, out Area output)
+		public static bool TryParse(string input, out IArea output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -95,9 +95,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Areas.Acre(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.SquareCentimeter))
+			if (capInput.EndsWithAny(Suffixes.SquareCentiMeter))
 			{
-				output = new Areas.SquareCentimeter(conversion);
+				output = new Areas.SquareCentiMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.SquareFoot))
@@ -105,9 +105,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Areas.SquareFoot(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.SquareKilometer))
+			if (capInput.EndsWithAny(Suffixes.SquareKiloMeter))
 			{
-				output = new Areas.SquareKilometer(conversion);
+				output = new Areas.SquareKiloMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.SquareMeter))
@@ -120,9 +120,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Areas.SquareMile(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.SquareMillimeter))
+			if (capInput.EndsWithAny(Suffixes.SquareMilliMeter))
 			{
-				output = new Areas.SquareMillimeter(conversion);
+				output = new Areas.SquareMilliMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.SquareNauticalMile))
@@ -152,9 +152,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Areas.Acre(ConvertToBase() / Conversion.Acre);
 		}
-		public ISquareCentimeter ToSquareCentimeters()
+		public ISquareCentiMeter ToSquareCentiMeters()
 		{
-			return new Areas.SquareCentimeter(ConvertToBase() / Conversion.SquareCentimeter);
+			return new Areas.SquareCentiMeter(ConvertToBase() / Conversion.SquareCentiMeter);
 		}
 		public ISquareFoot ToSquareFeet()
 		{
@@ -164,9 +164,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Areas.SquareInch(ConvertToBase() / Conversion.SquareInch);
 		}
-		public ISquareKilometer ToSquareKilometers()
+		public ISquareKiloMeter ToSquareKiloMeters()
 		{
-			return new Areas.SquareKilometer(ConvertToBase() / Conversion.SquareKilometer);
+			return new Areas.SquareKiloMeter(ConvertToBase() / Conversion.SquareKiloMeter);
 		}
 		public ISquareMeter ToSquareMeters()
 		{
@@ -176,9 +176,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Areas.SquareMile(ConvertToBase() / Conversion.SquareMile);
 		}
-		public ISquareMillimeter ToSquareMillimeters()
+		public ISquareMilliMeter ToSquareMilliMeters()
 		{
-			return new Areas.SquareMillimeter(ConvertToBase() / Conversion.SquareMillimeter);
+			return new Areas.SquareMilliMeter(ConvertToBase() / Conversion.SquareMilliMeter);
 		}
 		public ISquareNauticalMile ToSquareNauticalMiles()
 		{

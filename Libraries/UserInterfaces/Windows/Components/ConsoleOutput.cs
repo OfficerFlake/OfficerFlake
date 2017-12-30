@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Extensions;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {
@@ -104,9 +106,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    {
 		    private static ConsoleOutput Parent;
 		    public int StartIndex;
-			public RichTextMessage Message;
+			public IRichTextMessage Message;
 
-		    public RichTextMessageDictionaryItem(ConsoleOutput _Parent, RichTextMessage _Message)
+		    public RichTextMessageDictionaryItem(ConsoleOutput _Parent, IRichTextMessage _Message)
 		    {
 			    Parent = _Parent;
 				StartIndex = Parent.richTextBox_ConsoleOutput.Lines.Length;
@@ -118,14 +120,14 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 	    private int maximumMessages = 1000; //Stress tested okay to ~25,000 objects.
 	    private int richTextMessagesCount => richTextMessages.Count + incomingRichTextMessages.Count;
 
-		private ConcurrentQueue<RichTextMessage> incomingRichTextMessages = new ConcurrentQueue<RichTextMessage>();
+		private ConcurrentQueue<IRichTextMessage> incomingRichTextMessages = new ConcurrentQueue<IRichTextMessage>();
 		private ManualResetEvent notifyIncomingRichTextMessages = new ManualResetEvent(false);
 
 		/// <summary>
 		/// Thread safe method of adding a RichTextMessage to the Output Console.
 		/// </summary>
 		/// <param name="thisRichTextMessage"></param>
-	    public void AddMessage(RichTextMessage thisRichTextMessage)
+	    public void AddMessage(IRichTextMessage thisRichTextMessage)
 	    {
 		    incomingRichTextMessages.Enqueue(thisRichTextMessage);
 		    notifyIncomingRichTextMessages.Set();
@@ -149,9 +151,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		/// </summary>
 		/// <param name="Row">Minimum row number.</param>
 		/// <returns>The message object if found, otherwise null.</returns>
-	    private RichTextMessage GetMessageFromPosition(int Row)
+	    private IRichTextMessage GetMessageFromPosition(int Row)
 	    {
-		    RichTextMessage output = null;
+		    IRichTextMessage output = null;
 		    try
 		    {
 			    var output0 = richTextMessages.ToArray();
@@ -218,9 +220,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		private void AppendRichTextMessageDirect(IRichTextMessage thisRichTextMessage)
 		{
 			#region Color Override
-			I24BitColor BackColor = new XRGBColor(16, 16, 16);
+			IColor BackColor = ObjectFactory.CreateColor(16, 16, 16);
 			bool OverrideBackColor = false;
-			I24BitColor ForeColor = new XRGBColor(240, 240, 240);
+			IColor ForeColor = ObjectFactory.CreateColor(240, 240, 240);
 			bool OverrideForeColor = false;
 			switch (thisRichTextMessage.Type)
 			{
@@ -228,13 +230,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					return;
 				case MessageType.User:
 					//if (!checkBox_ShowMessage.Checked) return;
-					BackColor = new XRGBColor(16, 16, 16);
+					BackColor = ObjectFactory.CreateColor(16, 16, 16);
+					ForeColor = SimpleColors.White.Color;
 					OverrideBackColor = true;
+					OverrideForeColor = true;
 					break;
 				case MessageType.ConsoleInformation:
 					//if (!checkBox_ShowDate.Checked) return;
-					BackColor = new XRGBColor(10, 20, 25);
+					BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					ForeColor = SimpleColors.Teal.Color;
 					OverrideBackColor = true;
+					OverrideForeColor = true;
 					break;
 				case MessageType.DebugSummary:
 					return;
@@ -250,16 +256,14 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			#endregion
 
 			#region Date
-			IRichTextElement date = new RichTextString.MessageElement();
-			date.Message = thisRichTextMessage.Datestamp.ToSystemString();
-			date.ForeColor = SimpleColors.White.Color.Get24BitColor();
+			IRichTextElement date = ObjectFactory.CreateRichTextElement(thisRichTextMessage.Datestamp.ToSystemString());
+			date.ForeColor = SimpleColors.White.Color;
 			if (OverrideBackColor) date.BackColor = BackColor;
 			if (OverrideForeColor) date.ForeColor = ForeColor;
 			#endregion
 			#region Time
-			IRichTextElement time = new RichTextString.MessageElement();
-			time.Message = thisRichTextMessage.Timestamp.ToSystemString();
-			time.ForeColor = SimpleColors.DarkGray.Color.Get24BitColor();
+			IRichTextElement time = ObjectFactory.CreateRichTextElement(thisRichTextMessage.Timestamp.ToSystemString());
+			time.ForeColor = SimpleColors.DarkGray.Color;
 			if (OverrideBackColor) time.BackColor = BackColor;
 			if (OverrideForeColor) time.ForeColor = ForeColor;
 			#endregion
@@ -268,6 +272,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			#endregion
 			#region Message
 			List<IRichTextElement> message = thisRichTextMessage.String.Elements;
+			if (OverrideForeColor & message.Any()) message[0].ForeColor = ForeColor;
 			#endregion
 
 			#region Start new line
@@ -305,8 +310,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					int thisElementSize = thisElement.Message.Length;
 					if (totalMessageSize + thisElementSize > 16)
 					{
-						currentElement = new MessageElement(thisElement.Message.Substring(0, 16 - totalMessageSize), thisElement.GetClosestSimpleColor(),
-							thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
+						currentElement = ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(0, 16 - totalMessageSize));
+						currentElement.ForeColor = thisElement.ForeColor;
+						currentElement.BackColor = thisElement.BackColor;
+						currentElement.IsBold = thisElement.IsBold;
+						currentElement.IsItallic = thisElement.IsItallic;
+						currentElement.IsUnderlined = thisElement.IsUnderlined;
+						currentElement.IsStrikeout = thisElement.IsStrikeout;
+						currentElement.IsObfuscated = thisElement.IsObfuscated;
+
 						totalMessageSize += currentElement.Message.Length;
 					}
 					else
@@ -315,9 +327,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 						totalMessageSize += currentElement.Message.Length;
 						if (i == user.UserName.Elements.Count - 1)
 						{
-							currentElement = new MessageElement(thisElement.Message + new string(' ', 16 - totalMessageSize), thisElement.GetClosestSimpleColor(),
-								thisElement.IsBold, thisElement.IsItallic, thisElement.IsUnderlined, thisElement.IsObfuscated, thisElement.IsStrikeout);
+							currentElement = ObjectFactory.CreateRichTextElement(thisElement.Message + new string(' ', 16 - totalMessageSize));
+							currentElement.ForeColor = thisElement.ForeColor;
 							currentElement.BackColor = thisElement.BackColor;
+							currentElement.IsBold = thisElement.IsBold;
+							currentElement.IsItallic = thisElement.IsItallic;
+							currentElement.IsUnderlined = thisElement.IsUnderlined;
+							currentElement.IsStrikeout = thisElement.IsStrikeout;
+							currentElement.IsObfuscated = thisElement.IsObfuscated;
+
 							if (OverrideBackColor) currentElement.BackColor = BackColor;
 							if (OverrideForeColor) currentElement.ForeColor = ForeColor;
 						}
@@ -353,17 +371,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					#region Keep breaking across lines...
 					while (sizeWillRemain > 0)
 					{
-						workingElement = new MessageElement
-						(
-							thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-							thisElement.GetClosestSimpleColor(),
-							thisElement.IsBold,
-							thisElement.IsItallic,
-							thisElement.IsUnderlined,
-							thisElement.IsObfuscated,
-							thisElement.IsStrikeout
-							);
-						workingElement.BackColor = BackColor;
+						workingElement = ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd));
+						workingElement.ForeColor = thisElement.ForeColor;
+						workingElement.BackColor = thisElement.BackColor;
+						workingElement.IsBold = thisElement.IsBold;
+						workingElement.IsItallic = thisElement.IsItallic;
+						workingElement.IsUnderlined = thisElement.IsUnderlined;
+						workingElement.IsStrikeout = thisElement.IsStrikeout;
+						workingElement.IsObfuscated = thisElement.IsObfuscated;
+
 						if (workingElement.Message.Contains("\n"))
 						{
 							workingElement.Message = workingElement.Message.Replace("\n", new string(' ', MessageSize - sizeAlreadyAdded + messageIndentSize));
@@ -383,16 +399,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					}
 					#endregion
 					#region Last part of the element, no need to breaklines again.
-					workingElement = new MessageElement
-					(
-						thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd),
-						thisElement.GetClosestSimpleColor(),
-						thisElement.IsBold,
-						thisElement.IsItallic,
-						thisElement.IsUnderlined,
-						thisElement.IsObfuscated,
-						thisElement.IsStrikeout
-					);
+					workingElement = ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd));
+					workingElement.ForeColor = thisElement.ForeColor;
+					workingElement.BackColor = thisElement.BackColor;
+					workingElement.IsBold = thisElement.IsBold;
+					workingElement.IsItallic = thisElement.IsItallic;
+					workingElement.IsUnderlined = thisElement.IsUnderlined;
+					workingElement.IsStrikeout = thisElement.IsStrikeout;
+					workingElement.IsObfuscated = thisElement.IsObfuscated;
+
 					if (workingElement.Message.Contains("\n"))
 					{
 						workingElement.Message =
@@ -412,25 +427,23 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 					}
 					workingElement.BackColor = thisElement.BackColor;
 					if (OverrideBackColor) workingElement.BackColor = BackColor;
-					if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					//if (OverrideForeColor) workingElement.ForeColor = ForeColor;
 					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					charactersOnThisLine += sizeToAdd;
 					remainingCharactersToAdd -= sizeToAdd;
 					#endregion
 					#region Finish the line with spaces.
-					workingElement = new MessageElement
-					(
-						new string(' ', MessageSize - charactersOnThisLine),
-						thisElement.GetClosestSimpleColor(),
-						thisElement.IsBold,
-						thisElement.IsItallic,
-						thisElement.IsUnderlined,
-						thisElement.IsObfuscated,
-						thisElement.IsStrikeout
-					);
+
+					workingElement = ObjectFactory.CreateRichTextElement(new string(' ', MessageSize - charactersOnThisLine));
+					workingElement.ForeColor = thisElement.ForeColor;
 					workingElement.BackColor = thisElement.BackColor;
+					workingElement.IsBold = thisElement.IsBold;
+					workingElement.IsItallic = thisElement.IsItallic;
+					workingElement.IsUnderlined = thisElement.IsUnderlined;
+					workingElement.IsStrikeout = thisElement.IsStrikeout;
+					workingElement.IsObfuscated = thisElement.IsObfuscated;
 					if (OverrideBackColor) workingElement.BackColor = BackColor;
-					if (OverrideForeColor) workingElement.ForeColor = ForeColor;
+					//if (OverrideForeColor) workingElement.ForeColor = ForeColor;
 					richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					charactersOnThisLine += sizeToAdd;
 					remainingCharactersToAdd -= sizeToAdd;
@@ -441,16 +454,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			}
 			#endregion
 			#region Add Overflow if Required.
-			IRichTextElement overflowElement = new MessageElement
-			(
-				new string(' ', OverflowSize),
-				date.GetClosestSimpleColor(),
-				date.IsBold,
-				date.IsItallic,
-				date.IsUnderlined,
-				date.IsObfuscated,
-				date.IsStrikeout
-			);
+			IRichTextElement overflowElement = ObjectFactory.CreateRichTextElement(new string(' ', OverflowSize));
 			overflowElement.BackColor = date.BackColor;
 			if (OverrideBackColor) overflowElement.BackColor = BackColor;
 			if (OverrideForeColor) overflowElement.ForeColor = ForeColor;
@@ -458,7 +462,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			#endregion
 			richTextBox_ConsoleOutput.ScrollToCaret();
 		}
-		private void AddMessageDirect(RichTextMessage thisRichTextMessage)
+		private void AddMessageDirect(IRichTextMessage thisRichTextMessage)
 	    {
 		    while (richTextMessages.Count >= maximumMessages)
 		    {
@@ -506,7 +510,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 			    while (notifyIncomingRichTextMessages.WaitOne(0))
 			    {
-				    RichTextMessage thisRichTextMessage = null;
+				    IRichTextMessage thisRichTextMessage = null;
 				    incomingRichTextMessages.TryDequeue(out thisRichTextMessage);
 				    if (IsFormClosing) return;
 				    try

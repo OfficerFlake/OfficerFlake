@@ -6,7 +6,7 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.RichText
 {
-    public abstract class RichTextMessage : IRichTextMessage
+    public class RichTextMessage : IRichTextMessage
     {
 		#region Properties
 		public IDate Datestamp { get; set; }
@@ -111,58 +111,58 @@ namespace Com.OfficerFlake.Libraries.RichText
 		}
 	}
 
-	public class UserMessage : RichTextMessage
+	public class ConsoleUserMessage : RichTextMessage, IConsoleUserMessage
 	{
-		public UserMessage(IUser userObject, string input) : base(input)
+		public ConsoleUserMessage(IUser userObject, IRichTextString input) : base(input)
 		{
 			Type = MessageType.User;
 			User = userObject;
 		}
 	}
-	public class ConsoleInformationMessage : RichTextMessage
+	public class ConsoleInformationMessage : RichTextMessage, IConsoleInformationMessage
 	{
-		public ConsoleInformationMessage(string input) : base("&3&o" + input)
+		public ConsoleInformationMessage(IRichTextString input) : base(input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.ConsoleInformation;
 			User = Users.Console;
 		}
 	}
 
-	public class DebugSummaryMessage : RichTextMessage
+	public class DebugSummaryMessage : RichTextMessage, IDebugSummaryMessage
 	{
-		public DebugSummaryMessage(string input) : base("&b&o" + input)
+		public DebugSummaryMessage(IRichTextString input) : base(input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.DebugSummary;
 			User = Users.Console;
 		}
 	}
-	public class DebugDetailMessage : RichTextMessage
+	public class DebugDetailMessage : RichTextMessage, IDebugDetailMessage
 	{
-		public DebugDetailMessage(string input) : base("&9&o" + input)
+		public DebugDetailMessage(IRichTextString input) : base("&9&o" + input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.DebugDetail;
 			User = Users.Console;
 		}
 	}
-	public class DebugWarningMessage : RichTextMessage
+	public class DebugWarningMessage : RichTextMessage, IDebugWarningMessage
 	{
-		public DebugWarningMessage(string input) : base("&e&o" + input)
+		public DebugWarningMessage(IRichTextString input) : base("&e&o" + input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.DebugWarning;
 			User = Users.Console;
 		}
 	}
-	public class DebugErrorMessage : RichTextMessage
+	public class DebugErrorMessage : RichTextMessage, IDebugErrorMessage
 	{
-		public DebugErrorMessage(Exception e, string input) : base("&c&o" + input + "\n" + "&c&o" + e.StackTrace)
+		public DebugErrorMessage(Exception e, IRichTextString input) : base("&c&o" + input.ToInternallyFormattedSystemString() + "\n" + "&c&o" + e.StackTrace)
 		{
 			Type = MessageType.DebugError;
 			User = Users.Console;
 		}
 	}
-	public class DebugCrashMessage : RichTextMessage
+	public class DebugCrashMessage : RichTextMessage, IDebugCrashMessage
 	{
-		public DebugCrashMessage(Exception e, string input) : base("&c&o" + input + "\n" + "&c&o" + e.StackTrace)
+		public DebugCrashMessage(Exception e, IRichTextString input) : base("&c&o" + input.ToInternallyFormattedSystemString() + "\n" + "&c&o" + e.StackTrace)
 		{
 			Type = MessageType.DebugCrash;
 			User = Users.Console;

@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Pressures
 		{
-			public class MillimeterOfMercury : Pressure, IMillimeterOfMercury
+			public class MilliMeterOfMercury : Pressure, IMilliMeterOfMercury
 			{
 				#region CTOR
-				public MillimeterOfMercury(double value) : base(value, Conversion.MillimeterOfMercury, Suffixes.MillimeterOfMercury) { }
+				public MilliMeterOfMercury(double value) : base(value, Conversion.MilliMeterOfMercury, Suffixes.MilliMeterOfMercury) { }
 				#endregion
 				#region Operators
-				public static MillimeterOfMercury operator +(MillimeterOfMercury firstMeasurement, MillimeterOfMercury secondMeasurement)
+				public static MilliMeterOfMercury operator +(MilliMeterOfMercury firstMeasurement, MilliMeterOfMercury secondMeasurement)
 				{
-					return new MillimeterOfMercury((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new MilliMeterOfMercury((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterOfMercury operator -(MillimeterOfMercury firstMeasurement, MillimeterOfMercury secondMeasurement)
+				public static MilliMeterOfMercury operator -(MilliMeterOfMercury firstMeasurement, MilliMeterOfMercury secondMeasurement)
 				{
-					return new MillimeterOfMercury((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new MilliMeterOfMercury((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterOfMercury operator *(MillimeterOfMercury firstMeasurement, MillimeterOfMercury secondMeasurement)
+				public static MilliMeterOfMercury operator *(MilliMeterOfMercury firstMeasurement, MilliMeterOfMercury secondMeasurement)
 				{
-					return new MillimeterOfMercury((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new MilliMeterOfMercury((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static MillimeterOfMercury operator /(MillimeterOfMercury firstMeasurement, MillimeterOfMercury secondMeasurement)
+				public static MilliMeterOfMercury operator /(MilliMeterOfMercury firstMeasurement, MilliMeterOfMercury secondMeasurement)
 				{
-					return new MillimeterOfMercury((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new MilliMeterOfMercury((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].MillimeterOfMercurys
-			public static MillimeterOfMercury MillimeterOfMercurys(this Byte input) => new MillimeterOfMercury(input);
-			public static MillimeterOfMercury MillimeterOfMercurys(this Int16 input) => new MillimeterOfMercury(input);
-			public static MillimeterOfMercury MillimeterOfMercurys(this Int32 input) => new MillimeterOfMercury(input);
-			public static MillimeterOfMercury MillimeterOfMercurys(this Int64 input) => new MillimeterOfMercury(input);
-			public static MillimeterOfMercury MillimeterOfMercurys(this Single input) => new MillimeterOfMercury(input);
-			public static MillimeterOfMercury MillimeterOfMercurys(this Double input) => new MillimeterOfMercury(input);
+			#region [Number].MilliMeterOfMercurys
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Byte input) => new MilliMeterOfMercury(input);
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Int16 input) => new MilliMeterOfMercury(input);
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Int32 input) => new MilliMeterOfMercury(input);
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Int64 input) => new MilliMeterOfMercury(input);
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Single input) => new MilliMeterOfMercury(input);
+			public static MilliMeterOfMercury MilliMeterOfMercurys(this Double input) => new MilliMeterOfMercury(input);
 			#endregion
 		}
 	}

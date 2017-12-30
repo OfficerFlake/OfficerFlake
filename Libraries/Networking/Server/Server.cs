@@ -15,13 +15,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			_TCPPort = TCPPort;
 			_UDPPort = UDPPort;
-			_TCPListener = new TcpListener(IPAddress.Any, (Int32)_TCPPort);
-			_UDPEndPoint = new IPEndPoint(IPAddress.Any, (Int32)_UDPPort);
+			TCPListener = new TcpListener(IPAddress.Any, (Int32)_TCPPort);
+			UDPEndPoint = new IPEndPoint(IPAddress.Any, (Int32)_UDPPort);
 
 			try
 		    {
-				_TCPListener.Start();
-			    Task.Run(() => TCPAcceptNewConnection());
+				TCPListener.Start();
+			    UDPReciever = new UdpClient(UDPEndPoint);
+
+				Task.Run(() => TCPAcceptNewConnection());
 			    Task.Run(() => UDPRecieve());
 				return true;
 			}
@@ -37,7 +39,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    try
 		    {
 			    UDPReciever.Close();
-			    _TCPListener.Stop();
+			    TCPListener.Stop();
 			    IsShuttingDown = true;
 		    }
 		    catch
@@ -51,16 +53,19 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 	    #region TCP/IP
 	    private uint _TCPPort = 7915;
-	    private static TcpListener _TCPListener = new TcpListener(IPAddress.Any, 7915);
+	    private static TcpListener TCPListener = new TcpListener(IPAddress.Any, 7915);
 
 	    private bool TCPAcceptNewConnection()
 	    {
 		    if (IsShuttingDown) return false;
 		    try
 		    {
-			    Socket newSocket = _TCPListener.AcceptSocket();
-			    IConnection newConnection = ObjectFactory.CreateConnection();
-			    newConnection.Connect(newSocket);
+			    Socket newSocket = TCPListener.AcceptSocket();
+			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket);
+		    }
+		    catch (SocketException)
+		    {
+			    return false;
 		    }
 		    catch (InvalidOperationException)
 		    {
@@ -72,7 +77,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    #endregion
 		#region UDP
 		private uint _UDPPort = 7916;
-		private IPEndPoint _UDPEndPoint = new IPEndPoint(IPAddress.Any, 7916);
+		private IPEndPoint UDPEndPoint = new IPEndPoint(IPAddress.Any, 7916);
 		private UdpClient UDPReciever { get; set; }
 
 	    private void UDPRecieve()
@@ -83,7 +88,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				byte[] received;
 				try
 			    {
-				    received = UDPReciever.Receive(ref _UDPEndPoint);
+				    received = UDPReciever.Receive(ref UDPEndPoint);
 			    }
 			    catch (ObjectDisposedException)
 			    {

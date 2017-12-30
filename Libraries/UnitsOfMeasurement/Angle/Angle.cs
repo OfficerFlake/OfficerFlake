@@ -55,7 +55,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
             public const double Degree = 0.017453d;
             public const double Gradian = 0.015708d;
         }
-	    public static bool TryParse(string input, out Angle output)
+	    public static bool TryParse(string input, out IAngle output)
 	    {
 		    #region Prepare Variables
 		    string capInput = input.ToUpperInvariant();

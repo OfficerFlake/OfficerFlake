@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Volumes
 		{
-			public class USCup : Volume, ICup
+			public class Cup : Volume, ICup
 			{
 				#region CTOR
-				public USCup(double value) : base(value, Conversion.US.Cup, Suffixes.US.Cup) { }
+				public Cup(double value) : base(value, Conversion.US.Cup, Suffixes.US.Cup) { }
 				#endregion
 				#region Operators
-				public static USCup operator +(USCup firstMeasurement, USCup secondMeasurement)
+				public static Cup operator +(Cup firstMeasurement, Cup secondMeasurement)
 				{
-					return new USCup((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new Cup((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static USCup operator -(USCup firstMeasurement, USCup secondMeasurement)
+				public static Cup operator -(Cup firstMeasurement, Cup secondMeasurement)
 				{
-					return new USCup((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new Cup((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static USCup operator *(USCup firstMeasurement, USCup secondMeasurement)
+				public static Cup operator *(Cup firstMeasurement, Cup secondMeasurement)
 				{
-					return new USCup((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new Cup((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static USCup operator /(USCup firstMeasurement, USCup secondMeasurement)
+				public static Cup operator /(Cup firstMeasurement, Cup secondMeasurement)
 				{
-					return new USCup((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new Cup((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].USCups
-			public static USCup USCups(this Byte input) => new USCup(input);
-			public static USCup USCups(this Int16 input) => new USCup(input);
-			public static USCup USCups(this Int32 input) => new USCup(input);
-			public static USCup USCups(this Int64 input) => new USCup(input);
-			public static USCup USCups(this Single input) => new USCup(input);
-			public static USCup USCups(this Double input) => new USCup(input);
+			#region [Number].Cups
+			public static Cup Cups(this Byte input) => new Cup(input);
+			public static Cup Cups(this Int16 input) => new Cup(input);
+			public static Cup Cups(this Int32 input) => new Cup(input);
+			public static Cup Cups(this Int64 input) => new Cup(input);
+			public static Cup Cups(this Single input) => new Cup(input);
+			public static Cup Cups(this Double input) => new Cup(input);
 			#endregion
 		}
 	}

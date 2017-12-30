@@ -1,12 +1,14 @@
-﻿namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class TRIGGER1 : DATProperty, IDAT_1_Parameter<WeaponCategory>
+	public class TRIGGER1 : DATProperty, IDAT_1_Parameter<IYSTypeWeaponCategory>
 	{
-		public TRIGGER1(WeaponCategory value) : base("TRIGGER1" + " " + value)
+		public TRIGGER1(IYSTypeWeaponCategory value) : base("TRIGGER1" + " " + value)
 		{
 			Value = value;
 		}
 
-		public WeaponCategory Value { get; set; }
+		public IYSTypeWeaponCategory Value { get; set; }
 	}
 }

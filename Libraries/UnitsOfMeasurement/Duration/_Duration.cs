@@ -63,7 +63,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public const double Month = 2678400.0d;
 			public const double Year = 31536000.0d;
 		}
-		public static bool TryParse(string input, out Duration output)
+		public static bool TryParse(string input, out IDuration output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();

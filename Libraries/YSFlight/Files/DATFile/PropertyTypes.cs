@@ -1,11 +1,11 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
 	public interface IDAT_Parameters
 	{
-		object[] Parameters { get; set; }
-		string ToString();
 	}
 	public interface IDAT_0_Parameters : IDAT_Parameters
 	{
@@ -72,10 +72,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 		T8 Value8 { get; set; }
 	}
 
-	public class DATProperty : CommandFile.Line, IDAT_Parameters
+	public class DATProperty : IO.CommandFile.Line, IDATFileProperty
 	{
 		private object[] _parameters;
-		public object[] Parameters
+		public object[] Properties
 		{
 			get => _parameters;
 			set
@@ -92,17 +92,27 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 		public DATProperty(string line) : base(line)
 		{
 		}
+		
+		public T GetParameter<T>(int index)
+		{
+			return (T)Properties[index];
+		}
+		public void SetParameter(int index, object parameter)
+		{
+			Properties[index] = parameter;
+		}
 
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.Append(Command);
-			foreach (object thisObject in Parameters)
+			foreach (object thisObject in Properties)
 			{
 				sb.Append(" ");
 				sb.Append(thisObject.ToString());
 			}
 			return sb.ToString();
 		}
+		public string ToSystemString() => ToString();
 	}
 }

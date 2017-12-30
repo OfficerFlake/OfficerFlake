@@ -2,15 +2,16 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using FlakeColors = Com.OfficerFlake.Libraries.Color;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 {
 	public class RichTextBox_FormattedBlack : RichTextBox
 	{
 		public static Random RandomNumberGenerator = new Random();
-		public RichTextBox_FormattedBlack(RichTextString _input)
+		public RichTextBox_FormattedBlack(IRichTextString _input)
 		{
 			SuspendLayout();
 
@@ -23,7 +24,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right;
 
 			BackColor = System.Drawing.Color.FromArgb(255, 16, 16, 16);
-			ForeColor = Color.SimpleColors.White.ToSystemDrawingColor();
+			ForeColor = SimpleColors.White.ToSystemDrawingColor();
 
 			BorderStyle = BorderStyle.None;
 
@@ -56,7 +57,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 		private static extern bool HideCaret(IntPtr hWnd);
 
 
-		public void PopulateRTB(RichTextString _input)
+		public void PopulateRTB(IRichTextString _input)
 		{
 			//SuspendLayout();
 
@@ -65,7 +66,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			SelectionLength = 0;
 
 			#region Populate RTB
-			foreach (RichTextString.MessageElement thisElement in _input.Elements)
+			foreach (IRichTextElement thisElement in _input.Elements)
 			{
 				int _SelectionStart = Text.Length;
 

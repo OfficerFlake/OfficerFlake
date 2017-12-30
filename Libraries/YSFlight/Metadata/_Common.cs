@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 
+using Com.OfficerFlake.Libraries.Interfaces;
+
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
 	    public const string YSFlightDirectory = "C:/Games/YSFLIGHT20120701/";
-	    public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
+	    public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 		public static bool LoadAll()
 		{

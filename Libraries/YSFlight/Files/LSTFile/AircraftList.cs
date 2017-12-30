@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
 {
-    public class Aircraft : ListFile
+    public class AircraftList : IO.ListFile
     {
         private const bool DebugMode = false;
         public class AircraftDefinition
@@ -57,7 +58,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
         }
         public List<AircraftDefinition> List;
 
-        public Aircraft(string filename) : base(filename)
+		public AircraftList(string filename) : base(filename)
         {
         }
 
@@ -67,7 +68,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             base.Load();
 
             List = new List<AircraftDefinition>();
-            foreach (var thisLine in Lines)
+            foreach (var thisLine in base.Contents)
             {
                 if (ShowLines) Debug.AddSummaryMessage(thisLine.ToString());
                 if (thisLine.NumberOfParameters < 3) continue;
@@ -121,7 +122,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             var files = GetAllAircraftLSTFilesInYSFlightFolder();
             foreach (string thisLSTFileName in files)
             {
-                Aircraft thisFile = new Aircraft(thisLSTFileName);
+                AircraftList thisFile = new AircraftList(thisLSTFileName);
                 thisFile.Load();
                 foreach (AircraftDefinition thisAircraftDefinition in thisFile.List)
                 {

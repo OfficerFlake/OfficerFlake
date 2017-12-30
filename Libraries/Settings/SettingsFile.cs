@@ -2,7 +2,7 @@
 {
 	public static partial class Settings
 	{
-		public class SettingFile : CommandFile
+		public class SettingFile : IO.CommandFile
 		{
 			internal SettingFile(string filename) : base(filename)
 			{

@@ -1,1370 +1,1366 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
+
 using Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties;
-using Debug = System.Diagnostics.Debug;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 {
-    public partial class File : CommandFile
+    public partial class File : IO.CommandFile, IDATFile
     {
-        public List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
+		#region CTOR
+	    public File(string filename) : base(filename)
+	    {
+		    Contents = new List<IDATFileProperty>();
+	    }
+		#endregion
+		public List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
-        public List<DATProperty> Properties { get; }
-
-        public File(string filename) : base(filename)
-        {
-            Properties = new List<DATProperty>();
-        }
-
-	    //private bool debugMode = false;
-	    private string nullExceptionString = "";
-
+        public new List<IDATFileProperty> Contents { get; set; }
 
 		public new bool Load()
         {
-            Properties.Clear();
+	        Contents.Clear();
             base.Load();
-            for(int i=0; i < Lines.Count; i++)
+            for(int i=0; i < base.Contents.Count; i++)
             {
-	            Line thisLine = (Line)Lines[i];
+	            ICommandFileLine thisLine = base.Contents[i];
                 if (thisLine.Command == "") continue;
-                if (Comments.StartOfLineMarkers.Contains(thisLine.Command)) continue;
+                if (Extensions.YSFlight.CommentMarkers.StartOfLineMarkers.Any(x=> thisLine.Command.StartsWith(x))) continue;
                 #region ThisLine => Dat Property
-                switch (thisLine.Command)
-                {
-                    case "AAMSLOT_":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
 
+	            switch (thisLine.Command)
+	            {
+		            case "AAMSLOT_":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new AAMSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "AAMVISIB":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new AAMVISIB(value));
+			            continue;
+		            }
+		            case "AFTBURNR":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new AFTBURNR(value));
+			            continue;
+		            }
+		            case "AGMSLOT_":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new AGMSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "AGMVISIB":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new AGMVISIB(value));
+			            continue;
+		            }
+		            case "AIRCLASS":
+		            {
+			            String value = thisLine.GetParameter(0);
+			            Contents.Add(new AIRCLASS(value));
+			            continue;
+		            }
+		            case "ARRESTER":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new ARRESTER(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "ATTITUDE":
+		            {
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out b)) goto Error;
+			            Contents.Add(new ATTITUDE(ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "AUTOCALC":
+		            {
+			            Contents.Add(new AUTOCALC());
+			            continue;
+		            }
+		            case "BMBAYRCS":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new BMBAYRCS(value));
+			            continue;
+		            }
+		            case "BOMBSLOT":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new BOMBSLOT(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "BOMINBAY":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new BOMINBAY(value));
+			            continue;
+		            }
+		            case "BOMVISIB":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new BOMVISIB(value));
+			            continue;
+		            }
+		            case "CATEGORY":
+		            {
+			            IYSTypeAircraftCategory value = Extensions.YSFlight.AircraftCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0), thisLine.GetParameter(1));
+			            Contents.Add(new CATEGORY(value));
+			            continue;
+		            }
+		            case "CDBYFLAP":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CDBYFLAP(value));
+						continue;
+					}
+					case "CDBYGEAR":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new CDBYGEAR(value));
+			            continue;
+		            }
+		            case "CDSPOILR":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CDSPOILR(value));
+						continue;
+					}
+					case "CDVARGEO":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CDVARGEO(value));
+						continue;
+					}
+					case "CKPITHUD":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CKPITHUD(value));
+			            continue;
+		            }
+		            case "CKPITIST":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CKPITIST(value));
+			            continue;
+		            }
+		            case "CLBYFLAP":
+		            {
+						Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new CLBYFLAP(value));
+			            continue;
+					}
+		            case "CLDECAY1":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new CLDECAY1(value));
+			            continue;
+		            }
+		            case "CLDECAY2":
+		            {
+						IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new CLDECAY2(value));
+			            continue;
+					}
+		            case "CLVARGEO":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CLVARGEO(value));
+						continue;
+					}
+					case "COCKPITA":
+		            {
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out b)) goto Error;
+			            Contents.Add(new COCKPITA(ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "COCKPITP":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new COCKPITP(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "CPITMANE":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CPITMANE(value));
+						continue;
+					}
+					case "CPITSTAB":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(),
+				            out value)) goto Error;
+			            Contents.Add(new CPITSTAB(value));
+			            continue;
+		            }
+		            case "CRITAOAM":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new CRITAOAM(value));
+			            continue;
+		            }
+					case "CRITAOAP":
+					{
+						IAngle value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new CRITAOAP(value));
+						continue;
+					}
+					case "CRITSPED":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new CRITSPED(value));
+						continue;
+					}
+					case "CROLLMAN":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CROLLMAN(value));
+						continue;
+					}
+					case "CTLABRNR":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CTLABRNR(value));
+			            continue;
+		            }
+		            case "CTLATVGW":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CTLATVGW(value));
+			            continue;
+		            }
+		            case "CTLBRAKE":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CTLBRAKE(value));
+			            continue;
+		            }
+		            case "CTLIFLAP":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CTLIFLAP(value));
+						continue;
+					}
+					case "CTLINVGW":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(),
+				            out value)) goto Error;
+			            Contents.Add(new CTLINVGW(value));
+			            continue;
+		            }
+		            case "CTLLDGEA":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new CTLLDGEA(value));
+			            continue;
+		            }
+		            case "CTLSPOIL":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CTLSPOIL(value));
+						continue;
+					}
+					case "CTLTHROT":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CTLTHROT(value));
+						continue;
+					}
+					case "CYAWMANE":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CYAWMANE(value));
+						continue;
+					}
+					case "CYAWSTAB":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new CYAWSTAB(value));
+						continue;
+					}
+					case "EXCAMERA":
+		            {
+			            String name;
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            Boolean isInside = false;
+			            name = thisLine.GetParameter(0);
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(3), out z)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(4), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(5), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(6), out b)) goto Error;
+			            if (thisLine.GetParameter(7) == "INSIDE") isInside = true;
+			            Contents.Add(new EXCAMERA(name, ObjectFactory.CreatePoint3(x, y, z),
+				            ObjectFactory.CreateOrientation3(h, p, b), isInside));
+			            continue;
+		            }
+		            case "FLAPPOSI":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new FLAPPOSI(value));
+						continue;
+					}
+					case "FLAREPOS":
+		            {
+			            IDistance x1;
+			            IDistance y1;
+			            IDistance z1;
+			            IDistance x2; //SECOND PARAMETER IS OPTIONAL.
+			            IDistance y2;
+			            IDistance z2;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x1)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y1)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z1)) goto Error;
+			            ObjectFactory.TryParse(thisLine.GetParameter(3), out x2);
+				        ObjectFactory.TryParse(thisLine.GetParameter(4), out y2);
+				        ObjectFactory.TryParse(thisLine.GetParameter(5), out z2);
+			            Contents.Add(new FLAREPOS(ObjectFactory.CreatePoint3(x1, y1, z1), ObjectFactory.CreateVector3(x2, y2, z2)));
+			            continue;
+		            }
+		            case "FLATCLR1":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new FLATCLR1(value));
+			            continue;
+		            }
+					case "FLATCLR2":
+					{
+						IAngle value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new FLATCLR2(value));
+						continue;
+					}
+					case "FUELMILI":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new FUELMILI(value));
+						continue;
+					}
+					case "FUELABRN":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new FUELABRN(value));
+						continue;
+					}
+					case "GEARHORN":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new GEARHORN(value));
+			            continue;
+		            }
+		            case "GUNDIREC":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new GUNDIREC(ObjectFactory.CreateVector3(x, y, z)));
+			            continue;
+		            }
+					case "GUNINTVL":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new GUNINTVL(value.Seconds()));
+						continue;
+					}
+					case "GUNPOWER":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new GUNPOWER(value));
+						continue;
+					}
+					case "GUNSIGHT":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new GUNSIGHT(value));
+			            continue;
+		            }
+		            case "HASSPOIL":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new HASSPOIL(value));
+			            continue;
+		            }
+		            case "HRDPOINT":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            var descriptors = new List<IYSTypeHardpointDescription>();
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						for (var j = 3; j < thisLine.NumberOfParameters; j++)
+			            {
+				            try
+				            {
+					            if (thisLine.GetParameter(i) == "") continue;
+					            var thisDescriptor = ObjectFactory.CreateYSTypeHardpointDescription(thisLine.GetParameter(i));
+					            descriptors.Add(thisDescriptor);
+				            }
+				            catch
+				            {
+					            goto Error;
+				            }
+			            }
+			            Contents.Add(new HRDPOINT(ObjectFactory.CreatePoint3(x, y, z), descriptors.ToArray()));
+			            continue;
+		            }
+		            case "HTRADIUS":
+		            {
+			            IDistance value;
+			            if (!ObjectFactory.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new HTRADIUS(value));
+			            continue;
+		            }
+					case "IDENTIFY":
+		            {
+			            String value = thisLine.GetParameter(0);
+			            Contents.Add(new IDENTIFY(value));
+			            continue;
+		            }
+		            case "INITAAMM":
+		            {
+			            UInt32 value;
+			            if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new INITAAMM(value));
+			            continue;
+		            }
+		            case "INITBOMB":
+		            {
+			            UInt32 value;
+			            if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new INITBOMB(value));
+			            continue;
+		            }
+					case "INITFUEL":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new INITFUEL(value));
+			            continue;
+		            }
+					case "INITIAAM":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new INITIAAM(value));
+						continue;
+					}
+					case "INITIAGM":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new INITIAGM(value));
+						continue;
+					}
+					case "INITIGUN":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new INITIGUN(value));
+						continue;
+					}
+					case "INITLOAD":
+		            {
+			            IMass value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new INITLOAD(value));
+			            continue;
+		            }
+					case "INITRCKT":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new INITRCKT(value));
+						continue;
+					}
+					case "INITSPED":
+		            {
+			            ISpeed value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new INITSPED(value));
+			            continue;
+		            }
+					case "INSTPANL":
+		            {
+			            String value = thisLine.GetParameter(0);
+			            Contents.Add(new INSTPANL(value));
+			            continue;
+		            }
+		            case "ISPNLATT":
+		            {
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out b)) goto Error;
+			            Contents.Add(new ISPNLATT(ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "ISPNLHUD":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new ISPNLHUD(value));
+			            continue;
+		            }
+		            case "ISPNLPOS":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new ISPNLPOS(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "ISPNLSCL":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new ISPNLSCL(value));
+			            continue;
+		            }
+					case "LEFTGEAR":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new LEFTGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "LMTBYHDP":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new LMTBYHDP(value));
+			            continue;
+		            }
+		            case "LOADWEPN":
+		            {
+			            IYSTypeWeaponType value = Extensions.YSFlight.WeaponTypes.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+			            if (!UInt32.TryParse(thisLine.GetParameter(1), out UInt32 quantity)) goto Error;
+			            Contents.Add(new LOADWEPN(value, quantity));
+			            continue;
+		            }
+		            case "MACHNGN2":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new MACHNGN2(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "MACHNGN3":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN3(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGN4":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN4(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGN5":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN5(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGN6":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN6(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGN7":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN7(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGN8":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGN8(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MACHNGUN":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new MACHNGUN(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "MANESPD1":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new MANESPD1(value));
+						continue;
+					}
+					case "MANESPD2":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new MANESPD2(value));
+						continue;
+					}
+					case "MAXCDAOA":
+					{
+						IAngle value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new MAXCDAOA(value));
+						continue;
+					}
+					case "MAXNAAMM":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNAAMM(value));
+						continue;
+					}
+					case "MAXNBOMB":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNBOMB(value));
+						continue;
+					}
+					case "MAXNMAAM":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNMAAM(value));
+						continue;
+					}
+					case "MAXNMAGM":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNMAGM(value));
+						continue;
+					}
+					case "MAXNMFLR":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNMFLR(value));
+						continue;
+					}
+					case "MAXNMRKT":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new MAXNMRKT(value));
+						continue;
+					}
+					case "MAXSPEED":
+		            {
+			            ISpeed value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new MAXSPEED(value));
+			            continue;
+		            }
+					case "MXIPTAOA":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new MXIPTAOA(value));
+			            continue;
+		            }
+					case "MXIPTROL":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new MXIPTROL(value));
+			            continue;
+		            }
+					case "MXIPTSSA":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new MXIPTSSA(value));
+			            continue;
+		            }
+					case "NMTURRET":
+					{
+						UInt32 value;
+						if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new NMTURRET(value));
+						continue;
+					}
+					case "POSITION":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new POSITION(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "PROPEFCY":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new PROPEFCY(value));
+			            continue;
+		            }
+					case "PROPELLR":
+					{
+						IPower value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new PROPELLR(value));
+						continue;
+					}
+					case "PROPVMIN":
+		            {
+			            ISpeed value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new PROPVMIN(value));
+			            continue;
+		            }
+					case "PSTMPTCH":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new PSTMPTCH(value));
+			            continue;
+		            }
+					case "PSTMPWR1":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new PSTMPWR1(value));
+			            continue;
+		            }
+					case "PSTMPWR2":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new PSTMPWR2(value));
+						continue;
+					}
+					case "PSTMROLL":
+					{
+						IAngle value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new PSTMROLL(value));
+						continue;
+					}
+					case "PSTMSPD1":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new PSTMSPD1(value));
+						continue;
+					}
+					case "PSTMSPD2":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new PSTMSPD2(value));
+						continue;
+					}
+					case "PSTMYAW_":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new PSTMYAW_(value));
+			            continue;
+		            }
+					case "RADARCRS":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new RADARCRS(value));
+			            continue;
+		            }
+					case "REFACRUS":
+					{
+						IDistance value;
+						if (!ObjectFactory.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new REFACRUS(value));
+						continue;
+					}
+					case "REFAOALD":
+		            {
+			            IAngle value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new REFAOALD(value));
+			            continue;
+		            }
+					case "REFLNRWY":
+					{
+						IDistance value;
+						if (!ObjectFactory.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+						Contents.Add(new REFLNRWY(value));
+						continue;
+					}
+					case "REFTCRUS":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new REFTCRUS(value));
+			            continue;
+		            }
+					case "REFTHRLD":
+					{
+						Single value;
+						if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+						Contents.Add(new REFTHRLD(value));
+						continue;
+					}
+					case "REFVCRUS":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new REFVCRUS(value));
+						continue;
+					}
+					case "REFVLAND":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new REFVLAND(value));
+						continue;
+					}
+					case "RETRGEAR":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new RETRGEAR(value));
+			            continue;
+		            }
+		            case "RIGHGEAR":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new RIGHGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "RKTSLOT_":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new RKTSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+						continue;
+					}
+					case "RKTVISIB":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new RKTVISIB(value));
+			            continue;
+		            }
+		            case "SCRNCNTR":
+		            {
+			            Single x;
+			            Single y;
+						if (!Single.TryParse((thisLine.GetParameter(0)).ToString(), out x)) goto Error;
+			            if (!Single.TryParse((thisLine.GetParameter(1)).ToString(), out y)) goto Error;
+			            Contents.Add(new SCRNCNTR(x, y));
+			            continue;
+		            }
+		            case "SMOKECOL":
+		            {
+			            Byte n;
+			            Byte r;
+			            Byte g;
+			            Byte b;
+			            if (!byte.TryParse(thisLine.GetParameter(0), out n)) goto Error;
+			            if (!byte.TryParse(thisLine.GetParameter(1), out r)) goto Error;
+			            if (!byte.TryParse(thisLine.GetParameter(2), out g)) goto Error;
+			            if (!byte.TryParse(thisLine.GetParameter(3), out b)) goto Error;
+			            Contents.Add(new SMOKECOL(n, ObjectFactory.CreateColor(r,g,b).Get24BitColor()));
+			            continue;
+		            }
+		            case "SMOKEGEN":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new SMOKEGEN(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "SMOKEOIL":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new SMOKEOIL(value));
+						continue;
+					}
+					case "STALHORN":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new STALHORN(value));
+			            continue;
+		            }
+		            case "STRENGTH":
+		            {
+			            UInt32 value;
+			            if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new STRENGTH(value));
+			            continue;
+		            }
+					case "SUBSTNAM":
+		            {
+			            String value = thisLine.GetParameter(0);
+			            Contents.Add(new SUBSTNAM(value));
+			            continue;
+		            }
+		            case "THRAFTBN":
+		            {
+			            IMass value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new THRAFTBN(value));
+			            continue;
+		            }
+					case "THRMILIT":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new THRMILIT(value));
+						continue;
+					}
+					case "THRSTREV":
+		            {
+			            Single value;
+			            if (!Single.TryParse(thisLine.GetParameter(0).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
+			            Contents.Add(new THRSTREV(value));
+			            continue;
+		            }
+					case "TRIGGER1":
+					{
+						IYSTypeWeaponCategory value = Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+			            if (value == null) goto Error;
+			            Contents.Add(new TRIGGER1(value));
+			            continue;
+		            }
+		            case "TRIGGER2":
+		            {
+			            IYSTypeWeaponCategory value = Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+			            if (value == null) goto Error;
+			            Contents.Add(new TRIGGER2(value));
+			            continue;
+		            }
+					case "TRIGGER3":
+					{
+						IYSTypeWeaponCategory value = Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+						if (value == null) goto Error;
+						Contents.Add(new TRIGGER3(value));
+						continue;
+					}
+					case "TRIGGER4":
+					{
+						IYSTypeWeaponCategory value = Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+						if (value == null) goto Error;
+						Contents.Add(new TRIGGER4(value));
+						continue;
+					}
+					case "TRSTDIR0":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new TRSTDIR0(ObjectFactory.CreateVector3(x, y, z)));
+			            continue;
+		            }
+					case "TRSTDIR1":
+					{
+						IDistance x;
+						IDistance y;
+						IDistance z;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+						Contents.Add(new TRSTDIR1(ObjectFactory.CreateVector3(x, y, z)));
+						continue;
+					}
+					case "TRSTVCTR":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new TRSTVCTR(value));
+			            continue;
+		            }
+		            case "TURRETAM":
+		            {
+			            UInt32 quantifier;
+			            UInt32 value;
+			            if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier))goto Error;
+			            if (!UInt32.TryParse(thisLine.GetParameter(1), out value)) goto Error;
+			            Contents.Add(new TURRETAM(quantifier, value));
+			            continue;
+		            }
+		            case "TURRETAR":
+		            {
+			            UInt32 value;
+			            if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new TURRETAR(value));
+			            continue;
+		            }
+					case "TURRETCT":
+		            {
+			            UInt32 quantifier;
+			            String value;
+						if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            value = thisLine.GetParameter(1);
+			            Contents.Add(new TURRETCT(quantifier, value));
+			            continue;
+		            }
+		            case "TURRETGD":
+		            {
+			            UInt32 value;
+			            if (!UInt32.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new TURRETGD(value));
+			            continue;
+		            }
+					case "TURRETHD":
+		            {
+			            UInt32 quantifier;
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            if (!uint.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(3), out b)) goto Error;
+			            Contents.Add(new TURRETHD(quantifier, ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "TURRETIV":
+		            {
+			            UInt32 quantifier;
+			            Single interval;
+			            if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            if (!Single.TryParse(thisLine.GetParameter(1), out interval)) goto Error;
+			            Contents.Add(new TURRETIV(quantifier, interval.Seconds()));
+			            continue;
+		            }
+		            case "TURRETNM":
+		            {
+			            UInt32 quantifier;
+			            String name;
+						if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            name = thisLine.GetParameter(1);
+			            Contents.Add(new TURRETNM(quantifier, name));
+			            continue;
+		            }
+		            case "TURRETPO":
+		            {
+			            UInt32 quantifier;
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            IAngle h;
+			            IAngle p;
+			            IAngle b;
+			            if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(3), out z)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(4), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(5), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(6), out b)) goto Error;
+			            Contents.Add(new TURRETPO(quantifier, ObjectFactory.CreatePoint3(x, y, z), ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "TURRETPT":
+		            {
+						UInt32 quantifier;
+						IAngle h;
+			            IAngle p;
+			            IAngle b;
+						if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out h)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out p)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(3), out b)) goto Error;
+			            Contents.Add(new TURRETPT(quantifier, ObjectFactory.CreateOrientation3(h, p, b)));
+			            continue;
+		            }
+		            case "TURRETRG":
+		            {
+						UInt32 quantifier;
+						IDistance value;
+			            if (!UInt32.TryParse(thisLine.GetParameter(0), out quantifier)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out value)) goto Error;
+			            Contents.Add(new TURRETRG(quantifier, value));
+			            continue;
+		            }
+		            case "VAPORPO0":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new VAPORPO0(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "VAPORPO1":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new VAPORPO1(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+		            case "VARGEOMW":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new VARGEOMW(value));
+			            continue;
+		            }
+		            case "VGWSPED1":
+		            {
+			            ISpeed value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new VGWSPED1(value));
+			            continue;
+		            }
+					case "VGWSPED2":
+					{
+						ISpeed value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new VGWSPED2(value));
+						continue;
+					}
+					case "VRGMNOSE":
+		            {
+			            Boolean value;
+			            if (!Boolean.TryParse((thisLine.GetParameter(0)).ToString(), out value)) goto Error;
+			            Contents.Add(new VRGMNOSE(value));
+			            continue;
+		            }
+		            case "WEAPONCH":
+		            {
+			            IYSTypeWeaponCategory value = Extensions.YSFlight.WeaponCategories.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+			            Contents.Add(new WEAPONCH(value));
+			            continue;
+		            }
+		            case "WEIGFUEL":
+		            {
+			            IMass value;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+			            Contents.Add(new WEIGFUEL(value));
+			            continue;
+		            }
+					case "WEIGHCLN":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new WEIGHCLN(value));
+						continue;
+					}
+					case "WEIGLOAD":
+					{
+						IMass value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new WEIGLOAD(value));
+						continue;
+					}
+					case "WHELGEAR":
+		            {
+			            IDistance x;
+			            IDistance y;
+			            IDistance z;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
+			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
+			            Contents.Add(new WHELGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+			            continue;
+		            }
+					case "WINGAREA":
+					{
+						IArea value;
+						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out value)) goto Error;
+						Contents.Add(new WINGAREA(value));
+						continue;
+					}
+					case "WPNSHAPE":
+					{
+						IYSTypeWeaponType value = Extensions.YSFlight.WeaponTypes.GetCategoryFromStringOrBlank(thisLine.GetParameter(0));
+			            if (value == null) goto Error;
+			            var isStatic = (((thisLine.GetParameter(1)).ToString()) == "STATIC");
+			            var shape = (thisLine.GetParameter(2)).ToString();
+			            Contents.Add(new WPNSHAPE(value, isStatic, shape));
+			            continue;
+		            }
+		            default:
+		            {
+			            Debug.AddWarningMessage("DAT COMMAND NOT IMPLEMENTED : " + thisLine);
+			            continue;
+		            }
+			        Error:
+		            {
+			            Debug.AddDetailMessage("BAD DAT COMMAND? : " + thisLine);
+			            continue;
+		            }
+				}
 
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new AAMSLOT_(new Point3(x,y,z)));
-                            continue;
-                        }
-                    case "AAMVISIB":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new AAMVISIB(value));
-                            continue;
-                        }
-                    case "AFTBURNR":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new AFTBURNR(value));
-                            continue;
-                        }
-                    case "AGMSLOT_":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new AGMSLOT_(new Point3(x,y,z)));
-                            continue;
-                        }
-                    case "AGMVISIB":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new AGMVISIB(value));
-                            continue;
-                        }
-                    case "AIRCLASS":
-                        {
-                            string value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString();
-                            Properties.Add(new AIRCLASS(value));
-                            continue;
-                        }
-                    case "ARRESTER":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new ARRESTER(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "ATTITUDE":
-                        {
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new ATTITUDE(new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "AUTOCALC":
-                        {
-                            Properties.Add(new AUTOCALC());
-                            continue;
-                        }
-                    case "BMBAYRCS":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new BMBAYRCS(value));
-                            continue;
-                        }
-                    case "BOMBSLOT":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new BOMBSLOT(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "BOMINBAY":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new BOMINBAY(value));
-                            continue;
-                        }
-                    case "BOMVISIB":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new BOMVISIB(value));
-                            continue;
-                        }
-                    case "CATEGORY":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? "ERR").ToString();
-                            var SubValue = (thisLine.GetParameter(1) ?? "ERR").ToString();
-                            AircraftCategory value = AircraftCategory.GetCategoryFromStringOrBlank(Value, SubValue);
-                            if (value == null) goto Error;
-                            Properties.Add(new CATEGORY(value));
-                            continue;
-                        }
-                    case "CDBYFLAP":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CDBYFLAP(value));
-                            continue;
-                        }
-                    case "CDBYGEAR":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CDBYGEAR(value));
-                            continue;
-                        }
-                    case "CDSPOILR":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CDSPOILR(value));
-                            continue;
-                        }
-                    case "CDVARGEO":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CDVARGEO(value));
-                            continue;
-                        }
-                    case "CKPITHUD":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CKPITHUD(value));
-                            continue;
-                        }
-                    case "CKPITIST":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CKPITIST(value));
-                            continue;
-                        }
-                    case "CLBYFLAP":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CLBYFLAP(value));
-                            continue;
-                        }
-                    case "CLDECAY1":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CLDECAY1(value));
-                            continue;
-                        }
-                    case "CLDECAY2":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CLDECAY2(value));
-                            continue;
-                        }
-                    case "CLVARGEO":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CLVARGEO(value));
-                            continue;
-                        }
-                    case "COCKPITA":
-                        {
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new COCKPITA(new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "COCKPITP":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new COCKPITP(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "CPITMANE":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CPITMANE(value));
-                            continue;
-                        }
-                    case "CPITSTAB":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CPITSTAB(value));
-                            continue;
-                        }
-                    case "CRITAOAM":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CRITAOAM(value));
-                            continue;
-                        }
-                    case "CRITAOAP":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CRITAOAP(value));
-                            continue;
-                        }
-                    case "CRITSPED":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CRITSPED(value));
-                            continue;
-                        }
-                    case "CROLLMAN":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CROLLMAN(value));
-                            continue;
-                        }
-                    case "CTLABRNR":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CTLABRNR(value));
-                            continue;
-                        }
-                    case "CTLATVGW":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CTLATVGW(value));
-                            continue;
-                        }
-                    case "CTLBRAKE":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CTLBRAKE(value));
-                            continue;
-                        }
-                    case "CTLIFLAP":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CTLIFLAP(value));
-                            continue;
-                        }
-                    case "CTLINVGW":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CTLINVGW(value));
-                            continue;
-                        }
-                    case "CTLLDGEA":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new CTLLDGEA(value));
-                            continue;
-                        }
-                    case "CTLSPOIL":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CTLSPOIL(value));
-                            continue;
-                        }
-                    case "CTLTHROT":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CTLTHROT(value));
-                            continue;
-                        }
-                    case "CYAWMANE":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CYAWMANE(value));
-                            continue;
-                        }
-                    case "CYAWSTAB":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new CYAWSTAB(value));
-                            continue;
-                        }
-                    case "EXCAMERA":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            var name = (thisLine.GetParameter(0) ?? nullExceptionString).ToString();
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(4) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(5) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(6) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new EXCAMERA(name, new Point3(x, y, z), new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "FLAPPOSI":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new FLAPPOSI(value));
-                            continue;
-                        }
-                    case "FLAREPOS":
-                        {
-                            Distance x1;
-                            Distance y1;
-                            Distance z1;
-                            Distance x2; //SECOND PARAMETER IS OPTIONAL.
-                            Distance y2;
-                            Distance z2;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x1)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y1)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z1)) goto Error;
-                            if (!Distance.TryParse(thisLine.GetParameter(3).ToString() ?? "0M", out x2)) goto Error;
-                            if (!Distance.TryParse(thisLine.GetParameter(4).ToString() ?? "0M", out y2)) goto Error;
-                            if (!Distance.TryParse(thisLine.GetParameter(5).ToString() ?? "0M", out z2)) goto Error;
-                            Properties.Add(new FLAREPOS(new Point3(x1,y1,z1), new Vector3(x2,y2,z2)));
-                            continue;
-                        }
-                    case "FLATCLR1":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new FLATCLR1(value));
-                            continue;
-                        }
-                    case "FLATCLR2":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new FLATCLR2(value));
-                            continue;
-                        }
-                    case "FUELMILI":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new FUELMILI(value));
-                            continue;
-                        }
-                    case "FUELABRN":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new FUELABRN(value));
-                            continue;
-                        }
-                    case "GEARHORN":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new GEARHORN(value));
-                            continue;
-                        }
-                    case "GUNDIREC":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new GUNDIREC(new Vector3(x, y, z)));
-                            continue;
-                        }
-                    case "GUNINTVL":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new GUNINTVL(value));
-                            continue;
-                        }
-                    case "GUNPOWER":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new GUNPOWER(value));
-                            continue;
-                        }
-                    case "GUNSIGHT":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new GUNSIGHT(value));
-                            continue;
-                        }
-                    case "HASSPOIL":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new HASSPOIL(value));
-                            continue;
-                        }
-                    case "HRDPOINT":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            var descriptors = new List<WeaponDescription>();
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            for (var j = 3; j < thisLine.NumberOfParameters; j++)
-                            {
-                                try
-                                {
-                                    if ((string)(thisLine.GetParameter(i) ?? nullExceptionString) == "") continue;
-                                    var thisDescriptor = new WeaponDescription((thisLine.GetParameter(i) ?? nullExceptionString).ToString());
-                                    descriptors.Add(thisDescriptor);
-                                }
-                                catch
-                                {
-                                    goto Error;
-                                }
-                            }
-                            Properties.Add(new HRDPOINT(new Point3(x, y, z), descriptors.ToArray()));
-                            continue;
-                        }
-                    case "HTRADIUS":
-                        {
-                            Distance value;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new HTRADIUS(value));
-                            continue;
-                        }
-                    case "IDENTIFY":
-                        {
-                            string value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString();
-                            Properties.Add(new IDENTIFY(value));
-                            continue;
-                        }
-                    case "INITAAMM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITAAMM(value));
-                            continue;
-                        }
-                    case "INITBOMB":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITBOMB(value));
-                            continue;
-                        }
-                    case "INITFUEL":
-                        {
-                            float value;
-                            if (!Single.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITFUEL(value));
-                            continue;
-                        }
-                    case "INITIAAM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITIAAM(value));
-                            continue;
-                        }
-                    case "INITIAGM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITIAGM(value));
-                            continue;
-                        }
-                    case "INITIGUN":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITIGUN(value));
-                            continue;
-                        }
-                    case "INITLOAD":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITLOAD(value));
-                            continue;
-                        }
-                    case "INITRCKT":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITRCKT(value));
-                            continue;
-                        }
-                    case "INITSPED":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new INITSPED(value));
-                            continue;
-                        }
-                    case "INSTPANL":
-                        {
-                            string value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString();
-                            Properties.Add(new INSTPANL(value));
-                            continue;
-                        }
-                    case "ISPNLATT":
-                        {
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new ISPNLATT(new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "ISPNLHUD":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new ISPNLHUD(value));
-                            continue;
-                        }
-                    case "ISPNLPOS":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new ISPNLPOS(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "ISPNLSCL":
-                        {
-                            float value;
-                            if (!float.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new ISPNLSCL(value));
-                            continue;
-                        }
-                    case "LEFTGEAR":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new LEFTGEAR(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "LMTBYHDP":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new LMTBYHDP(value));
-                            continue;
-                        }
-                    case "LOADWEPN":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponType value =
-                                WeaponType.CATEGORIES.FirstOrDefault(
-                                    x => (x.Value == Value));
-                            if (value == null) goto Error;
-                            if (!uint.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out uint quantity)) goto Error;
-                            Properties.Add(new LOADWEPN(value, quantity));
-                            continue;
-                        }
-                    case "MACHNGN2":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN2(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN3":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN3(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN4":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN4(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN5":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN5(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN6":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN6(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN7":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN7(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGN8":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGN8(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MACHNGUN":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new MACHNGUN(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "MANESPD1":
-                        {
-                            Speed speed;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out speed)) goto Error;
-                            Properties.Add(new MANESPD1(speed));
-                            continue;
-                        }
-                    case "MANESPD2":
-                        {
-                            Speed speed;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out speed)) goto Error;
-                            Properties.Add(new MANESPD2(speed));
-                            continue;
-                        }
-                    case "MAXCDAOA":
-                        {
-                            Angle value;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXCDAOA(value));
-                            continue;
-                        }
-                    case "MAXNAAMM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNAAMM(value));
-                            continue;
-                        }
-                    case "MAXNBOMB":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNBOMB(value));
-                            continue;
-                        }
-                    case "MAXNMAAM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNMAAM(value));
-                            continue;
-                        }
-                    case "MAXNMAGM":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNMAGM(value));
-                            continue;
-                        }
-                    case "MAXNMFLR":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNMFLR(value));
-                            continue;
-                        }
-                    case "MAXNMRKT":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNMRKT(value));
-                            continue;
-                        }
-                    case "MAXSPEED":
-                        {
-                            Speed speed;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out speed)) goto Error;
-                            Properties.Add(new MAXSPEED(speed));
-                            continue;
-                        }
-                    case "MXIPTAOA":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new MXIPTAOA(angle));
-                            continue;
-                        }
-                    case "MXIPTROL":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new MXIPTROL(angle));
-                            continue;
-                        }
-                    case "MXIPTSSA":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new MXIPTSSA(angle));
-                            continue;
-                        }
-                    case "NMTURRET":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new MAXNMFLR(value));
-                            continue;
-                        }
-                    case "POSITION":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new POSITION(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "PROPEFCY":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new PROPEFCY(value));
-                            continue;
-                        }
-                    case "PROPELLR":
-                        {
-                            Power value;
-                            if (!Power.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new PROPELLR(value));
-                            continue;
-                        }
-                    case "PROPVMIN":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new PROPVMIN(value));
-                            continue;
-                        }
-                    case "PSTMPTCH":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new PSTMPTCH(angle));
-                            continue;
-                        }
-                    case "PSTMPWR1":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new PSTMPWR1(value));
-                            continue;
-                        }
-                    case "PSTMPWR2":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new PSTMPWR2(value));
-                            continue;
-                        }
-                    case "PSTMROLL":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new PSTMROLL(angle));
-                            continue;
-                        }
-                    case "PSTMSPD1":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new PSTMSPD1(value));
-                            continue;
-                        }
-                    case "PSTMSPD2":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new PSTMSPD2(value));
-                            continue;
-                        }
-                    case "PSTMYAW_":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new PSTMYAW_(angle));
-                            continue;
-                        }
-                    case "RADARCRS":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new RADARCRS(value));
-                            continue;
-                        }
-                    case "REFACRUS":
-                        {
-                            Distance value;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new REFACRUS(value));
-                            continue;
-                        }
-                    case "REFAOALD":
-                        {
-                            Angle angle;
-                            if (!Angle.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out angle)) goto Error;
-                            Properties.Add(new REFAOALD(angle));
-                            continue;
-                        }
-                    case "REFLNRWY":
-                        {
-                            Distance value;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new REFLNRWY(value));
-                            continue;
-                        }
-                    case "REFTCRUS":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new REFTCRUS(value));
-                            continue;
-                        }
-                    case "REFTHRLD":
-                        {
-                            float value;
-                            if (!float.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new REFTHRLD(value));
-                            continue;
-                        }
-                    case "REFVCRUS":
-                        {
-                            Speed speed;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out speed)) goto Error;
-                            Properties.Add(new REFVCRUS(speed));
-                            continue;
-                        }
-                    case "REFVLAND":
-                        {
-                            Speed speed;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out speed)) goto Error;
-                            Properties.Add(new REFVLAND(speed));
-                            continue;
-                        }
-                    case "RETRGEAR":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new RETRGEAR(value));
-                            continue;
-                        }
-                    case "RIGHGEAR":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new RIGHGEAR(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "RKTSLOT_":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new RKTSLOT_(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "RKTVISIB":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new RKTVISIB(value));
-                            continue;
-                        }
-                    case "SCRNCNTR":
-                        {
-                            float x;
-                            float y;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out x)) goto Error;
-                            if (!float.TryParse(((thisLine.GetParameter(1) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out y)) goto Error;
-                            Properties.Add(new SCRNCNTR(x, y));
-                            continue;
-                        }
-                    case "SMOKECOL":
-                        {
-                            byte n;
-                            byte r;
-                            byte g;
-                            byte b;
-                            if (!byte.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out n)) goto Error;
-                            if (!byte.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out r)) goto Error;
-                            if (!byte.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out g)) goto Error;
-                            if (!byte.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new SMOKECOL(n, new XRGBColor(r, g, b)));
-                            continue;
-                        }
-                    case "SMOKEGEN":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new SMOKEGEN(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "SMOKEOIL":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new SMOKEOIL(value));
-                            continue;
-                        }
-                    case "STALHORN":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new STALHORN(value));
-                            continue;
-                        }
-                    case "STRENGTH":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new STRENGTH(value));
-                            continue;
-                        }
-                    case "SUBSTNAM":
-                        {
-                            string value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString();
-                            Properties.Add(new SUBSTNAM(value));
-                            continue;
-                        }
-                    case "THRAFTBN":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new THRAFTBN(value));
-                            continue;
-                        }
-                    case "THRMILIT":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new THRMILIT(value));
-                            continue;
-                        }
-                    case "THRSTREV":
-                        {
-                            float value;
-                            if (!float.TryParse(((thisLine.GetParameter(0) ?? nullExceptionString).ToString()).ExtractNumberComponentFromMeasurementString(), out value)) goto Error;
-                            Properties.Add(new THRSTREV(value));
-                            continue;
-                        }
-                    case "TRIGGER1":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponCategory value = WeaponCategory.GetCategoryFromStringOrBlank(Value);
-                            if (value == null) goto Error;
-                            Properties.Add(new TRIGGER1(value));
-                            continue;
-                        }
-                    case "TRIGGER2":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponCategory value = WeaponCategory.GetCategoryFromStringOrBlank(Value);
-                            if (value == null) goto Error;
-                            Properties.Add(new TRIGGER2(value));
-                            continue;
-                        }
-                    case "TRIGGER3":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponCategory value = WeaponCategory.GetCategoryFromStringOrBlank(Value);
-                            if (value == null) goto Error;
-                            Properties.Add(new TRIGGER3(value));
-                            continue;
-                        }
-                    case "TRIGGER4":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponCategory value = WeaponCategory.GetCategoryFromStringOrBlank(Value);
-                            if (value == null) goto Error;
-                            Properties.Add(new TRIGGER4(value));
-                            continue;
-                        }
-                    case "TRSTDIR0":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new TRSTDIR0(new Vector3(x,y,z)));
-                            continue;
-                        }
-                    case "TRSTDIR1":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new TRSTDIR1(new Vector3(x, y, z)));
-                            continue;
-                        }
-                    case "TRSTVCTR":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new TRSTVCTR(value));
-                            continue;
-                        }
-                    case "TURRETAM":
-                        {
-                            uint quantifier;
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!uint.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new TURRETAM(quantifier, value));
-                            continue;
-                        }
-                    case "TURRETAR":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new TURRETAR(value));
-                            continue;
-                        }
-                    case "TURRETCT":
-                        {
-                            uint quantifier;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            string value = (thisLine.GetParameter(1) ?? nullExceptionString).ToString();
-                            Properties.Add(new TURRETCT(quantifier, value));
-                            continue;
-                        }
-                    case "TURRETGD":
-                        {
-                            uint value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new TURRETGD(value));
-                            continue;
-                        }
-                    case "TURRETHD":
-                        {
-                            uint quantifier;
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETHD(quantifier, new Orientation3(h,p,b)));
-                            continue;
-                        }
-                    case "TURRETIV":
-                        {
-                            uint quantifier;
-                            Duration interval;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!Duration.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out interval)) goto Error;
-                            Properties.Add(new TURRETIV(quantifier, interval));
-                            continue;
-                        }
-                    case "TURRETNM":
-                        {
-                            uint quantifier;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            var name = (thisLine.GetParameter(1) ?? nullExceptionString).ToString();
-                            Properties.Add(new TURRETNM(quantifier, name));
-                            continue;
-                        }
-                    case "TURRETPO":
-                        {
-                            uint quantifier;
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(4) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(5) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(6) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETPO(quantifier, new Point3(x, y, z), new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "TURRETPT":
-                        {
-                            uint quantifier;
-                            Angle h;
-                            Angle p;
-                            Angle b;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out h)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out p)) goto Error;
-                            if (!Angle.TryParse((thisLine.GetParameter(3) ?? nullExceptionString).ToString(), out b)) goto Error;
-                            Properties.Add(new TURRETPT(quantifier, new Orientation3(h, p, b)));
-                            continue;
-                        }
-                    case "TURRETRG":
-                        {
-                            uint quantifier;
-                            Distance value;
-                            if (!uint.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out quantifier)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new TURRETRG(quantifier, value));
-                            continue;
-                        }
-                    case "VAPORPO0":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new VAPORPO0(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "VAPORPO1":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new VAPORPO1(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "VARGEOMW":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new VARGEOMW(value));
-                            continue;
-                        }
-                    case "VGWSPED1":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new VGWSPED1(value));
-                            continue;
-                        }
-                    case "VGWSPED2":
-                        {
-                            Speed value;
-                            if (!Speed.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new VGWSPED2(value));
-                            continue;
-                        }
-                    case "VRGMNOSE":
-                        {
-                            bool value;
-                            if (!bool.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new VRGMNOSE(value));
-                            continue;
-                        }
-                    case "WEAPONCH":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-                            WeaponCategory value = WeaponCategory.GetCategoryFromStringOrBlank(Value);
-                            if (value == null) goto Error;
-                            Properties.Add(new WEAPONCH(value));
-                            continue;
-                        }
-                    case "WEIGFUEL":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new WEIGFUEL(value));
-                            continue;
-                        }
-                    case "WEIGHCLN":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new WEIGHCLN(value));
-                            continue;
-                        }
-                    case "WEIGLOAD":
-                        {
-                            Mass value;
-                            if (!Mass.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new WEIGLOAD(value));
-                            continue;
-                        }
-                    case "WHELGEAR":
-                        {
-                            Distance x;
-                            Distance y;
-                            Distance z;
-                            if (!Distance.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out x)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(1) ?? nullExceptionString).ToString(), out y)) goto Error;
-                            if (!Distance.TryParse((thisLine.GetParameter(2) ?? nullExceptionString).ToString(), out z)) goto Error;
-                            Properties.Add(new WHELGEAR(new Point3(x, y, z)));
-                            continue;
-                        }
-                    case "WINGAREA":
-                        {
-                            Area value;
-                            if (!Area.TryParse((thisLine.GetParameter(0) ?? nullExceptionString).ToString(), out value)) goto Error;
-                            Properties.Add(new WINGAREA(value));
-                            continue;
-                        }
-                    case "WPNSHAPE":
-                        {
-                            var Value = (thisLine.GetParameter(0) ?? nullExceptionString).ToString() ?? "";
-	                        WeaponType value =
-                                WeaponType.CATEGORIES.FirstOrDefault(
-                                    x => (x.Value == Value));
-                            if (value == null) goto Error;
-                            var isStatic = (((thisLine.GetParameter(1) ?? nullExceptionString).ToString()) == "STATIC");
-                            var shape = (thisLine.GetParameter(2) ?? nullExceptionString).ToString();
-                            Properties.Add(new WPNSHAPE(value, isStatic, shape));
-                            continue;
-                        }
-                    default:
-                        Debug.WriteLine("DAT COMMAND NOT IMPLEMENTED : " + thisLine);
-                        continue;
-                    Error:
-                        Debug.WriteLine("BAD DAT COMMAND? : " + thisLine);
-                        continue;
-                }
-                #endregion
+	            #endregion
             }
 	        return true;
         }

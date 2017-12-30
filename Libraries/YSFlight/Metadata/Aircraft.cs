@@ -3,29 +3,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		public class Aircraft
+		public class Aircraft : IO.ListFile.Line, IMetaDataAircraft
 		{
 			#region Variables
-			private string AircraftPath0Dat;
-			#pragma warning disable 414
-			private string AircraftPath1Model;
-			private string AircraftPath2Collision;
-			private string AircraftPath3Cockpit;
-			private string AircraftPath4Coarse;
-			#pragma warning restore 414
+			public string Path_0_PropertiesFile { get; set; }
+			public string Path_1_ModelFile { get; set; }
+			public string Path_2_CollisionFile { get; set; }
+			public string Path_3_CockpitFile { get; set; }
+			public string Path_4_CoarseFile { get; set; }
+
 			#endregion
 			#region Cached Information
-			public string Identify;
+			public string Identify { get; set; }
 			#endregion
 
-			public static Aircraft None = new Aircraft() { Identify = "NULL" };
-			public static List<Aircraft> List = new List<Aircraft>();
-			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
+			public Aircraft(string[] parameters) : base(parameters) { }
+			public Aircraft(string identify) : base(new string[] { })
+			{
+				Identify = identify;
+			}
+			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 			#region Load All
 			/// <summary>
@@ -35,7 +38,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			public static bool LoadAll()
 			{
 				//Invalidate the old aircraft list!
-				List.Clear();
+				Extensions.YSFlight.MetaData.Aircraft.List.Clear();
 				DebugInformation.Clear();
 
 				try
@@ -103,47 +106,43 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							}
 							#endregion
 							#region Create a New MetaAircraft
-							Aircraft NewMetaAircraft = new Aircraft
-							{
-								AircraftPath0Dat = AircraftPath0Dat,
-								AircraftPath1Model = AircraftPath1Model,
-								AircraftPath2Collision = AircraftPath2Collision,
-								AircraftPath3Cockpit = AircraftPath3Cockpit,
-								AircraftPath4Coarse = AircraftPath4Coarse
-							};
+							Aircraft NewMetaAircraft = new Aircraft(
+								new[]
+								{
+									AircraftPath0Dat,
+									AircraftPath1Model,
+									AircraftPath2Collision,
+									AircraftPath3Cockpit,
+									AircraftPath4Coarse
+								});
 							#endregion
 							#region Ensure .DAT is defined.
-							if (NewMetaAircraft.AircraftPath0Dat.Length < 4)
+							if (NewMetaAircraft.Path_0_PropertiesFile.Length < 4)
 							{
-								DebugWarningMessage Warning = new DebugWarningMessage
-									(
-									"Blank line in Aircraft List: " + thisAircraftListFile + "."
-									);
+								var Warning = ("Blank line in Aircraft List: " + thisAircraftListFile + ".").AsDebugWarningMessage();
 								DebugInformation.Add(Warning);
 								continue;
 							}
 							#endregion
 
-							List.Add(NewMetaAircraft);
+							Extensions.YSFlight.MetaData.Aircraft.List.Add(NewMetaAircraft);
 						}
 						#endregion
 					}
 					#endregion
 					#region Cache MetaAircraft Names
-					for (int i = 0; i < List.Count; i++)
+					for (int i = 0; i < Extensions.YSFlight.MetaData.Aircraft.List.Count; i++)
 					{
 						#region Update Line Number and Contents
-						Aircraft ThisMetaAircraft = List[i];
-						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat);
+						IMetaDataAircraft ThisMetaAircraft = Extensions.YSFlight.MetaData.Aircraft.List[i];
+						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaAircraft.Path_0_PropertiesFile);
 						#endregion
 
 						#region .DAT Not Found on Disk
-						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.AircraftPath0Dat))
+						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.Path_0_PropertiesFile))
 						{
-							DebugWarningMessage Warning = new DebugWarningMessage
-							(
-								"Aircraft DAT file doesn't exist: " + ThisMetaAircraft.AircraftPath0Dat + "."
-							);
+							var Warning =
+								("Aircraft DAT file doesn't exist: " + ThisMetaAircraft.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
 							DebugInformation.Add(Warning);
 							continue; //Couldn't find the aircraft DAT file, we'll leave it blank!
 						}
@@ -159,16 +158,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								string[] SplitLine = DatFileLine.SplitPresevingQuotes();
 								if (SplitLine.Length <= 1)
 								{
-									DebugWarningMessage Error = new DebugWarningMessage
-									(
-										"Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaAircraft.AircraftPath0Dat + "."
-									);
-									DebugInformation.Add(Error);
-									DebugWarningMessage Error2 = new DebugWarningMessage
-									(
-										"Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + "."
-									);
-									DebugInformation.Add(Error2);
+									var Warning =("Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaAircraft.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
+									DebugInformation.Add(Warning);
+									var Warning2 = ("Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + ".").AsDebugWarningMessage();
+									DebugInformation.Add(Warning2);
 									continue;
 								}
 								string AircraftName = SplitLine[1];
@@ -182,10 +175,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region Couldn't Find IDENTIFY
 						if (ThisMetaAircraft.Identify == null)
 						{
-							DebugWarningMessage Warning = new DebugWarningMessage
-							(
-								"Aircraft DAT file doesn't contain IDENTIFY: " + ThisMetaAircraft.AircraftPath0Dat + "."
-							);
+							var Warning = ("Aircraft DAT file doesn't contain IDENTIFY: " + ThisMetaAircraft.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
 							DebugInformation.Add(Warning);
 						}
 						#endregion
@@ -196,46 +186,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					DebugErrorMessage Error = new DebugErrorMessage
-					(
-						e, "MetaData.Aircraft.LoadAll Crashed!" + e.ToString()
-					);
+					var Error = ("MetaData.Aircraft.LoadAll Crashed!").AsDebugErrorMessage(e);
 					DebugInformation.Add(Error);
 				}
 
 				return (DebugInformation.Count <= 0);
-			}
-			#endregion
-			#region Find By Name
-			/// <summary>
-			/// Finds the desired MetaObject by name. If no meta object is found, NoMetaAircraft is returned.
-			/// </summary>
-			/// <param name="Name">Aircraft name to search for.</param>
-			/// <returns>
-			/// Match: Last Matching MetaAircraft Object
-			/// Else:  "NoMetaAircraft" Psuedo-Object.
-			/// </returns>
-			public static Aircraft FindByName(string Name)
-			{
-				Aircraft Output = None;
-				if (Name == null) return Output;
-				
-				foreach (Aircraft ThisMetaAircraft in List)
-				{
-					if (ThisMetaAircraft == null) continue;
-					if (ThisMetaAircraft.Identify == null) continue;
-					if (System.String.Equals(
-						ThisMetaAircraft.Identify.ToUpperInvariant().ResizeOnRight(32),
-						Name.ToUpperInvariant().ResizeOnRight(32)))
-					{
-						Output = ThisMetaAircraft;
-					}
-				}
-				if (Output == None)
-				{
-					//Log.Warning("Failed to find MetaData for aircraft: " + Name + ".");
-				}
-				return Output;
 			}
 			#endregion
 		}

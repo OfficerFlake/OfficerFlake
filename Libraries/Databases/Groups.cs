@@ -28,6 +28,10 @@ namespace Com.OfficerFlake.Libraries.Database
 		public IDateTime ClosedDateTime { get; set; }
 		#endregion
 
+		public Group(IRichTextString groupName)
+		{
+			Name = groupName;
+		}
 		public override string ToString()
 		{
 			return Name.ToUnformattedSystemString();

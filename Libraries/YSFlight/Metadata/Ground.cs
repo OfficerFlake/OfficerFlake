@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {
-		public class Ground
+		public class Ground : IO.ListFile.Line, IMetaDataGround
 		{
 			#region Variables
-			public string GroundPath0Dat;
-			public string GroundPath1Model;
-			public string GroundPath2Collision;
-			public string GroundPath3Cockpit;
-			public string GroundPath4Coarse;
+			public string Path_0_PropertiesFile { get; set; }
+			public string Path_1_ModelFile { get; set; }
+			public string Path_2_CollisionFile { get; set; }
+			public string Path_3_CockpitFile { get; set; }
+			public string Path_4_CoarseFile { get; set; }
 			#endregion
 			#region Cached Information
-			public string Identify;
+			public string Identify { get; set; }
 			#endregion
 
-			public static Ground None = new Ground() { Identify = "NULL" };
-			public static List<Ground> List = new List<Ground>();
-			public static List<RichTextMessage> DebugInformation = new List<RichTextMessage>();
+			public Ground(string[] parameters) : base(parameters) { }
+			public Ground(string identify) : base(new string[] { })
+			{
+				Identify = identify;
+			}
+			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 			#region Load All
 			/// <summary>
@@ -33,7 +37,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			public static bool LoadAll()
 			{
 				//Invalidate the old Ground list!
-				List.Clear();
+				Extensions.YSFlight.MetaData.Grounds.List.Clear();
 				DebugInformation.Clear();
 
 				try
@@ -78,16 +82,16 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									break;
 							}
 
-							Ground NewMetaGround = new Ground
-							{
-								GroundPath0Dat = GroundPath0Dat,
-								GroundPath1Model = GroundPath1Model,
-								GroundPath2Collision = GroundPath2Collision,
-								GroundPath3Cockpit = GroundPath3Cockpit,
-								GroundPath4Coarse = GroundPath4Coarse
-							};
+							Ground NewMetaGround = new Ground(
+								new[]
+								{
+									GroundPath0Dat,
+									GroundPath1Model,
+									GroundPath3Cockpit,
+									GroundPath4Coarse,
+								});
 
-							if (NewMetaGround.GroundPath0Dat.Length < 4)
+							if (NewMetaGround.Path_0_PropertiesFile.Length < 4)
 							{
 								//InformationMessage Error = new InformationMessage
 								//	(
@@ -97,24 +101,21 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								continue;
 							}
 
-							List.Add(NewMetaGround);
+							Extensions.YSFlight.MetaData.Grounds.List.Add(NewMetaGround);
 						}
 					}
 
 					//AT THIS POINT, ALL YSFLIGHT Ground LST's ARE FULLY LOADED. NOW WE CACHE THE Ground NAMES.
 
-					foreach (Ground ThisMetaGround in List)
+					foreach (Ground ThisMetaGround in Extensions.YSFlight.MetaData.Scenery.List)
 					{
-						if (!File.Exists(YSFlightDirectory + ThisMetaGround.GroundPath0Dat))
+						if (!File.Exists(YSFlightDirectory + ThisMetaGround.Path_0_PropertiesFile))
 						{
-							DebugWarningMessage Warning = new DebugWarningMessage
-							(
-								"Ground DAT file doesn't exist: " + ThisMetaGround.GroundPath0Dat + "."
-							);
+							var Warning = ("Ground DAT file doesn't exist: " + ThisMetaGround.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
 							DebugInformation.Add(Warning);
 							continue; //Couldn't find the Ground DAT file, we'll leave it blank!
 						}
-						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaGround.GroundPath0Dat);
+						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaGround.Path_0_PropertiesFile);
 						foreach (string DatFileLine in DatFileContents)
 						{
 							#region Identify
@@ -124,16 +125,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								string[] SplitLine = DatFileLine.SplitPresevingQuotes();
 								if (SplitLine.Length <= 1)
 								{
-									DebugWarningMessage Error = new DebugWarningMessage
-									(
-										"Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.GroundPath0Dat + "."
-									);
-									DebugInformation.Add(Error);
-									DebugWarningMessage Error2 = new DebugWarningMessage
-									(
-										"Ground DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + "."
-									);
-									DebugInformation.Add(Error2);
+									var Warning = ("Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
+									DebugInformation.Add(Warning);
+									var Warning2 = ("Ground DAT IDENTIFY Line broken, or string splitter broken: " + DatFileLine + ".").AsDebugWarningMessage();
+									DebugInformation.Add(Warning2);
 									continue;
 								}
 								string GroundName = SplitLine[1];
@@ -145,11 +140,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						if (ThisMetaGround.Identify == null)
 						{
-							DebugWarningMessage Error = new DebugWarningMessage
-							(
-								"Ground DAT file doesn't contain IDENTIFY: " + ThisMetaGround.GroundPath0Dat + "."
-							);
-							DebugInformation.Add(Error);
+							var Warning = ("Ground DAT file doesn't contain IDENTIFY: " + ThisMetaGround.Path_0_PropertiesFile + ".").AsDebugWarningMessage();
+							DebugInformation.Add(Warning);
 						}
 					}
 
@@ -159,46 +151,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				catch (Exception e)
 				{
-					DebugErrorMessage Error = new DebugErrorMessage
-					(
-						e, "MetaData.Ground.LoadAll Crashed!" + e.ToString()
-					);
+					var Error = ("MetaData.Ground.LoadAll Crashed!").AsDebugErrorMessage(e);
 					DebugInformation.Add(Error);
 				}
 
 				return (DebugInformation.Count <= 0);
-			}
-			#endregion
-			#region Find By Name
-			/// <summary>
-			/// Finds the desired MetaObject by name. If no meta object is found, NoMetaGround is returned.
-			/// </summary>
-			/// <param name="Name">Ground name to search for.</param>
-			/// <returns>
-			/// Match: Last Matching MetaGround Object
-			/// Else:  "NoMetaGround" Psuedo-Object.
-			/// </returns>
-			public static Ground FindByName(string Name)
-			{
-				Ground Output = None;
-				if (Name == null) return Output;
-
-				foreach (Ground ThisMetaGround in List)
-				{
-					if (ThisMetaGround == null) continue;
-					if (ThisMetaGround.Identify == null) continue;
-					if (System.String.Equals(
-						ThisMetaGround.Identify.ToUpperInvariant().ResizeOnRight(31),
-						Name.ToUpperInvariant().ResizeOnRight(31)))
-					{
-						Output = ThisMetaGround;
-					}
-				}
-				if (Output == None)
-				{
-					//Log.Warning("Failed to find MetaData for Ground: " + Name + ".");
-				}
-				return Output;
 			}
 			#endregion
 		}

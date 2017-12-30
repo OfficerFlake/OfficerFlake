@@ -71,7 +71,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
 			public const double BritishThermalUnit = 1.055056d;
 		}
-		public static bool TryParse(string input, out Energy output)
+		public static bool TryParse(string input, out IEnergy output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();

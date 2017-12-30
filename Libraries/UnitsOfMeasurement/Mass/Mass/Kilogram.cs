@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Masses
 		{
-			public class Kilogram : Mass, IKilogram
+			public class KiloGram : Mass, IKiloGram
 			{
 				#region CTOR
-				public Kilogram(double value) : base(value, Conversion.Kilogram, Suffixes.Kilogram) { }
+				public KiloGram(double value) : base(value, Conversion.KiloGram, Suffixes.KiloGram) { }
 				#endregion
 				#region Operators
-				public static Kilogram operator +(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				public static KiloGram operator +(KiloGram firstMeasurement, KiloGram secondMeasurement)
 				{
-					return new Kilogram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new KiloGram((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Kilogram operator -(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				public static KiloGram operator -(KiloGram firstMeasurement, KiloGram secondMeasurement)
 				{
-					return new Kilogram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new KiloGram((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Kilogram operator *(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				public static KiloGram operator *(KiloGram firstMeasurement, KiloGram secondMeasurement)
 				{
-					return new Kilogram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new KiloGram((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Kilogram operator /(Kilogram firstMeasurement, Kilogram secondMeasurement)
+				public static KiloGram operator /(KiloGram firstMeasurement, KiloGram secondMeasurement)
 				{
-					return new Kilogram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new KiloGram((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Kilograms
-			public static Kilogram Kilograms(this Byte input) => new Kilogram(input);
-			public static Kilogram Kilograms(this Int16 input) => new Kilogram(input);
-			public static Kilogram Kilograms(this Int32 input) => new Kilogram(input);
-			public static Kilogram Kilograms(this Int64 input) => new Kilogram(input);
-			public static Kilogram Kilograms(this Single input) => new Kilogram(input);
-			public static Kilogram Kilograms(this Double input) => new Kilogram(input);
+			#region [Number].KiloGrams
+			public static KiloGram KiloGrams(this Byte input) => new KiloGram(input);
+			public static KiloGram KiloGrams(this Int16 input) => new KiloGram(input);
+			public static KiloGram KiloGrams(this Int32 input) => new KiloGram(input);
+			public static KiloGram KiloGrams(this Int64 input) => new KiloGram(input);
+			public static KiloGram KiloGrams(this Single input) => new KiloGram(input);
+			public static KiloGram KiloGrams(this Double input) => new KiloGram(input);
 			#endregion
 		}
 	}

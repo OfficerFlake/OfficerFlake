@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Volumes
 		{
-			public class CubicCentimeter : Volume, ICubicCentimeter
+			public class CubicCentiMeter : Volume, ICubicCentiMeter
 			{
 				#region CTOR
-				public CubicCentimeter(double value) : base(value, Conversion.CubicCentimeter, Suffixes.CubicCentimeter) { }
+				public CubicCentiMeter(double value) : base(value, Conversion.CubicCentiMeter, Suffixes.CubicCentiMeter) { }
 				#endregion
 				#region Operators
-				public static CubicCentimeter operator +(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				public static CubicCentiMeter operator +(CubicCentiMeter firstMeasurement, CubicCentiMeter secondMeasurement)
 				{
-					return new CubicCentimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new CubicCentiMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static CubicCentimeter operator -(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				public static CubicCentiMeter operator -(CubicCentiMeter firstMeasurement, CubicCentiMeter secondMeasurement)
 				{
-					return new CubicCentimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new CubicCentiMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static CubicCentimeter operator *(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				public static CubicCentiMeter operator *(CubicCentiMeter firstMeasurement, CubicCentiMeter secondMeasurement)
 				{
-					return new CubicCentimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new CubicCentiMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static CubicCentimeter operator /(CubicCentimeter firstMeasurement, CubicCentimeter secondMeasurement)
+				public static CubicCentiMeter operator /(CubicCentiMeter firstMeasurement, CubicCentiMeter secondMeasurement)
 				{
-					return new CubicCentimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new CubicCentiMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].CubicCentimeters
-			public static CubicCentimeter CubicCentimeters(this Byte input) => new CubicCentimeter(input);
-			public static CubicCentimeter CubicCentimeters(this Int16 input) => new CubicCentimeter(input);
-			public static CubicCentimeter CubicCentimeters(this Int32 input) => new CubicCentimeter(input);
-			public static CubicCentimeter CubicCentimeters(this Int64 input) => new CubicCentimeter(input);
-			public static CubicCentimeter CubicCentimeters(this Single input) => new CubicCentimeter(input);
-			public static CubicCentimeter CubicCentimeters(this Double input) => new CubicCentimeter(input);
+			#region [Number].CubicCentiMeters
+			public static CubicCentiMeter CubicCentiMeters(this Byte input) => new CubicCentiMeter(input);
+			public static CubicCentiMeter CubicCentiMeters(this Int16 input) => new CubicCentiMeter(input);
+			public static CubicCentiMeter CubicCentiMeters(this Int32 input) => new CubicCentiMeter(input);
+			public static CubicCentiMeter CubicCentiMeters(this Int64 input) => new CubicCentiMeter(input);
+			public static CubicCentiMeter CubicCentiMeters(this Single input) => new CubicCentiMeter(input);
+			public static CubicCentiMeter CubicCentiMeters(this Double input) => new CubicCentiMeter(input);
 			#endregion
 		}
 	}

@@ -50,17 +50,17 @@
       <Project>{60286C68-AB78-4F34-8199-E8CF255AB284}</Project>
       <Name>0__Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SlaveObjectFactory\3_SlaveObjectFactory.csproj">
+    <ProjectReference Include="..\..\..\SlaveObjectFactory\4_SlaveObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
-      <Name>3_SlaveObjectFactory</Name>
+      <Name>4_SlaveObjectFactory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ExceptionHandling\2_ExceptionHandling.csproj">
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
       <Name>2_ExceptionHandling</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\4_Extensions.csproj">
+    <ProjectReference Include="..\..\Extensions\5_Extensions.csproj">
       <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>4_Extensions</Name>
+      <Name>5_Extensions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

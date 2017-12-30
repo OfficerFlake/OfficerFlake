@@ -1,12 +1,14 @@
-﻿namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class CATEGORY : DATProperty, IDAT_1_Parameter<AircraftCategory>
+	public class CATEGORY : DATProperty, IDAT_1_Parameter<IYSTypeAircraftCategory>
 	{
-		public CATEGORY(AircraftCategory value) : base("CATEGORY" + " " + string.Join(" ", value))
+		public CATEGORY(IYSTypeAircraftCategory value) : base("CATEGORY" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public AircraftCategory Value { get; set; }
+		public IYSTypeAircraftCategory Value { get; set; }
 	}
 }

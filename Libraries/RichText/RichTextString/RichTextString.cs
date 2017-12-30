@@ -17,11 +17,11 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    public IColor ForeColor { get; set; } = SimpleColors.White.Color;
 		    public IColor BackColor { get; set; } = SimpleColors.Black.Color;
 
-			public bool IsObfuscated { get; set; }
 		    public bool IsBold { get; set; }
+		    public bool IsItallic { get; set; }
+		    public bool IsUnderlined { get; set; }
 			public bool IsStrikeout { get; set; }
-			public bool IsUnderlined { get; set; }
-			public bool IsItallic { get; set; }
+		    public bool IsObfuscated { get; set; }
 			#endregion
 			#region Constructors
 			public MessageElement()
@@ -49,8 +49,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    public string ToInternallyFormattedSystemString()
 		    {
 			    return
-				    "&r" +
-				    ("&" + ForeColor.GetSimpleColor().ColorCode) +
+					("&" + ForeColor.GetSimpleColor().ColorCode) +
 				    (IsBold ? "&l" : "") +
 				    (IsItallic ? "&o" : "") +
 				    (IsUnderlined ? "&n" : "") +
@@ -76,6 +75,150 @@ namespace Com.OfficerFlake.Libraries.RichText
 		    Elements = _Elements;
 	    }
 
+	    public RichTextString(string formattedstring)
+	    {
+		    List<IRichTextElement> thisElements = new List<IRichTextElement>();
+			thisElements.Add(new MessageElement());
+
+		    IColor foreColor = SimpleColors.White.Color;
+		    IColor backColor = SimpleColors.Black.Color;
+		    Boolean isBold = false;
+		    Boolean isItallic = false;
+		    Boolean isUnderlined = false;
+		    Boolean isStrikeout = false;
+		    Boolean isObfuscated = false;
+
+		    char previousChar = ' ';
+		    char currentChar = ' ';
+			StringBuilder currentString = new StringBuilder();
+		    for (int i = 0; i < formattedstring.Length; i++)
+		    {
+			    previousChar = i > 0 ? formattedstring[i - 1] : ' ';
+			    currentChar = formattedstring[i];
+
+			    if (previousChar == '&' & currentChar == '&')
+				{
+					currentString.Append('&');
+				}
+
+			    if (currentChar == '&')
+			    {
+				    goto Next;
+			    }
+
+			    if (previousChar == '&')
+			    {
+				    switch (currentChar)
+				    {
+						case '0':
+							foreColor = SimpleColors.Color0.Color;
+							goto Next;
+					    case '1':
+						    foreColor = SimpleColors.Color1.Color;
+						    goto Next;
+					    case '2':
+						    foreColor = SimpleColors.Color2.Color;
+						    goto Next;
+					    case '3':
+						    foreColor = SimpleColors.Color3.Color;
+						    goto Next;
+					    case '4':
+						    foreColor = SimpleColors.Color4.Color;
+						    goto Next;
+					    case '5':
+						    foreColor = SimpleColors.Color5.Color;
+						    goto Next;
+					    case '6':
+						    foreColor = SimpleColors.Color6.Color;
+						    goto Next;
+					    case '7':
+						    foreColor = SimpleColors.Color7.Color;
+						    goto Next;
+					    case '8':
+						    foreColor = SimpleColors.Color8.Color;
+						    goto Next;
+					    case '9':
+						    foreColor = SimpleColors.Color9.Color;
+						    goto Next;
+					    case 'A':
+						    foreColor = SimpleColors.ColorA.Color;
+						    goto Next;
+					    case 'B':
+						    foreColor = SimpleColors.ColorB.Color;
+						    goto Next;
+					    case 'C':
+						    foreColor = SimpleColors.ColorC.Color;
+						    goto Next;
+					    case 'D':
+						    foreColor = SimpleColors.ColorD.Color;
+						    goto Next;
+					    case 'E':
+						    foreColor = SimpleColors.ColorE.Color;
+						    goto Next;
+					    case 'F':
+						    foreColor = SimpleColors.ColorF.Color;
+						    goto Next;
+
+						case 'L':
+							isBold = true;
+							goto Next;
+					    case 'O':
+						    isItallic = true;
+						    goto Next;
+					    case 'N':
+						    isUnderlined = true;
+						    goto Next;
+					    case 'M':
+						    isStrikeout = true;
+						    goto Next;
+					    case 'K':
+						    isObfuscated = true;
+						    goto Next;
+
+					    case 'R':
+						    foreColor = SimpleColors.White.Color;
+						    backColor = SimpleColors.Black.Color;
+
+							isBold = false;
+						    isItallic = false;
+						    isUnderlined = false;
+						    isBold = false;
+						    isStrikeout = false;
+							goto Next;
+					}
+			    }
+			    else
+			    {
+				    currentString.Append(currentChar);
+			    }
+
+
+			    Next:
+			    {
+				    if (thisElements.Last().ForeColor != foreColor |
+				        thisElements.Last().BackColor != backColor |
+				        thisElements.Last().IsBold != isBold |
+				        thisElements.Last().IsItallic != isItallic |
+				        thisElements.Last().IsUnderlined != isUnderlined |
+				        thisElements.Last().IsStrikeout != isStrikeout |
+				        thisElements.Last().IsObfuscated != isObfuscated)
+				    {
+					    thisElements.Add(new MessageElement(currentString.ToString(), foreColor.GetSimpleColor(), isBold, isItallic, isUnderlined, isObfuscated, isStrikeout));
+					    currentString.Clear();
+				    }
+
+				    previousChar = currentChar;
+					}
+		    }
+
+		    if (previousChar == '&') currentString.Append('&');
+		    thisElements.Add(new MessageElement(currentString.ToString(), foreColor.GetSimpleColor(), isBold, isItallic, isUnderlined, isObfuscated, isStrikeout));
+		    currentString.Clear();
+		    thisElements.RemoveAll(x => x.Message == "");
+			Elements = thisElements;
+
+	    }
+
 		#region RichTextString => Formatted System String
 		/// <summary>
 		/// Converts a RichTextString to a System String, by sperating with own internal formatting.
@@ -83,8 +226,46 @@ namespace Com.OfficerFlake.Libraries.RichText
 		/// <returns>An interanally formatted System String.</returns>
 		public string ToInternallyFormattedSystemString()
 	    {
-			return string.Join("", Elements.Select(x=>x.ToInternallyFormattedSystemString()));
-		}
+			StringBuilder output = new StringBuilder();
+
+		    IColor foreColor = SimpleColors.White.Color;
+		    Boolean isBold = false;
+		    Boolean isItallic = false;
+		    Boolean isUnderlined = false;
+		    Boolean isStrikeout = false;
+		    Boolean isObfuscated = false;
+
+			for (int i = 0; i < Elements.Count; i++)
+		    {
+				IRichTextElement currentElement = Elements[i];
+
+			    if (isBold & !currentElement.IsBold |
+			        isItallic & !currentElement.IsItallic |
+			        isUnderlined & !currentElement.IsUnderlined |
+			        isStrikeout & !currentElement.IsUnderlined |
+			        isObfuscated & !currentElement.IsObfuscated)
+			    {
+				    output.Append("&r");
+				    isBold = false;
+				    isItallic = false;
+				    isUnderlined = false;
+				    isStrikeout = false;
+				    isObfuscated = false;
+			    }
+
+			    if (foreColor != currentElement.ForeColor) output.Append("&" + currentElement.ForeColor.GetSimpleColor().ColorCode);
+			    if (currentElement.IsBold) output.Append("&l");
+			    if (currentElement.IsItallic) output.Append("&o");
+			    if (currentElement.IsUnderlined) output.Append("&n");
+			    if (currentElement.IsStrikeout) output.Append("&m");
+			    if (currentElement.IsObfuscated) output.Append("&k");
+
+			    output.Append(currentElement.Message);
+		    }
+		    return output.ToString();
+
+
+	    }
 		#endregion
 		#region RichTextString => Unformatted System String
 		/// <summary>

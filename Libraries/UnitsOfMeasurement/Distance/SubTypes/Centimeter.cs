@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Distances
 		{
-			public class Centimeter : Distance, ICentimeter
+			public class CentiMeter : Distance, ICentiMeter
 			{
 				#region CTOR
-				public Centimeter(double value) : base(value, Conversion.Centimeter, Suffixes.Centimeter) { }
+				public CentiMeter(double value) : base(value, Conversion.CentiMeter, Suffixes.CentiMeter) { }
 				#endregion
 				#region Operators
-				public static Centimeter operator +(Centimeter firstMeasurement, Centimeter secondMeasurement)
+				public static CentiMeter operator +(CentiMeter firstMeasurement, CentiMeter secondMeasurement)
 				{
-					return new Centimeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new CentiMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Centimeter operator -(Centimeter firstMeasurement, Centimeter secondMeasurement)
+				public static CentiMeter operator -(CentiMeter firstMeasurement, CentiMeter secondMeasurement)
 				{
-					return new Centimeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new CentiMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Centimeter operator *(Centimeter firstMeasurement, Centimeter secondMeasurement)
+				public static CentiMeter operator *(CentiMeter firstMeasurement, CentiMeter secondMeasurement)
 				{
-					return new Centimeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new CentiMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Centimeter operator /(Centimeter firstMeasurement, Centimeter secondMeasurement)
+				public static CentiMeter operator /(CentiMeter firstMeasurement, CentiMeter secondMeasurement)
 				{
-					return new Centimeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new CentiMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Centimeters
-			public static Centimeter Centimeters(this Byte input) => new Centimeter(input);
-			public static Centimeter Centimeters(this Int16 input) => new Centimeter(input);
-			public static Centimeter Centimeters(this Int32 input) => new Centimeter(input);
-			public static Centimeter Centimeters(this Int64 input) => new Centimeter(input);
-			public static Centimeter Centimeters(this Single input) => new Centimeter(input);
-			public static Centimeter Centimeters(this Double input) => new Centimeter(input);
+			#region [Number].CentiMeters
+			public static CentiMeter CentiMeters(this Byte input) => new CentiMeter(input);
+			public static CentiMeter CentiMeters(this Int16 input) => new CentiMeter(input);
+			public static CentiMeter CentiMeters(this Int32 input) => new CentiMeter(input);
+			public static CentiMeter CentiMeters(this Int64 input) => new CentiMeter(input);
+			public static CentiMeter CentiMeters(this Single input) => new CentiMeter(input);
+			public static CentiMeter CentiMeters(this Double input) => new CentiMeter(input);
 			#endregion
 		}
 	}

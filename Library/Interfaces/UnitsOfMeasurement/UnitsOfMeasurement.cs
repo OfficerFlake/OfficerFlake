@@ -33,20 +33,20 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IArea : IUnitOfMeasurement
 	{
 		IAcre ToAcres();
-		ISquareCentimeter ToSquareCentimeters();
+		ISquareCentiMeter ToSquareCentiMeters();
 		ISquareFoot ToSquareFeet();
 		ISquareInch ToSquareInches();
-		ISquareKilometer ToSquareKilometers();
+		ISquareKiloMeter ToSquareKiloMeters();
 		ISquareMeter ToSquareMeters();
 		ISquareMile ToSquareMiles();
-		ISquareMillimeter ToSquareMillimeters();
+		ISquareMilliMeter ToSquareMilliMeters();
 		ISquareNauticalMile ToSquareNauticalMiles();
 		ISquareYard ToSquareYards();
 	}
 	public interface IAcre : IArea
 	{
 	}
-	public interface ISquareCentimeter : IArea
+	public interface ISquareCentiMeter : IArea
 	{
 	}
 	public interface ISquareFoot : IArea
@@ -55,7 +55,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface ISquareInch : IArea
 	{
 	}
-	public interface ISquareKilometer : IArea
+	public interface ISquareKiloMeter : IArea
 	{
 	}
 	public interface ISquareMeter : IArea
@@ -64,7 +64,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface ISquareMile : IArea
 	{
 	}
-	public interface ISquareMillimeter : IArea
+	public interface ISquareMilliMeter : IArea
 	{
 	}
 	public interface ISquareNauticalMile : IArea
@@ -77,19 +77,19 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	#region Distance
 	public interface IDistance : IUnitOfMeasurement
 	{
-		ICentimeter ToCentimeters();
+		ICentiMeter ToCentiMeters();
 		IFoot ToFeet();
 		IInch ToInches();
 		IKiloMeter ToKiloMeters();
 		IMeter ToMeters();
 		IMicron ToMicrons();
 		IMile ToMiles();
-		IMillimeter ToMillimeters();
-		INanometer ToNanometers();
+		IMilliMeter ToMilliMeters();
+		INanoMeter ToNanoMeters();
 		INauticalMile ToNauticalMiles();
 		IYard ToYards();
 	}
-	public interface ICentimeter : IDistance
+	public interface ICentiMeter : IDistance
 	{
 		
 	}
@@ -117,11 +117,11 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 
 	}
-	public interface IMillimeter : IDistance
+	public interface IMilliMeter : IDistance
 	{
 
 	}
-	public interface INanometer : IDistance
+	public interface INanoMeter : IDistance
 	{
 
 	}
@@ -197,7 +197,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		DateTime ToSystemDateTime();
 		string ToSystemString();
 	}
-
 	public interface ITimeSpan
 	{
 		IYear Years { get; set; }
@@ -333,37 +332,37 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IAtmosphere ToAtmospheres();
 		IBar ToBars();
 		IKiloPascal ToKiloPascals();
-		IMillimeterOfMercury ToMillimetersOfMercury();
+		IMilliMeterOfMercury ToMilliMetersOfMercury();
 		IPascal ToPascals();
 		IPoundPerSquareInch ToPoundsPerSquareInch();
 	}
 	public interface IAtmosphere : IPressure { }
 	public interface IBar : IPressure { }
 	public interface IKiloPascal : IPressure { }
-	public interface IMillimeterOfMercury : IPressure { }
+	public interface IMilliMeterOfMercury : IPressure { }
 	public interface IPascal : IPressure { }
 	public interface IPoundPerSquareInch : IPressure { }
 	#endregion
 	#region Speed
 	public interface ISpeed : IUnitOfMeasurement
 	{
-		ICentimeterPerSecond ToCentimetersPerSecond();
+		ICentiMeterPerSecond ToCentiMetersPerSecond();
 		IFootPerSecond ToFeetPerSecond();
-		IKilometerPerHour ToKilometersPerHour();
+		IKiloMeterPerHour ToKiloMetersPerHour();
 		IKnot ToKnots();
 		IMachAtSeaLevel ToMachAtSeaLevel();
 		IMeterPerSecond ToMetersPerSecond();
 		IMilePerHour ToMilesPerHour();
-		IMillimeterPerSecond ToMillimetersPerSecond();
+		IMilliMeterPerSecond ToMilliMetersPerSecond();
 	}
-	public interface ICentimeterPerSecond : ISpeed { }
+	public interface ICentiMeterPerSecond : ISpeed { }
 	public interface IFootPerSecond : ISpeed { }
-	public interface IKilometerPerHour : ISpeed { }
+	public interface IKiloMeterPerHour : ISpeed { }
 	public interface IKnot : ISpeed { }
 	public interface IMachAtSeaLevel : ISpeed { }
 	public interface IMeterPerSecond : ISpeed { }
 	public interface IMilePerHour : ISpeed { }
-	public interface IMillimeterPerSecond : ISpeed { }
+	public interface IMilliMeterPerSecond : ISpeed { }
 	#endregion
 	#region Temperature
 	public interface ITemperature
@@ -408,7 +407,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IUSTableSpoon ToUSTableSpoons();
 		IUSTeaSpoon ToUSTeaSpoons();
 
-		ICubicCentimeter ToCubicCentimeters();
+		ICubicCentiMeter ToCubicCentiMeters();
 		ICubicFoot ToCubicFeet();
 		ICubicInch ToCubicInches();
 		ICubicMeter ToCubicMeters();
@@ -433,7 +432,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IUSTableSpoon : IVolume { }
 	public interface IUSTeaSpoon : IVolume { }
 	#endregion
-	public interface ICubicCentimeter : IVolume { }
+	public interface ICubicCentiMeter : IVolume { }
 	public interface ICubicFoot : IVolume { }
 	public interface ICubicInch : IVolume { }
 	public interface ICubicMeter : IVolume { }

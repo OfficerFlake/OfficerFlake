@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
@@ -78,27 +79,27 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		public void AddSummaryMessage(string message)
 		{
-			debugOutput.AddMessage(new DebugSummaryMessage(message));
+			debugOutput.AddMessage(ObjectFactory.CreateDebugSummaryMessage(message.AsRichTextString()));
 		}
 		public void AddDetailMessage(string message)
 		{
-			debugOutput.AddMessage(new DebugDetailMessage(message));
+			debugOutput.AddMessage(ObjectFactory.CreateDebugDetailMessage(message.AsRichTextString()));
 		}
 		public void AddWarningMessage(string message)
 		{
-			debugOutput.AddMessage(new DebugWarningMessage(message));
+			debugOutput.AddMessage(ObjectFactory.CreateDebugWarningMessage(message.AsRichTextString()));
 		}
 		public void AddErrorMessage(Exception e, string message)
 		{
-			debugOutput.AddMessage(new DebugErrorMessage(e, message));
+			debugOutput.AddMessage(ObjectFactory.CreateDebugErrorMessage(e, message.AsRichTextString()));
 		}
 		public void AddCrashMessage(Exception e, string message)
 		{
-			debugOutput.AddMessage(new DebugCrashMessage(e, message));
+			debugOutput.AddMessage(ObjectFactory.CreateDebugCrashMessage(e, message.AsRichTextString()));
 		}
 	}
 
-	public static class Debug
+	public static class DebugUI
 	{
 		private static _Debug _Debug = new _Debug();
 
@@ -109,7 +110,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		private static bool WaitForLoad() => _Debug.WaitForLoad();
 		public static bool WaitForClose() => _Debug.WaitForClose();
 
-		static Debug()
+		static DebugUI()
 		{
 			Thread debugThread = _Debug.NewWindowThread();
 			WaitForLoad();
@@ -136,11 +137,11 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 			_Debug.debugOutput.AddMessage(thisRichTextMessage);
 		}
 		
-		public static void AddSummaryMessage(string input) => AddMessage(new DebugSummaryMessage(input));
-		public static void AddDetailMessage(string input) => AddMessage(new DebugDetailMessage(input));
-		public static void AddWarningMessage(string input) => AddMessage(new DebugWarningMessage(input));
-		public static void AddErrorMessage(Exception e, string input) => AddMessage(new DebugErrorMessage(e, input));
-		public static void AddCrashMessage(Exception e, string input) => AddMessage(new DebugCrashMessage(e, input));
+		public static void AddSummaryMessage(string input) => AddMessage(ObjectFactory.CreateDebugSummaryMessage(input.AsRichTextString()));
+		public static void AddDetailMessage(string input) => AddMessage(ObjectFactory.CreateDebugDetailMessage(input.AsRichTextString()));
+		public static void AddWarningMessage(string input) => AddMessage(ObjectFactory.CreateDebugWarningMessage(input.AsRichTextString()));
+		public static void AddErrorMessage(Exception e, string input) => AddMessage(ObjectFactory.CreateDebugErrorMessage(e, input.AsRichTextString()));
+		public static void AddCrashMessage(Exception e, string input) => AddMessage(ObjectFactory.CreateDebugCrashMessage(e, input.AsRichTextString()));
 		#endregion
 	}
 

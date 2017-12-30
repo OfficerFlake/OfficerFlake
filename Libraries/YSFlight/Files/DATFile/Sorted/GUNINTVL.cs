@@ -1,14 +1,15 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class GUNINTVL : DATProperty, IDAT_1_Parameter<Single>
+	public class GUNINTVL : DATProperty, IDAT_1_Parameter<ISecond>
 	{
-		public GUNINTVL(Single value) : base("GUNINTVL" + " " + string.Join(" ", value))
+		public GUNINTVL(ISecond value) : base("GUNINTVL" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public Single Value { get; set; }
+		public ISecond Value { get; set; }
 	}
 }

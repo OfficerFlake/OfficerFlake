@@ -59,7 +59,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public const double FootPoundPerMinute = 0.000023d;
 			public const double BTUPerMinute = 0.017584d;
 		}
-		public static bool TryParse(string input, out Power output)
+		public static bool TryParse(string input, out IPower output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();

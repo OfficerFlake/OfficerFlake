@@ -43,7 +43,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public static readonly string[] Atmosphere = new[] { "ATMOSPHERE", "ATM" };
 			public static readonly string[] Bar = new[] { "BAR" };
 			public static readonly string[] KiloPascal = new[] { "KILOPASCAL", "KP" };
-			public static readonly string[] MillimeterOfMercury = new[] { "MMOFMERCURY", "MMHG" };
+			public static readonly string[] MilliMeterOfMercury = new[] { "MMOFMERCURY", "MMHG" };
 			public static readonly string[] Pascal = new[] { "PASCAL", "P" };
 			public static readonly string[] PoundPerSquareInch = new[] { "LBPERSQUAREIN", "LB/IN^2" };
 		}
@@ -57,11 +57,11 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public const double Atmosphere = 101325d;
 			public const double Bar = 100000d;
 			public const double KiloPascal = 1000d;
-			public const double MillimeterOfMercury = 133.3d;
+			public const double MilliMeterOfMercury = 133.3d;
 			public const double Pascal = 1d;
 			public const double PoundPerSquareInch = 6894.757d;
 		}
-		public static bool TryParse(string input, out Pressure output)
+		public static bool TryParse(string input, out IPressure output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -96,9 +96,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Pressures.KiloPascal(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.MillimeterOfMercury))
+			if (capInput.EndsWithAny(Suffixes.MilliMeterOfMercury))
 			{
-				output = new Pressures.MillimeterOfMercury(conversion);
+				output = new Pressures.MilliMeterOfMercury(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.Pascal))
@@ -135,9 +135,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Pressures.KiloPascal(ConvertToBase() / Conversion.KiloPascal);
 		}
-		public IMillimeterOfMercury ToMillimetersOfMercury()
+		public IMilliMeterOfMercury ToMilliMetersOfMercury()
 		{
-			return new Pressures.MillimeterOfMercury(ConvertToBase() / Conversion.MillimeterOfMercury);
+			return new Pressures.MilliMeterOfMercury(ConvertToBase() / Conversion.MilliMeterOfMercury);
 		}
 		public IPascal ToPascals()
 		{

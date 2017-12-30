@@ -1,12 +1,14 @@
-﻿namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
+﻿using Com.OfficerFlake.Libraries.Interfaces;
+
+namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-    public class WEAPONCH : DATProperty, IDAT_1_Parameter<WeaponCategory>
+    public class WEAPONCH : DATProperty, IDAT_1_Parameter<IYSTypeWeaponCategory>
 	{
-		public WEAPONCH(WeaponCategory value) : base("WEAPONCH" + " " + string.Join(" ", value))
+		public WEAPONCH(IYSTypeWeaponCategory value) : base("WEAPONCH" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public WeaponCategory Value { get; set; }
+		public IYSTypeWeaponCategory Value { get; set; }
 	}
 }

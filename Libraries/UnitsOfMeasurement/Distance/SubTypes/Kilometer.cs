@@ -7,37 +7,37 @@ namespace Com.OfficerFlake.Libraries
 	{
 		public static partial class Distances
 		{
-			public class Kilometer : Distance, IKilometer
+			public class KiloMeter : Distance, IKiloMeter
 			{
 				#region CTOR
-				public Kilometer(double value) : base(value, Conversion.Kilometer, Suffixes.Kilometer) { }
+				public KiloMeter(double value) : base(value, Conversion.KiloMeter, Suffixes.KiloMeter) { }
 				#endregion
 				#region Operators
-				public static Kilometer operator +(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				public static KiloMeter operator +(KiloMeter firstMeasurement, KiloMeter secondMeasurement)
 				{
-					return new Kilometer((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
+					return new KiloMeter((firstMeasurement.ConvertToBase() + secondMeasurement.ConvertToBase()));
 				}
-				public static Kilometer operator -(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				public static KiloMeter operator -(KiloMeter firstMeasurement, KiloMeter secondMeasurement)
 				{
-					return new Kilometer((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
+					return new KiloMeter((firstMeasurement.ConvertToBase() - secondMeasurement.ConvertToBase()));
 				}
-				public static Kilometer operator *(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				public static KiloMeter operator *(KiloMeter firstMeasurement, KiloMeter secondMeasurement)
 				{
-					return new Kilometer((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
+					return new KiloMeter((firstMeasurement.ConvertToBase() * secondMeasurement.ConvertToBase()));
 				}
-				public static Kilometer operator /(Kilometer firstMeasurement, Kilometer secondMeasurement)
+				public static KiloMeter operator /(KiloMeter firstMeasurement, KiloMeter secondMeasurement)
 				{
-					return new Kilometer((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
+					return new KiloMeter((firstMeasurement.ConvertToBase() / secondMeasurement.ConvertToBase()));
 				}
 				#endregion
 			}
-			#region [Number].Kilometers
-			public static Kilometer Kilometers(this Byte input) => new Kilometer(input);
-			public static Kilometer Kilometers(this Int16 input) => new Kilometer(input);
-			public static Kilometer Kilometers(this Int32 input) => new Kilometer(input);
-			public static Kilometer Kilometers(this Int64 input) => new Kilometer(input);
-			public static Kilometer Kilometers(this Single input) => new Kilometer(input);
-			public static Kilometer Kilometers(this Double input) => new Kilometer(input);
+			#region [Number].KiloMeters
+			public static KiloMeter KiloMeters(this Byte input) => new KiloMeter(input);
+			public static KiloMeter KiloMeters(this Int16 input) => new KiloMeter(input);
+			public static KiloMeter KiloMeters(this Int32 input) => new KiloMeter(input);
+			public static KiloMeter KiloMeters(this Int64 input) => new KiloMeter(input);
+			public static KiloMeter KiloMeters(this Single input) => new KiloMeter(input);
+			public static KiloMeter KiloMeters(this Double input) => new KiloMeter(input);
 			#endregion
 		}
 	}

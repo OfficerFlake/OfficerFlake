@@ -40,13 +40,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] Milligram = { "MILLIGRAM", "MG" };
-			public static readonly string[] Centigram = { "CENTIGRAM" };
-			public static readonly string[] Decigram = { "DECIGRAM" };
+			public static readonly string[] MilliGram = { "MilliGram", "MG" };
+			public static readonly string[] CentiGram = { "CentiGram" };
+			public static readonly string[] DeciGram = { "DeciGram" };
 			public static readonly string[] Gram = { "GRAM", "G" };
-			public static readonly string[] Decagram = { "DECAGRAM" };
-			public static readonly string[] Hectogram = { "HECTOGRAM" };
-			public static readonly string[] Kilogram = { "KILOGRAM", "KG" };
+			public static readonly string[] DecaGram = { "DecaGram" };
+			public static readonly string[] HectoGram = { "HectoGram" };
+			public static readonly string[] KiloGram = { "KiloGram", "KG" };
 			public static readonly string[] MetricTonne = { "METRICTONNE", "TONNE", "T" };
 
 			public static readonly string[] Carat = { "CARAT", "CT" };
@@ -57,20 +57,20 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public static readonly string[] USShortTon = { "USSHORTTON", "SHORTTON", "USTON" };
 			public static readonly string[] UKLongTon = { "UKLONGTON", "LONGTON", "UKTON" };
 		}
-		private static readonly string[] DefaultSuffixes = Suffixes.Kilogram;
+		private static readonly string[] DefaultSuffixes = Suffixes.KiloGram;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
 		#endregion
 
 		#region Conversion ...
 		protected struct Conversion
 		{
-			public const double Milligram = 0.000001d;
-			public const double Centigram = 0.00001d;
-			public const double Decigram = 0.0001d;
+			public const double MilliGram = 0.000001d;
+			public const double CentiGram = 0.00001d;
+			public const double DeciGram = 0.0001d;
 			public const double Gram = 0.001d;
-			public const double Decagram = 0.01d;
-			public const double Hectogram = 0.1d;
-			public const double Kilogram = 1d;
+			public const double DecaGram = 0.01d;
+			public const double HectoGram = 0.1d;
+			public const double KiloGram = 1d;
 			public const double MetricTonne = 1000d;
 
 			public const double Carat = 0.0002d;
@@ -81,7 +81,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			public const double USShortTon = 907.1847d;
 			public const double UKLongTon = 1016.047d;
 		}
-		public static bool TryParse(string input, out Mass output)
+		public static bool TryParse(string input, out IMass output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -95,7 +95,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			{
 				Debug.AddDetailMessage("Measurement Input not successfully converted.");
 				Debug.AddDetailMessage("----" + capInput);
-				output = new Masses.Kilogram(0);
+				output = new Masses.KiloGram(0);
 				return false;
 			}
 			#endregion
@@ -106,14 +106,14 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Masses.Carat(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Centigram))
+			if (capInput.EndsWithAny(Suffixes.CentiGram))
 			{
-				output = new Masses.Centigram(conversion);
+				output = new Masses.CentiGram(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Decagram))
+			if (capInput.EndsWithAny(Suffixes.DecaGram))
 			{
-				output = new Masses.Decagram(conversion);
+				output = new Masses.DecaGram(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.Gram))
@@ -121,14 +121,14 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Masses.Gram(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Hectogram))
+			if (capInput.EndsWithAny(Suffixes.HectoGram))
 			{
-				output = new Masses.Hectogram(conversion);
+				output = new Masses.HectoGram(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Kilogram))
+			if (capInput.EndsWithAny(Suffixes.KiloGram))
 			{
-				output = new Masses.Kilogram(conversion);
+				output = new Masses.KiloGram(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.MetricTonne))
@@ -166,7 +166,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Mass conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Masses.Kilogram(conversion);
+			output = new Masses.KiloGram(conversion);
 			return false;
 			#endregion
 
@@ -178,25 +178,25 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Masses.Carat(ConvertToBase() / Conversion.Carat);
 		}
-		public ICentigram ToCentigrams()
+		public ICentiGram ToCentiGrams()
 		{
-			return new Masses.Centigram(ConvertToBase() / Conversion.Centigram);
+			return new Masses.CentiGram(ConvertToBase() / Conversion.CentiGram);
 		}
-		public IDecagram ToDecagrams()
+		public IDecaGram ToDecaGrams()
 		{
-			return new Masses.Decagram(ConvertToBase() / Conversion.Decagram);
+			return new Masses.DecaGram(ConvertToBase() / Conversion.DecaGram);
 		}
 		public IGram ToGrams()
 		{
 			return new Masses.Gram(ConvertToBase() / Conversion.Gram);
 		}
-		public IHectogram ToHectograms()
+		public IHectoGram ToHectoGrams()
 		{
-			return new Masses.Hectogram(ConvertToBase() / Conversion.Hectogram);
+			return new Masses.HectoGram(ConvertToBase() / Conversion.HectoGram);
 		}
-		public IKilogram ToKilograms()
+		public IKiloGram ToKiloGrams()
 		{
-			return new Masses.Kilogram(ConvertToBase() / Conversion.Kilogram);
+			return new Masses.KiloGram(ConvertToBase() / Conversion.KiloGram);
 		}
 		public IMetricTonne ToMetricTonnes()
 		{

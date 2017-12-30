@@ -40,10 +40,10 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] MillimeterPerSecond = new[] { "MM/SEC", "MM/S" };
-			public static readonly string[] CentimeterPerSecond = new[] { "CM/SEC", "CM/S" };
+			public static readonly string[] MilliMeterPerSecond = new[] { "MM/SEC", "MM/S" };
+			public static readonly string[] CentiMeterPerSecond = new[] { "CM/SEC", "CM/S" };
 			public static readonly string[] MeterPerSecond = new[] { "M/SEC", "M/S" };
-			public static readonly string[] KilometerPerHour = new[] { "KM/SEC", "KPH", "KM/H", "KMPH" };
+			public static readonly string[] KiloMeterPerHour = new[] { "KM/SEC", "KPH", "KM/H", "KMPH" };
 			public static readonly string[] FootPerSecond = new[] { "FT/SEC", "FPS", "FT/S" };
 			public static readonly string[] MilePerHour = new[] { "MI/HR", "MPH", "MI/H" };
 			public static readonly string[] Knot = new[] { "KNOTS", "KT" };
@@ -56,16 +56,16 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Conversion ...
 		protected struct Conversion
 		{
-			public const double MillimeterPerSecond = 0.001d;
-			public const double CentimeterPerSecond = 0.01d;
+			public const double MilliMeterPerSecond = 0.001d;
+			public const double CentiMeterPerSecond = 0.01d;
 			public const double MeterPerSecond = 1d;
-			public const double KilometerPerHour = 0.277778d;
+			public const double KiloMeterPerHour = 0.277778d;
 			public const double FootPerSecond = 0.3048d;
 			public const double MilePerHour = 0.447d;
 			public const double Knot = 0.5144d;
 			public const double MachAtSeaLevel = 340.3d;
 		}
-		public static bool TryParse(string input, out Speed output)
+		public static bool TryParse(string input, out ISpeed output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -85,9 +85,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Speed
-			if (capInput.EndsWithAny(Suffixes.CentimeterPerSecond))
+			if (capInput.EndsWithAny(Suffixes.CentiMeterPerSecond))
 			{
-				output = new Speeds.CentimeterPerSecond(conversion);
+				output = new Speeds.CentiMeterPerSecond(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.FootPerSecond))
@@ -95,9 +95,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Speeds.FootPerSecond(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.KilometerPerHour))
+			if (capInput.EndsWithAny(Suffixes.KiloMeterPerHour))
 			{
-				output = new Speeds.KilometerPerHour(conversion);
+				output = new Speeds.KiloMeterPerHour(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.Knot))
@@ -120,9 +120,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Speeds.MilePerHour(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.MillimeterPerSecond))
+			if (capInput.EndsWithAny(Suffixes.MilliMeterPerSecond))
 			{
-				output = new Speeds.MillimeterPerSecond(conversion);
+				output = new Speeds.MilliMeterPerSecond(conversion);
 				return true;
 			}
 			#endregion
@@ -138,17 +138,17 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#endregion
 
 		#region Convert To Subobjects
-		public ICentimeterPerSecond ToCentimetersPerSecond()
+		public ICentiMeterPerSecond ToCentiMetersPerSecond()
 		{
-			return new Speeds.CentimeterPerSecond(ConvertToBase() / Conversion.CentimeterPerSecond);
+			return new Speeds.CentiMeterPerSecond(ConvertToBase() / Conversion.CentiMeterPerSecond);
 		}
 		public IFootPerSecond ToFeetPerSecond()
 		{
 			return new Speeds.FootPerSecond(ConvertToBase() / Conversion.FootPerSecond);
 		}
-		public IKilometerPerHour ToKilometersPerHour()
+		public IKiloMeterPerHour ToKiloMetersPerHour()
 		{
-			return new Speeds.KilometerPerHour(ConvertToBase() / Conversion.KilometerPerHour);
+			return new Speeds.KiloMeterPerHour(ConvertToBase() / Conversion.KiloMeterPerHour);
 		}
 		public IKnot ToKnots()
 		{
@@ -166,9 +166,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Speeds.MilePerHour(ConvertToBase() / Conversion.MilePerHour);
 		}
-		public IMillimeterPerSecond ToMillimetersPerSecond()
+		public IMilliMeterPerSecond ToMilliMetersPerSecond()
 		{
-			return new Speeds.MillimeterPerSecond(ConvertToBase() / Conversion.MillimeterPerSecond);
+			return new Speeds.MilliMeterPerSecond(ConvertToBase() / Conversion.MilliMeterPerSecond);
 		}
 		#endregion
 	}

@@ -40,13 +40,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] Nanometer = new[] { "NANOMETER", "NM" };
+			public static readonly string[] NanoMeter = new[] { "NanoMeter", "NM" };
 			public static readonly string[] Micron = new[] { "MICRON", "MICROMETER", "µM" };
 
-			public static readonly string[] Millimeter = new[] { "MILLIMETER", "MM" };
-			public static readonly string[] Centimeter = new[] { "CENTIMETER", "CM" };
+			public static readonly string[] MilliMeter = new[] { "MilliMeter", "MM" };
+			public static readonly string[] CentiMeter = new[] { "CentiMeter", "CM" };
 			public static readonly string[] Meter = new[] { "METER", "M" };
-			public static readonly string[] Kilometer = new[] { "KILOMETER", "KM" };
+			public static readonly string[] KiloMeter = new[] { "KiloMeter", "KM" };
 
 			public static readonly string[] Inch = new[] { "INCH", "IN" };
 			public static readonly string[] Foot = new[] { "FEET", "FT" };
@@ -62,13 +62,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Conversion ...
 		protected struct Conversion
 		{
-			public const double Nanometer = 0.000000001d;
+			public const double NanoMeter = 0.000000001d;
 			public const double Micron = 0.000001d;
 
-			public const double Millimeter = 0.001d;
-			public const double Centimeter = 0.01d;
+			public const double MilliMeter = 0.001d;
+			public const double CentiMeter = 0.01d;
 			public const double Meter = 1.00d;
-			public const double Kilometer = 1000d;
+			public const double KiloMeter = 1000d;
 
 			public const double Inch = 0.0254d;
 			public const double Foot = 0.3048d;
@@ -77,7 +77,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 
 			public const double NauticalMile = 1.00d;
 		}
-		public static bool TryParse(string input, out Distance output)
+		public static bool TryParse(string input, out IDistance output)
 		{
 			#region Prepare Variables
 			string capInput = input.ToUpperInvariant();
@@ -97,9 +97,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 			#endregion
 			#region Convert To Distance
-			if (capInput.EndsWithAny(Suffixes.Centimeter))
+			if (capInput.EndsWithAny(Suffixes.CentiMeter))
 			{
-				output = new Distances.Centimeter(conversion);
+				output = new Distances.CentiMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.Foot))
@@ -112,9 +112,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Distances.Inch(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Kilometer))
+			if (capInput.EndsWithAny(Suffixes.KiloMeter))
 			{
-				output = new Distances.Kilometer(conversion);
+				output = new Distances.KiloMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.Meter))
@@ -132,14 +132,14 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 				output = new Distances.Mile(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Millimeter))
+			if (capInput.EndsWithAny(Suffixes.MilliMeter))
 			{
-				output = new Distances.Millimeter(conversion);
+				output = new Distances.MilliMeter(conversion);
 				return true;
 			}
-			if (capInput.EndsWithAny(Suffixes.Nanometer))
+			if (capInput.EndsWithAny(Suffixes.NanoMeter))
 			{
-				output = new Distances.Nanometer(conversion);
+				output = new Distances.NanoMeter(conversion);
 				return true;
 			}
 			if (capInput.EndsWithAny(Suffixes.NauticalMile))
@@ -165,9 +165,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#endregion
 
 		#region Convert To Subobjects
-		public ICentimeter ToCentimeters()
+		public ICentiMeter ToCentiMeters()
 		{
-			return new Distances.Centimeter(ConvertToBase() / Conversion.Centimeter);
+			return new Distances.CentiMeter(ConvertToBase() / Conversion.CentiMeter);
 		}
 		public IFoot ToFeet()
 		{
@@ -177,9 +177,9 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Distances.Inch(ConvertToBase() / Conversion.Inch);
 		}
-		public IKilometer ToKilometers()
+		public IKiloMeter ToKiloMeters()
 		{
-			return new Distances.Kilometer(ConvertToBase() / Conversion.Kilometer);
+			return new Distances.KiloMeter(ConvertToBase() / Conversion.KiloMeter);
 		}
 		public IMeter ToMeters()
 		{
@@ -193,13 +193,13 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		{
 			return new Distances.Mile(ConvertToBase() / Conversion.Mile);
 		}
-		public IMillimeter ToMillimeters()
+		public IMilliMeter ToMilliMeters()
 		{
-			return new Distances.Millimeter(ConvertToBase() / Conversion.Millimeter);
+			return new Distances.MilliMeter(ConvertToBase() / Conversion.MilliMeter);
 		}
-		public INanometer ToNanometers()
+		public INanoMeter ToNanoMeters()
 		{
-			return new Distances.Nanometer(ConvertToBase() / Conversion.Nanometer);
+			return new Distances.NanoMeter(ConvertToBase() / Conversion.NanoMeter);
 		}
 		public INauticalMile ToNauticalMiles()
 		{

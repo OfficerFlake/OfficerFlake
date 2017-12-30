@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
@@ -78,17 +79,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		public void AddUserMessage(IUser user, string message)
 		{
-			consoleOutput.AddMessage(new UserMessage(user, message));
+			consoleOutput.AddMessage(ObjectFactory.CreateConsoleUserMessage(user, message.AsRichTextString()));
 		}
 
 		public void AddInformationMessage(string message)
 		{
-			consoleOutput.AddMessage(new ConsoleInformationMessage(message));
+			consoleOutput.AddMessage(ObjectFactory.CreateConsoleInformationMessage((message).AsRichTextString()));
 		}
 
 	}
 
-	public static class Console
+	public static class ConsoleUI
 	{
 		private static _Console _console = new _Console();
 		public static void LinkConsole()
@@ -99,7 +100,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		private static bool WaitForLoad() => _console.WaitForLoad();
 		public static bool WaitForClose() => _console.WaitForClose();
 
-		static Console()
+		static ConsoleUI()
 		{
 			Thread consoleThread = _console.NewWindowThread();
 			WaitForLoad();
