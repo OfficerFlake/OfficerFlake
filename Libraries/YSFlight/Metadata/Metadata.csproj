@@ -68,6 +68,10 @@
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
       <Name>3_FileIO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Settings\6_Settings.csproj">
+      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
+      <Name>6_Settings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

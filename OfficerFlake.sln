@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "_Exectuables\Testing\Testing.csproj", "{D006065E-0E78-4937-B817-53D5A3EEDAF7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE_Testing", "_Exectuables\Testing\EXE_Testing.csproj", "{D006065E-0E78-4937-B817-53D5A3EEDAF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Executables", "_Executables", "{26A80C4F-DCEB-4B4D-BB58-68A6551FF760}"
 EndProject
@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icons", "Icons", "{513F2903
 		Libraries\Icons\OfficerFlake.ico = Libraries\Icons\OfficerFlake.ico
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenYSAutoLoginService", "_Exectuables\OpenYSAutoLoginService\OpenYSAutoLoginService.csproj", "{B72150DF-5378-4AD3-91EE-685885C43D60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE_OpenYSAutoLoginService", "_Exectuables\OpenYSAutoLoginService\EXE_OpenYSAutoLoginService.csproj", "{B72150DF-5378-4AD3-91EE-685885C43D60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "Libraries\Client\Connection\Connection.csproj", "{E3529CF0-4AD1-494B-8BBC-B313CB608A79}"
 EndProject

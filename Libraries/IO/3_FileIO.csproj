@@ -53,6 +53,10 @@
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>0__Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ExceptionHandling\2_ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>2_ExceptionHandling</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

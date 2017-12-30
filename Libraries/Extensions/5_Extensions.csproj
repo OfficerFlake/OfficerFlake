@@ -83,6 +83,10 @@
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
       <Name>2_ExceptionHandling</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IO\3_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>3_FileIO</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="0_Interfaces\" />

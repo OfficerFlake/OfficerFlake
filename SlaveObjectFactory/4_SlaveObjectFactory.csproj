@@ -49,6 +49,10 @@
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
       <Name>2_ExceptionHandling</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\IO\3_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>3_FileIO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Library\Interfaces\0__Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>0__Interfaces</Name>
