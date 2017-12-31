@@ -126,46 +126,56 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows.Components
 			//ResumeLayout();
 		}
 
+		public void AppendRichTextString(IRichTextString thisString)
+		{
+			foreach (IRichTextElement thisElement in thisString.Elements)
+			{
+				AppendRichTextElement(thisElement);
+			}
+		}
 		public void AppendRichTextElement(IRichTextElement thisElement)
 		{
-			SelectionStart = 0;
-			SelectionLength = 0;
+			lock (this)
+			{
+				SelectionStart = 0;
+				SelectionLength = 0;
 
-			string thisText;
-			if (thisElement.IsObfuscated) thisText = new string('*', thisElement.Message.Length);
-			else thisText = thisElement.Message;
+				string thisText;
+				if (thisElement.IsObfuscated) thisText = new string('*', thisElement.Message.Length);
+				else thisText = thisElement.Message;
 
-			int start = Text.Length;
-			int length = thisText.Length;
-			AppendText(thisText);
+				int start = Text.Length;
+				int length = thisText.Length;
+				AppendText(thisText);
 
-			SelectionStart = start;
-			SelectionLength = length;
+				SelectionStart = start;
+				SelectionLength = length;
 
-			FontStyle thisStyle = FontStyle.Regular;
-			if (thisElement.IsBold) thisStyle |= FontStyle.Bold;
-			if (thisElement.IsItallic) thisStyle |= FontStyle.Italic;
-			if (thisElement.IsUnderlined) thisStyle |= FontStyle.Underline;
-			if (thisElement.IsStrikeout) thisStyle |= FontStyle.Strikeout;
+				FontStyle thisStyle = FontStyle.Regular;
+				if (thisElement.IsBold) thisStyle |= FontStyle.Bold;
+				if (thisElement.IsItallic) thisStyle |= FontStyle.Italic;
+				if (thisElement.IsUnderlined) thisStyle |= FontStyle.Underline;
+				if (thisElement.IsStrikeout) thisStyle |= FontStyle.Strikeout;
 
-			SelectionFont = new Font("Courier New", 8, thisStyle);
+				SelectionFont = new Font("Courier New", 8, thisStyle);
 
-			System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
-				255,
-				(int)thisElement.ForeColor.Red,
-				(int)thisElement.ForeColor.Green,
-				(int)thisElement.ForeColor.Blue);
-			System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
-				255,
-				(int)thisElement.BackColor.Red,
-				(int)thisElement.BackColor.Green,
-				(int)thisElement.BackColor.Blue);
+				System.Drawing.Color ForeColor = System.Drawing.Color.FromArgb(
+					255,
+					(int) thisElement.ForeColor.Red,
+					(int) thisElement.ForeColor.Green,
+					(int) thisElement.ForeColor.Blue);
+				System.Drawing.Color BackColor = System.Drawing.Color.FromArgb(
+					255,
+					(int) thisElement.BackColor.Red,
+					(int) thisElement.BackColor.Green,
+					(int) thisElement.BackColor.Blue);
 
-			SelectionColor = ForeColor;
-			SelectionBackColor = BackColor;
+				SelectionColor = ForeColor;
+				SelectionBackColor = BackColor;
 
-			SelectionStart = 0;
-			SelectionLength = 0;
+				SelectionStart = 0;
+				SelectionLength = 0;
+			}
 		}
 	}
 }

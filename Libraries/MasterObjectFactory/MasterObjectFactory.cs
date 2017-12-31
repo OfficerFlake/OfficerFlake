@@ -53,6 +53,7 @@ namespace Com.OfficerFlake.Libraries
 			public IColor CreateColor(byte red, byte green, byte blue) => new XRGBColor(red, green, blue).GetColor();
 			public IColor CreateColor(byte alpha, byte red, byte green, byte blue) => new ARGBColor(alpha, red, green, blue).GetColor();
 
+			public IFormattingDescriptor CreateFormattingDescriptor(IColor backColor, IColor foreColor, Boolean isBold, Boolean isItallic, Boolean isUnderlined, Boolean isStrikeout, Boolean isObfuscated) => new FormattingDescriptor(backColor, foreColor, isBold, isItallic, isUnderlined, isStrikeout, isObfuscated);
 			//Formatting
 
 			#endregion
@@ -138,7 +139,9 @@ namespace Com.OfficerFlake.Libraries
 			public Boolean ServerStop() => Networking.Server.Stop();
 			#endregion
 			#region RichText
+			public IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating) => new RichText.RichTextString.MessageElement(preFormmating);
 			public IRichTextElement CreateRichTextElement(string unformattedString) => new RichText.RichTextString.MessageElement(unformattedString, SimpleColors.White, false, false, false, false, false);
+			public IRichTextString CreateRichTextString(IFormattingDescriptor preFormmating) => new RichTextString(preFormmating);
 			public IRichTextString CreateRichTextString(string formattedString) => new RichText.RichTextString(formattedString);
 			public IRichTextMessage CreateRichTextMessage(IRichTextString richTextString) => new RichText.RichTextMessage(richTextString);
 

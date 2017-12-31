@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
@@ -102,6 +103,28 @@ namespace Com.OfficerFlake.Libraries.Color
 		public override string ToString()
 		{
 			return "#" + Color.Red.ToHexString() + Color.Green.ToHexString() + Color.Blue.ToHexString();
+		}
+	}
+
+	public class FormattingDescriptor : IFormattingDescriptor
+	{
+		public IColor BackColor { get; set; } = new XRGBColor(16,16,16).GetColor();
+		public IColor ForeColor { get; set; } = SimpleColors.White.Color;
+		public bool IsBold { get; set; } = false;
+		public bool IsItallic { get; set; } = false;
+		public bool IsUnderlined { get; set; } = false;
+		public bool IsStrikeout { get; set; } = false;
+		public bool IsObfuscated { get; set; } = false;
+
+		public FormattingDescriptor(IColor backColor, IColor foreColor, Boolean isBold, Boolean isItallic, Boolean isUnderlined, Boolean isStrikeout, Boolean isObfuscated)
+		{
+			BackColor = backColor;
+			ForeColor = foreColor;
+			IsBold = isBold;
+			IsItallic = isItallic;
+			IsUnderlined = isUnderlined;
+			IsStrikeout = isStrikeout;
+			IsObfuscated = isObfuscated;
 		}
 	}
 }

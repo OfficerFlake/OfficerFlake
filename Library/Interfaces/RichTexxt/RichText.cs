@@ -22,6 +22,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		List<IRichTextElement> Elements { get; set; }
 
+		void AddFormattedString(string formattedString);
+
 		string ToUnformattedSystemString();
 		string ToInternallyFormattedSystemString();
 	}

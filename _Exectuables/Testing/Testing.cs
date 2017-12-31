@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Logger;
 
 using Com.OfficerFlake.Libraries.Networking;
@@ -144,14 +145,15 @@ namespace Com.OfficerFlake.Executables.Testing
 			DebugUI.Show();
 
 			Debug.AddCrashMessage(new NotImplementedException("CRASH TEST"), "TEST");
-			Debug.AddErrorMessage(new NotImplementedException("CRASH TEST"), "TEST");
+			Debug.AddErrorMessage(new NotImplementedException("ERROR TEST"), "TEST");
 			Debug.AddWarningMessage("TEST");
 			Debug.AddDetailMessage("TEST");
 			Debug.AddSummaryMessage("TEST");
 
 			#region Load World
 			Console.AddInformationMessage("Loading World");
-			
+			Console.AddUserMessage(Users.Console, "TEST");
+
 			Metadata.LoadAll();
 
 			//World.Load("OPENYS_TEST_FIELD");

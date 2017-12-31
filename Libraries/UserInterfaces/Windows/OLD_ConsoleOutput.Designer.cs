@@ -1,7 +1,7 @@
 ﻿namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 {
-    partial class ConsoleOutput
-    {
+    partial class _ConsoleOutput
+	{
         /// <summary> 
         /// Required designer variable.
         /// </summary>

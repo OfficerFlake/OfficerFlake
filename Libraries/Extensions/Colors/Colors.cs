@@ -52,7 +52,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		public static readonly ISimpleColor Color7 = ObjectFactory.CreateSimpleColor(
 			ObjectFactory.CreateColor(170, 170, 170), '7');
 
-		public static ISimpleColor DarkGray => Color7;
+		public static ISimpleColor DarkGray => Color8;
 
 		public static readonly ISimpleColor Color8 = ObjectFactory.CreateSimpleColor(
 			ObjectFactory.CreateColor(85, 85, 85), '8');

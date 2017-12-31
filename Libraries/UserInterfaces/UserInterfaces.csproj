@@ -45,16 +45,34 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextMenus\DebugMenu.cs">
+    <Compile Include="Components\DebugOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ContextMenus\DebugMenu.designer.cs">
-      <DependentUpon>DebugMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ContextMenus\UserObject.cs">
+    <Compile Include="Components\ConsoleOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ContextMenus\UserObject.designer.cs">
+    <Compile Include="ContextMenus\ConsoleMessageMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContextMenus\ConsoleMessageMenu.designer.cs">
+      <DependentUpon>ConsoleMessageMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ContextMenus\DebugMessageMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ContextMenus\DebugMessageMenu.designer.cs">
+      <DependentUpon>DebugMessageMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ClickableMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ClickableMenu.designer.cs">
+      <DependentUpon>ClickableMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\UserObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\UserObject.designer.cs">
       <DependentUpon>UserObject.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
@@ -63,13 +81,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Components\DebugOutput.cs">
+    <Compile Include="Components\AbstractConsoleOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Components\DebugOutput.Designer.cs">
-      <DependentUpon>DebugOutput.cs</DependentUpon>
+    <Compile Include="Components\AbstractConsoleOutput.Designer.cs">
+      <DependentUpon>AbstractConsoleOutput.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Components\RichTextBox_FormattedBlack.cs">
+    <Compile Include="Components\RichTextBox_FormattedBlack.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Debug.cs">
@@ -84,41 +102,37 @@
     <Compile Include="Windows\Console.Designer.cs">
       <DependentUpon>Console.cs</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Components\ConsoleOutput.cs">
+    <Compile Include="Windows\OLD_ConsoleOutput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Windows\Components\ConsoleOutput.Designer.cs">
-      <DependentUpon>ConsoleOutput.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\IOForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Windows\IOForm.Designer.cs">
-      <DependentUpon>IOForm.cs</DependentUpon>
+    <Compile Include="Windows\OLD_ConsoleOutput.Designer.cs">
+      <DependentUpon>OLD_ConsoleOutput.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ContextMenus\DebugMenu.resx">
-      <DependentUpon>DebugMenu.cs</DependentUpon>
+    <EmbeddedResource Include="ContextMenus\ConsoleMessageMenu.resx">
+      <DependentUpon>ConsoleMessageMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ContextMenus\UserObject.resx">
+    <EmbeddedResource Include="ContextMenus\DebugMessageMenu.resx">
+      <DependentUpon>DebugMessageMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\ClickableMenu.resx">
+      <DependentUpon>ClickableMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\UserObject.resx">
       <DependentUpon>UserObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Windows\Components\DebugOutput.resx">
-      <DependentUpon>DebugOutput.cs</DependentUpon>
+    <EmbeddedResource Include="Components\AbstractConsoleOutput.resx">
+      <DependentUpon>AbstractConsoleOutput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Debug.resx">
       <DependentUpon>Debug.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Console.resx">
       <DependentUpon>Console.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Windows\IOForm.resx">
-      <DependentUpon>IOForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

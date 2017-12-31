@@ -81,12 +81,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		{
 			consoleOutput.AddMessage(ObjectFactory.CreateConsoleUserMessage(user, message.AsRichTextString()));
 		}
-
 		public void AddInformationMessage(string message)
 		{
 			consoleOutput.AddMessage(ObjectFactory.CreateConsoleInformationMessage((message).AsRichTextString()));
 		}
-
 	}
 
 	public static class ConsoleUI

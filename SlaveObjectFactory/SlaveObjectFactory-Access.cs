@@ -34,7 +34,9 @@ namespace Com.OfficerFlake.Libraries
 		#region Color
 		public static ISimpleColor CreateSimpleColor(IColor color, char colorCode) => slaveFactory.CreateSimpleColor(color, colorCode);
 		public static IColor CreateColor(byte red, byte green, byte blue) => slaveFactory.CreateColor(red, green, blue);
-		public static IColor CreateColor(byte alpha, byte red, byte green, byte blue) =>slaveFactory.CreateColor(alpha, red, green, blue);
+		public static IColor CreateColor(byte alpha, byte red, byte green, byte blue) => slaveFactory.CreateColor(alpha, red, green, blue);
+
+		public static IFormattingDescriptor CreateFormattingDescriptor(IColor backColor, IColor foreColor, Boolean isBold, Boolean isItallic, Boolean isUnderlined, Boolean isStrikeout, Boolean isObfuscated) => slaveFactory.CreateFormattingDescriptor(backColor, foreColor, isBold, isItallic, isUnderlined, isStrikeout,isObfuscated);
 		#endregion
 		#region Database
 		//Group
@@ -122,7 +124,9 @@ namespace Com.OfficerFlake.Libraries
 		public static Boolean ServerStop() => slaveFactory.ServerStop();
 		#endregion
 		#region RichText
+		public static IRichTextElement CreateRichTextElement(IFormattingDescriptor preformatting) => slaveFactory.CreateRichTextElement(preformatting);
 		public static IRichTextElement CreateRichTextElement(string unformattedString) => slaveFactory.CreateRichTextElement(unformattedString);
+		public static IRichTextString CreateRichTextString(IFormattingDescriptor preformatting) => slaveFactory.CreateRichTextString(preformatting);
 		public static IRichTextString CreateRichTextString(string formattedString) =>slaveFactory.CreateRichTextString(formattedString);
 		public static IRichTextMessage CreateRichTextMessage(IRichTextString richTextString) => slaveFactory.CreateRichTextMessage(richTextString);
 

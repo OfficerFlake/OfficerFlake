@@ -40,6 +40,7 @@ namespace Com.OfficerFlake.Libraries
 			public IColor CreateColor(byte alpha, byte red, byte green, byte blue) => throw new NotImplementedException();
 
 			//Formatting
+			public IFormattingDescriptor CreateFormattingDescriptor(IColor backColor, IColor foreColor, Boolean isBold, Boolean isItallic, Boolean isUnderlined, Boolean isStrikeout, Boolean isObfuscated) => throw new NotImplementedException();
 
 			#endregion
 			#region Database
@@ -124,7 +125,9 @@ namespace Com.OfficerFlake.Libraries
 			public Boolean ServerStop() => throw new NotImplementedException();
 			#endregion
 			#region RichText
+			public IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating) => throw new NotImplementedException();
 			public IRichTextElement CreateRichTextElement(string unformattedString) => throw new NotImplementedException();
+			public IRichTextString CreateRichTextString(IFormattingDescriptor preFormmating) => throw new NotImplementedException();
 			public IRichTextString CreateRichTextString(string formattedString) => throw new NotImplementedException();
 			public IRichTextMessage CreateRichTextMessage(IRichTextString richTextString) => throw new NotImplementedException();
 

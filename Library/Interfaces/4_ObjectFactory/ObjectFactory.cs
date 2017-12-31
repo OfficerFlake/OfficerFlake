@@ -37,6 +37,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IColor CreateColor(byte alpha, byte red, byte green, byte blue);
 
 		//Formatting
+		IFormattingDescriptor CreateFormattingDescriptor(IColor backColor, IColor foreColor, Boolean isBold, Boolean isItallic, Boolean isUnderlined, Boolean isStrikeout, Boolean isObfuscated);
 
 		#endregion
 		#region Database
@@ -122,7 +123,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Boolean ServerStop();
 		#endregion
 		#region RichText
+		IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating);
 		IRichTextElement CreateRichTextElement(string unformattedString);
+		IRichTextString CreateRichTextString(IFormattingDescriptor preFormmating);
 		IRichTextString CreateRichTextString(string formattedString);
 		IRichTextMessage CreateRichTextMessage(IRichTextString richTextString);
 
