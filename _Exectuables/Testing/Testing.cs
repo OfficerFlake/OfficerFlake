@@ -30,6 +30,7 @@ namespace Com.OfficerFlake.Executables.Testing
 	        AppDomain currentDomain = AppDomain.CurrentDomain;
 	        currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromLibrariesFolder);
 
+	        LinkObjects();
 			MainProgram();
 
         }
@@ -133,34 +134,37 @@ namespace Com.OfficerFlake.Executables.Testing
 		#endregion
 		#endregion
 
+	    private static void LinkObjects()
+	    {
+			#region Link Objects Together
+		    #region LINK FACTORY FIRST!
+		    MasterObjectFactory.LinkMasterFactory();
+		    #endregion
+		    #region Link Interacting Components
+		    Connection.SetPacketProcessor(PacketProcessor.Server.Process);
+		    #endregion
+		    #region LINK UI LAST!
+		    OpenYSServerModeUserInterface.CreateWindow();
+		    OpenYSServerModeUserInterface.LinkDebug();
+		    OpenYSServerModeUserInterface.LinkConsole();
+		    #endregion
+		    OpenYSServerModeUserInterface.Show();
+		    #endregion
+		}
 		private static void MainProgram()
 		{
-			#region Link Objects Together
-			MasterObjectFactory.LinkMasterFactory();
-			//DebugUI.LinkDebug();
-			ConsoleUI.CreateWindow();
-			ConsoleUI.LinkConsole();
-			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
-			#endregion
-
-			//ConsoleUI.Show();
-			//DebugUI.Show();
-
-			Console.AddInformationMessage("TEST");
-			Debug.AddCrashMessage(new NotImplementedException("CRASH TEST"), "TEST");
-			Debug.AddErrorMessage(new NotImplementedException("ERROR TEST"), "TEST");
-			Debug.AddWarningMessage("TEST");
-			Debug.AddDetailMessage("TEST");
-			Debug.AddSummaryMessage("TEST");
+			Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
+			Debug.AddErrorMessage(new Exception("ERROR TEST"), "ERROR TEST");
+			Debug.AddWarningMessage("WARNING TEST");
+			Debug.AddDetailMessage("DETAIL TEST");
+			Debug.AddSummaryMessage("SUMMARY TEST");
 
 			#region Load World
 			Console.AddInformationMessage("Loading World");
-			Console.AddUserMessage(Users.Console, "TEST");
 
 			Metadata.LoadAll();
 
-			//World.Load("OPENYS_TEST_FIELD");
-			World.Load("HAWAII");
+			World.Load(Settings.Options.FieldName);
 
 			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
@@ -171,8 +175,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("Now Listening on Port 7915!");
 			#endregion
 
-			ConsoleUI.WaitForClose();
-			//DebugUI.WaitForClose();
+			OpenYSServerModeUserInterface.WaitForClose();
 
 			Server.Stop();
 		}

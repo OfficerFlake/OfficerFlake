@@ -130,7 +130,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 
 	public class DebugSummaryMessage : RichTextMessage, IDebugSummaryMessage
 	{
-		public DebugSummaryMessage(IRichTextString input) : base(input.ToInternallyFormattedSystemString())
+		public DebugSummaryMessage(IRichTextString input) : base("&b&o" + input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.DebugSummary;
 			User = Users.Console;
@@ -146,7 +146,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 	}
 	public class DebugWarningMessage : RichTextMessage, IDebugWarningMessage
 	{
-		public DebugWarningMessage(IRichTextString input) : base("&e&o" + input.ToInternallyFormattedSystemString())
+		public DebugWarningMessage(IRichTextString input) : base("&0&o" + input.ToInternallyFormattedSystemString())
 		{
 			Type = MessageType.DebugWarning;
 			User = Users.Console;
@@ -154,7 +154,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 	}
 	public class DebugErrorMessage : RichTextMessage, IDebugErrorMessage
 	{
-		public DebugErrorMessage(Exception e, IRichTextString input) : base("&c&o" + input.ToInternallyFormattedSystemString() + "\n" + "&c&o" + e.StackTrace)
+		public DebugErrorMessage(Exception e, IRichTextString input) : base("&e&o" + input.ToInternallyFormattedSystemString() + "\n" + (e.StackTrace ?? "<No Stack Trace>"))
 		{
 			Type = MessageType.DebugError;
 			User = Users.Console;
@@ -162,7 +162,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 	}
 	public class DebugCrashMessage : RichTextMessage, IDebugCrashMessage
 	{
-		public DebugCrashMessage(Exception e, IRichTextString input) : base("&c&o" + input.ToInternallyFormattedSystemString() + "\n" + "&c&o" + e.StackTrace)
+		public DebugCrashMessage(Exception e, IRichTextString input) : base("&f&o" + input.ToInternallyFormattedSystemString() + "\n" + (e.StackTrace ?? "<No Stack Trace>"))
 		{
 			Type = MessageType.DebugCrash;
 			User = Users.Console;
