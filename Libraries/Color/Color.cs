@@ -50,7 +50,7 @@ namespace Com.OfficerFlake.Libraries.Color
 
 		public IColor GetColor()
 		{
-			return new FullColor() {Red = Red, Green = Green, Blue = Blue};
+			return new FullColor() {Alpha = 255, Red = Red, Green = Green, Blue = Blue};
 		}
 
 		public string ToHexString()

@@ -167,7 +167,7 @@ namespace Com.OfficerFlake.Libraries.RichText
 
 				if (previousChar == '&')
 				{
-					switch (currentChar)
+					switch (char.ToUpper(currentChar))
 					{
 						case '0':
 							currentFormattingDescriptor.ForeColor = SimpleColors.Color0.Color;

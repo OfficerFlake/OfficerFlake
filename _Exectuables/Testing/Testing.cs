@@ -10,6 +10,7 @@ using Com.OfficerFlake.Libraries.Logger;
 
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UserInterfaces.Windows;
+using Com.OfficerFlake.Libraries.UserInterfacesWPF;
 using Com.OfficerFlake.Libraries.YSFlight;
 
 using Console = Com.OfficerFlake.Libraries.Logger.Console;
@@ -136,14 +137,16 @@ namespace Com.OfficerFlake.Executables.Testing
 		{
 			#region Link Objects Together
 			MasterObjectFactory.LinkMasterFactory();
-			DebugUI.LinkDebug();
+			//DebugUI.LinkDebug();
+			ConsoleUI.CreateWindow();
 			ConsoleUI.LinkConsole();
 			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
 			#endregion
 
-			ConsoleUI.Show();
-			DebugUI.Show();
+			//ConsoleUI.Show();
+			//DebugUI.Show();
 
+			Console.AddInformationMessage("TEST");
 			Debug.AddCrashMessage(new NotImplementedException("CRASH TEST"), "TEST");
 			Debug.AddErrorMessage(new NotImplementedException("ERROR TEST"), "TEST");
 			Debug.AddWarningMessage("TEST");
@@ -169,7 +172,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			#endregion
 
 			ConsoleUI.WaitForClose();
-			DebugUI.WaitForClose();
+			//DebugUI.WaitForClose();
 
 			Server.Stop();
 		}

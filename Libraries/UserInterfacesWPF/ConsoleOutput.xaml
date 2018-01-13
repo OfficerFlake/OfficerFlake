@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfacesWPF.ConsoleOutput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userInterfacesWpf="clr-namespace:Com.OfficerFlake.Libraries.UserInterfacesWPF"
+             mc:Ignorable="d" 
+             d:DesignWidth="520" d:DesignHeight="376"
+			 d:DataContext="{d:DesignData }">
+
+	<ScrollViewer VerticalScrollBarVisibility="Visible">
+		<Grid Name="ConsoleOutputViewModel"
+				  Background="#161616">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="Date" Width="62"/>
+				<ColumnDefinition x:Name="Time" Width="50"/>
+				<ColumnDefinition x:Name="Type" Width="70"/>
+				<ColumnDefinition x:Name="User" Width="100"/>
+				<ColumnDefinition x:Name="String" Width="*"/>
+			</Grid.ColumnDefinitions>
+		</Grid>
+	</ScrollViewer>
+</UserControl>

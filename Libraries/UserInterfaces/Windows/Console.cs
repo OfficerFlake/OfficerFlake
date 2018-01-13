@@ -87,7 +87,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		}
 	}
 
-	public static class ConsoleUI
+	public static class ConsoleUI_Forms
 	{
 		private static _Console _console = new _Console();
 		public static void LinkConsole()
@@ -98,7 +98,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 		private static bool WaitForLoad() => _console.WaitForLoad();
 		public static bool WaitForClose() => _console.WaitForClose();
 
-		static ConsoleUI()
+		static ConsoleUI_Forms()
 		{
 			Thread consoleThread = _console.NewWindowThread();
 			WaitForLoad();

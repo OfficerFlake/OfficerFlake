@@ -216,475 +216,484 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 		private void AppendRichTextMessageDirect(IRichTextMessage thisRichTextMessage)
 	    {
-			#region If No Checkboxes, Do Nothing.
-			if (!ShowDate & !ShowTime & !ShowType & !ShowMessage) return;
-			#endregion
-			#region Skip Unselected Messages
-			switch (thisRichTextMessage.Type)
+		    lock (this.richTextBox_ConsoleOutput)
 		    {
-			    default:
-				    goto case MessageType.Unknown;
-			    case MessageType.Unknown:
-				    if (!ShowMessage_Unknown) return;
-				    break;
-			    case MessageType.User:
-				    if (!ShowMessage_ConsoleUser) return;
-					break;
-			    case MessageType.ConsoleInformation:
-				    if (!ShowMessage_ConsoleInformation) return;
-					break;
-			    case MessageType.DebugSummary:
-				    if (!ShowMessage_DebugSummary) return;
-					break;
-			    case MessageType.DebugDetail:
-				    if (!ShowMessage_DebugDetail) return;
-					break;
-			    case MessageType.DebugWarning:
-				    if (!ShowMessage_DebugWarning) return;
-					break;
-			    case MessageType.DebugError:
-				    if (!ShowMessage_DebugError) return;
-					break;
-			    case MessageType.DebugCrash:
-				    if (!ShowMessage_DebugCrash) return;
-					break;
-		    }
-			#endregion
+			    #region If No Checkboxes, Do Nothing.
 
-		    #region PreFormatting
-		    #region date
+			    if (!ShowDate & !ShowTime & !ShowType & !ShowMessage) return;
 
-		    IFormattingDescriptor dateFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
-			    backColor: ObjectFactory.CreateColor(16, 16, 16),
-			    foreColor: ObjectFactory.CreateColor(240, 240, 240),
-			    isBold: false,
-			    isItallic: false,
-			    isUnderlined: false,
-			    isStrikeout: false,
-			    isObfuscated: false);
-		    switch (thisRichTextMessage.Type)
-		    {
-			    case MessageType.Unknown:
-				    return;
-			    case MessageType.User:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
-				    dateFormattingDescriptor.ForeColor = SimpleColors.Gray.Color;
-				    dateFormattingDescriptor.IsBold = false;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.ConsoleInformation:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    dateFormattingDescriptor.ForeColor = SimpleColors.Gray.Color;
-				    dateFormattingDescriptor.IsBold = false;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugSummary:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
-				    dateFormattingDescriptor.IsBold = false;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugDetail:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
-				    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
-				    dateFormattingDescriptor.IsBold = false;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugWarning:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
-				    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
-				    dateFormattingDescriptor.IsBold = false;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugError:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
-				    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
-				    dateFormattingDescriptor.IsBold = true;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugCrash:
-				    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
-				    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
-				    dateFormattingDescriptor.IsBold = true;
-				    dateFormattingDescriptor.IsItallic = false;
-				    dateFormattingDescriptor.IsUnderlined = false;
-				    dateFormattingDescriptor.IsStrikeout = false;
-				    dateFormattingDescriptor.IsObfuscated = false;
-				    break;
-		    }
+			    #endregion
 
-		    #endregion
-		    #region time
+			    #region Skip Unselected Messages
 
-		    IFormattingDescriptor timeFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
-			    backColor: ObjectFactory.CreateColor(16, 16, 16),
-			    foreColor: ObjectFactory.CreateColor(240, 240, 240),
-			    isBold: false,
-			    isItallic: false,
-			    isUnderlined: false,
-			    isStrikeout: false,
-			    isObfuscated: false);
-		    switch (thisRichTextMessage.Type)
-		    {
-			    case MessageType.Unknown:
-				    return;
-			    case MessageType.User:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
-				    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
-				    timeFormattingDescriptor.IsBold = false;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.ConsoleInformation:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
-				    timeFormattingDescriptor.IsBold = false;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugSummary:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
-				    timeFormattingDescriptor.IsBold = false;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugDetail:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
-				    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
-				    timeFormattingDescriptor.IsBold = false;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugWarning:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
-				    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
-				    timeFormattingDescriptor.IsBold = false;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugError:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
-				    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
-				    timeFormattingDescriptor.IsBold = true;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugCrash:
-				    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
-				    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
-				    timeFormattingDescriptor.IsBold = true;
-				    timeFormattingDescriptor.IsItallic = false;
-				    timeFormattingDescriptor.IsUnderlined = false;
-				    timeFormattingDescriptor.IsStrikeout = false;
-				    timeFormattingDescriptor.IsObfuscated = false;
-				    break;
-		    }
-
-		    #endregion
-		    #region type
-
-		    IFormattingDescriptor typeFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
-			    backColor: ObjectFactory.CreateColor(16, 16, 16),
-			    foreColor: ObjectFactory.CreateColor(240, 240, 240),
-			    isBold: false,
-			    isItallic: false,
-			    isUnderlined: false,
-			    isStrikeout: false,
-			    isObfuscated: false);
-		    switch (thisRichTextMessage.Type)
-		    {
-			    case MessageType.Unknown:
-				    return;
-			    case MessageType.User:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
-				    typeFormattingDescriptor.ForeColor = SimpleColors.White.Color;
-				    typeFormattingDescriptor.IsBold = false;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.ConsoleInformation:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    typeFormattingDescriptor.ForeColor = SimpleColors.Teal.Color;
-				    typeFormattingDescriptor.IsBold = false;
-				    typeFormattingDescriptor.IsItallic = true;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugSummary:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
-				    typeFormattingDescriptor.IsBold = false;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugDetail:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
-				    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
-				    typeFormattingDescriptor.IsBold = false;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugWarning:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
-				    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
-				    typeFormattingDescriptor.IsBold = false;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugError:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
-				    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
-				    typeFormattingDescriptor.IsBold = true;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugCrash:
-				    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
-				    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
-				    typeFormattingDescriptor.IsBold = true;
-				    typeFormattingDescriptor.IsItallic = false;
-				    typeFormattingDescriptor.IsUnderlined = false;
-				    typeFormattingDescriptor.IsStrikeout = false;
-				    typeFormattingDescriptor.IsObfuscated = false;
-				    break;
-		    }
-
-		    #endregion
-		    #region message
-
-		    IFormattingDescriptor messageFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
-			    backColor: ObjectFactory.CreateColor(16, 16, 16),
-			    foreColor: ObjectFactory.CreateColor(240, 240, 240),
-			    isBold: false,
-			    isItallic: false,
-			    isUnderlined: false,
-			    isStrikeout: false,
-			    isObfuscated: false);
-		    switch (thisRichTextMessage.Type)
-		    {
-			    case MessageType.Unknown:
-				    return;
-			    case MessageType.User:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
-				    messageFormattingDescriptor.ForeColor = SimpleColors.White.Color;
-				    messageFormattingDescriptor.IsBold = false;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.ConsoleInformation:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    messageFormattingDescriptor.ForeColor = SimpleColors.Teal.Color;
-				    messageFormattingDescriptor.IsBold = false;
-				    messageFormattingDescriptor.IsItallic = true;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugSummary:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
-				    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
-				    messageFormattingDescriptor.IsBold = false;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugDetail:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
-				    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
-				    messageFormattingDescriptor.IsBold = false;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugWarning:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
-				    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
-				    messageFormattingDescriptor.IsBold = false;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugError:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
-				    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
-				    messageFormattingDescriptor.IsBold = true;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-			    case MessageType.DebugCrash:
-				    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
-				    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
-				    messageFormattingDescriptor.IsBold = true;
-				    messageFormattingDescriptor.IsItallic = false;
-				    messageFormattingDescriptor.IsUnderlined = false;
-				    messageFormattingDescriptor.IsStrikeout = false;
-				    messageFormattingDescriptor.IsObfuscated = false;
-				    break;
-		    }
-
-		    #endregion
-		    #endregion
-		    #region Build String Components
-		    #region Date
-
-		    IRichTextString date = ObjectFactory.CreateRichTextString(dateFormattingDescriptor);
-		    date.AddFormattedString(thisRichTextMessage.Datestamp.ToSystemString());
-
-		    #endregion
-		    #region Time
-
-		    IRichTextString time = ObjectFactory.CreateRichTextString(timeFormattingDescriptor);
-		    time.AddFormattedString(thisRichTextMessage.Timestamp.ToSystemString());
-
-		    #endregion
-		    #region Type
-
-		    IRichTextString type = ObjectFactory.CreateRichTextString(typeFormattingDescriptor);
-		    switch (thisRichTextMessage.Type)
-		    {
-			    default:
-			    case MessageType.Unknown:
-				    type.AddFormattedString("Unknown".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.User:
-				    type.AddFormattedString("User".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.ConsoleInformation:
-				    type.AddFormattedString("Information".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.DebugSummary:
-				    type.AddFormattedString("Summary".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.DebugDetail:
-				    type.AddFormattedString("Detail".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.DebugWarning:
-				    type.AddFormattedString("Warning".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.DebugError:
-				    type.AddFormattedString("Error".ResizeOnRight(16, ' '));
-				    break;
-			    case MessageType.DebugCrash:
-				    type.AddFormattedString("Crash".ResizeOnRight(16, ' '));
-				    break;
-		    }
-
-		    #endregion
-		    #region Message
-
-		    IRichTextString message = ObjectFactory.CreateRichTextString(messageFormattingDescriptor);
-		    message.AddFormattedString(thisRichTextMessage.String.ToInternallyFormattedSystemString());
-
-			#endregion
-			#endregion
-			#region Write Contents
-			#region Start new line
-
-			if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
-
-		    #endregion
-
-		    #region Add Date
-			if (ShowDate)
-		    {
-			    richTextBox_ConsoleOutput.AppendRichTextString(date);
-			    richTextBox_ConsoleOutput.AppendText(" ");
-		    }
-			#endregion
-		    #region Add Time
-			if (ShowTime)
-		    {
-			    richTextBox_ConsoleOutput.AppendRichTextString(time);
-			    richTextBox_ConsoleOutput.AppendText(" ");
-		    }
-			#endregion
-		    #region Add Type
-			if (ShowType)
-		    {
-			    int totalMessageSize = 0;
-			    foreach (var thisElement in type.Elements)
+			    switch (thisRichTextMessage.Type)
 			    {
-				    thisElement.BackColor = typeFormattingDescriptor.BackColor;
+				    default:
+					    goto case MessageType.Unknown;
+				    case MessageType.Unknown:
+					    if (!ShowMessage_Unknown) return;
+					    break;
+				    case MessageType.User:
+					    if (!ShowMessage_ConsoleUser) return;
+					    break;
+				    case MessageType.ConsoleInformation:
+					    if (!ShowMessage_ConsoleInformation) return;
+					    break;
+				    case MessageType.DebugSummary:
+					    if (!ShowMessage_DebugSummary) return;
+					    break;
+				    case MessageType.DebugDetail:
+					    if (!ShowMessage_DebugDetail) return;
+					    break;
+				    case MessageType.DebugWarning:
+					    if (!ShowMessage_DebugWarning) return;
+					    break;
+				    case MessageType.DebugError:
+					    if (!ShowMessage_DebugError) return;
+					    break;
+				    case MessageType.DebugCrash:
+					    if (!ShowMessage_DebugCrash) return;
+					    break;
 			    }
 
-			    for (int i = 0; i < type.Elements.Count; i++)
+			    #endregion
+
+			    #region PreFormatting
+
+			    #region date
+
+			    IFormattingDescriptor dateFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
+				    backColor: ObjectFactory.CreateColor(16, 16, 16),
+				    foreColor: ObjectFactory.CreateColor(240, 240, 240),
+				    isBold: false,
+				    isItallic: false,
+				    isUnderlined: false,
+				    isStrikeout: false,
+				    isObfuscated: false);
+			    switch (thisRichTextMessage.Type)
 			    {
-				    IRichTextElement thisElement = type.Elements[i];
-				    IRichTextElement currentElement;
+				    case MessageType.Unknown:
+					    return;
+				    case MessageType.User:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
+					    dateFormattingDescriptor.ForeColor = SimpleColors.Gray.Color;
+					    dateFormattingDescriptor.IsBold = false;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.ConsoleInformation:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    dateFormattingDescriptor.ForeColor = SimpleColors.Gray.Color;
+					    dateFormattingDescriptor.IsBold = false;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugSummary:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
+					    dateFormattingDescriptor.IsBold = false;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugDetail:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
+					    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
+					    dateFormattingDescriptor.IsBold = false;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugWarning:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
+					    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
+					    dateFormattingDescriptor.IsBold = false;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugError:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
+					    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
+					    dateFormattingDescriptor.IsBold = true;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugCrash:
+					    dateFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
+					    dateFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
+					    dateFormattingDescriptor.IsBold = true;
+					    dateFormattingDescriptor.IsItallic = false;
+					    dateFormattingDescriptor.IsUnderlined = false;
+					    dateFormattingDescriptor.IsStrikeout = false;
+					    dateFormattingDescriptor.IsObfuscated = false;
+					    break;
+			    }
 
-				    #region Limit Size of total message to 16 Chars
+			    #endregion
 
-				    int thisElementSize = thisElement.Message.Length;
-				    if (totalMessageSize + thisElementSize > 16)
+			    #region time
+
+			    IFormattingDescriptor timeFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
+				    backColor: ObjectFactory.CreateColor(16, 16, 16),
+				    foreColor: ObjectFactory.CreateColor(240, 240, 240),
+				    isBold: false,
+				    isItallic: false,
+				    isUnderlined: false,
+				    isStrikeout: false,
+				    isObfuscated: false);
+			    switch (thisRichTextMessage.Type)
+			    {
+				    case MessageType.Unknown:
+					    return;
+				    case MessageType.User:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
+					    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
+					    timeFormattingDescriptor.IsBold = false;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.ConsoleInformation:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
+					    timeFormattingDescriptor.IsBold = false;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugSummary:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
+					    timeFormattingDescriptor.IsBold = false;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugDetail:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
+					    timeFormattingDescriptor.ForeColor = SimpleColors.DarkGray.Color;
+					    timeFormattingDescriptor.IsBold = false;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugWarning:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
+					    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
+					    timeFormattingDescriptor.IsBold = false;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugError:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
+					    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
+					    timeFormattingDescriptor.IsBold = true;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugCrash:
+					    timeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
+					    timeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
+					    timeFormattingDescriptor.IsBold = true;
+					    timeFormattingDescriptor.IsItallic = false;
+					    timeFormattingDescriptor.IsUnderlined = false;
+					    timeFormattingDescriptor.IsStrikeout = false;
+					    timeFormattingDescriptor.IsObfuscated = false;
+					    break;
+			    }
+
+			    #endregion
+
+			    #region type
+
+			    IFormattingDescriptor typeFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
+				    backColor: ObjectFactory.CreateColor(16, 16, 16),
+				    foreColor: ObjectFactory.CreateColor(240, 240, 240),
+				    isBold: false,
+				    isItallic: false,
+				    isUnderlined: false,
+				    isStrikeout: false,
+				    isObfuscated: false);
+			    switch (thisRichTextMessage.Type)
+			    {
+				    case MessageType.Unknown:
+					    return;
+				    case MessageType.User:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
+					    typeFormattingDescriptor.ForeColor = SimpleColors.White.Color;
+					    typeFormattingDescriptor.IsBold = false;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.ConsoleInformation:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    typeFormattingDescriptor.ForeColor = SimpleColors.Teal.Color;
+					    typeFormattingDescriptor.IsBold = false;
+					    typeFormattingDescriptor.IsItallic = true;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugSummary:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
+					    typeFormattingDescriptor.IsBold = false;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugDetail:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
+					    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
+					    typeFormattingDescriptor.IsBold = false;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugWarning:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
+					    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
+					    typeFormattingDescriptor.IsBold = false;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugError:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
+					    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
+					    typeFormattingDescriptor.IsBold = true;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugCrash:
+					    typeFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
+					    typeFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
+					    typeFormattingDescriptor.IsBold = true;
+					    typeFormattingDescriptor.IsItallic = false;
+					    typeFormattingDescriptor.IsUnderlined = false;
+					    typeFormattingDescriptor.IsStrikeout = false;
+					    typeFormattingDescriptor.IsObfuscated = false;
+					    break;
+			    }
+
+			    #endregion
+
+			    #region message
+
+			    IFormattingDescriptor messageFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor(
+				    backColor: ObjectFactory.CreateColor(16, 16, 16),
+				    foreColor: ObjectFactory.CreateColor(240, 240, 240),
+				    isBold: false,
+				    isItallic: false,
+				    isUnderlined: false,
+				    isStrikeout: false,
+				    isObfuscated: false);
+			    switch (thisRichTextMessage.Type)
+			    {
+				    case MessageType.Unknown:
+					    return;
+				    case MessageType.User:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(16, 16, 16);
+					    messageFormattingDescriptor.ForeColor = SimpleColors.White.Color;
+					    messageFormattingDescriptor.IsBold = false;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.ConsoleInformation:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    messageFormattingDescriptor.ForeColor = SimpleColors.Teal.Color;
+					    messageFormattingDescriptor.IsBold = false;
+					    messageFormattingDescriptor.IsItallic = true;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugSummary:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 20, 25);
+					    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(85, 200, 240);
+					    messageFormattingDescriptor.IsBold = false;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugDetail:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(10, 10, 25);
+					    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(50, 50, 200);
+					    messageFormattingDescriptor.IsBold = false;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugWarning:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(25, 20, 10);
+					    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(240, 200, 85);
+					    messageFormattingDescriptor.IsBold = false;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugError:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 25, 10);
+					    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(200, 200, 200);
+					    messageFormattingDescriptor.IsBold = true;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+				    case MessageType.DebugCrash:
+					    messageFormattingDescriptor.BackColor = ObjectFactory.CreateColor(50, 10, 10);
+					    messageFormattingDescriptor.ForeColor = ObjectFactory.CreateColor(255, 255, 255);
+					    messageFormattingDescriptor.IsBold = true;
+					    messageFormattingDescriptor.IsItallic = false;
+					    messageFormattingDescriptor.IsUnderlined = false;
+					    messageFormattingDescriptor.IsStrikeout = false;
+					    messageFormattingDescriptor.IsObfuscated = false;
+					    break;
+			    }
+
+			    #endregion
+
+			    #endregion
+
+			    #region Build String Components
+
+			    #region Date
+
+			    IRichTextString date = ObjectFactory.CreateRichTextString(dateFormattingDescriptor);
+			    date.AddFormattedString(thisRichTextMessage.Datestamp.ToSystemString());
+
+			    #endregion
+
+			    #region Time
+
+			    IRichTextString time = ObjectFactory.CreateRichTextString(timeFormattingDescriptor);
+			    time.AddFormattedString(thisRichTextMessage.Timestamp.ToSystemString());
+
+			    #endregion
+
+			    #region Type
+
+			    IRichTextString type = ObjectFactory.CreateRichTextString(typeFormattingDescriptor);
+			    switch (thisRichTextMessage.Type)
+			    {
+				    default:
+				    case MessageType.Unknown:
+					    type.AddFormattedString("Unknown".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.User:
+					    type.AddFormattedString("User".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.ConsoleInformation:
+					    type.AddFormattedString("Information".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.DebugSummary:
+					    type.AddFormattedString("Summary".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.DebugDetail:
+					    type.AddFormattedString("Detail".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.DebugWarning:
+					    type.AddFormattedString("Warning".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.DebugError:
+					    type.AddFormattedString("Error".ResizeOnRight(16, ' '));
+					    break;
+				    case MessageType.DebugCrash:
+					    type.AddFormattedString("Crash".ResizeOnRight(16, ' '));
+					    break;
+			    }
+
+			    #endregion
+
+			    #region Message
+
+			    IRichTextString message = ObjectFactory.CreateRichTextString(messageFormattingDescriptor);
+			    message.AddFormattedString(thisRichTextMessage.String.ToInternallyFormattedSystemString());
+
+			    #endregion
+
+			    #endregion
+
+			    #region Write Contents
+
+			    #region Start new line
+
+			    if (richTextBox_ConsoleOutput.TextLength > 0) richTextBox_ConsoleOutput.AppendText("\n");
+
+			    #endregion
+
+			    #region Add Date
+
+			    if (ShowDate)
+			    {
+				    richTextBox_ConsoleOutput.AppendRichTextString(date);
+				    richTextBox_ConsoleOutput.AppendText(" ");
+			    }
+
+			    #endregion
+
+			    #region Add Time
+
+			    if (ShowTime)
+			    {
+				    richTextBox_ConsoleOutput.AppendRichTextString(time);
+				    richTextBox_ConsoleOutput.AppendText(" ");
+			    }
+
+			    #endregion
+
+			    #region Add Type
+
+			    if (ShowType)
+			    {
+				    int totalMessageSize = 0;
+				    foreach (var thisElement in type.Elements)
 				    {
-					    currentElement = ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(0, 16 - totalMessageSize));
-					    currentElement.ForeColor = thisElement.ForeColor;
-					    currentElement.BackColor = thisElement.BackColor;
-					    currentElement.IsBold = thisElement.IsBold;
-					    currentElement.IsItallic = thisElement.IsItallic;
-					    currentElement.IsUnderlined = thisElement.IsUnderlined;
-					    currentElement.IsStrikeout = thisElement.IsStrikeout;
-					    currentElement.IsObfuscated = thisElement.IsObfuscated;
-
-					    totalMessageSize += currentElement.Message.Length;
+					    thisElement.BackColor = typeFormattingDescriptor.BackColor;
 				    }
-				    else
+
+				    for (int i = 0; i < type.Elements.Count; i++)
 				    {
-					    currentElement = thisElement;
-					    totalMessageSize += currentElement.Message.Length;
-					    if (i == type.Elements.Count - 1)
+					    IRichTextElement thisElement = type.Elements[i];
+					    IRichTextElement currentElement;
+
+					    #region Limit Size of total message to 16 Chars
+
+					    int thisElementSize = thisElement.Message.Length;
+					    if (totalMessageSize + thisElementSize > 16)
 					    {
-						    currentElement =
-							    ObjectFactory.CreateRichTextElement(thisElement.Message + new string(' ', 16 - totalMessageSize));
+						    currentElement = ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(0, 16 - totalMessageSize));
 						    currentElement.ForeColor = thisElement.ForeColor;
 						    currentElement.BackColor = thisElement.BackColor;
 						    currentElement.IsBold = thisElement.IsBold;
@@ -692,46 +701,100 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 						    currentElement.IsUnderlined = thisElement.IsUnderlined;
 						    currentElement.IsStrikeout = thisElement.IsStrikeout;
 						    currentElement.IsObfuscated = thisElement.IsObfuscated;
+
+						    totalMessageSize += currentElement.Message.Length;
 					    }
+					    else
+					    {
+						    currentElement = thisElement;
+						    totalMessageSize += currentElement.Message.Length;
+						    if (i == type.Elements.Count - 1)
+						    {
+							    currentElement =
+								    ObjectFactory.CreateRichTextElement(thisElement.Message + new string(' ', 16 - totalMessageSize));
+							    currentElement.ForeColor = thisElement.ForeColor;
+							    currentElement.BackColor = thisElement.BackColor;
+							    currentElement.IsBold = thisElement.IsBold;
+							    currentElement.IsItallic = thisElement.IsItallic;
+							    currentElement.IsUnderlined = thisElement.IsUnderlined;
+							    currentElement.IsStrikeout = thisElement.IsStrikeout;
+							    currentElement.IsObfuscated = thisElement.IsObfuscated;
+						    }
+					    }
+
+					    #endregion
+
+					    richTextBox_ConsoleOutput.AppendRichTextElement(currentElement);
 				    }
-
-				    #endregion
-
-				    richTextBox_ConsoleOutput.AppendRichTextElement(currentElement);
+				    richTextBox_ConsoleOutput.AppendText(" ");
 			    }
-			    richTextBox_ConsoleOutput.AppendText(" ");
-		    }
-		    #endregion
-		    #region Add Message
-			if (ShowMessage)
-		    {
-			    int messageIndentSize = GetIndentSize();
-				int fullMessageSize = message.ToUnformattedSystemString().Length;
-			    int remainingCharactersToAdd = fullMessageSize;
-			    int charactersOnThisLine = 0;
 
-			    for (int i = 0; i < message.Elements.Count; i++)
+			    #endregion
+
+			    #region Add Message
+
+			    if (ShowMessage)
 			    {
-				    IRichTextElement thisElement = message.Elements[i];
-				    IRichTextElement workingElement;
+				    int messageIndentSize = GetIndentSize();
+				    int fullMessageSize = message.ToUnformattedSystemString().Length;
+				    int remainingCharactersToAdd = fullMessageSize;
+				    int charactersOnThisLine = 0;
 
-				    #region Limit Size of total message
-
-				    int maxLineSize = MessageSize;
-
-				    #region  Break the currrent element across lines if required.
-
-				    int sizeOfCurrentElement = thisElement.Message.Length;
-				    int sizeAlreadyAdded = 0;
-				    int sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
-				    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
-				    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
-				    int sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
-
-				    #region Keep breaking across lines...
-
-				    while (sizeWillRemain > 0)
+				    for (int i = 0; i < message.Elements.Count; i++)
 				    {
+					    IRichTextElement thisElement = message.Elements[i];
+					    IRichTextElement workingElement;
+
+					    #region Limit Size of total message
+
+					    int maxLineSize = MessageSize;
+
+					    #region  Break the currrent element across lines if required.
+
+					    int sizeOfCurrentElement = thisElement.Message.Length;
+					    int sizeAlreadyAdded = 0;
+					    int sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
+					    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
+					    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+					    int sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+
+					    #region Keep breaking across lines...
+
+					    while (sizeWillRemain > 0)
+					    {
+						    workingElement =
+							    ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd));
+						    workingElement.ForeColor = thisElement.ForeColor;
+						    workingElement.BackColor = thisElement.BackColor;
+						    workingElement.IsBold = thisElement.IsBold;
+						    workingElement.IsItallic = thisElement.IsItallic;
+						    workingElement.IsUnderlined = thisElement.IsUnderlined;
+						    workingElement.IsStrikeout = thisElement.IsStrikeout;
+						    workingElement.IsObfuscated = thisElement.IsObfuscated;
+
+						    if (workingElement.Message.Contains("\n"))
+						    {
+							    workingElement.Message = workingElement.Message.Replace("\n",
+								    new string(' ', MessageSize - sizeAlreadyAdded + messageIndentSize));
+						    }
+						    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+						    charactersOnThisLine += sizeToAdd;
+						    richTextBox_ConsoleOutput.AppendText(new string(' ', MessageSize - charactersOnThisLine));
+						    richTextBox_ConsoleOutput.AppendText(" ");
+						    richTextBox_ConsoleOutput.AppendText(new string(' ', messageIndentSize));
+						    charactersOnThisLine = 0;
+						    sizeAlreadyAdded += sizeToAdd;
+						    remainingCharactersToAdd -= sizeToAdd;
+						    sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
+						    sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
+						    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
+						    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
+					    }
+
+					    #endregion
+
+					    #region Last part of the element, no need to breaklines again.
+
 					    workingElement =
 						    ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd));
 					    workingElement.ForeColor = thisElement.ForeColor;
@@ -744,92 +807,65 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Windows
 
 					    if (workingElement.Message.Contains("\n"))
 					    {
-						    workingElement.Message = workingElement.Message.Replace("\n",
-							    new string(' ', MessageSize - sizeAlreadyAdded + messageIndentSize));
+						    workingElement.Message =
+							    workingElement.Message.Split(new[] {'\n'}, 2)[0] +
+
+							    new string(' ', MessageSize - workingElement.Message.Split(new[] {'\n'}, 2)[0].Length + 1) +
+
+							    "\n" +
+
+							    new string(' ', messageIndentSize + 3) +
+
+							    workingElement.Message.Split(new[] {'\n'}, 2)[1];
+
+						    charactersOnThisLine = thisElement.Message.Split(new[] {'\n'}, 2)[1].Length;
+						    remainingCharactersToAdd -= sizeToAdd;
+						    sizeToAdd = 0;
 					    }
+					    workingElement.BackColor = thisElement.BackColor;
+					    //if (OverrideForeColor) workingElement.ForeColor = ForeColor;
 					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
 					    charactersOnThisLine += sizeToAdd;
-					    richTextBox_ConsoleOutput.AppendText(new string(' ', MessageSize - charactersOnThisLine));
-					    richTextBox_ConsoleOutput.AppendText(" ");
-					    richTextBox_ConsoleOutput.AppendText(new string(' ', messageIndentSize));
-					    charactersOnThisLine = 0;
-					    sizeAlreadyAdded += sizeToAdd;
 					    remainingCharactersToAdd -= sizeToAdd;
-					    sizeWillRemain = sizeOfCurrentElement - sizeAlreadyAdded - sizeToAdd;
-					    sizeToAdd = sizeOfCurrentElement - sizeAlreadyAdded;
-					    if (sizeToAdd > maxLineSize) sizeToAdd = maxLineSize;
-					    if (sizeToAdd > maxLineSize - charactersOnThisLine) sizeToAdd = maxLineSize - charactersOnThisLine;
-				    }
 
-				    #endregion
+					    #endregion
 
-				    #region Last part of the element, no need to breaklines again.
+					    #region Finish the line with spaces.
 
-				    workingElement =
-					    ObjectFactory.CreateRichTextElement(thisElement.Message.Substring(sizeAlreadyAdded, sizeToAdd));
-				    workingElement.ForeColor = thisElement.ForeColor;
-				    workingElement.BackColor = thisElement.BackColor;
-				    workingElement.IsBold = thisElement.IsBold;
-				    workingElement.IsItallic = thisElement.IsItallic;
-				    workingElement.IsUnderlined = thisElement.IsUnderlined;
-				    workingElement.IsStrikeout = thisElement.IsStrikeout;
-				    workingElement.IsObfuscated = thisElement.IsObfuscated;
-
-				    if (workingElement.Message.Contains("\n"))
-				    {
-					    workingElement.Message =
-						    workingElement.Message.Split(new[] {'\n'}, 2)[0] +
-
-						    new string(' ', MessageSize - workingElement.Message.Split(new[] {'\n'}, 2)[0].Length + 1) +
-
-						    "\n" +
-
-						    new string(' ', messageIndentSize + 3) +
-
-						    workingElement.Message.Split(new[] {'\n'}, 2)[1];
-
-					    charactersOnThisLine = thisElement.Message.Split(new[] {'\n'}, 2)[1].Length;
+					    workingElement = ObjectFactory.CreateRichTextElement(new string(' ', MessageSize - charactersOnThisLine));
+					    workingElement.ForeColor = thisElement.ForeColor;
+					    workingElement.BackColor = thisElement.BackColor;
+					    workingElement.IsBold = thisElement.IsBold;
+					    workingElement.IsItallic = thisElement.IsItallic;
+					    workingElement.IsUnderlined = thisElement.IsUnderlined;
+					    workingElement.IsStrikeout = thisElement.IsStrikeout;
+					    workingElement.IsObfuscated = thisElement.IsObfuscated;
+					    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
+					    charactersOnThisLine += sizeToAdd;
 					    remainingCharactersToAdd -= sizeToAdd;
-					    sizeToAdd = 0;
+
+					    #endregion
+
+					    #endregion
+
+					    #endregion
 				    }
-				    workingElement.BackColor = thisElement.BackColor;
-				    //if (OverrideForeColor) workingElement.ForeColor = ForeColor;
-				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
-				    charactersOnThisLine += sizeToAdd;
-				    remainingCharactersToAdd -= sizeToAdd;
-
-				    #endregion
-
-				    #region Finish the line with spaces.
-
-				    workingElement = ObjectFactory.CreateRichTextElement(new string(' ', MessageSize - charactersOnThisLine));
-				    workingElement.ForeColor = thisElement.ForeColor;
-				    workingElement.BackColor = thisElement.BackColor;
-				    workingElement.IsBold = thisElement.IsBold;
-				    workingElement.IsItallic = thisElement.IsItallic;
-				    workingElement.IsUnderlined = thisElement.IsUnderlined;
-				    workingElement.IsStrikeout = thisElement.IsStrikeout;
-				    workingElement.IsObfuscated = thisElement.IsObfuscated;
-				    richTextBox_ConsoleOutput.AppendRichTextElement(workingElement);
-				    charactersOnThisLine += sizeToAdd;
-				    remainingCharactersToAdd -= sizeToAdd;
-
-				    #endregion
-
-				    #endregion
-
-				    #endregion
 			    }
-		    }
-		    #endregion
 
-		    #region Add Overflow if Required.
-			IRichTextString overflowElement = ObjectFactory.CreateRichTextString(messageFormattingDescriptor);
-		    overflowElement.AddFormattedString(new string(' ', OverflowSize));
-		    richTextBox_ConsoleOutput.AppendRichTextString(overflowElement);
-			#endregion
-			#endregion
-			richTextBox_ConsoleOutput.ScrollToCaret();
+			    #endregion
+
+			    #region Add Overflow if Required.
+
+			    IRichTextString overflowElement = ObjectFactory.CreateRichTextString(messageFormattingDescriptor);
+			    overflowElement.AddFormattedString(new string(' ', OverflowSize));
+			    richTextBox_ConsoleOutput.AppendRichTextString(overflowElement);
+
+			    #endregion
+
+			    #endregion
+
+			    richTextBox_ConsoleOutput.ScrollToCaret();
+		    }
 	    }
 		private void AddMessageDirect(IRichTextMessage thisRichTextMessage)
 		{
