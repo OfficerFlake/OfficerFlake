@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ConsoleUserList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 mc:Ignorable="d" 
+             d:DesignWidth="120" d:DesignHeight="376">
+
+	<ScrollViewer VerticalScrollBarVisibility="Visible">
+		<Grid Name="ConsoleUserListViewModel"
+			  Background="#161616"
+			  MaxWidth="120">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="Users" Width="120"/>
+			</Grid.ColumnDefinitions>
+		</Grid>
+	</ScrollViewer>
+</UserControl>

@@ -192,10 +192,6 @@
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\UserInterfaces\UserInterfaces.csproj">
-      <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
-      <Name>UserInterfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\Files\DATFile\DATFile.csproj">
       <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
       <Name>DATFile</Name>

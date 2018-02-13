@@ -13,7 +13,7 @@ using System.Windows.Threading;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
-namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
+namespace Com.OfficerFlake.Libraries.UserInterfaces
 {
 	/// <summary>
 	/// Interaction logic for ConsoleOutput.xaml
@@ -28,60 +28,58 @@ namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
 
 			#region HideCells
 			//Date
-			ConsoleOutputViewModel.ColumnDefinitions[0].Width = new GridLength(62);
+			//ConsoleOutputViewModel.ColumnDefinitions[0].MaxWidth = 0;
 
 			//Time
-			ConsoleOutputViewModel.ColumnDefinitions[1].Width = new GridLength(50);
+			//ConsoleOutputViewModel.ColumnDefinitions[1].MaxWidth = 0;
 
 			//Type
-			ConsoleOutputViewModel.ColumnDefinitions[2].Width = new GridLength(0);
+			ConsoleOutputViewModel.ColumnDefinitions[2].MaxWidth = 0;
 
 			//User
-			ConsoleOutputViewModel.ColumnDefinitions[3].Width = new GridLength(100);
+			//ConsoleOutputViewModel.ColumnDefinitions[3].MaxWidth = 0;
 
 			//String
-			ConsoleOutputViewModel.ColumnDefinitions[4].Width = new GridLength(1, GridUnitType.Star);
+			//ConsoleOutputViewModel.ColumnDefinitions[4].MaxWidth = 0;
 			#endregion
-			//this.DataContext = this;
-        }
+		}
 
 		private void AddMessageToWindow(RichTextMessageTextBlockContainer newMessage)
 		{
-
-				#region Add to Messages List
+			#region Add to Messages List
 				Messages.Add(newMessage);
-				#endregion
+			#endregion
 
-				#region Create New Row
-				RowDefinition newRow = new RowDefinition();
-				//newRow.Height = new GridLength(18);
+			#region Create New Row
+			RowDefinition newRow = new RowDefinition();
 
-				int newRowPosition = ConsoleOutputViewModel.RowDefinitions.Count;
-				ConsoleOutputViewModel.RowDefinitions.Add(newRow);
-				#endregion
-				#region Add Message Components To Window
-				ConsoleOutputViewModel.Children.Add(newMessage.Datestamp);
-				ConsoleOutputViewModel.Children.Add(newMessage.Timestamp);
-				ConsoleOutputViewModel.Children.Add(newMessage.Type);
-				ConsoleOutputViewModel.Children.Add(newMessage.User);
-				ConsoleOutputViewModel.Children.Add(newMessage.String);
-				#endregion
-				#region Set Position of Message Components
-				Grid.SetRow(newMessage.Datestamp, newRowPosition);
-				Grid.SetColumn(newMessage.Datestamp, 0);
+			int newRowPosition = ConsoleOutputViewModel.RowDefinitions.Count;
+			ConsoleOutputViewModel.RowDefinitions.Add(newRow);
+			#endregion
+			#region Add Message Components To Window
+			if (!OpenYSServerModeUserInterface.ShowMessages) return;
+			ConsoleOutputViewModel.Children.Add(newMessage.Datestamp);
+			ConsoleOutputViewModel.Children.Add(newMessage.Timestamp);
+			ConsoleOutputViewModel.Children.Add(newMessage.Type);
+			ConsoleOutputViewModel.Children.Add(newMessage.User);
+			ConsoleOutputViewModel.Children.Add(newMessage.String);
+			#endregion
+			#region Set Position of Message Components
+			Grid.SetRow(newMessage.Datestamp, newRowPosition);
+			Grid.SetColumn(newMessage.Datestamp, 0);
 
-				Grid.SetRow(newMessage.Timestamp, newRowPosition);
-				Grid.SetColumn(newMessage.Timestamp, 1);
+			Grid.SetRow(newMessage.Timestamp, newRowPosition);
+			Grid.SetColumn(newMessage.Timestamp, 1);
 
-				Grid.SetRow(newMessage.Type, newRowPosition);
-				Grid.SetColumn(newMessage.Type, 2);
+			//Grid.SetRow(newMessage.Type, newRowPosition);
+			//Grid.SetColumn(newMessage.Type, 2);
 
-				Grid.SetRow(newMessage.User, newRowPosition);
-				Grid.SetColumn(newMessage.User, 3);
+			Grid.SetRow(newMessage.User, newRowPosition);
+			Grid.SetColumn(newMessage.User, 3);
 
-				Grid.SetRow(newMessage.String, newRowPosition);
-				Grid.SetColumn(newMessage.String, 4);
-				#endregion
+			Grid.SetRow(newMessage.String, newRowPosition);
+			Grid.SetColumn(newMessage.String, 4);
+			#endregion
 		}
 		#region Console
 		public void AddInformationMessage(string message)

@@ -5,15 +5,15 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
 using Com.OfficerFlake.Libraries.Logger;
 
-namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
+namespace Com.OfficerFlake.Libraries.UserInterfaces
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class ConsoleWindow : Window
+	public partial class ServerModeUserInterface : Window
 	{
 		#region Creation
-		public ConsoleWindow()
+		public ServerModeUserInterface()
 		{
 			Visibility = Visibility.Hidden;
 			ShowInTaskbar = false;
@@ -50,7 +50,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
 		#endregion
 
 		#region Properties
-
+		public Boolean ShowConsoleMessages { get; set; } = true;
+		public Boolean ShowDebugMessages { get; set; } = true;
 		#endregion
 	}
 
@@ -59,7 +60,19 @@ namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
 	/// </summary>
 	public static class OpenYSServerModeUserInterface
 	{
-		public static ConsoleWindow consoleWindow;
+		public static ServerModeUserInterface consoleWindow;
+
+		#region Settings
+		public static Boolean ShowMessages = true;
+		public static Boolean ShowMessages_Console = true;
+		public static Boolean ShowMessages_Users = true;
+		public static Boolean ShowDebug = true;
+		public static Boolean ShowDebug_Summary = false;
+		public static Boolean ShowDebug_Detail = false;
+		public static Boolean ShowDebug_Warning = true;
+		public static Boolean ShowDebug_Error = true;
+		public static Boolean ShowDebug_Crash = true;
+		#endregion
 
 		#region Creation
 		public static void CreateWindow()
@@ -68,7 +81,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
 			Thread newThread = new Thread(() =>
 			{
 				Application newApp = new Application();
-				consoleWindow = new ConsoleWindow();
+				consoleWindow = new ServerModeUserInterface();
 				ready.Set();
 				newApp.Run();
 			});

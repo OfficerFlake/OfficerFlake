@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UserInterfacesWPF.Properties {
+namespace UserInterfaces.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

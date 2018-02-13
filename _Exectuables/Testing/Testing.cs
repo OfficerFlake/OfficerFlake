@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries;
@@ -9,8 +12,7 @@ using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Logger;
 
 using Com.OfficerFlake.Libraries.Networking;
-using Com.OfficerFlake.Libraries.UserInterfaces.Windows;
-using Com.OfficerFlake.Libraries.UserInterfacesWPF;
+using Com.OfficerFlake.Libraries.UserInterfaces;
 using Com.OfficerFlake.Libraries.YSFlight;
 
 using Console = Com.OfficerFlake.Libraries.Logger.Console;
@@ -133,8 +135,8 @@ namespace Com.OfficerFlake.Executables.Testing
 		}
 		#endregion
 		#endregion
-
-	    private static void LinkObjects()
+		#region Link Objects
+		private static void LinkObjects()
 	    {
 			#region Link Objects Together
 		    #region LINK FACTORY FIRST!
@@ -151,6 +153,8 @@ namespace Com.OfficerFlake.Executables.Testing
 		    OpenYSServerModeUserInterface.Show();
 		    #endregion
 		}
+		#endregion
+		#region Run Server
 		private static void MainProgram()
 		{
 			Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
@@ -179,5 +183,6 @@ namespace Com.OfficerFlake.Executables.Testing
 
 			Server.Stop();
 		}
+		#endregion
 	}
 }

@@ -12,14 +12,16 @@ using System.Windows.Media;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
-namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
+namespace Com.OfficerFlake.Libraries.UserInterfaces
 {
 	public static class RichTextStringConverter
 	{
 		public static TextBlock ToTextBlock(IRichTextString input)
 		{
 			TextBlock output = new TextBlock();
-			output.Margin = new Thickness(5, 0, 5, 0);
+			output.Padding = new Thickness(5, 0, 5, 0);
+			output.Margin = new Thickness(0, 0, 0, 0);
+			output.TextWrapping = TextWrapping.WrapWithOverflow;
 			foreach (IRichTextElement thisElement in input.Elements)
 			{
 				#region Set String
@@ -40,17 +42,17 @@ namespace Com.OfficerFlake.Libraries.UserInterfacesWPF
 						thisElement.ForeColor.Green,
 						thisElement.ForeColor.Blue)
 				);
-				//thisRun.Background = new SolidColorBrush
-				//(
-				//	Color.FromArgb(
-				//		thisElement.BackColor.Alpha,
-				//		thisElement.BackColor.Red,
-				//		thisElement.BackColor.Green,
-				//		thisElement.BackColor.Blue)
-				//);
+				////thisRun.Background = new SolidColorBrush
+				////(
+				////	Color.FromArgb(
+				////		thisElement.BackColor.Alpha,
+				////		thisElement.BackColor.Red,
+				////		thisElement.BackColor.Green,
+				////		thisElement.BackColor.Blue)
+				////);
 				thisRun.Background = new SolidColorBrush
 				(
-					Color.FromArgb(0,0,0,0)
+					Color.FromArgb(0, 0, 0, 0)
 				);
 				#endregion
 				output.Inlines.Add(thisRun);

@@ -1,22 +1,23 @@
-﻿<Window x:Class="Com.OfficerFlake.Libraries.UserInterfacesWPF.ConsoleWindow"
+﻿<Window x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ServerModeUserInterface"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Com.OfficerFlake.Libraries.UserInterfacesWPF"
+        xmlns:local="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces"
         mc:Ignorable="d"
         Title="OpenYS" Width="640" Height="480"
 		Loaded="OnLoaded"
 		Closed="OnClosed">
-    <Grid>
-        <Grid.RowDefinitions>
+
+	<Grid>
+		<Grid.RowDefinitions>
 			<RowDefinition x:Name="MenuBarRow" Height="24"/>
 			<RowDefinition x:Name="ButtonRow" Height="32"/>
 			<RowDefinition x:Name="ConsoleOutputRow" Height="*"/>
 			<RowDefinition x:Name="ConsoleInputRow" Height="24"/>
 			<RowDefinition x:Name="StatusBarRow" Height="24"/>
 		</Grid.RowDefinitions>
-		<Rectangle x:Name="MenuBar" Grid.Row="0" Fill="#161616"></Rectangle>
+		<local:MenuBar Grid.Row="0"/>
 		<Rectangle x:Name="Buttons" Grid.Row="1" Fill="#161616"></Rectangle>
 		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
@@ -27,15 +28,7 @@
 				<local:ConsoleOutput x:Name="ConsoleOutput"/>
 			</Border>
 			<Border Grid.Column="1" BorderThickness="1" BorderBrush="#fff">
-				<ScrollViewer VerticalScrollBarVisibility="Visible">
-					<ListBox x:Name="UserList" Background="#161616" Foreground="#fff">
-						<ListBoxItem>
-							<TextBlock>
-								<Run Text="User" Foreground="#fff"/>
-							</TextBlock>
-						</ListBoxItem>
-					</ListBox>
-				</ScrollViewer>
+				<local:ConsoleUserList x:Name="ConsoleUserList"/>
 			</Border>
 		</Grid>
 		<Rectangle Grid.Row="3" Fill="#161616"></Rectangle>

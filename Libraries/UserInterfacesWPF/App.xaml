@@ -1,7 +1,7 @@
-﻿<Application x:Class="UserInterfacesWPF.App"
+﻿<Application x:Class="UserInterfaces.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:UserInterfacesWPF">
+             xmlns:local="clr-namespace:UserInterfaces">
     <Application.Resources>
          
     </Application.Resources>

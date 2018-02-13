@@ -191,12 +191,8 @@
       <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
       <Name>UnitsOfMeasurement</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\UserInterfacesWPF\UserInterfacesWPF.csproj">
+    <ProjectReference Include="..\..\Libraries\UserInterfacesWPF\UserInterfaces.csproj">
       <Project>{87c6c663-15be-4c3f-84ee-2a5a861fe022}</Project>
-      <Name>UserInterfacesWPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\UserInterfaces\UserInterfaces.csproj">
-      <Project>{5c04e821-5dad-4d67-bd01-70e4adb56e94}</Project>
       <Name>UserInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\YSFlight\Files\DATFile\DATFile.csproj">

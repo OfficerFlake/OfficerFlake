@@ -1,16 +1,16 @@
-﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfacesWPF.ConsoleOutput"
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ConsoleOutput"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:userInterfacesWpf="clr-namespace:Com.OfficerFlake.Libraries.UserInterfacesWPF"
+             xmlns:UserInterfaces="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces"
              mc:Ignorable="d" 
-             d:DesignWidth="520" d:DesignHeight="376"
-			 d:DataContext="{d:DesignData }">
+             d:DesignWidth="520" d:DesignHeight="376">
 
 	<ScrollViewer VerticalScrollBarVisibility="Visible">
 		<Grid Name="ConsoleOutputViewModel"
-				  Background="#161616">
+			  Background="#161616"
+			  MaxWidth="520">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition x:Name="Date" Width="62"/>
 				<ColumnDefinition x:Name="Time" Width="50"/>
