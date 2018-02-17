@@ -62,18 +62,6 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 	{
 		public static ServerModeUserInterface consoleWindow;
 
-		#region Settings
-		public static Boolean ShowMessages = true;
-		public static Boolean ShowMessages_Console = true;
-		public static Boolean ShowMessages_Users = true;
-		public static Boolean ShowDebug = true;
-		public static Boolean ShowDebug_Summary = false;
-		public static Boolean ShowDebug_Detail = false;
-		public static Boolean ShowDebug_Warning = true;
-		public static Boolean ShowDebug_Error = true;
-		public static Boolean ShowDebug_Crash = true;
-		#endregion
-
 		#region Creation
 		public static void CreateWindow()
 		{

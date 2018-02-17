@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -17,6 +18,7 @@ using Com.OfficerFlake.Libraries.YSFlight;
 
 using Console = Com.OfficerFlake.Libraries.Logger.Console;
 using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
+using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
 namespace Com.OfficerFlake.Executables.Testing
 {
@@ -25,8 +27,10 @@ namespace Com.OfficerFlake.Executables.Testing
 		#region Start Program!
 		[STAThread]
         public static void Main()
-        {
-            Application.EnableVisualStyles();
+		{
+			LoadAllDLLs();
+
+			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
 	        AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -37,6 +41,23 @@ namespace Com.OfficerFlake.Executables.Testing
 
         }
 		#endregion
+
+	    public static void LoadAllDLLs()
+	    {
+		    string[] files = Directory.GetFiles("./Libraries/", "*.dll").Select(Path.GetFileNameWithoutExtension).ToArray();
+		    foreach (string thisfile in files)
+		    {
+			    try
+			    {
+				    byte[] DLLBytes = File.ReadAllBytes("./Libraries/" + thisfile + ".DLL");
+				    byte[] PDBBytes = File.ReadAllBytes("./ProgramDebugSymbols/" + thisfile + ".PDB");
+				    Assembly.Load(DLLBytes, PDBBytes);
+			    }
+			    catch
+			    {
+			    }
+		    }
+	    }
 		#region LoadFromLibrariesFolder
 		private static Assembly LoadFromLibrariesFolder(object sender, ResolveEventArgs args)
 		{
@@ -121,6 +142,10 @@ namespace Com.OfficerFlake.Executables.Testing
 			}
 			#endregion
 
+			if (AssemblyToLoad == null)
+			{
+				int i = 0;
+			}
 			return AssemblyToLoad;
 		}
 

@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 mc:Ignorable="d" 
-             d:DesignWidth="640" d:DesignHeight="24">
+			 xmlns:settings="clr-namespace:Com.OfficerFlake.Libraries;assembly=Settings"
+			 xmlns:properties="clr-namespace:UserInterfaces.Properties"
+			 mc:Ignorable="d"
+             d:DesignWidth="640"
+			 d:DesignHeight="24">
 	<Border Grid.Row="0" Background="#eeeeee">
 		<Menu Name="MenuBarViewModel"
 		      VerticalAlignment="Center"
@@ -13,15 +16,36 @@
 			<MenuItem Header="OpenYS">
 				<MenuItem Header="Console Output">
 					<MenuItem Header="Show Messages...">
-						<MenuItem Header="Console" IsCheckable="True" IsChecked="{Binding OpenYSServerModeUserInterface.ShowMessages_Console, Mode=TwoWay}"/>
-						<MenuItem Header="Users" IsCheckable="True" IsChecked="True"/>
+						<MenuItem Header="Console"
+								  x:Name="OpenYS_ConsoleOutput_ShowMessages_Console"
+								  IsCheckable="True"
+								  IsChecked="{Binding Console, Mode=TwoWay, FallbackValue=True}"/>
+						<MenuItem Header="Users"
+						          x:Name="OpenYS_ConsoleOutput_ShowMessages_Users"
+								  IsCheckable="True"
+						          IsChecked="{Binding User, Mode=TwoWay, FallbackValue=True}"/>
 					</MenuItem>
 					<MenuItem Header="Show Debug...">
-						<MenuItem Header="Summary" IsCheckable="True" IsChecked="False"/>
-						<MenuItem Header="Detail" IsCheckable="True" IsChecked="False"/>
-						<MenuItem Header="Warning" IsCheckable="True" IsChecked="True"/>
-						<MenuItem Header="Error" IsCheckable="True" IsChecked="True"/>
-						<MenuItem Header="Crash" IsCheckable="True" IsChecked="True"/>
+						<MenuItem Header="Summary"
+						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Summary"
+						          IsCheckable="True"
+						          IsChecked="{Binding Summary, Mode=TwoWay, FallbackValue=False}"/>
+						<MenuItem Header="Detail"
+						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Detail"
+						          IsCheckable="True"
+						          IsChecked="{Binding Detail, Mode=TwoWay, FallbackValue=False}"/>
+						<MenuItem Header="Warning"
+						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Warning"
+						          IsCheckable="True"
+						          IsChecked="{Binding Warning, Mode=TwoWay, FallbackValue=True}"/>
+						<MenuItem Header="Error"
+						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Error"
+						          IsCheckable="True"
+						          IsChecked="{Binding Error, Mode=TwoWay, FallbackValue=True}"/>
+						<MenuItem Header="Crash"
+						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Crash"
+						          IsCheckable="True"
+						          IsChecked="{Binding Warning, Mode=TwoWay, FallbackValue=True}"/>
 					</MenuItem>
 				</MenuItem>
 			</MenuItem>

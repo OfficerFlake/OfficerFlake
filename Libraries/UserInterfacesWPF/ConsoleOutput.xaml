@@ -7,17 +7,74 @@
              mc:Ignorable="d" 
              d:DesignWidth="520" d:DesignHeight="376">
 
-	<ScrollViewer VerticalScrollBarVisibility="Visible">
-		<Grid Name="ConsoleOutputViewModel"
-			  Background="#161616"
-			  MaxWidth="520">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition x:Name="Date" Width="62"/>
-				<ColumnDefinition x:Name="Time" Width="50"/>
-				<ColumnDefinition x:Name="Type" Width="70"/>
-				<ColumnDefinition x:Name="User" Width="100"/>
-				<ColumnDefinition x:Name="String" Width="*"/>
-			</Grid.ColumnDefinitions>
-		</Grid>
+	<ScrollViewer VerticalScrollBarVisibility="Visible"
+				  Background="#161616">
+
+		<DataGrid x:Name="DataGridViewModel"
+				  
+				  Background="Transparent"
+				  RowBackground="Transparent"
+				  
+				  GridLinesVisibility="None"
+				  
+		          AutoGenerateColumns="False"
+		          HeadersVisibility="None"
+				  ColumnHeaderHeight="0"
+		          RowHeaderWidth="0"
+				  
+				  BorderBrush="Transparent"
+				  BorderThickness="0"
+				  
+				  Margin="0"
+				  Padding="0">
+			<DataGrid.Resources>
+				<Style TargetType="DataGridCell">
+					<Setter Property="BorderThickness" Value="0" />
+				</Style>
+			</DataGrid.Resources>
+			<DataGrid.Columns>
+				<DataGridTemplateColumn x:Name="Datestamp" Width="62">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ContentPresenter Margin="0" Content="{Binding Datestamp}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn x:Name="Timestamp" Width="50">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ContentPresenter Margin="0" Content="{Binding Timestamp}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn x:Name="Type" Width="70">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ContentPresenter Margin="0" Content="{Binding Type}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn x:Name="User" Width="100">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ContentPresenter Margin="0" Content="{Binding User}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+				<DataGridTemplateColumn x:Name="String" Width="*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ContentPresenter Margin="0" Content="{Binding String}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				
+			</DataGrid.Columns>
+		</DataGrid>
+		
 	</ScrollViewer>
 </UserControl>

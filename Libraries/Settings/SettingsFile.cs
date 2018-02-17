@@ -1,6 +1,6 @@
 ﻿namespace Com.OfficerFlake.Libraries
 {
-	public static partial class Settings
+	public static partial class SettingsLibrary
 	{
 		public class SettingFile : IO.CommandFile
 		{
