@@ -329,8 +329,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Performance
             var B500HD = GetNumberOfWeapon(Extensions.YSFlight.WeaponCategories.B500HD);
             var GUN = GetMaxGunDamagePerSecond() * (GetAmmoOfGuns()/3000d);
 
-			//TODO: SOLVE SLOT LOADING  (PRIOTITY=0)
-			//TODO: SOLVE SCORE BALANCE  (PRIOTITY=0)
+			//TODO: [1] Fix AMMO Slot Loading.
+			//TODO: [1] Find A Fair Score Balance.
 			var score =
                 (AAM * 1.0d) +
                 (A_AAM * 1.2d) +

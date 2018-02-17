@@ -19,7 +19,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public static class StatisticsExtensions
 	{
-		//TODO : Mopve to Implementation
+		//TODO: [3] Move Statistics to Implementation/Interfaces.
 		public static double GetCorrelationCoefficient(IStatistic X, IStatistic Y)
 		{
 			int n = (X.n > Y.n) ? X.n : Y.n;

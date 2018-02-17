@@ -415,7 +415,7 @@ namespace Com.OfficerFlake.Libraries
 
 			public static bool SaveAll()
 			{
-				//TODO: REWRITE SAVEALL TO USE TXT FILE
+				//TODO: [4] Rewrite Settings.SaveAll to use TXT File.
 
 				SettingsFileWatcher.EnableRaisingEvents = false;
 				FileInfo File = new FileInfo("./Settings.xlsx");

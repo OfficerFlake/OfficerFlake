@@ -27,7 +27,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			get
 			{
 				return null;
-				//TODO : Add a RichTextMessage container, and a converter to convert from RTM to textblock and back again!
+				//TODO: [5] Add a RichTextMessage container, and a converter to convert from RTM to textblock and back again!
 			}
 		}
 
