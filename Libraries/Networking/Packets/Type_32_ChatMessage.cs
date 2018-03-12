@@ -1,8 +1,10 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_32_ChatMessage : GenericPacket
+	public class Type_32_ChatMessage : GenericPacket, IPacket_32_ChatMessage
 	{
 		public Type_32_ChatMessage() : base(32)
 		{
@@ -19,6 +21,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			Message = message;
 		}
 
+		public IUser User { get; set; } = Users.None;
 		private string _Username = "";
 
 		public bool SetUsername(string username)

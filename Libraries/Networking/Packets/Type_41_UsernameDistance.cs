@@ -1,46 +1,42 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_41_UsernameDistance : GenericPacket
+	public class Type_41_UsernameDistance : GenericPacket, IPacket_41_UsernameDistance
 	{
 		public Type_41_UsernameDistance() : base(41)
 		{
 		}
 
-		public Type_41_UsernameDistance(Boolean AlwaysOrNeverVisible) : base(41)
-		{
-			Distance = AlwaysOrNeverVisible ? (UInt16)1 : (UInt16)2;
-		}
-
 		public Type_41_UsernameDistance(UInt16 distance) : base(41)
 		{
-			Distance = distance;
+			Distance = distance.Meters();
 		}
 
-		public UInt16 Distance
+		public IDistance Distance
 		{
-			get => GetUInt16(0);
-			set => SetUInt16(0, (value > 2) ? value : (UInt16)3);
+			get => GetUInt16(0).Meters();
+			set => SetUInt16(0, (value.ToMeters().RawValue > 2) ? (UInt16)value.ToMeters().RawValue : (UInt16)3);
 		}
 
 		public Boolean IsAlwaysVisible
 		{
-			get => (Distance == 1);
-			set => Distance = value ? (UInt16) 1 : (UInt16) 2;
+			get => (Distance.ToMeters().RawValue == 1);
 		}
 		public void SetAlwaysVisible()
 		{
-			Distance = 1;
+			SetUInt16(0, 1);
 		}
 
 		public Boolean IsNeverVisible
 		{
-			get => (Distance == 2);
+			get => (Distance.ToMeters().RawValue == 2);
 		}
 		public void SetNeverVisible()
 		{
-			Distance = 2;
+			SetUInt16(0, 2);
 		}
 	}
 }

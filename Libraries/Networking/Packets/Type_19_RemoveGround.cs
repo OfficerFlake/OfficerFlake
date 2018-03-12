@@ -1,21 +1,22 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_19_RemoveGround : GenericPacket
+	public class Type_19_RemoveGround : GenericPacket, IPacket_19_RemoveGround
 	{
 		public Type_19_RemoveGround() : base(19)
 		{
 		}
-		public Type_19_RemoveGround(Int32 entityId) : base(19)
+		public Type_19_RemoveGround(UInt32 entityId) : base(19)
 		{
-			EntityId = entityId;
+			ID = entityId;
 		}
 
-		public Int32 EntityId
+		public UInt32 ID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 	}
 }

@@ -104,7 +104,7 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => slaveFactory.CreatePacket32ServerMessage(message);
 		public static IPacket_33_Weather CreatePacket33Weather() => slaveFactory.CreatePacket33Weather();
 		public static IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => slaveFactory.CreatePacket35ReviveAllGrounds();
-		public static IPacket_36_WeaponLoadout CreatePacket36WeaponLoadout() => slaveFactory.CreatePacket36WeaponLoadout();
+		public static IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout() => slaveFactory.CreatePacket36WeaponsLoadout();
 		public static IPacket_37_ListUser CreatePacket37ListUser() => slaveFactory.CreatePacket37ListUser();
 		public static IPacket_38_QueryAirstate CreatePacket38QueryAirstate() => slaveFactory.CreatePacket38QueryAirstate();
 		public static IPacket_39_WeaponsOption CreatePacket39WeaponsOption() => slaveFactory.CreatePacket39WeaponsOption();

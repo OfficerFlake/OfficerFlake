@@ -103,7 +103,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_32_ServerMessage CreatePacket32ServerMessage(string message);
 		IPacket_33_Weather CreatePacket33Weather();
 		IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds();
-		IPacket_36_WeaponLoadout CreatePacket36WeaponLoadout();
+		IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout();
 		IPacket_37_ListUser CreatePacket37ListUser();
 		IPacket_38_QueryAirstate CreatePacket38QueryAirstate();
 		IPacket_39_WeaponsOption CreatePacket39WeaponsOption();

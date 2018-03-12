@@ -1,42 +1,43 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_18_LockOn : GenericPacket
+	public class Type_18_LockOn : GenericPacket, IPacket_18_LockOn
 	{
 		public Type_18_LockOn() : base(18)
 		{
 		}
-		public Type_18_LockOn(Int32 lockedOnBy_ID, Int32 lockedOnBy_Type, Int32 lockedOnTo_ID, Int32 lockedOnTo_Type) : base(18)
+		public Type_18_LockOn(UInt32 lockedOnBy_ID, UInt32 lockedOnBy_Type, UInt32 lockedOnTo_ID, UInt32 lockedOnTo_Type) : base(18)
 		{
-			LockedOnBy_ID = lockedOnBy_ID;
-			LockedOnBy_Type = lockedOnBy_Type;
-			LockedOnTo_ID = lockedOnTo_ID;
-			LockedOnTo_Type = lockedOnTo_Type;
+			LockedOnByID = lockedOnBy_ID;
+			LockedOnByType = lockedOnBy_Type;
+			LockedOnToID = lockedOnTo_ID;
+			LockedOnToType = lockedOnTo_Type;
 		}
 
-		public Int32 LockedOnBy_ID
+		public UInt32 LockedOnByID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 
-		public Int32 LockedOnBy_Type
+		public UInt32 LockedOnByType
 		{
-			get => GetInt32(4);
-			set => SetInt32(4, value);
+			get => GetUInt32(4);
+			set => SetUInt32(4, value);
 		}
 
-		public Int32 LockedOnTo_ID
+		public UInt32 LockedOnToID
 		{
-			get => GetInt32(8);
-			set => SetInt32(8, value);
+			get => GetUInt32(8);
+			set => SetUInt32(8, value);
 		}
 
-		public Int32 LockedOnTo_Type
+		public UInt32 LockedOnToType
 		{
-			get => GetInt32(12);
-			set => SetInt32(12, value);
+			get => GetUInt32(12);
+			set => SetUInt32(12, value);
 		}
 	}
 }

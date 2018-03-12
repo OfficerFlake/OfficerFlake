@@ -1,21 +1,22 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_13_RemoveAircraft : GenericPacket
+	public class Type_13_RemoveAircraft : GenericPacket, IPacket_13_RemoveAircraft
 	{
 		public Type_13_RemoveAircraft() : base(13)
 		{
 		}
-		public Type_13_RemoveAircraft(Int32 entityId) : base(13)
+		public Type_13_RemoveAircraft(UInt32 entityId) : base(13)
 		{
-			EntityId = entityId;
+			ID = entityId;
 		}
 
-		public Int32 EntityId
+		public UInt32 ID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 4:
 						IPacket_04_Field Packet04 = ObjectFactory.CreatePacket04Field();
 						Packet04.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_04_Field(thisConnection, Packet04);
 					case 5:
 						IPacket_05_AddVehicle Packet05 = ObjectFactory.CreatePacket05AddVehicle();
 						Packet05.Data = thisPacket.Data;
@@ -30,7 +30,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 6:
 						IPacket_06_Acknowledgement Packet06 = ObjectFactory.CreatePacket06Acknowledgement();
 						Packet06.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_06_Acknowledgement(thisConnection, Packet06);
 					case 7:
 						IPacket_07_SmokeColor Packet07 = ObjectFactory.CreatePacket07SmokeColor();
 						Packet07.Data = thisPacket.Data;
@@ -66,7 +66,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 17:
 						IPacket_17_HeartBeat Packet17 = ObjectFactory.CreatePacket17HeartBeat();
 						Packet17.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_17_HeartBeat(thisConnection, Packet17);
 					case 18:
 						IPacket_18_LockOn Packet18 = ObjectFactory.CreatePacket18LockOn();
 						Packet18.Data = thisPacket.Data;
@@ -107,13 +107,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 				    case 33:
 					    IPacket_33_Weather Packet33 = ObjectFactory.CreatePacket33Weather();
 					    Packet33.Data = thisPacket.Data;
-					    throw new NotImplementedException();
+					    return Process_Type_33_Weather(thisConnection, Packet33);
 					case 35:
 						IPacket_35_ReviveAllGrounds Packet35 = ObjectFactory.CreatePacket35ReviveAllGrounds();
 						Packet35.Data = thisPacket.Data;
 						throw new NotImplementedException();
 					case 36:
-						IPacket_36_WeaponLoadout Packet36 = ObjectFactory.CreatePacket36WeaponLoadout();
+						IPacket_36_WeaponsLoadout Packet36 = ObjectFactory.CreatePacket36WeaponsLoadout();
 						Packet36.Data = thisPacket.Data;
 						throw new NotImplementedException();
 					case 37:
@@ -135,11 +135,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 43:
 						IPacket_43_ServerCommand Packet43 = ObjectFactory.CreatePacket43ServerCommand();
 						Packet43.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_43_ServerCommand(thisConnection, Packet43);
 					case 44:
 						IPacket_44_AircraftList Packet44 = ObjectFactory.CreatePacket44AircraftList();
 						Packet44.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_44_AircraftList(thisConnection, Packet44);
 					case 45:
 						IPacket_45_GroundCommand Packet45 = ObjectFactory.CreatePacket45GroundCommand();
 						Packet45.Data = thisPacket.Data;

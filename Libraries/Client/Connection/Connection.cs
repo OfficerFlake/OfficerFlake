@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -237,6 +238,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			Combine:
 			try
 			{
+				output = ObjectFactory.CreateGenericPacket();
 				output.ResizeData((int)size);
 				output.Type = type;
 				output.Data = data;
@@ -271,6 +273,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 			{
 				TCPSocket.Send(thisPacket.Serialise());
+				Debug.AddDetailMessage("Next Packet (" + thisPacket.Type  + ")\n" +
+				thisPacket.Serialise().ToHexString() + "\n" +
+				thisPacket.Serialise().ToSystemString());
 				return true;
 			}
 			catch (ArgumentNullException)

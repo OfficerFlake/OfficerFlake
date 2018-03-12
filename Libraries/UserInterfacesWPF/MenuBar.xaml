@@ -45,11 +45,10 @@
 						<MenuItem Header="Crash"
 						          x:Name="OpenYS_ConsoleOutput_ShowDebug_Crash"
 						          IsCheckable="True"
-						          IsChecked="{Binding Warning, Mode=TwoWay, FallbackValue=True}"/>
+						          IsChecked="{Binding Crash, Mode=TwoWay, FallbackValue=True}"/>
 					</MenuItem>
 				</MenuItem>
 			</MenuItem>
-
 		</Menu>
 	</Border>
 </UserControl>

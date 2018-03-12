@@ -222,10 +222,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IAngle HdgZ { get; set; }
 		ISpeed LaunchVelocity { get; set; }
 		IDistance BurnoutDistance { get; set; }
-		UInt32 MaxDamage { get; set; }
+		UInt32 MaximumDamage { get; set; }
 		UInt16 SenderType { get; set; }
 		UInt32 SenderID { get; set; }
-		ISpeed MaximumVelcoity { get; set; }
+		ISpeed MaximumVelocity { get; set; }
 	}
 	public enum Packet_OrdinanceType
 	{
@@ -245,7 +245,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IPacket_21_GroundData : IPacket
 	{
-		ITime Timestamp { get; set; }
+		ITimeSpan Timestamp { get; set; }
 		UInt32 ID { get; set; }
 		UInt16 Strength { get; set; }
 		UInt16 Version { get; set; }
@@ -270,7 +270,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		UInt32 AttackerType { get; set; }
 		UInt16 Damage { get; set; }
 		Packet_OrdinanceType OrdinanceType { get; set; }
-		UInt32 Unknwown { get; set; }
+		UInt32 Unknown { get; set; }
 	}
 	public interface IPacket_29_NetcodeVersion : IPacket
 	{
@@ -295,14 +295,15 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		String Message { get; set; }
 	}
+
 	public interface IPacket_33_Weather : IPacket
 	{
 		Packet_33WeatherLighting Lighting { get; set; }
 		Byte Options { get; set; }
 		Boolean ForceObeyLandEverywhere { get; set; }
 		Boolean EnableLandEverywhere { get; set; }
-		Boolean ForceObeyCollions { get; set; }
-		Boolean EnableCollions { get; set; }
+		Boolean ForceObeyCollisions { get; set; }
+		Boolean EnableCollisions { get; set; }
 		Boolean ForceObeyBlackOut { get; set; }
 		Boolean EnableBlackOut { get; set; }
 		Boolean ForceObeyVisibility { get; set; }
@@ -310,6 +311,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		ISpeed WindX { get; set; }
 		ISpeed WindY { get; set; }
 		ISpeed WindZ { get; set; }
+		IDistance Visibility { get; set; }
+
+	void Initialise();
 	}
 	public enum Packet_33WeatherLighting
 	{
@@ -319,13 +323,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_35_ReviveAllGrounds : IPacket
 	{
 	}
-	public interface IPacket_36_WeaponLoadout : IPacket
+	public interface IPacket_36_WeaponsLoadout : IPacket
 	{
 		UInt32 ID { get; set; }
 		UInt16 Version { get; set; }
 		List<Packet_36_WeaponLoadingDescription> Weapons { get; set; }
 	}
-	public interface Packet_36_WeaponLoadingDescription : IPacket
+	public interface Packet_36_WeaponLoadingDescription
 	{
 		Packet_OrdinanceType WeaponType { get; set; }
 		UInt16 Ammo { get; set; }
@@ -333,7 +337,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_37_ListUser : IPacket
 	{
 		Packet_37UserType UserType { get; set; }
-		UInt32 IFF { get; set; }
+		UInt16 IFF { get; set; }
 		UInt32 ID { get; set; }
 		String Identify { get; set; }
 	}
@@ -356,8 +360,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_41_UsernameDistance : IPacket
 	{
 		IDistance Distance { get; set; }
-		Boolean IsAlwaysVisible { get; set; }
-		Boolean IsNeverVisible { get; set; }
+		Boolean IsAlwaysVisible { get; }
+		void SetAlwaysVisible();
+		Boolean IsNeverVisible { get; }
+		void SetNeverVisible();
 	}
 	public interface IPacket_43_ServerCommand : IPacket
 	{

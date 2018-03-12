@@ -1,21 +1,22 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_12_Unjoin : GenericPacket
+	public class Type_12_Unjoin : GenericPacket, IPacket_12_LeaveFlight
 	{
 		public Type_12_Unjoin() : base(12)
 		{
 		}
-		public Type_12_Unjoin(Int32 entityId) : base(12)
+		public Type_12_Unjoin(UInt32 entityId) : base(12)
 		{
-			EntityId = entityId;
+			ID = entityId;
 		}
 
-		public Int32 EntityId
+		public UInt32 ID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 	}
 }

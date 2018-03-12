@@ -58,6 +58,7 @@
     <Compile Include="GenericPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Type_03_Error.cs" />
+    <Compile Include="Type_32_ServerMessage.cs" />
     <Compile Include="Type_38_QueryAirstate.cs" />
     <Compile Include="Type_22_Damage.cs" />
     <Compile Include="Type_50_GroundColor.cs" />
@@ -66,15 +67,15 @@
     <Compile Include="Type_47_ForceJoin.cs" />
     <Compile Include="Type_45_GroundCommand.cs" />
     <Compile Include="Type_44_AircraftList.cs" />
-    <Compile Include="Type_43_MiscCommand.cs" />
+    <Compile Include="Type_43_ServerCommand.cs" />
     <Compile Include="Type_41_UsernameDistance.cs" />
-    <Compile Include="Type_39_WeaponsEnabled.cs" />
+    <Compile Include="Type_39_WeaponsOption.cs" />
     <Compile Include="Type_36_WeaponsLoadout.cs" />
     <Compile Include="Type_37_ListUser.cs" />
     <Compile Include="Type_35_ReviveAllGrounds.cs" />
     <Compile Include="Type_33_Weather.cs" />
     <Compile Include="Type_32_ChatMessage.cs" />
-    <Compile Include="Type_31_MissilesEnabled.cs" />
+    <Compile Include="Type_31_MissilesOption.cs" />
     <Compile Include="Type_30_AircraftCommand.cs" />
     <Compile Include="Type_29_NetcodeVersion.cs" />
     <Compile Include="Type_21_GroundData.cs" />

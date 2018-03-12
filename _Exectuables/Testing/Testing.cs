@@ -28,7 +28,7 @@ namespace Com.OfficerFlake.Executables.Testing
 		[STAThread]
         public static void Main()
 		{
-			LoadAllDLLs();
+			//LoadAllDLLs();
 
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -55,6 +55,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			    }
 			    catch
 			    {
+				    int i = 0;
 			    }
 		    }
 	    }
@@ -182,11 +183,13 @@ namespace Com.OfficerFlake.Executables.Testing
 		#region Run Server
 		private static void MainProgram()
 		{
-			Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
-			Debug.AddErrorMessage(new Exception("ERROR TEST"), "ERROR TEST");
-			Debug.AddWarningMessage("WARNING TEST");
-			Debug.AddDetailMessage("DETAIL TEST");
-			Debug.AddSummaryMessage("SUMMARY TEST");
+			#region Debug Tests
+			//Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
+			//Debug.AddErrorMessage(new Exception("ERROR TEST"), "ERROR TEST");
+			//Debug.AddWarningMessage("WARNING TEST");
+			//Debug.AddDetailMessage("DETAIL TEST");
+			//Debug.AddSummaryMessage("SUMMARY TEST");
+			#endregion
 
 			#region Load World
 			Console.AddInformationMessage("Loading World");

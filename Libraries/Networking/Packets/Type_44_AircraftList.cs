@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_44_AircraftList : GenericPacket
+	public class Type_44_AircraftList : GenericPacket, IPacket_44_AircraftList
 	{
 		public Type_44_AircraftList() : base(44)
 		{
 		}
 
-		public Type_44_AircraftList(string[] listOfAircraftIdentifys) : base(44)
+		public Type_44_AircraftList(List<string> listOfAircraftIdentifys) : base(44)
 		{
-			List = listOfAircraftIdentifys;
+			AircraftIdentities = listOfAircraftIdentifys;
 		}
 
 		public Byte Version
@@ -23,9 +26,9 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			get => GetByte(1);
 			set => SetByte(1, value);
 		}
-		public string[] List
+		public List<string> AircraftIdentities
 		{
-			get => GetString(4, Data.Length - 4).Split('\0');
+			get => GetString(4, Data.Length - 4).Split('\0').ToList();
 			set
 			{
 				string ACList = "";

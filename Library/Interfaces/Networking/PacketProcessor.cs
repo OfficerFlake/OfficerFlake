@@ -28,7 +28,7 @@
 		bool Process_Type_32_ChatMessage(IConnection connection, IPacket_32_ChatMessage packet);
 		bool Process_Type_33_Weather(IConnection connection, IPacket_33_Weather packet);
 		bool Process_Type_35_ReviveAllGrounds(IConnection connection, IPacket_35_ReviveAllGrounds packet);
-		bool Process_Type_36_WeaponLoadout(IConnection connection, IPacket_36_WeaponLoadout packet);
+		bool Process_Type_36_WeaponLoadout(IConnection connection, IPacket_36_WeaponsLoadout packet);
 		bool Process_Type_37_ListUser(IConnection connection, IPacket_37_ListUser packet);
 		bool Process_Type_38_QueryAirstate(IConnection connection, IPacket_38_QueryAirstate packet);
 		bool Process_Type_39_WeaponsOption(IConnection connection, IPacket_39_WeaponsOption packet);

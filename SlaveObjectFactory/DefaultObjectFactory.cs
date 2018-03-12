@@ -105,7 +105,7 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => throw new NotImplementedException();
 			public IPacket_33_Weather CreatePacket33Weather() => throw new NotImplementedException();
 			public IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => throw new NotImplementedException();
-			public IPacket_36_WeaponLoadout CreatePacket36WeaponLoadout() => throw new NotImplementedException();
+			public IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout() => throw new NotImplementedException();
 			public IPacket_37_ListUser CreatePacket37ListUser() => throw new NotImplementedException();
 			public IPacket_38_QueryAirstate CreatePacket38QueryAirstate() => throw new NotImplementedException();
 			public IPacket_39_WeaponsOption CreatePacket39WeaponsOption() => throw new NotImplementedException();

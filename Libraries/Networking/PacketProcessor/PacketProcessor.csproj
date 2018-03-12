@@ -57,6 +57,12 @@
   <ItemGroup>
     <Compile Include="Server\ProcessServerSide.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Type_17_HeartBeat.cs" />
+    <Compile Include="Server\Type_44_AircraftList.cs" />
+    <Compile Include="Server\Type_33_Weather.cs" />
+    <Compile Include="Server\Type_04_Field.cs" />
+    <Compile Include="Server\Type_43_ServerCommand.cs" />
+    <Compile Include="Server\Type_06_Acknowledgement.cs" />
     <Compile Include="Server\Type_32_ChatMessage.cs" />
     <Compile Include="Server\Type_00_Login.cs" />
   </ItemGroup>

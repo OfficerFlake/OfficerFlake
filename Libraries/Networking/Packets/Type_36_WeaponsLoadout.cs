@@ -1,43 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_36_WeaponsLoadout : GenericPacket
+	public class Type_36_WeaponsLoadout : GenericPacket, IPacket_36_WeaponsLoadout
 	{
 		public Type_36_WeaponsLoadout() : base(36)
 		{
 		}
 
-		public Int32 ID
+		public UInt32 ID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
-		public Int16 Version
+		public UInt16 Version
 		{
-			get => GetInt16(4);
-			set => SetInt16(4, value);
+			get => GetUInt16(4);
+			set => SetUInt16(4, value);
 		}
-
-		private static readonly List<int> ListOfWeaponTypes = new List<int>()
-		{
-			WeaponTypes.Null,
-			WeaponTypes.AAM_Short,
-			WeaponTypes.AGM,
-			WeaponTypes.B500,
-			WeaponTypes.FLRPOD,
-			WeaponTypes.RKT,
-			WeaponTypes.FLR,
-			WeaponTypes.AAM_Mid,
-			WeaponTypes.B250,
-			WeaponTypes.Unknown_8,
-			WeaponTypes.B500_HD,
-			WeaponTypes.AAM_X,
-			WeaponTypes.Unknown_11,
-			WeaponTypes.FuelTank,
-	};
 
 		public static class WeaponTypes
 		{
@@ -57,30 +40,68 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			public static int FuelTank = 12;
 		}
 
-		public class WeaponDescription
+		public class WeaponDescription : Packet_36_WeaponLoadingDescription
 		{
-			public ushort Weapon = 0;
-			public ushort Ammo = 0;
+			public Packet_OrdinanceType WeaponType { get; set; } = Packet_OrdinanceType.Null;
+			public UInt16 Ammo { get; set; } = 0;
 
-			public int GetWeaponType()
+			public WeaponDescription(Packet_OrdinanceType _weaponType, ushort _ammo)
 			{
-				if (ListOfWeaponTypes.Any(x => x == Weapon)) return ListOfWeaponTypes.First(y => y == Weapon);
-				return WeaponTypes.Null;
-			}
-			public WeaponDescription(ushort _Weapon, ushort _Ammo)
-			{
-				Weapon = _Weapon;
-				Ammo = _Ammo;
+				WeaponType = _weaponType;
+				Ammo = _ammo;
 			}
 		}
-		public List<WeaponDescription> WeaponsInfo
+		public List<Packet_36_WeaponLoadingDescription> Weapons
 		{
 			get
 			{
-				List<WeaponDescription> _WeaponsInfoOutput = new List<WeaponDescription>();
+				List<Packet_36_WeaponLoadingDescription> _WeaponsInfoOutput = new List<Packet_36_WeaponLoadingDescription>();
 				for (int i = 6; i <= Data.Length - 4; i += 4)
 				{
-					_WeaponsInfoOutput.Add(new WeaponDescription(GetUInt16(i), GetUInt16(i + 2)));
+					Packet_OrdinanceType subOrdinanceType = Packet_OrdinanceType.Null;
+					switch (GetUInt16(i))
+					{
+						case 1:
+							subOrdinanceType = Packet_OrdinanceType.AAM_Short;
+							break;
+						case 2:
+							subOrdinanceType = Packet_OrdinanceType.AGM;
+							break;
+						case 3:
+							subOrdinanceType = Packet_OrdinanceType.B500;
+							break;
+						case 4:
+							subOrdinanceType = Packet_OrdinanceType.RKT;
+							break;
+						case 5:
+							subOrdinanceType = Packet_OrdinanceType.FLR;
+							break;
+						case 6:
+							subOrdinanceType = Packet_OrdinanceType.AAM_Mid;
+							break;
+						case 7:
+							subOrdinanceType = Packet_OrdinanceType.B250;
+							break;
+						case 8:
+							subOrdinanceType = Packet_OrdinanceType.Unknown_8;
+							break;
+						case 9:
+							subOrdinanceType = Packet_OrdinanceType.B500_HD;
+							break;
+						case 10:
+							subOrdinanceType = Packet_OrdinanceType.AAM_X;
+							break;
+						case 11:
+							subOrdinanceType = Packet_OrdinanceType.Unknown_11;
+							break;
+						case 12:
+							subOrdinanceType = Packet_OrdinanceType.FuelTank;
+							break;
+						default:
+							subOrdinanceType = Packet_OrdinanceType.Null;
+							break;
+					}
+					_WeaponsInfoOutput.Add(new WeaponDescription(subOrdinanceType, GetUInt16(i + 2)));
 				}
 				return _WeaponsInfoOutput;
 			}
@@ -88,36 +109,78 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			{
 				for (int i = 0; i < value.Count; i++)
 				{
-					SetUInt16(6+i, value[i].Weapon);
+					switch (value[i].WeaponType)
+					{
+						default:
+						case Packet_OrdinanceType.Null:
+							SetUInt16(6 + i, 0);
+							break;
+						case Packet_OrdinanceType.AAM_Short:
+							SetUInt16(6 + i, 1);
+							break;
+						case Packet_OrdinanceType.AGM:
+							SetUInt16(6 + i, 2);
+							break;
+						case Packet_OrdinanceType.B500:
+							SetUInt16(6 + i, 3);
+							break;
+						case Packet_OrdinanceType.RKT:
+							SetUInt16(6 + i, 4);
+							break;
+						case Packet_OrdinanceType.FLR:
+							SetUInt16(6 + i, 5);
+							break;
+						case Packet_OrdinanceType.AAM_Mid:
+							SetUInt16(6 + i, 6);
+							break;
+						case Packet_OrdinanceType.B250:
+							SetUInt16(6 + i, 7);
+							break;
+						case Packet_OrdinanceType.Unknown_8:
+							SetUInt16(6 + i, 8);
+							break;
+						case Packet_OrdinanceType.B500_HD:
+							SetUInt16(6 + i, 9);
+							break;
+						case Packet_OrdinanceType.AAM_X:
+							SetUInt16(6 + i, 10);
+							break;
+						case Packet_OrdinanceType.Unknown_11:
+							SetUInt16(6 + i, 11);
+							break;
+						case Packet_OrdinanceType.FuelTank:
+							SetUInt16(6 + i, 12);
+							break;
+					}
 					SetUInt16(6+i+2, value[i].Ammo);
 				}
 			}
 		}
 
-		public bool AddWeapon(ushort _WeaponType, ushort _Ammo)
+		public bool AddWeapon(Packet_OrdinanceType _WeaponType, ushort _Ammo)
 		{
-			List<WeaponDescription> UpdateInfo = WeaponsInfo;
+			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
 			UpdateInfo.Add(new WeaponDescription(_WeaponType, _Ammo));
-			WeaponsInfo = UpdateInfo;
+			Weapons = UpdateInfo;
 			return true;
 		}
-		public bool RemoveWeapon(ushort _WeaponType)
+		public bool RemoveWeapon(Packet_OrdinanceType _WeaponType)
 		{
-			List<WeaponDescription> UpdateInfo = WeaponsInfo;
-			List<WeaponDescription> WeaponsToRemove = WeaponsInfo.Where(x => x.Weapon == _WeaponType).ToList();
-			UpdateInfo.RemoveAll(x => x.Weapon == _WeaponType);
+			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
+			List<Packet_36_WeaponLoadingDescription> WeaponsToRemove = Weapons.Where(x => x.WeaponType == _WeaponType).ToList();
+			UpdateInfo.RemoveAll(x => x.WeaponType == _WeaponType);
 			for (int i = 0; i < WeaponsToRemove.Count - 1; i++)
 			{
 				UpdateInfo.Add(WeaponsToRemove[i]);
 			}
-			WeaponsInfo = UpdateInfo;
+			Weapons = UpdateInfo;
 			return true;
 		}
-		public bool RemoveAllWeapon(ushort _WeaponType)
+		public bool RemoveAllWeapon(Packet_OrdinanceType _WeaponType)
 		{
-			List<WeaponDescription> UpdateInfo = WeaponsInfo;
-			UpdateInfo.RemoveAll(x => x.Weapon == _WeaponType);
-			WeaponsInfo = UpdateInfo;
+			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
+			UpdateInfo.RemoveAll(x => x.WeaponType == _WeaponType);
+			Weapons = UpdateInfo;
 			return true;
 		}
 	}

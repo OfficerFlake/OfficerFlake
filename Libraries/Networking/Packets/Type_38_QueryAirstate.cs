@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_38_QueryAirstate : GenericPacket
+	public class Type_38_QueryAirstate : GenericPacket, IPacket_38_QueryAirstate
 	{
 		public Type_38_QueryAirstate() : base(38)
 		{
 		}
-		public Type_38_QueryAirstate(params Int32[] aircraftIDs) : base(38)
+		public Type_38_QueryAirstate(params UInt32[] aircraftIDs) : base(38)
 		{
 			AircraftIDs = aircraftIDs;
 		}
 
-		public Int32 Count
+		public UInt32 AircraftCount
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
-		public Int32[] AircraftIDs
+		public UInt32[] AircraftIDs
 		{
 			get
 			{
-				List<Int32> ArgumentsOut = new List<Int32>();
+				List<UInt32> ArgumentsOut = new List<UInt32>();
 				for (int i = 4; i <= Data.Length - 4; i += 4)
 				{
-					ArgumentsOut.Add(GetInt32(i));
+					ArgumentsOut.Add(GetUInt32(i));
 				}
 				return ArgumentsOut.ToArray();
 			}
@@ -34,9 +35,9 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				ResizeData(0);
 				for (int i = 4; i <= value.Length - 1; i += 1)
 				{
-					SetInt32(i*4,value[i]);
+					SetUInt32(i*4,value[i]);
 				}
-				Count = value.Length;
+				AircraftCount = (UInt32)(value.Length);
 			}
 		}
 	}
