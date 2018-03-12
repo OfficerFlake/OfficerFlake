@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ConsoleInput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:settings="clr-namespace:Com.OfficerFlake.Libraries;assembly=Settings"
+			 xmlns:properties="clr-namespace:UserInterfaces.Properties"
+			 mc:Ignorable="d"
+             d:DesignWidth="640"
+			 d:DesignHeight="24">
+	
+	<Border Background="#eeeeee">
+		<Grid Background="#161616">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Label Content="OpenYS"
+			       Grid.Column="0"
+			       Foreground="#0099ee"
+			       VerticalAlignment="Center"/>
+			<TextBox
+				x:Name="ConsoleInputViewModel"
+				Grid.Column="1"
+				Text="&lt;Console Input Ready&gt;"
+				Foreground="#999999"
+				Background="#161616"
+				FontStyle="Italic"
+				VerticalAlignment="Center"
+				BorderThickness="0"
+				GotFocus="ConsoleInput_GotFocus"
+				LostFocus="ConsoleInput_LostFocus"
+				KeyDown="ConsoleInput_KeyDown"
+			/>
+		</Grid>
+	</Border>
+</UserControl>

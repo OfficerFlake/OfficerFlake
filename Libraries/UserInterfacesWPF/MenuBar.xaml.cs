@@ -23,6 +23,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		public MenuBar()
 		{
 			InitializeComponent();
+			if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
+
 			DataContext = SettingsLibrary.Settings;
 
 			OpenYS_ConsoleOutput_ShowMessages_Console.DataContext = SettingsLibrary.Settings.UserInterface.Console.ShowMessages;

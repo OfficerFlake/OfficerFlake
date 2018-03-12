@@ -113,6 +113,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			}
 			#endregion
 
+			#region Message
+			Message = input;
+			#endregion
+
 			#region Datestamp
 			IFormattingDescriptor dateFormattingDescriptor = ObjectFactory.CreateFormattingDescriptor
 			(
@@ -303,10 +307,16 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			#endregion
 		}
 
+		public IRichTextMessage Message { get; }
 		public Border Datestamp { get; }
 		public Border Timestamp { get; }
 		public Border User { get; }
 		public Border Type { get; }
 		public Border String { get; }
+
+		public override string ToString()
+		{
+			return Message.ToString();
+		}
 	}
 }

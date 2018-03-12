@@ -591,5 +591,10 @@ namespace Com.OfficerFlake.Libraries
 			public readonly _UserInterface UserInterface = new _UserInterface();
 		}
 		public static _Settings Settings { get; set; } = new _Settings();
+
+		static SettingsLibrary()
+		{
+			Settings = new _Settings();
+		}
 	}
 }

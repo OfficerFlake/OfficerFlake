@@ -21,11 +21,11 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		}
 		public void LinkConsole()
 		{
-			Logger.Console.LinkConsole(ConsoleOutput);
+			Logger.Console.LinkConsole(ConsoleOutputView);
 		}
 		public void LinkDebug()
 		{
-			Logger.Debug.LinkDebug(ConsoleOutput);
+			Logger.Debug.LinkDebug(ConsoleOutputView);
 		}
 		#endregion
 		#region Load/Close

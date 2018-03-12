@@ -25,13 +25,21 @@
 				<ColumnDefinition Width="120"></ColumnDefinition>
 			</Grid.ColumnDefinitions>
 			<Border Grid.Column="0" BorderThickness="1" BorderBrush="#fff">
-				<local:ConsoleOutput x:Name="ConsoleOutput"/>
+				<local:ConsoleOutput x:Name="ConsoleOutputView"/>
 			</Border>
 			<Border Grid.Column="1" BorderThickness="1" BorderBrush="#fff">
 				<local:ConsoleUserList x:Name="ConsoleUserList"/>
 			</Border>
 		</Grid>
-		<Rectangle Grid.Row="3" Fill="#161616"></Rectangle>
-		<Rectangle Grid.Row="4" Fill="#161616"></Rectangle>
+		<local:ConsoleInput Grid.Row="3"/>
+		<StatusBar Grid.Row="4">
+			<StatusBarItem
+				VerticalAlignment="Center"
+				Content="Status:"/>
+			<StatusBarItem
+				VerticalAlignment="Center"
+				Content="Idle"
+				FontStyle="Italic"/>
+		</StatusBar>
 	</Grid>
 </Window>
