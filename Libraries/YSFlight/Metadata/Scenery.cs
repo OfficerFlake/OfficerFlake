@@ -48,7 +48,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						.Where(x => x.ToUpperInvariant().StartsWith(@"SCE") && x.ToUpperInvariant().EndsWith(@".LST")).ToArray();
 					foreach (string SceneryList in SceneryLists)
 					{
-						if (!File.Exists(YSFlightSceneryDirectory + SceneryList)) return false;
+						if (!File.Exists(YSFlightSceneryDirectory + SceneryList)) continue;
 						string[] SceneryListContents = File.ReadAllLines(YSFlightSceneryDirectory + SceneryList);
 						SceneryListContents = SceneryListContents.Where(x => x.ToUpperInvariant().Contains(@".FLD")).ToArray();
 						foreach (string Line in SceneryListContents)
@@ -76,13 +76,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									break;
 							}
 
-							Scenery NewMetaScenery = new Scenery(
-								new[]
-								{
-									SceneryPath1Fld,
-									SceneryPath2Stp,
-									SceneryPath3Yfs
-								});
+							Scenery NewMetaScenery = new Scenery(Identify);
+							NewMetaScenery.Path_1_FieldFile = SceneryPath1Fld;
+							NewMetaScenery.Path_2_StartPositionFile = SceneryPath2Stp;
+							NewMetaScenery.Path_3_YFSFile = SceneryPath3Yfs;
 
 							Extensions.YSFlight.MetaData.Scenery.List.Add(NewMetaScenery);
 						}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Linq.Expressions;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Logger;
@@ -12,12 +12,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 {
 	public static class World
 	{
-		public static List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
-
-		public static I24BitColor GroundColor { get; set; }
-		public static I24BitColor SkyColor { get; set; }
-		public static I24BitColor FogColor { get; set; }
-
 		public static class Objects
 		{
 			private static volatile uint NextID = 1;
@@ -47,147 +41,119 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				public _Attitude Attitude = new _Attitude();
 			}
-			public static List<Aircraft> AircraftList = new List<Aircraft>();
 			public static Aircraft NULL_Aircraft;
 
-			public class StartPosition
+			public class StartPosition : IWorldStartPosition
 			{
-				public String Identify = "NULL";
-				public ISpeed Speed = 0.MetersPerSecond();
-				public Single Throttle = 0f;
-				public Boolean Gear = true;
+				public String Identify { get; set; } = "<NULL>";
+				public ISpeed Speed { get; set; } = 0.MetersPerSecond();
+				public Single Throttle { get; set; } = 0;
+				public Boolean GearDown { get; set; } = true;
 
-				public IPoint3 Position = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public Boolean AllowIFF1 { get; set; } = true;
+				public Boolean AllowIFF2 { get; set; } = true;
+				public Boolean AllowIFF3 { get; set; } = true;
+				public Boolean AllowIFF4 { get; set; } = true;
 
-				public class _Attitude
-				{
-					public IAngle H = 0.Degrees();
-					public IAngle P = 0.Degrees();
-					public IAngle B = 0.Degrees();
-				}
-				public _Attitude Attitude = new _Attitude();
+				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 			}
-			public static List<StartPosition> StartPositionList = new List<StartPosition>();
 			public static StartPosition NULL_StartPosition;
 
-			public class Ground
+			public class Ground : IWorldGround
 			{
-				public string Identify = "<NULL>";
-				public string Tag = "<NULL>";
-				public uint Strength = 240;
-				public uint IFF = 0;
-				public uint ID = World.Objects.GetNextID();
-				public IMetaDataGround MetaGroundObject = null;
+				public String Identify { get; set; } = "<NULL>";
+				public String Tag { get; set; } = "<NULL>";
+				public UInt32 Strength { get; set; } = 255;
+				public UInt32 IFF { get; set; } = 0;
+				public UInt32 ID { get; set; } = 0;
 
-				public class _Position
-				{
-					public IDistance X = 0.Meters();
-					public IDistance Y = 0.Meters();
-					public IDistance Z = 0.Meters();
-				}
-				public _Position Position = new _Position();
+				public IUser Owner { get; set; } = Users.None;
+				public IMetaDataGround MetaData { get; set; } = Extensions.YSFlight.MetaData.Grounds.None;
 
-				public class _Attitude
-				{
-					public IAngle H = 0.Degrees();
-					public IAngle P = 0.Degrees();
-					public IAngle B = 0.Degrees();
-				}
-				public _Attitude Attitude = new _Attitude();
+				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 			}
-			public static List<Ground> GroundList = new List<Ground>();
 			public static Ground NULL_Ground;
 
-			public class Path
+			public class Path : IWorldMotionPath
 			{
-				public string Identify = "<NULL>";
-				public uint Type = 0;
-				public bool IsLooping = false;
 
-				public string AreaType = "<NULL>";
+				public String Identify { get; set; } = "<NULL>";
+				public UInt32 Type { get; set; } = 0;
+				public Boolean IsLooping { get; set; } = false;
+				public WorldMotionPathAreaType AreaType { get; set; } = WorldMotionPathAreaType.Land;
 
-				public class _Position
+				public List<IPoint3> Points { get; set; } = new List<IPoint3>();
+
+				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
+
+				public IWorldMotionPath Interpolate()
 				{
-					public IDistance X = 0.Meters();
-					public IDistance Y = 0.Meters();
-					public IDistance Z = 0.Meters();
-				}
-				public _Position Position = new _Position();
+					List<IPoint3> OriginalList = this.Points;
+					IWorldMotionPath NewPath = new Path();
 
-				public class _Point
-				{
-					public IDistance X = 0.Meters();
-					public IDistance Y = 0.Meters();
-					public IDistance Z = 0.Meters();
-				}
-				public List<_Point> Points = new List<_Point>();
+					NewPath.Identify = this.Identify;
+					NewPath.Type = this.Type;
+					NewPath.IsLooping = this.IsLooping;
+					NewPath.AreaType = this.AreaType;
+					NewPath.Position = this.Position;
+					NewPath.Attitude = this.Attitude;
 
-				public List<_Point> Interpolate()
-				{
-					List<Objects.Path._Point> OriginalList = this.Points;
-					List<Objects.Path._Point> NewPath = new List<Objects.Path._Point>();
 					for (int i = 0; i < OriginalList.Count - 1; i++)
 					{
-						NewPath.Add(OriginalList.ToArray()[i]);
-						Objects.Path._Point NewPoint = new Objects.Path._Point();
+						NewPath.Points.Add(OriginalList.ToArray()[i]);
+						IPoint3 NewPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
 						NewPoint.X = ((OriginalList.ToArray()[i].X.ToMeters().RawValue + OriginalList.ToArray()[i + 1].X.ToMeters().RawValue) / 2f).Meters();
 						NewPoint.Y = ((OriginalList.ToArray()[i].Y.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Y.ToMeters().RawValue) / 2f).Meters();
 						NewPoint.Z = ((OriginalList.ToArray()[i].Z.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Z.ToMeters().RawValue) / 2f).Meters();
-						NewPath.Add(NewPoint);
-						//if (i == OriginalList.Count - 2) NewPath.Add(OriginalList.ToArray()[i + 1]);
-
-						/*
-                        if (i == OriginalList.Count - 2 & this.IsLooping)
-                        {
-                            NewPoint = new Objects.Path._Point();
-                            NewPoint.X = (OriginalList.ToArray()[i+1].X + OriginalList.ToArray()[0].X) / 2f;
-                            NewPoint.Y = (OriginalList.ToArray()[i+1].Y + OriginalList.ToArray()[0].Y) / 2f;
-                            NewPoint.Z = (OriginalList.ToArray()[i+1].Z + OriginalList.ToArray()[0].Z) / 2f;
-                            NewPath.Add(NewPoint);
-                        }
-                        */
-
+						NewPath.Points.Add(NewPoint);
 					}
-					NewPath.Add(OriginalList.ToArray()[OriginalList.Count - 1]);
+					NewPath.Points.Add(OriginalList.ToArray()[OriginalList.Count - 1]);
 					return NewPath;
 				}
-
-				public List<_Point> Decimate()
+				public IWorldMotionPath Decimate()
 				{
-					List<Objects.Path._Point> OriginalList = this.Points;
-					List<Objects.Path._Point> NewPath = new List<Objects.Path._Point>();
+					List<IPoint3> OriginalList = this.Points;
+					IWorldMotionPath NewPath = new Path();
+
+					NewPath.Identify = this.Identify;
+					NewPath.Type = this.Type;
+					NewPath.IsLooping = this.IsLooping;
+					NewPath.AreaType = this.AreaType;
+					NewPath.Position = this.Position;
+					NewPath.Attitude = this.Attitude;
+
 					for (int i = 0; i < OriginalList.Count - 1; i++)
 					{
 						if (i == 0)
 						{
 							//add the start of the path.
-							NewPath.Add(OriginalList.ToArray()[0]);
+							NewPath.Points.Add(OriginalList.ToArray()[0]);
 							continue;
 						}
 						if ((OriginalList.Count - 2) % 2 == 0)
 						{
 							//even no.
-							Objects.Path._Point NewPoint = new Objects.Path._Point();
+							IPoint3 NewPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
 							NewPoint.X = ((OriginalList.ToArray()[i].X.ToMeters().RawValue + OriginalList.ToArray()[i + 1].X.ToMeters().RawValue) / 2f).Meters();
 							NewPoint.Y = ((OriginalList.ToArray()[i].Y.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Y.ToMeters().RawValue) / 2f).Meters();
 							NewPoint.Z = ((OriginalList.ToArray()[i].Z.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Z.ToMeters().RawValue) / 2f).Meters();
-							NewPath.Add(NewPoint);
+							NewPath.Points.Add(NewPoint);
 							i++; //skip the next point!
 						}
 						else
 						{
 							//odd no.
 							i++;
-							if (i < OriginalList.Count - 1) NewPath.Add(OriginalList.ToArray()[i]);
+							if (i < OriginalList.Count - 1) NewPath.Points.Add(OriginalList.ToArray()[i]);
 						}
 					}
-					NewPath.Add(OriginalList.ToArray()[OriginalList.Count - 1]);
+					NewPath.Points.Add(OriginalList.ToArray()[OriginalList.Count - 1]);
 					return NewPath;
 				}
-
 			}
-			public static List<Path> PathList = new List<Path>();
-			public static Path._Point NULL_Point = new Path._Point();
 			public static Path NULL_Path = new Path();
 
 			public class Scenery
@@ -282,7 +248,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					//Console.WriteLine("END SUBSCENERY: " + Identify);
 					foreach (Path ThisPath in this.MotionPaths)
 					{
-						foreach (Path._Point ThisPoint in ThisPath.Points.ToArray())
+						foreach (IPoint3 ThisPoint in ThisPath.Points.ToArray())
 						{
 							IDistance _PosX = (ThisPoint.X.ToMeters().RawValue + ThisPath.Position.X.ToMeters().RawValue).Meters();
 							IDistance _PosY = (ThisPoint.Y.ToMeters().RawValue + ThisPath.Position.Y.ToMeters().RawValue).Meters();
@@ -325,73 +291,180 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 		public static bool Load(string Name)
 		{
+			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
+
 			DebugMessages.Clear();
 			IMetaDataScenery Target = Extensions.YSFlight.MetaData.Scenery.FindByName(Name);
 			if (Target == null)
 			{
-				var Warning = ("Scenery Not Found: \"" + Name + "\"").AsDebugWarningMessage();
-				DebugMessages.Add(Warning);
-				Debug.AddWarningMessage("Scenery Not Found: \"" + Name + "\"");
+				#region DEBUG: Scenery Not Found: xxxx
+				{
+					var Message = "Scenery Not Found: \"" + Name + "\"";
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
 				return false;
 			}
 			else
 			{
 				Load(Target);
-				return (DebugMessages.Count(x => x is IDebugWarningMessage) > 0);
+				return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) > 0);
 			}
 		}
 		public static bool Load(IMetaDataScenery InputScenery)
 		{
-			#region Start Debug Log
-			DebugMessages.Clear();
-			DebugMessages.Add((("Starting World.Load")).AsDebugDetailMessage());
-			Debug.AddSummaryMessage("Starting World.Load");
-			#endregion
-			#region Clear Objects
-			Objects.GroundList.Clear();
-			Objects.PathList.Clear();
-			Objects.StartPositionList.Clear();
-			#endregion
+			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
 
-			DebugMessages.Add(("Loading World: " + InputScenery.Identify).AsDebugDetailMessage());
+			#region DEBUG: Starting World.Load
+			{
+				var Message = "Starting World.Load";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+			
+			#region World.Load...
+			#region Clear Objects
+			Extensions.YSFlight.World.AllAircraft.Clear();
+			Extensions.YSFlight.World.AllGrounds.Clear();
+
+			Extensions.YSFlight.World.AllScenerys.Clear();
+			Extensions.YSFlight.World.AllMotionPaths.Clear();
+			Extensions.YSFlight.World.AllStartPositions.Clear();
+			#endregion
+			#region DEBUG: Loading Word: xxxx
+			{
+				var Message = "Loading World: " + InputScenery.Identify;
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
 
 			#region LoadFLD
-			DebugMessages.Add((("Starting World.LoadFLD")).AsDebugDetailMessage());
-			LoadFLD(InputScenery);
-			DebugMessages.Add((("Ended World.LoadFLD")).AsDebugDetailMessage());
+			#region DEBUG: Starting World.LoadFLD
+			{
+				var Message = "Starting World.LoadFLD";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
 			#endregion
-
-			DebugMessages.Add(("Loaded " + Objects.GroundList.Count + " Ground Objects from FLD.").AsDebugDetailMessage());
-			DebugMessages.Add(("Loaded " + Objects.PathList.Count + " Motion Paths from FLD.").AsDebugDetailMessage());
+			LoadFLD(InputScenery);
+			#region DEBUG: Finished World.LoadFLD
+			{
+				var Message = "Finished World.LoadFLD";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+			#endregion
+			#region DEBUG: Loaded ??? Ground Objects from FLD.
+			int GroundsLoadedFromFLD = Extensions.YSFlight.World.AllGrounds.Count;
+			{
+				var Message = "Loaded " + GroundsLoadedFromFLD + " Ground Objects from FLD.";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+			#region DEBUG: Loaded ??? Motion Paths from FLD.
+			int MotionPathsLoadedFromFLD = Extensions.YSFlight.World.AllMotionPaths.Count;
+			{
+				var Message = "Loaded " + MotionPathsLoadedFromFLD + " Motion Paths from FLD.";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
 
 			#region LoadSTP
-			DebugMessages.Add((("Starting World.LoadSTP")).AsDebugDetailMessage());
-			LoadSTP(InputScenery);
-			DebugMessages.Add((("Ended World.LoadSTP")).AsDebugDetailMessage());
+			#region DEBUG: Starting World.LoadSTP
+			{
+				var Message = "Starting World.LoadSTP";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
 			#endregion
-
-			DebugMessages.Add(("Loaded " + Objects.StartPositionList.Count + " Start Positions from STP.").AsDebugDetailMessage());
+			LoadSTP(InputScenery);
+			#region DEBUG: Finished World.LoadSTP
+			{
+				var Message = "Finished World.LoadSTP";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+			#endregion
+			#region DEBUG: Loaded ??? Start Positions from STP.
+			int StartPositionsLoadedFromSTP = Extensions.YSFlight.World.AllStartPositions.Count;
+			{
+				var Message = "Loaded " + StartPositionsLoadedFromSTP + " Start Positions from STP.";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
 
 			#region LoadYFS
-			int GroundsLoadedFromFLD = Objects.GroundList.Count;
-
-			DebugMessages.Add((("Starting World.LoadYFS")).AsDebugDetailMessage());
+			#region DEBUG: Starting World.LoadYFS
+			{
+				var Message = "Starting World.LoadYFS";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
 			LoadYFS(InputScenery);
-			DebugMessages.Add((("Ended World.LoadYFS")).AsDebugDetailMessage());
+			#region Finished World.LoadYFS
+			{
+				var Message = "Finished World.LoadYFS";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+			#endregion
+			#region DEBUG: Loaded ??? Ground Objects From YFS
+			int GroundObjectsLoadedFromYFS = Extensions.YSFlight.World.AllGrounds.Count - GroundsLoadedFromFLD;
+			{
+				var Message = "Loaded " + GroundObjectsLoadedFromYFS + " Ground Objects from YFS.";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
 			#endregion
 
-			DebugMessages.Add(("Loaded " + (Objects.GroundList.Count - GroundsLoadedFromFLD) + " Ground Objects from YFS.").AsDebugDetailMessage());
-			Debug.AddSummaryMessage("Finished World.Load");
-			return (DebugMessages.Count(x => x is IDebugWarningMessage) > 0);
+			#region DEBUG: Finished World.Load
+			{
+				var Message = "Finished World.Load";
+				DebugMessages.Add(Message.AsDebugSummaryMessage());
+				Debug.AddSummaryMessage(Message);
+			}
+			#endregion
+
+			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
 		}
 
 		private static bool LoadFLD(IMetaDataScenery InputScenery)
 		{
+			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
+			#region FLD Not Defined
+			if (InputScenery.Path_1_FieldFile == null | InputScenery.Path_1_FieldFile == "")
+			{
+				#region DEBUG: FLD File Not Defined.
+				{
+					var Message = "FLD File Not Defined.";
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
+				return false;
+			}
+			#endregion
 			#region FLD Not Found on Disk
 			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_1_FieldFile))
 			{
-				DebugMessages.Add((("FLD File Not Found: " + InputScenery.Path_1_FieldFile)).AsDebugDetailMessage());
-				DebugMessages.Add((("UNFILLED DEBUG MESSAGE IN WORLD!")).AsDebugDetailMessage());
+				#region DEBUG: FLD File Not Found: xxxx
+				{
+					var Message = "FLD File Not Found: " + InputScenery.Path_1_FieldFile;
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
 				return false;
 			}
 			#endregion
@@ -409,10 +482,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			int ExpectPos = 0;
 			int Indent = 0;
 			int GOBsHandled = 0;
+			int GOBsMissing = 0;
 			int PSTsHandled = 0;
 			List<Objects.Scenery> AllSceneries = new List<Objects.Scenery>();
 			#endregion
-
 			#region Iterate over FLD Contents
 			for (int i = 0; i < FLDContents.Length; i++)
 			{
@@ -436,6 +509,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				#region Editing a Ground Object or Path.
 				if (CurrentGround != Objects.NULL_Ground | CurrentPath != Objects.NULL_Path)
 				{
+
 					if (CurrentGround != Objects.NULL_Ground)
 					{
 						#region POS
@@ -444,7 +518,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 7)
 							{
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in Ground could not be inspected.").AsDebugWarningMessage());
+								#region DEBUG: POS Line xxxx in GroundObject is missing required parameters.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 
@@ -459,8 +539,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add((("POS Line (" + CurrentLineNumber + ") in Ground could not be converted.")).AsDebugDetailMessage());
-
+								#region DEBUG: POS Line xxxx in GroundObject failed conversion.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								CurrentGround.Position.X = 0.Meters();
 								CurrentGround.Position.Y = 0.Meters();
 								CurrentGround.Position.Z = 0.Meters();
@@ -477,18 +562,29 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add((("NAM Line (" + CurrentLineNumber + ") in Ground could not be inspected.")).AsDebugDetailMessage());
+								#region DEBUG: NAM Line xxxx in GroundObject is missing required parameters.
+								{
+									var Message = "NAM Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 
 							CurrentGround.Identify = Split[1].Replace(" ","_");
 
-							CurrentGround.MetaGroundObject = Extensions.YSFlight.MetaData.Grounds.FindByName(CurrentGround.Identify);
-							if (CurrentGround.MetaGroundObject == Extensions.YSFlight.MetaData.Grounds.None)
+							CurrentGround.MetaData = Extensions.YSFlight.MetaData.Grounds.FindByName(CurrentGround.Identify);
+							if (CurrentGround.MetaData == Extensions.YSFlight.MetaData.Grounds.None)
 							{
-								DebugMessages.Add(("Ground Name (" + CurrentLineNumber + ") in Ground could not be found in Metadata.").AsDebugWarningMessage());
-								DebugMessages.Add((("Ground NAM Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());}
-
+								#region DEBUG: NAM Line xxxx in GroundObject Metadata not found. (Addon not installed?)
+								{
+									var Message = "NAM Line (" + CurrentLineNumber + ") in GroundObject Metadata not found. (Addon \"" + CurrentGround.Identify + "\" not installed?).";
+									DebugMessages.Add(Message.AsDebugDetailMessage());
+									Debug.AddDetailMessage(Message);
+								}
+								#endregion
+							}
 							continue;
 						}
 						#endregion
@@ -498,13 +594,16 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("TAG Line (" + CurrentLineNumber + ") in Ground could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("TAG Ground Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
+								#region DEBUG: TAG Line xxxx in GroundObject is missing required parameters.
+								{
+									var Message = "TAG Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
-
 							CurrentGround.Tag = Split[1].Replace(" ", "_");
-
 							continue;
 						}
 						#endregion
@@ -514,19 +613,29 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("IFF Line (" + CurrentLineNumber + ") in Ground could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
+								#region DEBUG: IFF Line xxxx in GroundObject is missing required parameters.
+								{
+									var Message = "IFF Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 
 							bool failed = false;
-							failed |= !UInt32.TryParse(Split[1], out CurrentGround.IFF);
+							failed |= !UInt32.TryParse(Split[1], out var temp);
+							CurrentGround.IFF = temp;
 
 							if (failed)
 							{
-								DebugMessages.Add(("IFF Line (" + CurrentLineNumber + ") in Ground could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add((("Ground IFF Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: IFF Line xxxx in GroundObject failed conversion.
+								{
+									var Message = "IFF Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								CurrentGround.IFF = 0;
 							}
 							continue;
@@ -536,13 +645,23 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region END
 						if (ThisLine.ToUpperInvariant().StartsWith("END"))
 						{
-							CurrentScenery.GroundObjects.Add(CurrentGround);
-
-							DebugMessages.Add((("Added Ground Object (" + CurrentLineNumber + "): " + CurrentGround.Identify + " " + ThisLine)).AsDebugDetailMessage());
-
+							if (CurrentGround.MetaData != Extensions.YSFlight.MetaData.Grounds.None)
+							{
+								CurrentScenery.GroundObjects.Add(CurrentGround);
+								GOBsHandled++;
+							}
+							else
+							{
+								GOBsMissing++;
+							}
+							#region DEBUG: GroundObject xxxx Added Successfully.
+							{
+								var Message = "GroundObject \"" + CurrentGround.Identify + "\" Added Successfully.";
+								DebugMessages.Add(Message.AsDebugDetailMessage());
+								Debug.AddDetailMessage(Message);
+							}
+							#endregion
 							CurrentGround = Objects.NULL_Ground;
-							GOBsHandled++;
-
 							continue;
 						}
 						#endregion
@@ -557,7 +676,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							{
 								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
 								DebugMessages.Add((("Path POS Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: POS Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 							bool failed = false;
@@ -569,9 +694,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in Path could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path POS Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: POS Line xxxx in MotionPath failed conversion.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								CurrentPath.Position.X = 0.Meters();
 								CurrentPath.Position.Y = 0.Meters();
 								CurrentPath.Position.Z = 0.Meters();
@@ -585,13 +714,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 4)
 							{
-								DebugMessages.Add(("PNT Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: PNT Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "PNT Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 
-							Objects.Path._Point ThisPoint = new Objects.Path._Point();
+							IPoint3 ThisPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
 
 							bool failed = false;
 							Single temp;
@@ -601,9 +734,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							if (failed)
 							{
-								DebugMessages.Add(("PNT Line (" + CurrentLineNumber + ") in Path could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path PNT Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: PNT Line xxxx in MotionPath failed conversion.
+								{
+									var Message = "PNT Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								ThisPoint.X = 0.Meters();
 								ThisPoint.Y = 0.Meters();
 								ThisPoint.Z = 0.Meters();
@@ -618,14 +755,16 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("TAG Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path TAG Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: TAG Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "TAG Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
-
 							CurrentPath.Identify = Split[1].Replace(" ", "_");
-
 							continue;
 						}
 						#endregion
@@ -635,12 +774,36 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("AREA Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path AREA Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: AREA Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "AREA Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
-							CurrentPath.AreaType = Split[1].Replace(" ", "_");
+							switch (Split[1].ToUpperInvariant())
+							{
+								default:
+									#region DEBUG: AREA Line xxxx in MotionPath failed conversion.
+									{
+										var Message = "AREA Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
+									goto case "NOAREA" ;
+								case "NOAREA":
+									CurrentPath.AreaType = WorldMotionPathAreaType.NoArea;
+									break;
+								case "LAND":
+									CurrentPath.AreaType = WorldMotionPathAreaType.Land;
+									break;
+								case "WATER":
+									CurrentPath.AreaType = WorldMotionPathAreaType.Water;
+									break;
+							}
 							continue;
 						}
 						#endregion
@@ -650,15 +813,18 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("ISLOOP Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path ISLOOP Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: ISLOOP Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "ISLOOP Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
-
 							string option = Split[1].Replace(" ", "_");
-							Boolean.TryParse(option, out CurrentPath.IsLooping);
-
+							Boolean.TryParse(option, out var tempIsLooping);
+							CurrentPath.IsLooping = tempIsLooping;
 							continue;
 						}
 						#endregion
@@ -668,20 +834,29 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
-								DebugMessages.Add(("ID Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path ID Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: ID Line xxxx in MotionPath is missing required parameters.
+								{
+									var Message = "ID Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 
 							bool failed = false;
-							failed |= !UInt32.TryParse(Split[1], out CurrentPath.Type);
+							failed |= !UInt32.TryParse(Split[1], out var tempType);
+							CurrentPath.Type = tempType;
 
 							if (failed)
 							{
-								DebugMessages.Add(("ID Line (" + CurrentLineNumber + ") in Path could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path ID Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-
+								#region DEBUG: ID Line xxxx in MotionPath failed conversion.
+								{
+									var Message = "ID Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								CurrentPath.Type = 0;
 							}
 							continue;
@@ -690,15 +865,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region FIL
 						if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
 						{
-							//Dont even know WHAT to do here...
 							continue;
-							/*
-                            string[] Split = Utilities.StringCompress(ThisLine).Split(new char[] { ' ' }, 2);
-                            if (Split.Length < 2) continue; //couldn't read the name line - error?
-                            CurrentPath.Identify = Split[1].ReplaceAll("\"", "").ReplaceAll(" ", "_");
-                            //Console.WriteLine("TAG: " + CurrentGround.Tag);
-                            continue;
-                            */
+							//TODO: [0] World.LoadFLD.FIL NotImplmented
 						}
 						#endregion
 
@@ -706,7 +874,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if (ThisLine.ToUpperInvariant().StartsWith("END"))
 						{
 							#region Convert Path Points to Path Root
-							foreach (Objects.Path._Point ThisPoint in CurrentPath.Points.ToArray())
+							foreach (IPoint3 ThisPoint in CurrentPath.Points.ToArray())
 							{
 								ThisPoint.X = (ThisPoint.X.ToMeters().RawValue + CurrentPath.Position.X.ToMeters().RawValue).Meters();
 								ThisPoint.Y = (ThisPoint.Y.ToMeters().RawValue + CurrentPath.Position.Y.ToMeters().RawValue).Meters();
@@ -719,7 +887,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							CurrentScenery.MotionPaths.Add(CurrentPath);
 
-							DebugMessages.Add((("Added Path (" + CurrentLineNumber + "): " + CurrentPath.Identify + " " + ThisLine)).AsDebugDetailMessage());
+							#region DEBUG: MotionPath xxxx Added Successfully.
+							{
+								var Message = "MotionPath \"" + CurrentPath.Identify + "\" Added Successfully.";
+								DebugMessages.Add(Message.AsDebugDetailMessage());
+								Debug.AddDetailMessage(Message);
+							}
+							#endregion
 
 							CurrentPath = Objects.NULL_Path;
 							PSTsHandled++;
@@ -738,8 +912,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugDetailMessage());
+							#region DEBUG: PCK Line xxxx in World.LoadFLD is missing required parameters.
+							{
+								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 
@@ -750,8 +929,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
 						{
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + ") in scenery does not specify a FLD.").AsDebugWarningMessage());
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugDetailMessage());
+							#region DEBUG: PCK Line xxxx in World.LoadFLD is missing required parameters.
+							{
+								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify a FLD.";
+								DebugMessages.Add(Message.AsDebugDetailMessage());
+								Debug.AddDetailMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 
@@ -764,14 +948,25 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						AllSceneries.Add(ChildScenery);
 						#endregion
 
-						DebugMessages.Add(("Adding Child Scenry (" + ChildScenery.Identify + ") to (" + CurrentScenery.Identify + ")").AsDebugWarningMessage());
+						#region DEBUG: ChildScenery xxxx Added to yyyy Successfully.
+						{
+							var Message = "ChildScenery \"" + ChildScenery.Identify + "\" Added To \"" + CurrentScenery.Identify + "\" Successfully.";
+							DebugMessages.Add(Message.AsDebugDetailMessage());
+							Debug.AddDetailMessage(Message);
+						}
+						#endregion
 
 						#region Get Number of Lines in Child Scenery
 						int numberOfLinesInChildScenry = 0;
 						if (!Int32.TryParse(ThisLine.Split(' ')[2].ToUpperInvariant(), out numberOfLinesInChildScenry))
 						{
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + ") in scenery does not specify number of following lines.").AsDebugWarningMessage());
-							DebugMessages.Add(("PCK Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: PCK Line xxxx in World.LoadFLD does not specify number of following lines.
+							{
+								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify number of following lines";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 						#endregion
@@ -785,7 +980,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						CurrentScenery = ChildScenery;
 						#endregion
 
-						DebugMessages.Add(("Now Loading Child Scenry (" + CurrentLineNumber + "): " + CurrentScenery.Identify).AsDebugWarningMessage());
+						#region DEBUG: Now Loaing ChildScenery xxxx In yyyy.
+						{
+							var Message = "Now Loaing ChildScenery  \"" + ChildScenery.Identify + "\" In \"" + CurrentScenery.Identify + "\".";
+							DebugMessages.Add(Message.AsDebugDetailMessage());
+							Debug.AddDetailMessage(Message);
+						}
+						#endregion
 
 						continue;
 					}
@@ -798,6 +999,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						{
 							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
 							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: FIL Line xxxx in World.LoadFLD is missing required parameters.
+							{
+								var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 
@@ -808,8 +1016,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
 						{
-							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + ") in scenery does not specify a FLD.").AsDebugWarningMessage());
-							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: FIL Line xxxx in World.LoadFLD is does not specify a FLD.
+							{
+								var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify a FLD.";
+								DebugMessages.Add(Message.AsDebugDetailMessage());
+								Debug.AddDetailMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 
@@ -819,8 +1032,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							var ArrayOfTargetSceneries = AllSceneries.Where(x => x.Identify == Split[1]).ToArray();
 							if (ArrayOfTargetSceneries.Length <= 0)
 							{
-								DebugMessages.Add(("|FIL Line in Scenery: FLD In Scenery (" + CurrentLineNumber + ") Could not find a target.").AsDebugWarningMessage());
-								DebugMessages.Add(("FIL Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+								#region DEBUG: FIL Line xxxx in World.LoadFLD references a FLD that was not declared!
+								{
+									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD references a FLD that was not declared!";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
 								continue;
 							}
 							TargetScenery = ArrayOfTargetSceneries[0];
@@ -837,8 +1055,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 7)
 						{
-							DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
+							{
+								var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							continue;
 						}
 
@@ -855,7 +1078,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						{
 							DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
 							DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-
+							#region DEBUG: POS Line xxxx in World.LoadFLD failed conversion.
+							{
+								var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD failed conversion.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							TargetScenery.Position.X = 0.Meters();
 							TargetScenery.Position.Y = 0.Meters();
 							TargetScenery.Position.Z = 0.Meters();
@@ -877,12 +1106,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
 							System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
 							System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-							GroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
+							Extensions.YSFlight.World.FLDGroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
 						}
 						catch
 						{
-							DebugMessages.Add(("GND Color Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("GND Color Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: GND Color Line xxxx in World.LoadFLD is missing required parameters or failed conversion.
+							{
+								var Message = "GND Color Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters or failed conversion.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 						}
 					}
 					#endregion
@@ -896,12 +1130,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
 							System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
 							System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-							SkyColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
+							Extensions.YSFlight.World.FLDSkyColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
 						}
 						catch
 						{
-							DebugMessages.Add(("SKY Color Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("SKY Color Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: SKY Color Line xxxx in World.LoadFLD is missing required parameters or failed conversion.
+							{
+								var Message = "SKY Color Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters or failed conversion.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 						}
 					}
 					#endregion
@@ -909,10 +1148,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					#region GOB
 					if (ThisLine.ToUpperInvariant().StartsWith("GOB"))
 					{
-						DebugMessages.Add(
-							CurrentGround == Objects.NULL_Ground
-								? ("Grabbing a Ground Object. (" + CurrentLineNumber + ")").AsDebugWarningMessage()
-								: ("Finished Current Ground. (" + CurrentLineNumber + "): Grabbing another...").AsDebugWarningMessage());
+						#region DEBUG: Now loading a new GroundObject.
+						{
+							var Message = "Now loading a new GroundObject.";
+							DebugMessages.Add(Message.AsDebugDetailMessage());
+							Debug.AddDetailMessage(Message);
+						}
+						#endregion
 						CurrentGround = new Objects.Ground();
 						CurrentPath = Objects.NULL_Path;
 						continue;
@@ -921,10 +1163,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					#region PST
 					if (ThisLine.ToUpperInvariant().StartsWith("PST"))
 					{
-						DebugMessages.Add(
-							CurrentPath == Objects.NULL_Path
-								? ("Grabbing a Path. (" + CurrentLineNumber + ")").AsDebugWarningMessage()
-								: ("Finished Current Path. (" + CurrentLineNumber + "): Grabbing another...").AsDebugWarningMessage());
+						#region DEBUG: Now loading a new MotionPath.
+						{
+							var Message = "Now loading a new MotionPath.";
+							DebugMessages.Add(Message.AsDebugDetailMessage());
+							Debug.AddDetailMessage(Message);
+						}
+						#endregion
 						if (i + 1 < FLDContents.Length)
 						{
 							string NextLine = FLDContents[i + 1];
@@ -943,39 +1188,105 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				#endregion
 			}
+			#region DEBUG: Could not add x GroundObjects as they are not installed. Please see the debug detail for further information!
+			if (GOBsMissing > 0)
+			{
+				var Message = "Could not add " + GOBsMissing + " GroundObjects as they are not installed. Please see the debug detail for further information!";
+				DebugMessages.Add(Message.AsDebugWarningMessage());
+				Debug.AddWarningMessage(Message);
+			}
 			#endregion
-
+			#endregion
 			#region Move Objects to Root Scenery
-			DebugMessages.Add(("Converting Child Sceneries To Root.").AsDebugWarningMessage());
+			#region DEBUG: Starting to move Child Sceneries to Root Scenery.
+			{
+				var Message = "Starting to move Child Sceneries to Root Scenery.";
+				DebugMessages.Add(Message.AsDebugDetailMessage());
+				Debug.AddDetailMessage(Message);
+			}
+			#endregion
 			foreach (Objects.Scenery ThisScenery in Objects.RootScenery.Children)
 			{
-				DebugMessages.Add(("Converting Child Scenery To Root:" + ThisScenery.Identify).AsDebugWarningMessage());
+				#region DEBUG: Starting to move Child Scenery xxxx to Root Scenery.
+				{
+					var Message = "Starting to move Child Scenery \"" + ThisScenery.Identify + "\" to Root Scenery.";
+					DebugMessages.Add(Message.AsDebugDetailMessage());
+					Debug.AddDetailMessage(Message);
+				}
+				#endregion
 				ThisScenery.ProcessGrounds();
 				ThisScenery.ProcessPaths();
-				DebugMessages.Add(("Converted Child Scenery To Root:" + ThisScenery.Identify).AsDebugWarningMessage());
+				#region DEBUG: Finished moving Child Scenery xxxx to Root Scenery.
+				{
+					var Message = "Finished moving Child Scenery \"" + ThisScenery.Identify + "\" to Root Scenery.";
+					DebugMessages.Add(Message.AsDebugDetailMessage());
+					Debug.AddDetailMessage(Message);
+				}
+				#endregion
 			}
-			DebugMessages.Add(("Converted Child Sceneries To Root.").AsDebugWarningMessage());
+			#region DEBUG: Finished moving Child Sceneries to Root Scenery.
+			{
+				var Message = "Finished moving Child Sceneries to Root Scenery.";
+				DebugMessages.Add(Message.AsDebugDetailMessage());
+				Debug.AddDetailMessage(Message);
+			}
+			#endregion
 
-			DebugMessages.Add(("Adding Converted Ground Objects.").AsDebugWarningMessage());
 			foreach (Objects.Ground ThisGround in Objects.RootScenery.GroundObjects)
 			{
-				Objects.GroundList.Add(ThisGround);
+				Extensions.YSFlight.World.AllGrounds.Add(ThisGround);
 			}
-			DebugMessages.Add(("Added Converted Ground Objects.").AsDebugWarningMessage());
+			#region DEBUG: Added GroundObjects from RootScenery to World.Ground.AllGrounds
+			{
+				var Message = "Added GroundObjects from RootScenery to World.Ground.AllGrounds";
+				DebugMessages.Add(Message.AsDebugDetailMessage());
+				Debug.AddDetailMessage(Message);
+			}
+			#endregion
 
-			DebugMessages.Add(("Adding Converted Paths.").AsDebugWarningMessage());
 			foreach (Objects.Path ThisPath in Objects.RootScenery.MotionPaths.ToArray())
 			{
-				if (ThisPath.Identify != "" & ThisPath.Type == 15) Objects.PathList.Add(ThisPath);
+				if (ThisPath.Identify != "" & ThisPath.Type == 15) Extensions.YSFlight.World.AllMotionPaths.Add(ThisPath);
 			}
-			DebugMessages.Add(("Added Converted Paths.").AsDebugWarningMessage());
+			#region DEBUG: Added MotionPaths from RootScenery to World.Ground.AllMotionPaths
+			{
+				var Message = "Added MotionPaths from RootScenery to World.Ground.AllMotionPaths";
+				DebugMessages.Add(Message.AsDebugDetailMessage());
+				Debug.AddDetailMessage(Message);
+			}
 			#endregion
-			return (DebugMessages.Count(x => x is IDebugWarningMessage) > 0);
+			#endregion
+
+			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
 		}
 		private static bool LoadSTP(IMetaDataScenery InputScenery)
 		{
+			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
+			#region STP Not Defined
+			if (InputScenery.Path_2_StartPositionFile == null | InputScenery.Path_2_StartPositionFile == "")
+			{
+				#region DEBUG: STP File Not Defined.
+				{
+					var Message = "STP File Not Defined.";
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
+				return false;
+			}
+			#endregion
 			#region STP Not Found on Disk
-			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_2_StartPositionFile)) return false;
+			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_2_StartPositionFile))
+			{
+				#region DEBUG: STP File Not Found: xxxx
+				{
+					var Message = "STP File Not Found: " + InputScenery.Path_2_StartPositionFile;
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
+				return false;
+			}
 			#endregion
 			#region Read File Contents
 			string[] STPContents = File.ReadAllLines(Settings.YSFlight.Directory + InputScenery.Path_2_StartPositionFile);
@@ -984,7 +1295,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			#region Initialise Variables
 			Objects.StartPosition CurrentStartPosition = Objects.NULL_StartPosition;
 			#endregion
-
 			#region Iterate over STP Contents
 			for (int i = 0; i < STPContents.Length; i++)
 			{
@@ -1004,7 +1314,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						#region Finish Current Ground and Start a New One
 						if (CurrentStartPosition != Objects.NULL_StartPosition)
 						{
-							Objects.StartPositionList.Add(CurrentStartPosition);
+							Extensions.YSFlight.World.AllStartPositions.Add(CurrentStartPosition);
 						}
 						#endregion
 
@@ -1014,6 +1324,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						{
 							DebugMessages.Add(("N Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
 							DebugMessages.Add(("N STP Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: N Line xxxx in World.LoadSTP is missing required parameters.
+							{
+								var Message = "N Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -1028,8 +1345,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(("C Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("C STP Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: C Line xxxx in World.LoadSTP is missing required parameters.
+							{
+								var Message = "C Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue;
 						}
@@ -1041,32 +1363,42 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region POSITION
 								if (Split.Length < 5)
 								{
-									DebugMessages.Add(("C POSITION Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C POSITION Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "C POSITION Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 								failed = false;
-								IDistance temp;
+								IDistance tempDistance;
 
-								temp = 0.Meters();
-								failed |= !ObjectFactory.TryParse(Split[2], out temp);
-								Split[2] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.X = temp;
+								tempDistance = 0.Meters();
+								failed |= !ObjectFactory.TryParse(Split[2], out tempDistance);
+								Split[2] = tempDistance.ToMeters().ToString();
+								CurrentStartPosition.Position.X = tempDistance;
 
-								temp = 0.Meters();
-								failed |= !ObjectFactory.TryParse(Split[3], out temp);
-								Split[2] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.Y = temp;
+								tempDistance = 0.Meters();
+								failed |= !ObjectFactory.TryParse(Split[3], out tempDistance);
+								Split[2] = tempDistance.ToMeters().ToString();
+								CurrentStartPosition.Position.Y = tempDistance;
 
-								temp = 0.Meters();
-								failed |= !ObjectFactory.TryParse(Split[4], out temp);
-								Split[3] = temp.ToMeters().ToString();
-								CurrentStartPosition.Position.Z = temp;
+								tempDistance = 0.Meters();
+								failed |= !ObjectFactory.TryParse(Split[4], out tempDistance);
+								Split[3] = tempDistance.ToMeters().ToString();
+								CurrentStartPosition.Position.Z = tempDistance;
 
 								if (failed)
 								{
-									DebugMessages.Add(("C POSITION Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("C POSITION Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C POSITION Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "C POSITION Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									CurrentStartPosition.Position.X = 0.Meters();
 									CurrentStartPosition.Position.Y = 0.Meters();
 									CurrentStartPosition.Position.Z = 0.Meters();
@@ -1075,11 +1407,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#endregion
 							case "ATTITUDE":
 								#region ATTITUDE
-
 								if (Split.Length < 5)
 								{
-									DebugMessages.Add(("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C ATTITUDE Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "C ATTITUDE Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 								failed = false;
@@ -1121,8 +1457,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(("C ATTITUDE Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("C ATTITUDE Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C ATTITUDE Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "C ATTITUDE Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									CurrentStartPosition.Attitude.H = 0.Degrees();
 									CurrentStartPosition.Attitude.P = 0.Degrees();
 									CurrentStartPosition.Attitude.B = 0.Degrees();
@@ -1133,8 +1474,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region INITSPED
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C INITSPED Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "C INITSPED Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 
@@ -1147,8 +1493,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(("C INITSPED Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("C INITSPED Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C INITSPED Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "C INITSPED Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									CurrentStartPosition.Speed = 0.MetersPerSecond();
 								}
 								continue;
@@ -1157,17 +1508,28 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CTLTHROT
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C CTLTHROT Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "C CTLTHROT Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 								failed = false;
-								failed |= !Single.TryParse(Split[2], out CurrentStartPosition.Throttle);
+								failed |= !Single.TryParse(Split[2], out var throttle);
+								CurrentStartPosition.Throttle = throttle;
 
 								if (failed)
 								{
-									DebugMessages.Add(("C CTLTHROT Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("C CTLTHROT Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C CTLTHROT Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "C CTLTHROT Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									CurrentStartPosition.Throttle = 0;
 								}
 								continue;
@@ -1176,18 +1538,29 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CTLLDGEA
 								if (Split.Length < 3)
 								{
-									DebugMessages.Add(("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: C CTLLDGEA Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "C CTLLDGEA Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 								failed = false;
-								failed |= !Boolean.TryParse(Split[2], out CurrentStartPosition.Gear);
+								failed |= !Boolean.TryParse(Split[2], out var tempGear);
+								CurrentStartPosition.GearDown = tempGear;
 
 								if (failed)
 								{
-									DebugMessages.Add(("C CTLLDGEA Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("C CTLLDGEA Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-									CurrentStartPosition.Gear = true;
+									#region DEBUG: C CTLLDGEA Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "C CTLLDGEA Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
+									CurrentStartPosition.GearDown = true;
 								}
 								continue;
 								#endregion
@@ -1201,8 +1574,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().Split(' ');
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(("P Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("P STP Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: P Line xxxx in World.LoadSTP is missing required parameters.
+							{
+								var Message = "P Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							CurrentStartPosition = Objects.NULL_StartPosition;
 							continue; //couldn't read the name line - error?
 						}
@@ -1215,8 +1593,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#region CARRIER
 								if (Split.Length < 9)
 								{
-									DebugMessages.Add(("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-									DebugMessages.Add(("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: P CARRIER Line xxxx in World.LoadSTP is missing required parameters.
+									{
+										var Message = "P CARRIER Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 									continue;
 								}
 
@@ -1244,8 +1627,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 								if (failed)
 								{
-									DebugMessages.Add(("P CARRIER Line (" + CurrentLineNumber + ") in STP could not be converted.").AsDebugWarningMessage());
-									DebugMessages.Add(("P CARRIER Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+									#region DEBUG: P CARRIER Line xxxx in World.LoadSTP failed conversion.
+									{
+										var Message = "P CARRIER Line (" + CurrentLineNumber + ") in World.LoadSTP failed conversion.";
+										DebugMessages.Add(Message.AsDebugWarningMessage());
+										Debug.AddWarningMessage(Message);
+									}
+									#endregion
 								}
 								break;
 								#endregion
@@ -1263,10 +1651,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
-							DebugMessages.Add(("N Line (" + CurrentLineNumber + ") in STP could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("N STP Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+							#region DEBUG: N Line xxxx in World.LoadSTP is missing required parameters.
+							{
+								var Message = "N Line (" + CurrentLineNumber + ") in World.LoadSTP is missing required parameters.";
+								DebugMessages.Add(Message.AsDebugWarningMessage());
+								Debug.AddWarningMessage(Message);
+							}
+							#endregion
 							CurrentStartPosition = Objects.NULL_StartPosition;
-							continue; //couldn't read the name line - error?
+							continue;
 						}
 						CurrentStartPosition = new Objects.StartPosition();
 						CurrentStartPosition.Identify = Split[1];
@@ -1280,17 +1673,41 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			#region Finish the Last Start Position
 			if (CurrentStartPosition != Objects.NULL_StartPosition)
 			{
-				Objects.StartPositionList.Add(CurrentStartPosition);
+				Extensions.YSFlight.World.AllStartPositions.Add(CurrentStartPosition);
 				//Since the declarations do not terminate, we need to add the last one at the end of the file.
 			}
 			#endregion
 
-			return (DebugMessages.Count(x => x is IDebugWarningMessage) > 0);
+			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
 		}
 		private static bool LoadYFS(IMetaDataScenery InputScenery)
 		{
+			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
+			#region YFS Not Defined
+			if (InputScenery.Path_3_YFSFile == null | InputScenery.Path_3_YFSFile == "")
+			{
+				#region DEBUG: YFS File Not Defined.
+				{
+					var Message = "YFS File Not Defined.";
+					DebugMessages.Add(Message.AsDebugDetailMessage());
+					Debug.AddDetailMessage(Message);
+				}
+				#endregion
+				return false;
+			}
+			#endregion
 			#region YFS Not Found on Disk
-			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_2_StartPositionFile)) return false;
+			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_3_YFSFile))
+			{
+				#region DEBUG: YFS File Not Found: xxxx
+				{
+					var Message = "YFS File Not Found: " + InputScenery.Path_3_YFSFile;
+					DebugMessages.Add(Message.AsDebugWarningMessage());
+					Debug.AddWarningMessage(Message);
+				}
+				#endregion
+				return false;
+			}
 			#endregion
 			#region Read File Contents
 			string[] YFSContents = File.ReadAllLines(Settings.YSFlight.Directory + InputScenery.Path_3_YFSFile);
@@ -1316,7 +1733,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					#region GROUNDOB
 					if (ThisLine.ToUpperInvariant().StartsWith("GROUNDOB"))
 					{
-						if (CurrentGround != Objects.NULL_Ground) Objects.GroundList.Add(CurrentGround);
+						if (CurrentGround != Objects.NULL_Ground) Extensions.YSFlight.World.AllGrounds.Add(CurrentGround);
 						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 						if (Split.Length < 2)
 						{
@@ -1329,7 +1746,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						CurrentGround = new Objects.Ground();
 
 						CurrentGround.Identify = Split[1];
-						CurrentGround.MetaGroundObject = Extensions.YSFlight.MetaData.Grounds.FindByName(Split[1]);
+						CurrentGround.MetaData = Extensions.YSFlight.MetaData.Grounds.FindByName(Split[1]);
 						continue;
 					}
 					#endregion
@@ -1393,11 +1810,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						CurrentGround.Attitude.H = temp;
 
 						temp = 0.Degrees();
-						failed |= !ObjectFactory.TryParse(Split[1], out temp);
+						failed |= !ObjectFactory.TryParse(Split[2], out temp);
 						CurrentGround.Attitude.P = temp;
 
 						temp = 0.Degrees();
-						failed |= !ObjectFactory.TryParse(Split[1], out temp);
+						failed |= !ObjectFactory.TryParse(Split[3], out temp);
 						CurrentGround.Attitude.B = temp;
 
 						if (failed)
@@ -1423,7 +1840,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							continue; //couldn't read the name line - error?
 						}
 						bool failed = false;
-						failed |= !UInt32.TryParse(Split[1], out CurrentGround.IFF);
+						failed |= !UInt32.TryParse(Split[1], out var temp);
+						CurrentGround.IFF = temp;
 						if (failed)
 						{
 							DebugMessages.Add(("IDENTIFY Line (" + CurrentLineNumber + ") in YFS Ground could not be converted.").AsDebugWarningMessage());
@@ -1445,7 +1863,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 
 						bool failed = false;
-						failed |= !UInt32.TryParse(Split[1], out CurrentGround.ID);
+						failed |= !UInt32.TryParse(Split[1], out var tempID);
+						CurrentGround.ID = tempID;
 						CurrentGround.Tag = Split[2].Replace(" ", "_");
 
 
@@ -1478,7 +1897,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						}
 						CurrentGround = new Objects.Ground();
 						CurrentGround.Identify = Split[1];
-						CurrentGround.MetaGroundObject = Extensions.YSFlight.MetaData.Grounds.FindByName(Split[1]);
+						CurrentGround.MetaData = Extensions.YSFlight.MetaData.Grounds.FindByName(Split[1]);
 						continue;
 					}
 					#endregion
@@ -1489,12 +1908,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			#region Finish the Last Ground Object
 			if (CurrentGround != Objects.NULL_Ground)
 			{
-				Objects.GroundList.Add(CurrentGround);
+				Extensions.YSFlight.World.AllGrounds.Add(CurrentGround);
 				//Since the declarations do not terminate, we need to add the last one at the end of the file.
 			}
 			#endregion
 
-			return (DebugMessages.Count(x => x is IDebugWarningMessage) > 0);
+			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
 		}
 	}
 }

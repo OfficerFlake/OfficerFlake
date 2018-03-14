@@ -411,7 +411,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//Create all the ground objects.
 				Percentage = 0;
 
-				//TODO : LIST IS EMPTY!!!
 				for (int i = 0; i < YSFlight.World.AllGrounds.Count; i++)
 				{
 					#region Tell YSClient the Percentage

@@ -595,7 +595,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 				thisWaiter.CheckIfReceived(thisPacket);
 			}
 
-			PacketProcessor.BeginInvoke(this, thisPacket, null, null);
+			try
+			{
+				PacketProcessor.BeginInvoke(this, thisPacket, null, null);
+			}
+			catch (Exception e)
+			{
+				int i = 0;
+			}
 		}
 		#endregion
 		#endregion

@@ -67,7 +67,7 @@ namespace Com.OfficerFlake.Libraries
 
 				#region Send Map Name
 
-				public String FieldName { get; set; } = "SMALL_MAP";
+				public String FieldName { get; set; } = "ISLAND_GOURD";
 
 				#endregion
 

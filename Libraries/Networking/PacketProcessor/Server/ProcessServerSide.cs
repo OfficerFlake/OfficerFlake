@@ -18,7 +18,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 				    case 3:
 						IPacket_03_Error Packet03 = ObjectFactory.CreatePacket03Error();
 					    Packet03.Data = thisPacket.Data;
-					    throw new NotImplementedException();
+					    return true;
+					    //throw new NotImplementedException(); //Don't had object on client?
 					case 4:
 						IPacket_04_Field Packet04 = ObjectFactory.CreatePacket04Field();
 						Packet04.Data = thisPacket.Data;
