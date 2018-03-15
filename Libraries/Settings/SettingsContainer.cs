@@ -16,7 +16,7 @@ namespace Com.OfficerFlake.Libraries
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public String Directory { get; set; } = "C:/Program Files/YSFLIGHT.COM/YSFLIGHT/";
+				public String Directory { get; set; } = "C:/Games/YSFLIGHT20120701/";
 			}
 			public readonly _YSFlight YSFlight = new _YSFlight();
 
@@ -67,7 +67,7 @@ namespace Com.OfficerFlake.Libraries
 
 				#region Send Map Name
 
-				public String FieldName { get; set; } = "ISLAND_GOURD";
+				public String FieldName { get; set; } = "HAWAII";
 
 				#endregion
 

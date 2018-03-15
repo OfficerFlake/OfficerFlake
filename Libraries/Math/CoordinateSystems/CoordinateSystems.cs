@@ -20,6 +20,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			X = x;
 			Y = y;
 		}
+
+		public override string ToString()
+		{
+			return "(" + X + ", " + Y + ")";
+		}
 	}
 	public class Point3 : IPoint3
 	{
@@ -45,6 +50,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			Y = y;
 			Z = z;
 		}
+
+		public override string ToString()
+		{
+			return "(" + X + ", " + Y + ", " + Z + ")";
+		}
 	}
 	public class Vector2 : IVector2
 	{
@@ -63,6 +73,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		{
 			X = x;
 			Y = y;
+		}
+
+		public override string ToString()
+		{
+			return "(" + X + ", " + Y + ")";
 		}
 	}
 	public class Vector3 : IVector3
@@ -89,6 +104,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			Y = y;
 			Z = z;
 		}
+
+	public override string ToString()
+	{
+		return "(" + X + ", " + Y + ", " + Z + ")";
+	}
 	}
 
 	public class Coordinate2 : ICoordinate2
@@ -108,6 +128,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		{
 			X = x;
 			Y = y;
+		}
+
+		public override string ToString()
+		{
+			return "(" + X + ", " + Y + ")";
 		}
 	}
 	public class Coordinate3 : ICoordinate3
@@ -134,6 +159,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			Y = y;
 			Z = z;
 		}
+
+		public override string ToString()
+		{
+			return "(" + X + ", " + Y + ", " + Z + ")";
+		}
 	}
 	public class Orientation2 : IOrientation2
 	{
@@ -152,6 +182,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 		{
 			H = h;
 			P = p;
+		}
+
+		public override string ToString()
+		{
+			return "(" + H + ", " + P + ")";
 		}
 	}
 	public class Orientation3 : IOrientation3
@@ -177,6 +212,11 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			H = h;
 			P = p;
 			B = b;
+		}
+
+		public override string ToString()
+		{
+			return "(" + H + ", " + P + ", " + B + ")";
 		}
 	}
 }
