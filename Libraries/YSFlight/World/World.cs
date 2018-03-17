@@ -43,23 +43,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			public static Aircraft NULL_Aircraft;
 
-			public class StartPosition : IWorldStartPosition
-			{
-				public String Identify { get; set; } = "<NULL>";
-				public ISpeed Speed { get; set; } = 0.MetersPerSecond();
-				public Single Throttle { get; set; } = 0;
-				public Boolean GearDown { get; set; } = true;
-
-				public Boolean AllowIFF1 { get; set; } = true;
-				public Boolean AllowIFF2 { get; set; } = true;
-				public Boolean AllowIFF3 { get; set; } = true;
-				public Boolean AllowIFF4 { get; set; } = true;
-
-				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
-				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
-			}
-			public static StartPosition NULL_StartPosition;
-
 			public class Ground : IWorldGround
 			{
 				public String Identify { get; set; } = "<NULL>";
@@ -80,6 +63,130 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 			}
 			public static Ground NULL_Ground;
+
+			public class Scenery
+			{
+				public Scenery Parent = RootScenery;
+				public string Identify = "";
+				public int StartLine = 0;
+				public int EndLine = 0;
+
+				public IPoint3 Position = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public IOrientation3 Attitude = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
+
+				public I24BitColor GroundColor = ObjectFactory.CreateColor(0, 0, 0).Get24BitColor();
+				public I24BitColor SkyColor = ObjectFactory.CreateColor(0, 0, 0).Get24BitColor();
+				public WorldMotionPathAreaType DefaultArea = WorldMotionPathAreaType.NoArea;
+
+				public List<Scenery> Children = new List<Scenery>();
+				public List<Ground> GroundObjects = new List<Ground>();
+				public List<Path> MotionPaths = new List<Path>();
+
+				public bool ProcessGrounds()
+				{
+					int Indent = 0;
+					Scenery Target = this;
+					while (Target.Parent != RootScenery)
+					{
+						Indent++;
+						Target = Target.Parent;
+					}
+					foreach (Scenery ThisScenery in this.Children)
+					{
+						//Console.WriteLine("SUBSCENERY: " + Identify);
+						ThisScenery.ProcessGrounds();
+					}
+					//Console.WriteLine("END SUBSCENERY: " + Identify);
+					foreach (Ground ThisGround in this.GroundObjects)
+					{
+
+						IDistance PosX = ThisGround.Position.X;
+						IDistance PosY = ThisGround.Position.Y;
+						IDistance PosZ = ThisGround.Position.Z;
+						ThisGround.Position.X =
+							(this.Position.X.ToMeters().RawValue +
+							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosX.ToMeters().RawValue) +
+							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
+						ThisGround.Position.Y =
+							(this.Position.Y.ToMeters().RawValue +
+							ThisGround.Position.Y.ToMeters().RawValue).Meters();
+						ThisGround.Position.Z =
+							(this.Position.Z.ToMeters().RawValue +
+							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
+							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
+
+						//ThisGround.Position.X = (ThisGround.Position.X.ToMeters().RawValue  + this.Position.X.ToMeters().RawValue ).Meters();
+						//ThisGround.Position.Y = (ThisGround.Position.Y.ToMeters().RawValue  + this.Position.Y.ToMeters().RawValue ).Meters();
+						//ThisGround.Position.Z = (ThisGround.Position.Z.ToMeters().RawValue  + this.Position.Z.ToMeters().RawValue ).Meters();
+						ThisGround.Attitude.H = (ThisGround.Attitude.H.ToDegrees().RawValue + this.Attitude.H.ToDegrees().RawValue).Degrees();
+						ThisGround.Attitude.P = (ThisGround.Attitude.P.ToDegrees().RawValue + this.Attitude.P.ToDegrees().RawValue).Degrees();
+						ThisGround.Attitude.B = (ThisGround.Attitude.B.ToDegrees().RawValue + this.Attitude.B.ToDegrees().RawValue).Degrees();
+
+						Parent.GroundObjects.Add(ThisGround);
+					}
+					GroundObjects.Clear();
+					return true;
+				}
+				public bool ProcessPaths()
+				{
+					int Indent = 0;
+					Scenery Target = this;
+					while (Target.Parent != RootScenery)
+					{
+						Indent++;
+						Target = Target.Parent;
+					}
+					foreach (Scenery ThisScenery in this.Children)
+					{
+						//Console.WriteLine("SUBSCENERY: " + Identify);
+						ThisScenery.ProcessPaths();
+					}
+					//Console.WriteLine("END SUBSCENERY: " + Identify);
+					foreach (Path ThisPath in this.MotionPaths)
+					{
+						foreach (IPoint3 ThisPoint in ThisPath.Points.ToArray())
+						{
+							IDistance _PosX = (ThisPoint.X.ToMeters().RawValue + ThisPath.Position.X.ToMeters().RawValue).Meters();
+							IDistance _PosY = (ThisPoint.Y.ToMeters().RawValue + ThisPath.Position.Y.ToMeters().RawValue).Meters();
+							IDistance _PosZ = (ThisPoint.Z.ToMeters().RawValue + ThisPath.Position.Z.ToMeters().RawValue).Meters();
+							ThisPoint.X =
+								(this.Position.X.ToMeters().RawValue +
+								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosX.ToMeters().RawValue) +
+								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
+							ThisPoint.Y =
+								(this.Position.Y.ToMeters().RawValue +
+								ThisPoint.Y.ToMeters().RawValue).Meters();
+							ThisPoint.Z =
+								(this.Position.Z.ToMeters().RawValue +
+								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -_PosX.ToMeters().RawValue) +
+								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
+						}
+						IDistance PosX = ThisPath.Position.X;
+						IDistance PosY = ThisPath.Position.Y;
+						IDistance PosZ = ThisPath.Position.Z;
+						ThisPath.Position.X =
+							(this.Position.X.ToMeters().RawValue +
+							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
+							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
+						ThisPath.Position.Y =
+							(this.Position.Y.ToMeters().RawValue +
+							(PosY.ToMeters().RawValue)).Meters();
+						ThisPath.Position.Z =
+							(this.Position.Z.ToMeters().RawValue +
+							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
+							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
+						Parent.MotionPaths.Add(ThisPath);
+					}
+					MotionPaths.Clear();
+					return true;
+				}
+
+				public override string ToString()
+				{
+					return Identify;
+				}
+			}
+			public static Scenery RootScenery = new Scenery();
 
 			public class Path : IWorldMotionPath
 			{
@@ -161,263 +268,22 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			}
 			public static Path NULL_Path = new Path();
 
-			public class Scenery
+			public class StartPosition : IWorldStartPosition
 			{
-				public Scenery Parent = RootScenery;
-				public string Identify = "";
-				public int EndLine = 0;
-				public List<Scenery> Children = new List<Scenery>();
-				public List<Ground> GroundObjects = new List<Ground>();
-				public List<Path> MotionPaths = new List<Path>();
+				public String Identify { get; set; } = "<NULL>";
+				public ISpeed Speed { get; set; } = 0.MetersPerSecond();
+				public Single Throttle { get; set; } = 0;
+				public Boolean GearDown { get; set; } = true;
 
-				public class _Position
-				{
-					public IDistance X;
-					public IDistance Y;
-					public IDistance Z;
-				}
-				public _Position Position = new _Position();
+				public Boolean AllowIFF1 { get; set; } = true;
+				public Boolean AllowIFF2 { get; set; } = true;
+				public Boolean AllowIFF3 { get; set; } = true;
+				public Boolean AllowIFF4 { get; set; } = true;
 
-				public class _Attitude
-				{
-					public IAngle H;
-					public IAngle P;
-					public IAngle B;
-				}
-				public _Attitude Attitude = new _Attitude();
-
-				public bool AddChild(Scenery ThisChild)
-				{
-					if (ThisChild == this) return false;
-					Children.Add(ThisChild);
-					return true;
-				}
-
-				public bool ProcessGrounds()
-				{
-					int Indent = 0;
-					Scenery Target = this;
-					while (Target.Parent != RootScenery)
-					{
-						Indent++;
-						Target = Target.Parent;
-					}
-					foreach (Scenery ThisScenery in this.Children)
-					{
-						//Console.WriteLine("SUBSCENERY: " + Identify);
-						ThisScenery.ProcessGrounds();
-					}
-					//Console.WriteLine("END SUBSCENERY: " + Identify);
-					foreach (Ground ThisGround in this.GroundObjects)
-					{
-
-						IDistance PosX = ThisGround.Position.X;
-						IDistance PosY = ThisGround.Position.Y;
-						IDistance PosZ = ThisGround.Position.Z;
-						ThisGround.Position.X =
-							(this.Position.X.ToMeters().RawValue +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosX.ToMeters().RawValue) +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						ThisGround.Position.Y =
-							(this.Position.Y.ToMeters().RawValue +
-							ThisGround.Position.Y.ToMeters().RawValue).Meters();
-						ThisGround.Position.Z =
-							(this.Position.X.ToMeters().RawValue +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-
-						//ThisGround.Position.X = (ThisGround.Position.X.ToMeters().RawValue  + this.Position.X.ToMeters().RawValue ).Meters();
-						//ThisGround.Position.Y = (ThisGround.Position.Y.ToMeters().RawValue  + this.Position.Y.ToMeters().RawValue ).Meters();
-						//ThisGround.Position.Z = (ThisGround.Position.Z.ToMeters().RawValue  + this.Position.Z.ToMeters().RawValue ).Meters();
-						ThisGround.Attitude.H = (ThisGround.Attitude.H.ToDegrees().RawValue + this.Attitude.H.ToDegrees().RawValue).Degrees();
-						ThisGround.Attitude.P = (ThisGround.Attitude.P.ToDegrees().RawValue + this.Attitude.P.ToDegrees().RawValue).Degrees();
-						ThisGround.Attitude.B = (ThisGround.Attitude.B.ToDegrees().RawValue + this.Attitude.B.ToDegrees().RawValue).Degrees();
-
-						Parent.GroundObjects.Add(ThisGround);
-					}
-					GroundObjects.Clear();
-					return true;
-				}
-
-				public bool ProcessPaths()
-				{
-					int Indent = 0;
-					Scenery Target = this;
-					while (Target.Parent != RootScenery)
-					{
-						Indent++;
-						Target = Target.Parent;
-					}
-					foreach (Scenery ThisScenery in this.Children)
-					{
-						//Console.WriteLine("SUBSCENERY: " + Identify);
-						ThisScenery.ProcessPaths();
-					}
-					//Console.WriteLine("END SUBSCENERY: " + Identify);
-					foreach (Path ThisPath in this.MotionPaths)
-					{
-						foreach (IPoint3 ThisPoint in ThisPath.Points.ToArray())
-						{
-							IDistance _PosX = (ThisPoint.X.ToMeters().RawValue + ThisPath.Position.X.ToMeters().RawValue).Meters();
-							IDistance _PosY = (ThisPoint.Y.ToMeters().RawValue + ThisPath.Position.Y.ToMeters().RawValue).Meters();
-							IDistance _PosZ = (ThisPoint.Z.ToMeters().RawValue + ThisPath.Position.Z.ToMeters().RawValue).Meters();
-							ThisPoint.X =
-								(this.Position.X.ToMeters().RawValue + 
-								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosX.ToMeters().RawValue) +
-								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
-							ThisPoint.Y =
-								(this.Position.Y.ToMeters().RawValue +
-								ThisPoint.Y.ToMeters().RawValue).Meters();
-							ThisPoint.Z =
-								(this.Position.Z.ToMeters().RawValue +
-								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -_PosX.ToMeters().RawValue) +
-								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
-						}
-						IDistance PosX = ThisPath.Position.X;
-						IDistance PosY = ThisPath.Position.Y;
-						IDistance PosZ = ThisPath.Position.Z;
-						ThisPath.Position.X =
-							(this.Position.X.ToMeters().RawValue +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						ThisPath.Position.Y =
-							(this.Position.Y.ToMeters().RawValue +
-							(PosY.ToMeters().RawValue)).Meters();
-						ThisPath.Position.Z =
-							(this.Position.Z.ToMeters().RawValue +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						Parent.MotionPaths.Add(ThisPath);
-					}
-					MotionPaths.Clear();
-					return true;
-				}
+				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 			}
-			public class Scenery2
-			{
-				public Scenery2 Parent = RootScenery2;
-				public string Identify = "";
-				public int StartLine = 0;
-				public int EndLine = 0;
-
-				public IPoint3 Position = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
-				public IOrientation3 Attitude = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
-
-				public I24BitColor GroundColor = ObjectFactory.CreateColor(0, 0, 0).Get24BitColor();
-				public I24BitColor SkyColor = ObjectFactory.CreateColor(0, 0, 0).Get24BitColor();
-				public WorldMotionPathAreaType DefaultArea = WorldMotionPathAreaType.NoArea;
-
-				public List<Scenery2> Children = new List<Scenery2>();
-				public List<Ground> GroundObjects = new List<Ground>();
-				public List<Path> MotionPaths = new List<Path>();
-
-				public bool ProcessGrounds()
-				{
-					int Indent = 0;
-					Scenery2 Target = this;
-					while (Target.Parent != RootScenery2)
-					{
-						Indent++;
-						Target = Target.Parent;
-					}
-					foreach (Scenery2 ThisScenery in this.Children)
-					{
-						//Console.WriteLine("SUBSCENERY: " + Identify);
-						ThisScenery.ProcessGrounds();
-					}
-					//Console.WriteLine("END SUBSCENERY: " + Identify);
-					foreach (Ground ThisGround in this.GroundObjects)
-					{
-
-						IDistance PosX = ThisGround.Position.X;
-						IDistance PosY = ThisGround.Position.Y;
-						IDistance PosZ = ThisGround.Position.Z;
-						ThisGround.Position.X =
-							(this.Position.X.ToMeters().RawValue +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosX.ToMeters().RawValue) +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						ThisGround.Position.Y =
-							(this.Position.Y.ToMeters().RawValue +
-							ThisGround.Position.Y.ToMeters().RawValue).Meters();
-						ThisGround.Position.Z =
-							(this.Position.Z.ToMeters().RawValue +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-
-						//ThisGround.Position.X = (ThisGround.Position.X.ToMeters().RawValue  + this.Position.X.ToMeters().RawValue ).Meters();
-						//ThisGround.Position.Y = (ThisGround.Position.Y.ToMeters().RawValue  + this.Position.Y.ToMeters().RawValue ).Meters();
-						//ThisGround.Position.Z = (ThisGround.Position.Z.ToMeters().RawValue  + this.Position.Z.ToMeters().RawValue ).Meters();
-						ThisGround.Attitude.H = (ThisGround.Attitude.H.ToDegrees().RawValue + this.Attitude.H.ToDegrees().RawValue).Degrees();
-						ThisGround.Attitude.P = (ThisGround.Attitude.P.ToDegrees().RawValue + this.Attitude.P.ToDegrees().RawValue).Degrees();
-						ThisGround.Attitude.B = (ThisGround.Attitude.B.ToDegrees().RawValue + this.Attitude.B.ToDegrees().RawValue).Degrees();
-
-						Parent.GroundObjects.Add(ThisGround);
-					}
-					GroundObjects.Clear();
-					return true;
-				}
-				public bool ProcessPaths()
-				{
-					int Indent = 0;
-					Scenery2 Target = this;
-					while (Target.Parent != RootScenery2)
-					{
-						Indent++;
-						Target = Target.Parent;
-					}
-					foreach (Scenery2 ThisScenery in this.Children)
-					{
-						//Console.WriteLine("SUBSCENERY: " + Identify);
-						ThisScenery.ProcessPaths();
-					}
-					//Console.WriteLine("END SUBSCENERY: " + Identify);
-					foreach (Path ThisPath in this.MotionPaths)
-					{
-						foreach (IPoint3 ThisPoint in ThisPath.Points.ToArray())
-						{
-							IDistance _PosX = (ThisPoint.X.ToMeters().RawValue + ThisPath.Position.X.ToMeters().RawValue).Meters();
-							IDistance _PosY = (ThisPoint.Y.ToMeters().RawValue + ThisPath.Position.Y.ToMeters().RawValue).Meters();
-							IDistance _PosZ = (ThisPoint.Z.ToMeters().RawValue + ThisPath.Position.Z.ToMeters().RawValue).Meters();
-							ThisPoint.X =
-								(this.Position.X.ToMeters().RawValue +
-								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosX.ToMeters().RawValue) +
-								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
-							ThisPoint.Y =
-								(this.Position.Y.ToMeters().RawValue +
-								ThisPoint.Y.ToMeters().RawValue).Meters();
-							ThisPoint.Z =
-								(this.Position.Z.ToMeters().RawValue +
-								(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -_PosX.ToMeters().RawValue) +
-								(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * _PosZ.ToMeters().RawValue)).Meters();
-						}
-						IDistance PosX = ThisPath.Position.X;
-						IDistance PosY = ThisPath.Position.Y;
-						IDistance PosZ = ThisPath.Position.Z;
-						ThisPath.Position.X =
-							(this.Position.X.ToMeters().RawValue +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						ThisPath.Position.Y =
-							(this.Position.Y.ToMeters().RawValue +
-							(PosY.ToMeters().RawValue)).Meters();
-						ThisPath.Position.Z =
-							(this.Position.Z.ToMeters().RawValue +
-							(Math.Sin(-this.Attitude.H.ToRadians().RawValue) * -PosX.ToMeters().RawValue) +
-							(Math.Cos(-this.Attitude.H.ToRadians().RawValue) * PosZ.ToMeters().RawValue)).Meters();
-						Parent.MotionPaths.Add(ThisPath);
-					}
-					MotionPaths.Clear();
-					return true;
-				}
-
-				public override string ToString()
-				{
-					return Identify;
-				}
-			}
-
-			public static Scenery RootScenery = new Scenery();
-			public static Scenery2 RootScenery2 = new Scenery2();
+			public static StartPosition NULL_StartPosition;
 		}
 
 		public static bool Load(string Name)
@@ -480,7 +346,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				Debug.AddSummaryMessage(Message);
 			}
 			#endregion
-			LoadFLD2(InputScenery);
+			LoadFLD(InputScenery);
 			#region DEBUG: Finished World.LoadFLD
 			{
 				var Message = "Finished World.LoadFLD";
@@ -605,17 +471,21 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			#region Initialise Variables
 			Objects.RootScenery = new Objects.Scenery();
+			Objects.RootScenery.Parent = Objects.RootScenery;
+
+			List<Objects.Scenery> AllSceneries = new List<Objects.Scenery>() { Objects.RootScenery };
+			List<Objects.Scenery> WorkingSceneries = new List<Objects.Scenery>() { Objects.RootScenery };
+			Objects.Scenery CurrentScenery = Objects.RootScenery;
+
 			Objects.Ground CurrentGround = Objects.NULL_Ground;
 			Objects.Path CurrentPath = Objects.NULL_Path;
-			Objects.RootScenery.Parent = Objects.RootScenery;
-			Objects.Scenery CurrentScenery = Objects.RootScenery;
-			Objects.Scenery TargetScenery = Objects.RootScenery;
-			int ExpectPos = 0;
-			int Indent = 0;
+
 			int GOBsHandled = 0;
 			int GOBsMissing = 0;
 			int PSTsHandled = 0;
-			List<Objects.Scenery> AllSceneries = new List<Objects.Scenery>();
+
+			string CurrentMode = "FIELD";
+
 			#endregion
 			#region Iterate over FLD Contents
 			for (int i = 0; i < FLDContents.Length; i++)
@@ -623,29 +493,188 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				#region Update Line Number and Contents
 				int CurrentLineNumber = i;
 				string ThisLine = FLDContents[i].ToUpperInvariant();
+				CurrentScenery = WorkingSceneries.Last();
 				#endregion
-
-				if (ThisLine == "") continue; //Skip Blank Lines.
-
-				#region Move Back to Root Scenery if Past End Of File.
-				while (i > CurrentScenery.EndLine && CurrentScenery != Objects.RootScenery)
+				#region Finish current working scenery if past it's length.
+				if (CurrentScenery != Objects.RootScenery)
 				{
-					DebugMessages.Add((("Moving back to root scenry")).AsDebugDetailMessage());
-					Indent--;
-					CurrentScenery = CurrentScenery.Parent;
-					if (Indent < 0) Indent = 0;
+					if (CurrentLineNumber - 1 == CurrentScenery.EndLine)
+					{
+						WorkingSceneries.RemoveAll(x => x == CurrentScenery);
+						CurrentScenery = WorkingSceneries.Last();
+					}
 				}
 				#endregion
 
-				#region Editing a Ground Object or Path.
-				if (CurrentGround != Objects.NULL_Ground | CurrentPath != Objects.NULL_Path)
+				#region Skip Blank Lines.
+				if (ThisLine == "") continue;
+				#endregion
+				#region Start a new scenery if encounter PCK.
+				if (ThisLine.ToUpperInvariant().StartsWith("PCK"))
 				{
-
-					if (CurrentGround != Objects.NULL_Ground)
+					#region PCK line undersize!
+					string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+					if (Split.Length < 3)
 					{
-						#region POS
+						#region DEBUG: PCK Line xxxx in World.LoadFLD2 is missing required parameters.
+						{
+							var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
+							DebugMessages.Add(Message.AsDebugWarningMessage());
+							Debug.AddWarningMessage(Message);
+						}
+						#endregion
+						continue;
+					}
+					#endregion
+					//Potential Error: New scenery ends after current working scenry...
+
+					#region Start new Scenery
+					Objects.Scenery newScenery = new Objects.Scenery();
+					newScenery.Identify = Split[1];
+					newScenery.Parent = CurrentScenery;
+
+					int tempLines = 0;
+					Int32.TryParse(Split[2], out tempLines);
+					newScenery.StartLine = CurrentLineNumber;
+					newScenery.EndLine = CurrentLineNumber + tempLines;
+					#endregion
+					#region Add Scenery to all Sceneries, and set as current working scenery.
+					AllSceneries.Add(newScenery);
+					WorkingSceneries.Add(newScenery);
+					CurrentScenery = newScenery;
+					#endregion
+					continue;
+				}
+				#endregion
+
+				#region Working on current scenery.
+				switch (CurrentMode)
+				{
+					case "FIELD":
+						if (ThisLine.ToUpperInvariant().StartsWith("GND"))
+						{
+							//Update ground color for current scenery
+							#region GND
+							try
+							{
+								string[] colorsAsString = ThisLine.Substring(4).SplitPresevingQuotes();
+								byte[] colorsAsByte = new byte[3];
+								System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
+								System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
+								System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
+								CurrentScenery.GroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
+							}
+							catch
+							{
+								#region DEBUG: GND Color Line xxxx in World.LoadFLD2 is missing required parameters or failed conversion.
+
+								{
+									var Message = "GND Color Line (" + CurrentLineNumber +
+												  ") in World.LoadFLD2 is missing required parameters or failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+
+								#endregion
+							}
+							#endregion
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("SKY"))
+						{
+							//Update sky color for current scenery
+							#region SKY
+							try
+							{
+								string[] colorsAsString = ThisLine.Substring(4).SplitPresevingQuotes();
+								byte[] colorsAsByte = new byte[3];
+								System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
+								System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
+								System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
+								CurrentScenery.GroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
+							}
+							catch
+							{
+								#region DEBUG: SKY Color Line xxxx in World.LoadFLD2 is missing required parameters or failed conversion.
+
+								{
+									var Message = "SKY Color Line (" + CurrentLineNumber +
+												  ") in World.LoadFLD2 is missing required parameters or failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+
+								#endregion
+							}
+							#endregion
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("DEFAREA"))
+						{
+							//Update default area for current scenery
+							continue;
+						}
+
+						if (ThisLine.ToUpperInvariant().StartsWith("PICT2"))
+						{
+							CurrentMode = "PICT";
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("GOB"))
+						{
+							CurrentMode = "GOB";
+							CurrentGround = new Objects.Ground();
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("FLD"))
+						{
+							CurrentMode = "FLD";
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("PC2"))
+						{
+							CurrentMode = "PC2";
+							continue;
+						}
+						break;
+					case "PICT":
+						if (ThisLine.ToUpperInvariant().StartsWith("PLG"))
+						{
+							//Stard a new PLG.
+							continue;
+						}
+
+						if (ThisLine.ToUpperInvariant().StartsWith("ENDPICT"))
+						{
+							//Done with this PICT.
+							CurrentMode = "FIELD";
+							continue;
+						}
+						break;
+					case "PICT.PLG":
+						if (ThisLine.ToUpperInvariant().StartsWith("COL"))
+						{
+							//Set Color for Polygon
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("VER"))
+						{
+							//Add Vertex to Polygon
+							continue;
+						}
+
+						if (ThisLine.ToUpperInvariant().StartsWith("ENDO"))
+						{
+							//Done with this PICT.PLG.
+							CurrentMode = "PICT";
+							continue;
+						}
+						break;
+					case "GOB":
 						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
 						{
+							//Set Ground POS and ATT.
+							#region POS
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 7)
 							{
@@ -671,12 +700,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							if (failed)
 							{
 								#region DEBUG: POS Line xxxx in GroundObject failed conversion.
+
 								{
 									var Message = "POS Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
 									DebugMessages.Add(Message.AsDebugWarningMessage());
 									Debug.AddWarningMessage(Message);
 								}
+
 								#endregion
+
 								CurrentGround.Position.X = 0.Meters();
 								CurrentGround.Position.Y = 0.Meters();
 								CurrentGround.Position.Z = 0.Meters();
@@ -684,12 +716,49 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								CurrentGround.Attitude.P = 0.Degrees();
 								CurrentGround.Attitude.B = 0.Degrees();
 							}
+
+							#endregion
 							continue;
 						}
-						#endregion
-						#region NAM
+						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
+						{
+							//Set Ground ID
+							#region ID
+							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+							if (Split.Length < 2)
+							{
+								#region DEBUG: ID Line xxxx in GroundObject is missing required parameters.
+								{
+									var Message = "ID Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								continue;
+							}
+
+							bool failed = false;
+							failed |= !UInt32.TryParse(Split[1], out var temp);
+							CurrentGround.ID = temp;
+
+							if (failed)
+							{
+								#region DEBUG: ID Line xxxx in GroundObject failed conversion.
+								{
+									var Message = "ID Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								CurrentGround.ID = 0;
+							}
+							#endregion
+							continue;
+						}
 						if (ThisLine.ToUpperInvariant().StartsWith("NAM"))
 						{
+							//Set Ground Identify
+							#region NAM
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
@@ -703,7 +772,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								continue;
 							}
 
-							CurrentGround.Identify = Split[1].Replace(" ","_");
+							CurrentGround.Identify = Split[1].Replace(" ", "_");
 
 							CurrentGround.MetaData = Extensions.YSFlight.MetaData.Grounds.FindByName(CurrentGround.Identify);
 							if (CurrentGround.MetaData == Extensions.YSFlight.MetaData.Grounds.None)
@@ -716,12 +785,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								}
 								#endregion
 							}
+							#endregion
 							continue;
 						}
-						#endregion
-						#region TAG
 						if (ThisLine.ToUpperInvariant().StartsWith("TAG"))
 						{
+							//Set Ground Identify
+							#region TAG
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
@@ -735,12 +805,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								continue;
 							}
 							CurrentGround.Tag = Split[1].Replace(" ", "_");
+							#endregion
 							continue;
 						}
-						#endregion
-						#region IFF
 						if (ThisLine.ToUpperInvariant().StartsWith("IFF"))
 						{
+							//Set Ground IFF
+							#region IFF
 							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
 							if (Split.Length < 2)
 							{
@@ -769,13 +840,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								#endregion
 								CurrentGround.IFF = 0;
 							}
+							#endregion
 							continue;
 						}
-						#endregion
+						if (ThisLine.ToUpperInvariant().StartsWith("FLG"))
+						{
+							//Set Ground Flags
+							continue;
+						}
 
-						#region END
 						if (ThisLine.ToUpperInvariant().StartsWith("END"))
 						{
+							//Done with this GOB.
+							#region END
 							if (CurrentGround.MetaData != Extensions.YSFlight.MetaData.Grounds.None)
 							{
 								CurrentScenery.GroundObjects.Add(CurrentGround);
@@ -793,529 +870,176 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							}
 							#endregion
 							CurrentGround = Objects.NULL_Ground;
+							#endregion
+							CurrentMode = "FIELD";
 							continue;
 						}
-						#endregion
-					}
-					if (CurrentPath != Objects.NULL_Path)
-					{
-						#region POS
-						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 4)
-							{
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in Path could not be inspected.").AsDebugWarningMessage());
-								DebugMessages.Add((("Path POS Line (" + CurrentLineNumber + "): " + ThisLine)).AsDebugDetailMessage());
-								#region DEBUG: POS Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							bool failed = false;
-							Single temp;
-							failed |= !Single.TryParse(Split[1], out temp); CurrentPath.Position.X = temp.Meters();
-							failed |= !Single.TryParse(Split[2], out temp); CurrentPath.Position.Y = temp.Meters();
-							failed |= !Single.TryParse(Split[3], out temp); CurrentPath.Position.Z = temp.Meters();
-
-
-							if (failed)
-							{
-								#region DEBUG: POS Line xxxx in MotionPath failed conversion.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentPath.Position.X = 0.Meters();
-								CurrentPath.Position.Y = 0.Meters();
-								CurrentPath.Position.Z = 0.Meters();
-							}
-							continue;
-						}
-						#endregion
-						#region PNT
-						if (ThisLine.ToUpperInvariant().StartsWith("PNT"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 4)
-							{
-								#region DEBUG: PNT Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "PNT Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							IPoint3 ThisPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
-
-							bool failed = false;
-							Single temp;
-							failed |= !Single.TryParse(Split[1], out temp); ThisPoint.X = temp.Meters();
-							failed |= !Single.TryParse(Split[2], out temp); ThisPoint.Y = temp.Meters();
-							failed |= !Single.TryParse(Split[3], out temp); ThisPoint.Z = temp.Meters();
-
-							if (failed)
-							{
-								#region DEBUG: PNT Line xxxx in MotionPath failed conversion.
-								{
-									var Message = "PNT Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								ThisPoint.X = 0.Meters();
-								ThisPoint.Y = 0.Meters();
-								ThisPoint.Z = 0.Meters();
-							}
-							CurrentPath.Points.Add(ThisPoint);
-							continue;
-						}
-						#endregion
-						#region TAG
-						if (ThisLine.ToUpperInvariant().StartsWith("TAG"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: TAG Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "TAG Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							CurrentPath.Identify = Split[1].Replace(" ", "_");
-							continue;
-						}
-						#endregion
-						#region AREA
-						if (ThisLine.ToUpperInvariant().StartsWith("AREA"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: AREA Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "AREA Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							switch (Split[1].ToUpperInvariant())
-							{
-								default:
-									#region DEBUG: AREA Line xxxx in MotionPath failed conversion.
-									{
-										var Message = "AREA Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
-										DebugMessages.Add(Message.AsDebugWarningMessage());
-										Debug.AddWarningMessage(Message);
-									}
-									#endregion
-									goto case "NOAREA" ;
-								case "NOAREA":
-									CurrentPath.AreaType = WorldMotionPathAreaType.NoArea;
-									break;
-								case "LAND":
-									CurrentPath.AreaType = WorldMotionPathAreaType.Land;
-									break;
-								case "WATER":
-									CurrentPath.AreaType = WorldMotionPathAreaType.Water;
-									break;
-							}
-							continue;
-						}
-						#endregion
-						#region ISLOOP
-						if (ThisLine.ToUpperInvariant().StartsWith("ISLOOP"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: ISLOOP Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "ISLOOP Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							string option = Split[1].Replace(" ", "_");
-							Boolean.TryParse(option, out var tempIsLooping);
-							CurrentPath.IsLooping = tempIsLooping;
-							continue;
-						}
-						#endregion
-						#region ID
-						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
-						{
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: ID Line xxxx in MotionPath is missing required parameters.
-								{
-									var Message = "ID Line (" + CurrentLineNumber + ") in MotionPath is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							failed |= !UInt32.TryParse(Split[1], out var tempType);
-							CurrentPath.Type = tempType;
-
-							if (failed)
-							{
-								#region DEBUG: ID Line xxxx in MotionPath failed conversion.
-								{
-									var Message = "ID Line (" + CurrentLineNumber + ") in MotionPath failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentPath.Type = 0;
-							}
-							continue;
-						}
-						#endregion
-						#region FIL
+						break;
+					case "FLD":
 						if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
 						{
-							continue;
-							//TODO: [0] World.LoadFLD.FIL NotImplmented
-						}
-						#endregion
-
-						#region END
-						if (ThisLine.ToUpperInvariant().StartsWith("END"))
-						{
-							#region Convert Path Points to Path Root
-							foreach (IPoint3 ThisPoint in CurrentPath.Points.ToArray())
+							//Set Scenery FIL
+							#region FIL line undersize!
+							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+							if (Split.Length < 2)
 							{
-								ThisPoint.X = (ThisPoint.X.ToMeters().RawValue + CurrentPath.Position.X.ToMeters().RawValue).Meters();
-								ThisPoint.Y = (ThisPoint.Y.ToMeters().RawValue + CurrentPath.Position.Y.ToMeters().RawValue).Meters();
-								ThisPoint.Z = (ThisPoint.Z.ToMeters().RawValue + CurrentPath.Position.Z.ToMeters().RawValue).Meters();
-							}
-							CurrentPath.Position.X = 0.Meters();
-							CurrentPath.Position.Y = 0.Meters();
-							CurrentPath.Position.Z = 0.Meters();
-							#endregion
-
-							CurrentScenery.MotionPaths.Add(CurrentPath);
-
-							#region DEBUG: MotionPath xxxx Added Successfully.
-							{
-								var Message = "MotionPath \"" + CurrentPath.Identify + "\" Added Successfully.";
-								DebugMessages.Add(Message.AsDebugDetailMessage());
-								Debug.AddDetailMessage(Message);
-							}
-							#endregion
-
-							CurrentPath = Objects.NULL_Path;
-							PSTsHandled++;
-							continue;
-						}
-						#endregion
-					}
-				}
-				#endregion
-				#region Look for another Ground Object or Path
-				else
-				{
-					#region PCK
-					if (ThisLine.ToUpperInvariant().StartsWith("PCK"))
-					{
-						string[] Split = ThisLine.SplitPresevingQuotes();
-						if (Split.Length < 2)
-						{
-							#region DEBUG: PCK Line xxxx in World.LoadFLD is missing required parameters.
-							{
-								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
-							}
-							#endregion
-							continue;
-						}
-
-						#region Skip PC2 and TER
-						if (Split[1].ToUpperInvariant().Contains(".PC2")) continue;
-						if (Split[1].ToUpperInvariant().Contains(".TER")) continue;
-						#endregion
-
-						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
-						{
-							#region DEBUG: PCK Line xxxx in World.LoadFLD is missing required parameters.
-							{
-								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify a FLD.";
-								DebugMessages.Add(Message.AsDebugDetailMessage());
-								Debug.AddDetailMessage(Message);
-							}
-							#endregion
-							continue;
-						}
-
-						#region Add a new Child Scenery to Current Scenry
-						Objects.Scenery ChildScenery = new Objects.Scenery();
-						ChildScenery.Identify = Split[1].ToUpperInvariant();
-
-						ChildScenery.Parent = CurrentScenery;
-						CurrentScenery.AddChild(ChildScenery);
-						AllSceneries.Add(ChildScenery);
-						#endregion
-
-						#region DEBUG: ChildScenery xxxx Added to yyyy Successfully.
-						{
-							var Message = "ChildScenery \"" + ChildScenery.Identify + "\" Added To \"" + CurrentScenery.Identify + "\" Successfully.";
-							DebugMessages.Add(Message.AsDebugDetailMessage());
-							Debug.AddDetailMessage(Message);
-						}
-						#endregion
-
-						#region Get Number of Lines in Child Scenery
-						int numberOfLinesInChildScenry = 0;
-						if (!Int32.TryParse(ThisLine.Split(' ')[2].ToUpperInvariant(), out numberOfLinesInChildScenry))
-						{
-							#region DEBUG: PCK Line xxxx in World.LoadFLD does not specify number of following lines.
-							{
-								var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify number of following lines";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
-							}
-							#endregion
-							continue;
-						}
-						#endregion
-						#region Initialise Child Scenery
-						ChildScenery.EndLine = i + numberOfLinesInChildScenry;
-						Indent++;
-						GOBsHandled = 0;
-						PSTsHandled = 0;
-						#endregion
-						#region Move into Child Scenery
-						CurrentScenery = ChildScenery;
-						#endregion
-
-						#region DEBUG: Now Loaing ChildScenery xxxx In yyyy.
-						{
-							var Message = "Now Loaing ChildScenery  \"" + ChildScenery.Identify + "\" In \"" + CurrentScenery.Identify + "\".";
-							DebugMessages.Add(Message.AsDebugDetailMessage());
-							Debug.AddDetailMessage(Message);
-						}
-						#endregion
-
-						continue;
-					}
-					#endregion
-					#region FIL
-					if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
-					{
-						string[] Split = ThisLine.SplitPresevingQuotes();
-						if (Split.Length < 2)
-						{
-							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + ") in scenery could not be inspected.").AsDebugWarningMessage());
-							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-							#region DEBUG: FIL Line xxxx in World.LoadFLD is missing required parameters.
-							{
-								var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
-							}
-							#endregion
-							continue;
-						}
-
-						#region Skip PC2 and TER
-						if (Split[1].ToUpperInvariant().Contains(".PC2")) continue;
-						if (Split[1].ToUpperInvariant().Contains(".TER")) continue;
-						#endregion
-
-						if (!Split[1].ToUpperInvariant().Contains(".FLD"))
-						{
-							#region DEBUG: FIL Line xxxx in World.LoadFLD is does not specify a FLD.
-							{
-								var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD does not specify a FLD.";
-								DebugMessages.Add(Message.AsDebugDetailMessage());
-								Debug.AddDetailMessage(Message);
-							}
-							#endregion
-							continue;
-						}
-
-						if (AllSceneries.Select(x => x.Identify).Contains(Split[1]))
-						{
-							DebugMessages.Add(("FIL Line (" + CurrentLineNumber + "): got a FLD.").AsDebugWarningMessage());
-							var ArrayOfTargetSceneries = AllSceneries.Where(x => x.Identify == Split[1]).ToArray();
-							if (ArrayOfTargetSceneries.Length <= 0)
-							{
-								#region DEBUG: FIL Line xxxx in World.LoadFLD references a FLD that was not declared!
+								#region DEBUG: FIL Line xxxx in World.LoadFLD2 is missing required parameters.
 								{
-									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD references a FLD that was not declared!";
+									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
 									DebugMessages.Add(Message.AsDebugWarningMessage());
 									Debug.AddWarningMessage(Message);
 								}
 								#endregion
 								continue;
 							}
-							TargetScenery = ArrayOfTargetSceneries[0];
-							ExpectPos = i + 1;
-						}
-
-						continue;
-					}
-					#endregion
-					#region POS
-					if (ThisLine.ToUpperInvariant().StartsWith("POS") && ExpectPos == i)
-					{
-						//Console.WriteLine("POS SCE: " + ThisLine);
-						string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-						if (Split.Length < 7)
-						{
-							#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
-							{
-								var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
-							}
 							#endregion
+							WorkingSceneries.Add(AllSceneries.Where(x => x.Identify.ToUpperInvariant() == Split[1].ToUpperInvariant()).First());
+							CurrentScenery.Children.Add(WorkingSceneries.Last());
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
+						{
+							//Set Scenery POS
+							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+							if (Split.Length < 7)
+							{
+								#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								continue;
+							}
+
+							bool failed = false;
+							Single temp;
+							failed |= !Single.TryParse(Split[1], out temp); CurrentScenery.Position.X = temp.Meters();
+							failed |= !Single.TryParse(Split[2], out temp); CurrentScenery.Position.Y = temp.Meters();
+							failed |= !Single.TryParse(Split[3], out temp); CurrentScenery.Position.Z = temp.Meters();
+							failed |= !Single.TryParse(Split[4], out temp); CurrentScenery.Attitude.H = (temp / 65535 * 360).Degrees();
+							failed |= !Single.TryParse(Split[5], out temp); CurrentScenery.Attitude.P = (temp / 65535 * 360).Degrees();
+							failed |= !Single.TryParse(Split[6], out temp); CurrentScenery.Attitude.B = (temp / 65535 * 360).Degrees();
+
+							if (failed)
+							{
+								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
+								DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+								#region DEBUG: POS Line xxxx in World.LoadFLD2 failed conversion.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD2 failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								CurrentScenery.Position.X = 0.Meters();
+								CurrentScenery.Position.Y = 0.Meters();
+								CurrentScenery.Position.Z = 0.Meters();
+								CurrentScenery.Attitude.H = 0.Degrees();
+								CurrentScenery.Attitude.P = 0.Degrees();
+								CurrentScenery.Attitude.B = 0.Degrees();
+							}
+							continue;
+							continue;
+						}
+						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
+						{
+							//Set Scenery ID
 							continue;
 						}
 
-						bool failed = false;
-						Single temp;
-						failed |= !Single.TryParse(Split[1], out temp); TargetScenery.Position.X = temp.Meters();
-						failed |= !Single.TryParse(Split[2], out temp); TargetScenery.Position.Y = temp.Meters();
-						failed |= !Single.TryParse(Split[3], out temp); TargetScenery.Position.Z = temp.Meters();
-						failed |= !Single.TryParse(Split[4], out temp); TargetScenery.Attitude.H = (temp / 65535 * 360).Degrees();
-						failed |= !Single.TryParse(Split[5], out temp); TargetScenery.Attitude.P = (temp / 65535 * 360).Degrees();
-						failed |= !Single.TryParse(Split[6], out temp); TargetScenery.Attitude.B = (temp / 65535 * 360).Degrees();
-
-						if (failed)
+						if (ThisLine.ToUpperInvariant().StartsWith("END"))
 						{
-							DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
-							DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-							#region DEBUG: POS Line xxxx in World.LoadFLD failed conversion.
+							//Done with this FLD.
+							CurrentMode = "FIELD";
+							WorkingSceneries.RemoveAt(WorkingSceneries.Count - 1);
+							continue;
+						}
+						break;
+					case "PC2":
+						if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
+						{
+							//Set Scenery FIL
+							#region FIL line undersize!
+							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+							if (Split.Length < 2)
 							{
-								var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD failed conversion.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
+								#region DEBUG: FIL Line xxxx in World.LoadFLD2 is missing required parameters.
+								{
+									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								continue;
 							}
 							#endregion
-							TargetScenery.Position.X = 0.Meters();
-							TargetScenery.Position.Y = 0.Meters();
-							TargetScenery.Position.Z = 0.Meters();
-							TargetScenery.Attitude.H = 0.Degrees();
-							TargetScenery.Attitude.P = 0.Degrees();
-							TargetScenery.Attitude.B = 0.Degrees();
+							CurrentScenery.Children.Add(AllSceneries.Where(x => x.Identify.ToUpperInvariant() == Split[1].ToUpperInvariant()).First());
+							continue;
 						}
-						continue;
-					}
-					#endregion
-
-					#region GND
-					if (ThisLine.ToUpperInvariant().StartsWith("GND") & CurrentScenery == Objects.RootScenery)
-					{
-						try
+						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
 						{
-							string[] colorsAsString = ThisLine.Substring(4).SplitPresevingQuotes();
-							byte[] colorsAsByte = new byte[3];
-							System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
-							System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
-							System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-							Extensions.YSFlight.World.FLDGroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
-						}
-						catch
-						{
-							#region DEBUG: GND Color Line xxxx in World.LoadFLD is missing required parameters or failed conversion.
+							//Set Scenery POS
+							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
+							if (Split.Length < 7)
 							{
-								var Message = "GND Color Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters or failed conversion.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
+								#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								continue;
 							}
-							#endregion
-						}
-					}
-					#endregion
-					#region SKY
-					if (ThisLine.ToUpperInvariant().StartsWith("SKY") & CurrentScenery == Objects.RootScenery)
-					{
-						try
-						{
-							string[] colorsAsString = ThisLine.Substring(4).Split(' ');
-							byte[] colorsAsByte = new byte[3];
-							System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
-							System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
-							System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-							Extensions.YSFlight.World.FLDSkyColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
-						}
-						catch
-						{
-							#region DEBUG: SKY Color Line xxxx in World.LoadFLD is missing required parameters or failed conversion.
+
+							bool failed = false;
+							Single temp;
+							failed |= !Single.TryParse(Split[1], out temp); CurrentScenery.Position.X = temp.Meters();
+							failed |= !Single.TryParse(Split[2], out temp); CurrentScenery.Position.Y = temp.Meters();
+							failed |= !Single.TryParse(Split[3], out temp); CurrentScenery.Position.Z = (-temp).Meters();
+							failed |= !Single.TryParse(Split[4], out temp); CurrentScenery.Attitude.H = (temp / 65535 * 360).Degrees();
+							failed |= !Single.TryParse(Split[5], out temp); CurrentScenery.Attitude.P = (temp / 65535 * 360).Degrees();
+							failed |= !Single.TryParse(Split[6], out temp); CurrentScenery.Attitude.B = (temp / 65535 * 360).Degrees();
+
+							if (failed)
 							{
-								var Message = "SKY Color Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters or failed conversion.";
-								DebugMessages.Add(Message.AsDebugWarningMessage());
-								Debug.AddWarningMessage(Message);
+								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
+								DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
+								#region DEBUG: POS Line xxxx in World.LoadFLD2 failed conversion.
+								{
+									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD2 failed conversion.";
+									DebugMessages.Add(Message.AsDebugWarningMessage());
+									Debug.AddWarningMessage(Message);
+								}
+								#endregion
+								CurrentScenery.Position.X = 0.Meters();
+								CurrentScenery.Position.Y = 0.Meters();
+								CurrentScenery.Position.Z = 0.Meters();
+								CurrentScenery.Attitude.H = 0.Degrees();
+								CurrentScenery.Attitude.P = 0.Degrees();
+								CurrentScenery.Attitude.B = 0.Degrees();
 							}
-							#endregion
+							continue;
+							continue;
 						}
-					}
-					#endregion
+						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
+						{
+							//Set Scenery ID
+							continue;
+						}
 
-					#region GOB
-					if (ThisLine.ToUpperInvariant().StartsWith("GOB"))
-					{
-						#region DEBUG: Now loading a new GroundObject.
+						if (ThisLine.ToUpperInvariant().StartsWith("END"))
 						{
-							var Message = "Now loading a new GroundObject.";
-							DebugMessages.Add(Message.AsDebugDetailMessage());
-							Debug.AddDetailMessage(Message);
+							//Done with this PC2.
+							CurrentMode = "FIELD";
+							continue;
 						}
-						#endregion
-						CurrentGround = new Objects.Ground();
-						CurrentPath = Objects.NULL_Path;
-						continue;
-					}
-					#endregion
-					#region PST
-					if (ThisLine.ToUpperInvariant().StartsWith("PST"))
-					{
-						#region DEBUG: Now loading a new MotionPath.
-						{
-							var Message = "Now loading a new MotionPath.";
-							DebugMessages.Add(Message.AsDebugDetailMessage());
-							Debug.AddDetailMessage(Message);
-						}
-						#endregion
-						if (i + 1 < FLDContents.Length)
-						{
-							string NextLine = FLDContents[i + 1];
-							CurrentGround = Objects.NULL_Ground;
-							CurrentPath = new Objects.Path();
+						break;
 
-							//ALWAYS ADD MOTION PATHS, EVEN IF THEY AREN'T LOOPS!
-							//if (NextLine.ToUpperInvariant().StartsWith("ISLOOP"))
-							//{
-							//	DebugMessages.Add((("PST Line Encountered(" + CurrentLineNumber + ") Will be a loop. We will try to inspect for a Race Track."));
-							//}
-						}
-						continue;
-					}
-					#endregion
+					default:
+						break;
 				}
 				#endregion
 			}
@@ -2042,685 +1766,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				Extensions.YSFlight.World.AllGrounds.Add(CurrentGround);
 				//Since the declarations do not terminate, we need to add the last one at the end of the file.
 			}
-			#endregion
-
-			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
-		}
-
-		private static bool LoadFLD2(IMetaDataScenery InputScenery)
-		{
-			List<IRichTextMessage> DebugMessages = new List<IRichTextMessage>();
-			#region FLD Not Defined
-			if (InputScenery.Path_1_FieldFile == null | InputScenery.Path_1_FieldFile == "")
-			{
-				#region DEBUG: FLD File Not Defined.
-				{
-					var Message = "FLD File Not Defined.";
-					DebugMessages.Add(Message.AsDebugWarningMessage());
-					Debug.AddWarningMessage(Message);
-				}
-				#endregion
-				return false;
-			}
-			#endregion
-			#region FLD Not Found on Disk
-			if (!File.Exists(Settings.YSFlight.Directory + InputScenery.Path_1_FieldFile))
-			{
-				#region DEBUG: FLD File Not Found: xxxx
-				{
-					var Message = "FLD File Not Found: " + InputScenery.Path_1_FieldFile;
-					DebugMessages.Add(Message.AsDebugWarningMessage());
-					Debug.AddWarningMessage(Message);
-				}
-				#endregion
-				return false;
-			}
-			#endregion
-			#region Read File Contents
-			string[] FLDContents = File.ReadAllLines(Settings.YSFlight.Directory + InputScenery.Path_1_FieldFile);
-			#endregion
-
-			#region Initialise Variables
-			Objects.RootScenery2 = new Objects.Scenery2();
-			Objects.RootScenery2.Parent = Objects.RootScenery2;
-
-			List<Objects.Scenery2> AllSceneries = new List<Objects.Scenery2>() { Objects.RootScenery2 };
-			List<Objects.Scenery2> WorkingSceneries = new List<Objects.Scenery2>() { Objects.RootScenery2 };
-			Objects.Scenery2 CurrentScenery = Objects.RootScenery2;
-
-			Objects.Ground CurrentGround = Objects.NULL_Ground;
-			Objects.Path CurrentPath = Objects.NULL_Path;
-
-			int GOBsHandled = 0;
-			int GOBsMissing = 0;
-			int PSTsHandled = 0;
-
-			string CurrentMode = "FIELD";
-
-			#endregion
-			#region Iterate over FLD Contents
-			for (int i = 0; i < FLDContents.Length; i++)
-			{
-				#region Update Line Number and Contents
-				int CurrentLineNumber = i;
-				string ThisLine = FLDContents[i].ToUpperInvariant();
-				CurrentScenery = WorkingSceneries.Last();
-				#endregion
-				#region Finish current working scenery if past it's length.
-				if (CurrentScenery != Objects.RootScenery2)
-				{
-					if (CurrentLineNumber-1 == CurrentScenery.EndLine)
-					{
-						WorkingSceneries.RemoveAll(x => x == CurrentScenery);
-						CurrentScenery = WorkingSceneries.Last();
-					}
-				}
-				#endregion
-
-				#region Skip Blank Lines.
-				if (ThisLine == "") continue;
-				#endregion
-				#region Start a new scenery if encounter PCK.
-				if (ThisLine.ToUpperInvariant().StartsWith("PCK"))
-				{
-					#region PCK line undersize!
-					string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-					if (Split.Length < 3)
-					{
-						#region DEBUG: PCK Line xxxx in World.LoadFLD2 is missing required parameters.
-						{
-							var Message = "PCK Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
-							DebugMessages.Add(Message.AsDebugWarningMessage());
-							Debug.AddWarningMessage(Message);
-						}
-						#endregion
-						continue;
-					}
-					#endregion
-					//Potential Error: New scenery ends after current working scenry...
-
-					#region Start new Scenery
-					Objects.Scenery2 newScenery = new Objects.Scenery2();
-					newScenery.Identify = Split[1];
-					newScenery.Parent = CurrentScenery;
-
-					int tempLines = 0;
-					Int32.TryParse(Split[2], out tempLines);
-					newScenery.StartLine = CurrentLineNumber;
-					newScenery.EndLine = CurrentLineNumber + tempLines;
-					#endregion
-					#region Add Scenery to all Sceneries, and set as current working scenery.
-					AllSceneries.Add(newScenery);
-					WorkingSceneries.Add(newScenery);
-					CurrentScenery = newScenery;
-					#endregion
-					continue;
-				}
-				#endregion
-
-				#region Working on current scenery.
-				switch (CurrentMode)
-				{
-					case "FIELD":
-						if (ThisLine.ToUpperInvariant().StartsWith("GND"))
-						{
-							//Update ground color for current scenery
-							#region GND
-							try
-							{
-								string[] colorsAsString = ThisLine.Substring(4).SplitPresevingQuotes();
-								byte[] colorsAsByte = new byte[3];
-								System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
-								System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
-								System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-								CurrentScenery.GroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
-							}
-							catch
-							{
-								#region DEBUG: GND Color Line xxxx in World.LoadFLD2 is missing required parameters or failed conversion.
-
-								{
-									var Message = "GND Color Line (" + CurrentLineNumber +
-									              ") in World.LoadFLD2 is missing required parameters or failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-
-								#endregion
-							}
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("SKY"))
-						{
-							//Update sky color for current scenery
-							#region SKY
-							try
-							{
-								string[] colorsAsString = ThisLine.Substring(4).SplitPresevingQuotes();
-								byte[] colorsAsByte = new byte[3];
-								System.Byte.TryParse(colorsAsString[0], out colorsAsByte[0]);
-								System.Byte.TryParse(colorsAsString[1], out colorsAsByte[1]);
-								System.Byte.TryParse(colorsAsString[2], out colorsAsByte[2]);
-								CurrentScenery.GroundColor = ObjectFactory.CreateColor(colorsAsByte[0], colorsAsByte[1], colorsAsByte[2]).Get24BitColor();
-							}
-							catch
-							{
-								#region DEBUG: SKY Color Line xxxx in World.LoadFLD2 is missing required parameters or failed conversion.
-
-								{
-									var Message = "SKY Color Line (" + CurrentLineNumber +
-									              ") in World.LoadFLD2 is missing required parameters or failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-
-								#endregion
-							}
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("DEFAREA"))
-						{
-							//Update default area for current scenery
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("PICT2"))
-						{
-							CurrentMode = "PICT";
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("GOB"))
-						{
-							CurrentMode = "GOB";
-							CurrentGround = new Objects.Ground();
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("FLD"))
-						{
-							CurrentMode = "FLD";
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("PC2"))
-						{
-							CurrentMode = "PC2";
-							continue;
-						}
-						break;
-					case "PICT":
-						if (ThisLine.ToUpperInvariant().StartsWith("PLG"))
-						{
-							//Stard a new PLG.
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("ENDPICT"))
-						{
-							//Done with this PICT.
-							CurrentMode = "FIELD";
-							continue;
-						}
-						break;
-					case "PICT.PLG":
-						if (ThisLine.ToUpperInvariant().StartsWith("COL"))
-						{
-							//Set Color for Polygon
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("VER"))
-						{
-							//Add Vertex to Polygon
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("ENDO"))
-						{
-							//Done with this PICT.PLG.
-							CurrentMode = "PICT";
-							continue;
-						}
-						break;
-					case "GOB":
-						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
-						{
-							//Set Ground POS and ATT.
-							#region POS
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 7)
-							{
-								#region DEBUG: POS Line xxxx in GroundObject is missing required parameters.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							Single temp;
-							failed |= !Single.TryParse(Split[1], out temp); CurrentGround.Position.X = temp.Meters();
-							failed |= !Single.TryParse(Split[2], out temp); CurrentGround.Position.Y = temp.Meters();
-							failed |= !Single.TryParse(Split[3], out temp); CurrentGround.Position.Z = temp.Meters();
-							failed |= !Single.TryParse(Split[4], out temp); CurrentGround.Attitude.H = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[5], out temp); CurrentGround.Attitude.P = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[6], out temp); CurrentGround.Attitude.B = (temp / 65535 * 360).Degrees();
-
-							if (failed)
-							{
-								#region DEBUG: POS Line xxxx in GroundObject failed conversion.
-
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-
-								#endregion
-
-								CurrentGround.Position.X = 0.Meters();
-								CurrentGround.Position.Y = 0.Meters();
-								CurrentGround.Position.Z = 0.Meters();
-								CurrentGround.Attitude.H = 0.Degrees();
-								CurrentGround.Attitude.P = 0.Degrees();
-								CurrentGround.Attitude.B = 0.Degrees();
-							}
-
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
-						{
-							//Set Ground ID
-							#region ID
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: ID Line xxxx in GroundObject is missing required parameters.
-								{
-									var Message = "ID Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							failed |= !UInt32.TryParse(Split[1], out var temp);
-							CurrentGround.ID = temp;
-
-							if (failed)
-							{
-								#region DEBUG: ID Line xxxx in GroundObject failed conversion.
-								{
-									var Message = "ID Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentGround.ID = 0;
-							}
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("NAM"))
-						{
-							//Set Ground Identify
-							#region NAM
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: NAM Line xxxx in GroundObject is missing required parameters.
-								{
-									var Message = "NAM Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							CurrentGround.Identify = Split[1].Replace(" ", "_");
-
-							CurrentGround.MetaData = Extensions.YSFlight.MetaData.Grounds.FindByName(CurrentGround.Identify);
-							if (CurrentGround.MetaData == Extensions.YSFlight.MetaData.Grounds.None)
-							{
-								#region DEBUG: NAM Line xxxx in GroundObject Metadata not found. (Addon not installed?)
-								{
-									var Message = "NAM Line (" + CurrentLineNumber + ") in GroundObject Metadata not found. (Addon \"" + CurrentGround.Identify + "\" not installed?).";
-									DebugMessages.Add(Message.AsDebugDetailMessage());
-									Debug.AddDetailMessage(Message);
-								}
-								#endregion
-							}
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("TAG"))
-						{
-							//Set Ground Identify
-							#region TAG
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: TAG Line xxxx in GroundObject is missing required parameters.
-								{
-									var Message = "TAG Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							CurrentGround.Tag = Split[1].Replace(" ", "_");
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("IFF"))
-						{
-							//Set Ground IFF
-							#region IFF
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: IFF Line xxxx in GroundObject is missing required parameters.
-								{
-									var Message = "IFF Line (" + CurrentLineNumber + ") in GroundObject is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							failed |= !UInt32.TryParse(Split[1], out var temp);
-							CurrentGround.IFF = temp;
-
-							if (failed)
-							{
-								#region DEBUG: IFF Line xxxx in GroundObject failed conversion.
-								{
-									var Message = "IFF Line (" + CurrentLineNumber + ") in GroundObject failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentGround.IFF = 0;
-							}
-							#endregion
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("FLG"))
-						{
-							//Set Ground Flags
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("END"))
-						{
-							//Done with this GOB.
-							#region END
-							if (CurrentGround.MetaData != Extensions.YSFlight.MetaData.Grounds.None)
-							{
-								CurrentScenery.GroundObjects.Add(CurrentGround);
-								GOBsHandled++;
-							}
-							else
-							{
-								GOBsMissing++;
-							}
-							#region DEBUG: GroundObject xxxx Added Successfully.
-							{
-								var Message = "GroundObject \"" + CurrentGround.Identify + "\" Added Successfully.";
-								DebugMessages.Add(Message.AsDebugDetailMessage());
-								Debug.AddDetailMessage(Message);
-							}
-							#endregion
-							CurrentGround = Objects.NULL_Ground;
-							#endregion
-							CurrentMode = "FIELD";
-							continue;
-						}
-						break;
-					case "FLD":
-						if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
-						{
-							//Set Scenery FIL
-							#region FIL line undersize!
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: FIL Line xxxx in World.LoadFLD2 is missing required parameters.
-								{
-									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							#endregion
-							WorkingSceneries.Add(AllSceneries.Where(x => x.Identify.ToUpperInvariant() == Split[1].ToUpperInvariant()).First());
-							CurrentScenery.Children.Add(WorkingSceneries.Last());
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
-						{
-							//Set Scenery POS
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 7)
-							{
-								#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							Single temp;
-							failed |= !Single.TryParse(Split[1], out temp); CurrentScenery.Position.X = temp.Meters();
-							failed |= !Single.TryParse(Split[2], out temp); CurrentScenery.Position.Y = temp.Meters();
-							failed |= !Single.TryParse(Split[3], out temp); CurrentScenery.Position.Z = temp.Meters();
-							failed |= !Single.TryParse(Split[4], out temp); CurrentScenery.Attitude.H = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[5], out temp); CurrentScenery.Attitude.P = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[6], out temp); CurrentScenery.Attitude.B = (temp / 65535 * 360).Degrees();
-
-							if (failed)
-							{
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-								#region DEBUG: POS Line xxxx in World.LoadFLD2 failed conversion.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD2 failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentScenery.Position.X = 0.Meters();
-								CurrentScenery.Position.Y = 0.Meters();
-								CurrentScenery.Position.Z = 0.Meters();
-								CurrentScenery.Attitude.H = 0.Degrees();
-								CurrentScenery.Attitude.P = 0.Degrees();
-								CurrentScenery.Attitude.B = 0.Degrees();
-							}
-							continue;
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
-						{
-							//Set Scenery ID
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("END"))
-						{
-							//Done with this FLD.
-							CurrentMode = "FIELD";
-							WorkingSceneries.RemoveAt(WorkingSceneries.Count-1);
-							continue;
-						}
-						break;
-					case "PC2":
-						if (ThisLine.ToUpperInvariant().StartsWith("FIL"))
-						{
-							//Set Scenery FIL
-							#region FIL line undersize!
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 2)
-							{
-								#region DEBUG: FIL Line xxxx in World.LoadFLD2 is missing required parameters.
-								{
-									var Message = "FIL Line (" + CurrentLineNumber + ") in World.LoadFLD2 is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-							#endregion
-							CurrentScenery.Children.Add(AllSceneries.Where(x => x.Identify.ToUpperInvariant() == Split[1].ToUpperInvariant()).First());
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("POS"))
-						{
-							//Set Scenery POS
-							string[] Split = ThisLine.RemoveDoubleSpaces().SplitPresevingQuotes();
-							if (Split.Length < 7)
-							{
-								#region DEBUG: POS Line xxxx in World.LoadFLD is missing required parameters.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD is missing required parameters.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								continue;
-							}
-
-							bool failed = false;
-							Single temp;
-							failed |= !Single.TryParse(Split[1], out temp); CurrentScenery.Position.X = temp.Meters();
-							failed |= !Single.TryParse(Split[2], out temp); CurrentScenery.Position.Y = temp.Meters();
-							failed |= !Single.TryParse(Split[3], out temp); CurrentScenery.Position.Z = (-temp).Meters();
-							failed |= !Single.TryParse(Split[4], out temp); CurrentScenery.Attitude.H = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[5], out temp); CurrentScenery.Attitude.P = (temp / 65535 * 360).Degrees();
-							failed |= !Single.TryParse(Split[6], out temp); CurrentScenery.Attitude.B = (temp / 65535 * 360).Degrees();
-
-							if (failed)
-							{
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + ") in scenery could not be converted.").AsDebugWarningMessage());
-								DebugMessages.Add(("POS Line (" + CurrentLineNumber + "): " + ThisLine).AsDebugWarningMessage());
-								#region DEBUG: POS Line xxxx in World.LoadFLD2 failed conversion.
-								{
-									var Message = "POS Line (" + CurrentLineNumber + ") in World.LoadFLD2 failed conversion.";
-									DebugMessages.Add(Message.AsDebugWarningMessage());
-									Debug.AddWarningMessage(Message);
-								}
-								#endregion
-								CurrentScenery.Position.X = 0.Meters();
-								CurrentScenery.Position.Y = 0.Meters();
-								CurrentScenery.Position.Z = 0.Meters();
-								CurrentScenery.Attitude.H = 0.Degrees();
-								CurrentScenery.Attitude.P = 0.Degrees();
-								CurrentScenery.Attitude.B = 0.Degrees();
-							}
-							continue;
-							continue;
-						}
-						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
-						{
-							//Set Scenery ID
-							continue;
-						}
-
-						if (ThisLine.ToUpperInvariant().StartsWith("END"))
-						{
-							//Done with this PC2.
-							CurrentMode = "FIELD";
-							continue;
-						}
-						break;
-
-					default:
-						break;
-				}
-				#endregion
-			}
-			#region DEBUG: Could not add x GroundObjects as they are not installed. Please see the debug detail for further information!
-			if (GOBsMissing > 0)
-			{
-				var Message = "Could not add " + GOBsMissing + " GroundObjects as they are not installed. Please see the debug detail for further information!";
-				DebugMessages.Add(Message.AsDebugWarningMessage());
-				Debug.AddWarningMessage(Message);
-			}
-			#endregion
-			#endregion
-			#region Move Objects to Root Scenery
-			#region DEBUG: Starting to move Child Sceneries to Root Scenery.
-			{
-				var Message = "Starting to move Child Sceneries to Root Scenery.";
-				DebugMessages.Add(Message.AsDebugDetailMessage());
-				Debug.AddDetailMessage(Message);
-			}
-			#endregion
-			foreach (Objects.Scenery2 ThisScenery in Objects.RootScenery2.Children)
-			{
-				#region DEBUG: Starting to move Child Scenery xxxx to Root Scenery.
-				{
-					var Message = "Starting to move Child Scenery \"" + ThisScenery.Identify + "\" to Root Scenery.";
-					DebugMessages.Add(Message.AsDebugDetailMessage());
-					Debug.AddDetailMessage(Message);
-				}
-				#endregion
-				ThisScenery.ProcessGrounds();
-				ThisScenery.ProcessPaths();
-				#region DEBUG: Finished moving Child Scenery xxxx to Root Scenery.
-				{
-					var Message = "Finished moving Child Scenery \"" + ThisScenery.Identify + "\" to Root Scenery.";
-					DebugMessages.Add(Message.AsDebugDetailMessage());
-					Debug.AddDetailMessage(Message);
-				}
-				#endregion
-			}
-			#region DEBUG: Finished moving Child Sceneries to Root Scenery.
-			{
-				var Message = "Finished moving Child Sceneries to Root Scenery.";
-				DebugMessages.Add(Message.AsDebugDetailMessage());
-				Debug.AddDetailMessage(Message);
-			}
-			#endregion
-
-			foreach (Objects.Ground ThisGround in Objects.RootScenery2.GroundObjects)
-			{
-				Extensions.YSFlight.World.AllGrounds.Add(ThisGround);
-			}
-			#region DEBUG: Added GroundObjects from RootScenery to World.Ground.AllGrounds
-			{
-				var Message = "Added GroundObjects from RootScenery to World.Ground.AllGrounds";
-				DebugMessages.Add(Message.AsDebugDetailMessage());
-				Debug.AddDetailMessage(Message);
-			}
-			#endregion
-
-			foreach (Objects.Path ThisPath in Objects.RootScenery2.MotionPaths.ToArray())
-			{
-				if (ThisPath.Identify != "" & ThisPath.Type == 15) Extensions.YSFlight.World.AllMotionPaths.Add(ThisPath);
-			}
-			#region DEBUG: Added MotionPaths from RootScenery to World.Ground.AllMotionPaths
-			{
-				var Message = "Added MotionPaths from RootScenery to World.Ground.AllMotionPaths";
-				DebugMessages.Add(Message.AsDebugDetailMessage());
-				Debug.AddDetailMessage(Message);
-			}
-			#endregion
 			#endregion
 
 			return (DebugMessages.Count(x => x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);

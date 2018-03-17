@@ -44,7 +44,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		{
 			if (e.Key != Key.Enter) return;
 			if (ConsoleInputViewModel.Text == "") return;
+			//TODO : Link to CommandHandler
 			Console.AddUserMessage(Users.Console, ConsoleInputViewModel.Text);
+			IPacket_32_ChatMessage messagePacket = ObjectFactory.CreatePacket32ChatMessage(Users.Console, ConsoleInputViewModel.Text);
+			Connections.AllConnections.SendAsync(messagePacket);
 			ConsoleInputViewModel.Text = "";
 		}
 	}

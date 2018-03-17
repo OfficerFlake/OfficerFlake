@@ -70,9 +70,11 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		public static async Task<bool> SendMessageAsync(this List<IConnection> connections, string message)
 		{
 			List<Task<bool>> tasks = new List<Task<bool>>();
+			IPacket_32_ChatMessage chatMessage = ObjectFactory.CreatePacket32ChatMessage(Users.Console, message);
+
 			foreach (IConnection thisConnection in connections)
 			{
-				tasks.Add(thisConnection.SendMessageAsync(message));
+				tasks.Add(thisConnection.SendAsync(chatMessage));
 			}
 			bool AnyErrors = false;
 			foreach (Task<bool> thisTask in tasks)

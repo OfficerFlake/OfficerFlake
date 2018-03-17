@@ -100,7 +100,7 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => slaveFactory.CreatePacket29NetcodeVersion();
 		public static IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => slaveFactory.CreatePacket30AircraftCommand();
 		public static IPacket_31_MissilesOption CreatePacket31MissilesOption() => slaveFactory.CreatePacket31MissilesOption();
-		public static IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => slaveFactory.CreatePacket32ChatMessage(user,message);
+		public static IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => slaveFactory.CreatePacket32ChatMessage(user, message);
 		public static IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => slaveFactory.CreatePacket32ServerMessage(message);
 		public static IPacket_33_Weather CreatePacket33Weather() => slaveFactory.CreatePacket33Weather();
 		public static IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => slaveFactory.CreatePacket35ReviveAllGrounds();

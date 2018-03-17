@@ -115,7 +115,7 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => new Type_29_NetcodeVersion();
 			public IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => throw new NotImplementedException();
 			public IPacket_31_MissilesOption CreatePacket31MissilesOption() => new Type_31_MissilesOption();
-			public IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => new Type_32_ChatMessage(user.UserName.ToUnformattedSystemString(), message);
+			public IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => new Type_32_ChatMessage(user, message);
 			public IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => new Type_32_ServerMessage(message);
 			public IPacket_33_Weather CreatePacket33Weather() => new Type_33_Weather();
 			public IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => new Type_35_ReviveAllGrounds();

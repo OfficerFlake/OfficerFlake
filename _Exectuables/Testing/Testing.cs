@@ -207,6 +207,8 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("Now Listening on Port 7915!");
 			#endregion
 
+			Console.AddInformationMessage("");
+
 			OpenYSServerModeUserInterface.WaitForClose();
 
 			Server.Stop();

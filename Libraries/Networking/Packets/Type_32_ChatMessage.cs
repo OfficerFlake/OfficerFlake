@@ -12,23 +12,24 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public Type_32_ChatMessage(string fullMessage) : base(32)
 		{
+			ResizeData(8);
 			FullMessage = fullMessage;
 		}
 
-		public Type_32_ChatMessage(string username, string message) : base(32)
+		public Type_32_ChatMessage(IUser user) : base(32)
 		{
-			_Username = username;
-			Message = message;
+			ResizeData(8);
+			User = user;
+		}
+
+		public Type_32_ChatMessage(IUser user, string Message) : base(32)
+		{
+			ResizeData(8);
+			User = user;
+			FullMessage = "(" + User.UserName.ToUnformattedSystemString() + ")" + Message;
 		}
 
 		public IUser User { get; set; } = Users.None;
-		private string _Username = "";
-
-		public bool SetUsername(string username)
-		{
-			_Username = username;
-			return true;
-		}
 
 		public String FullMessage
 		{
@@ -45,19 +46,19 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get
 			{
-				if (_Username == "")
+				if (User.UserName.ToUnformattedSystemString() == "")
 				{
 					return FullMessage;
 				}
-				return FullMessage.Substring(1 + _Username.Length + 1);
+				return FullMessage.Substring(1 + User.UserName.ToUnformattedSystemString().Length + 1);
 			}
 			set
 			{
-				if (_Username == "")
+				if (User.UserName.ToUnformattedSystemString() == "")
 				{
 					FullMessage = value + "\0";
 				}
-				FullMessage = FullMessage.Substring(0, 1 + _Username.Length + 1) + value + "\0";
+				FullMessage = FullMessage.Substring(0, 1 + User.UserName.ToUnformattedSystemString().Length + 1) + value + "\0";
 			}
 		}
 	}

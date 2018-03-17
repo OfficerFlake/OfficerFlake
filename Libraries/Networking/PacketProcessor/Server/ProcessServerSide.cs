@@ -18,8 +18,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				    case 3:
 						IPacket_03_Error Packet03 = ObjectFactory.CreatePacket03Error();
 					    Packet03.Data = thisPacket.Data;
-					    return true;
-					    //throw new NotImplementedException(); //Don't had object on client?
+					    return Process_Type_03_Error(thisConnection, Packet03);
 					case 4:
 						IPacket_04_Field Packet04 = ObjectFactory.CreatePacket04Field();
 						Packet04.Data = thisPacket.Data;
@@ -27,7 +26,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 5:
 						IPacket_05_AddVehicle Packet05 = ObjectFactory.CreatePacket05AddVehicle();
 						Packet05.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_05_AddVehicle(thisConnection, Packet05);
 					case 6:
 						IPacket_06_Acknowledgement Packet06 = ObjectFactory.CreatePacket06Acknowledgement();
 						Packet06.Data = thisPacket.Data;
@@ -35,11 +34,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 					case 7:
 						IPacket_07_SmokeColor Packet07 = ObjectFactory.CreatePacket07SmokeColor();
 						Packet07.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_07_SmokeColor(thisConnection, Packet07);
 					case 8:
 						IPacket_08_JoinRequest Packet08 = ObjectFactory.CreatePacket08JoinRequest();
 						Packet08.Data = thisPacket.Data;
-						throw new NotImplementedException();
+						return Process_Type_08_JoinRequest(thisConnection, Packet08);
 					case 9:
 						IPacket_09_JoinRequestApproved Packet09 = ObjectFactory.CreatePacket09JoinRequestApproved();
 						Packet09.Data = thisPacket.Data;
@@ -102,7 +101,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 						throw new NotImplementedException();
 					case 32:
 					    IPacket_32_ChatMessage thisChatMessage = ObjectFactory.CreatePacket32ChatMessage(thisConnection.User, "");
-					    thisChatMessage.User = thisConnection.User;
 					    thisChatMessage.Data = thisPacket.Data;
 					    return Process_Type_32_ChatMessage(thisConnection, thisChatMessage);
 				    case 33:

@@ -301,6 +301,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    IPacket_32_ServerMessage thisChatMessage = ObjectFactory.CreatePacket32ServerMessage(Input);
 		    return TCPSend(thisChatMessage);
 	    }
+	    public bool SendMessage(IPacket_32_ChatMessage Input)
+	    {
+		    return TCPSend(Input);
+	    }
 		public async Task<bool> SendAsync(IPacket thisPacket)
 		{
 			try
@@ -611,7 +615,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public bool Disconnect(string reason)
 	    {
 		    RemoveFromServerList();
-		    Connections.AllConnections.Except(new []{this}).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+		    Logger.Console.AddInformationMessage("&c" + this.User.UserName.ToUnformattedSystemString() + " left the server.");
+			Connections.AllConnections.Exclude(this).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
 		    SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
 		    SendMessageAsync("Disconnection reason: " + reason).ConfigureAwait(false);
 			if (TCPSocket.Connected)

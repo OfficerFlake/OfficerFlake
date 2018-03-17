@@ -148,6 +148,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Inform Players
+				Logger.Console.AddInformationMessage("&a" + thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.");
 				foreach (IConnection otherConnection in Connections.AllConnections.Exclude(thisConnection))
 				{
 					otherConnection.SendMessageAsync(thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.").ConfigureAwait(false);
