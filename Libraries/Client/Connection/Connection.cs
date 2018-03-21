@@ -38,7 +38,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region FlightStatus
 	    public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
 		public bool IsFlying => FlightStatus == FlightStatus.Flying;
+
+	    public bool JoinRequestPending { get; set; } = false;
 		#endregion
+
+		public List<IPacket> Last5Packets { get; } = new List<IPacket>();
 		#endregion
 
 		#region DataFlow
@@ -242,6 +246,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 				output.ResizeData((int)size);
 				output.Type = type;
 				output.Data = data;
+				Debug.AddDetailMessage("&aIn Packet (" + output.Type + ")\n" +
+				                       output.Serialise().ToHexString() + "\n" +
+				                       output.Serialise().ToSystemString());
 				return output;
 			}
 			catch (ArgumentNullException)
@@ -273,9 +280,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 			{
 				TCPSocket.Send(thisPacket.Serialise());
-				Debug.AddDetailMessage("Next Packet (" + thisPacket.Type  + ")\n" +
+				Debug.AddDetailMessage("&cOut Packet (" + thisPacket.Type  + ")\n" +
 				thisPacket.Serialise().ToHexString() + "\n" +
 				thisPacket.Serialise().ToSystemString());
+				if (thisPacket.Type == 0)
+				{
+					int i = 0;
+				}
 				return true;
 			}
 			catch (ArgumentNullException)

@@ -2,13 +2,13 @@
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class LOOKOFST : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class LOOKOFST : DATProperty, IDAT_1_Parameter<ICoordinate3>
 	{
-		public LOOKOFST(IPoint3 value) : base("LOOKOFST" + " " + string.Join(" ", value))
+		public LOOKOFST(ICoordinate3 value) : base("LOOKOFST" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public ICoordinate3 Value { get; set; }
 	}
 }

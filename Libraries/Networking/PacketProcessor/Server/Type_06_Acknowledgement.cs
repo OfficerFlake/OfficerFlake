@@ -10,7 +10,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_06_Acknowledgement(IConnection thisConnection, IPacket_06_Acknowledgement packet)
 			{
-				throw new NotImplementedException();
+				return true;
+				//don't need to do anything.
 			}
 		}
 	}

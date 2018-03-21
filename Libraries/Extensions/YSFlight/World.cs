@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Extensions
@@ -7,6 +8,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 	{
 		public static class World
 		{
+			private static UInt32 CurrentID = 0;
+			public static UInt32 GetNextID() => ++CurrentID;
+
 			public static List<IWorldAircraft> AllAircraft { get; } = new List<IWorldAircraft>();
 			public static List<IWorldGround> AllGrounds { get; } = new List<IWorldGround>();
 

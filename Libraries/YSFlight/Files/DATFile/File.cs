@@ -16,11 +16,189 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 	    public File(string filename) : base(filename)
 	    {
 		    Contents = new List<IDATFileProperty>();
+			CachedData = new _CachedData(this);
 	    }
 		#endregion
 		public List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
         public new List<IDATFileProperty> Contents { get; set; }
+
+	    public class _CachedData : IDATFileCached
+	    {
+		    private File Parent = null;
+
+		    public UInt16 AmmoGun => (UInt16)((Parent?.Contents?.Last(x => x is INITIGUN) as INITIGUN)?.Value ?? 0);
+			public UInt16 Strength => (UInt16)((Parent?.Contents?.Last(x => x is STRENGTH) as STRENGTH)?.Value ?? 1);
+
+			public _CachedData(File parent)
+		    {
+			    Parent = parent;
+		    }
+
+			//public Boolean AAMSLOT_ = false;
+			//public Boolean AAMVISIB = false;
+		    public Boolean HasAfterburner => (Parent?.Contents?.Last(x => x is AFTBURNR) as AFTBURNR)?.Value ?? false;
+			public Int32 NumAGMSlots => (Parent?.Contents?.Count(x => x is AGMSLOT_)) ?? 0;
+			//public Boolean AGMVISIB = false;
+		    public String AircraftClass => (Parent?.Contents?.Last(x => x is AIRCLASS) as AIRCLASS)?.Value ?? "UNKNOWN";
+			public Boolean HasArrestor => ((Parent?.Contents?.Count(x => x is ARRESTER)) ?? 0) > 0;
+		    public ICoordinate3 PositionArrestor => (Parent?.Contents?.Last(x => x is ARRESTER) as ARRESTER)?.Value ?? ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
+			public IOrientation3 DefaultAttitude => (Parent?.Contents?.Last(x => x is ATTITUDE) as ATTITUDE)?.Value ?? ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
+			//public Boolean AUTOCALC => false;
+		    public Single RadarCrossSectionBombBay => (Parent?.Contents?.Last(x => x is BMBAYRCS) as BMBAYRCS)?.Value ?? 1;
+			//public Boolean BOMBSLOT => false;
+		    //public Boolean BOMINBAY => false;
+		    //public Boolean BOMVISIB => false;
+		    public Boolean CATEGORY => false;
+		    public Boolean CDBYFLAP => false;
+			public Boolean CDBYGEAR => false;
+		    public Boolean CDSPOILR => false;
+			public Boolean CDVARGEO => false;
+			public Boolean CKPITHUD => false;
+		    public Boolean CKPITIST => false;
+		    public Boolean CLBYFLAP => false;
+		    public Boolean CLDECAY1 => false;
+		    public Boolean CLDECAY2 => false;
+		    public Boolean CLVARGEO => false;
+			public Boolean COCKPITA => false;
+		    public Boolean COCKPITP => false;
+			public Boolean CPITMANE => false;
+			public Boolean CPITSTAB => false;
+		    public Boolean CRITAOAM => false;
+			public Boolean CRITAOAP => false;
+			public Boolean CRITSPED => false;
+			public Boolean CROLLMAN => false;
+			public Boolean CTLABRNR => false;
+		    public Boolean CTLATVGW => false;
+		    public Boolean CTLBRAKE => false;
+		    public Boolean CTLIFLAP => false;
+			public Boolean CTLINVGW => false;
+		    public Boolean CTLLDGEA => false;
+		    public Boolean CTLSPOIL => false;
+			public Boolean CTLTHROT => false;
+			public Boolean CYAWMANE => false;
+			public Boolean CYAWSTAB => false;
+			public Boolean EXCAMERA => false;
+		    public Boolean FLAPPOSI => false;
+			public Boolean FLAREPOS => false;
+		    public Boolean FLATCLR1 => false;
+			public Boolean FLATCLR2 => false;
+			public Boolean FUELMILI => false;
+			public Boolean FUELABRN => false;
+			public Boolean GEARHORN => false;
+		    public Boolean GUNDIREC => false;
+			public Boolean GUNINTVL => false;
+			public Boolean GUNPOWER => false;
+			public Boolean GUNSIGHT => false;
+		    public Boolean HASSPOIL => false;
+		    public Boolean HRDPOINT => false;
+		    public Boolean HTRADIUS => false;
+			public Boolean IDENTIFY => false;
+		    public Boolean INITAAMM => false;
+		    public Boolean INITBOMB => false;
+			public Boolean INITFUEL => false;
+			public Boolean INITIAAM => false;
+			public Boolean INITIAGM => false;
+			public Boolean INITIGUN => false;
+			public Boolean INITLOAD => false;
+			public Boolean INITRCKT => false;
+			public Boolean INITSPED => false;
+			public Boolean INSTPANL => false;
+		    public Boolean ISPNLATT => false;
+		    public Boolean ISPNLHUD => false;
+		    public Boolean ISPNLPOS => false;
+			public Boolean ISPNLSCL => false;
+			public Boolean LEFTGEAR => false;
+			public Boolean LMTBYHDP => false;
+		    public Boolean LOADWEPN => false;
+		    public Boolean MACHNGN2 => false;
+			public Boolean MACHNGN3 => false;
+			public Boolean MACHNGN4 => false;
+			public Boolean MACHNGN5 => false;
+			public Boolean MACHNGN6 => false;
+			public Boolean MACHNGN7 => false;
+			public Boolean MACHNGN8 => false;
+			public Boolean MACHNGUN => false;
+			public Boolean MANESPD1 => false;
+			public Boolean MANESPD2 => false;
+			public Boolean MAXCDAOA => false;
+			public Boolean MAXNAAMM => false;
+			public Boolean MAXNBOMB => false;
+			public Boolean MAXNMAAM => false;
+			public Boolean MAXNMAGM => false;
+			public Boolean MAXNMFLR => false;
+			public Boolean MAXNMRKT => false;
+			public Boolean MAXSPEED => false;
+			public Boolean MXIPTAOA => false;
+			public Boolean MXIPTROL => false;
+			public Boolean MXIPTSSA => false;
+			public Boolean NMTURRET => false;
+			public Boolean POSITION => false;
+			public Boolean PROPEFCY => false;
+			public Boolean PROPELLR => false;
+			public Boolean PROPVMIN => false;
+			public Boolean PSTMPTCH => false;
+			public Boolean PSTMPWR1 => false;
+			public Boolean PSTMPWR2 => false;
+			public Boolean PSTMROLL => false;
+			public Boolean PSTMSPD1 => false;
+			public Boolean PSTMSPD2 => false;
+			public Boolean PSTMYAW_ => false;
+			public Boolean RADARCRS => false;
+			public Boolean REFACRUS => false;
+			public Boolean REFAOALD => false;
+			public Boolean REFLNRWY => false;
+			public Boolean REFTCRUS => false;
+			public Boolean REFTHRLD => false;
+			public Boolean REFVCRUS => false;
+			public Boolean REFVLAND => false;
+			public Boolean RETRGEAR => false;
+		    public Boolean RIGHGEAR => false;
+			public Boolean RKTSLOT_ => false;
+			public Boolean RKTVISIB => false;
+		    public Boolean SCRNCNTR => false;
+		    public Boolean SMOKECOL => false;
+		    public Boolean SMOKEGEN => false;
+			public Boolean SMOKEOIL => false;
+			public Boolean STALHORN => false;
+		    public Boolean STRENGTH => false;
+			public Boolean SUBSTNAM => false;
+		    public Boolean THRAFTBN => false;
+			public Boolean THRMILIT => false;
+			public Boolean THRSTREV => false;
+			public Boolean TRIGGER1 => false;
+		    public Boolean TRIGGER2 => false;
+			public Boolean TRIGGER3 => false;
+			public Boolean TRIGGER4 => false;
+			public Boolean TRSTDIR0 => false;
+			public Boolean TRSTDIR1 => false;
+			public Boolean TRSTVCTR => false;
+		    public Boolean TURRETAM => false;
+		    public Boolean TURRETAR => false;
+			public Boolean TURRETCT => false;
+		    public Boolean TURRETGD => false;
+			public Boolean TURRETHD => false;
+		    public Boolean TURRETIV => false;
+		    public Boolean TURRETNM => false;
+		    public Boolean TURRETPO => false;
+		    public Boolean TURRETPT => false;
+		    public Boolean TURRETRG => false;
+		    public Boolean VAPORPO0 => false;
+		    public Boolean VAPORPO1 => false;
+		    public Boolean VARGEOMW => false;
+		    public Boolean VGWSPED1 => false;
+			public Boolean VGWSPED2 => false;
+			public Boolean VRGMNOSE => false;
+		    public Boolean WEAPONCH => false;
+		    public Boolean WEIGFUEL => false;
+		    public IMass WeightOfFuel => (Parent?.Contents?.Last(x => x is WEIGFUEL) as WEIGFUEL)?.Value ?? 0.KiloGrams();
+			public Boolean WEIGHCLN => false;
+			public Boolean WEIGLOAD => false;
+			public Boolean WHELGEAR => false;
+			public Boolean WINGAREA => false;
+			public Boolean WPNSHAPE => false;
+	    }
+		public IDATFileCached CachedData { get; set; }
 
 		public new bool Load()
         {
@@ -43,7 +221,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new AAMSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new AAMSLOT_(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "AAMVISIB":
@@ -68,7 +246,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new AGMSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new AGMSLOT_(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "AGMVISIB":
@@ -92,7 +270,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new ARRESTER(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new ARRESTER(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "ATTITUDE":
@@ -126,7 +304,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new BOMBSLOT(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new BOMBSLOT(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "BOMINBAY":
@@ -238,7 +416,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new COCKPITP(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new COCKPITP(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "CPITMANE":
@@ -373,7 +551,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(5), out p)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(6), out b)) goto Error;
 			            if (thisLine.GetParameter(7) == "INSIDE") isInside = true;
-			            Contents.Add(new EXCAMERA(name, ObjectFactory.CreatePoint3(x, y, z),
+			            Contents.Add(new EXCAMERA(name, ObjectFactory.CreateCoordinate3(x, y, z),
 				            ObjectFactory.CreateOrientation3(h, p, b), isInside));
 			            continue;
 		            }
@@ -398,7 +576,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            ObjectFactory.TryParse(thisLine.GetParameter(3), out x2);
 				        ObjectFactory.TryParse(thisLine.GetParameter(4), out y2);
 				        ObjectFactory.TryParse(thisLine.GetParameter(5), out z2);
-			            Contents.Add(new FLAREPOS(ObjectFactory.CreatePoint3(x1, y1, z1), ObjectFactory.CreateVector3(x2, y2, z2)));
+			            Contents.Add(new FLAREPOS(ObjectFactory.CreateCoordinate3(x1, y1, z1), ObjectFactory.CreateCoordinate3(x2, y2, z2)));
 			            continue;
 		            }
 		            case "FLATCLR1":
@@ -444,7 +622,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new GUNDIREC(ObjectFactory.CreateVector3(x, y, z)));
+			            Contents.Add(new GUNDIREC(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "GUNINTVL":
@@ -497,7 +675,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 					            goto Error;
 				            }
 			            }
-			            Contents.Add(new HRDPOINT(ObjectFactory.CreatePoint3(x, y, z), descriptors.ToArray()));
+			            Contents.Add(new HRDPOINT(ObjectFactory.CreateCoordinate3(x, y, z), descriptors.ToArray()));
 			            continue;
 		            }
 		            case "HTRADIUS":
@@ -608,7 +786,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new ISPNLPOS(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new ISPNLPOS(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "ISPNLSCL":
@@ -626,7 +804,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new LEFTGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new LEFTGEAR(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "LMTBYHDP":
@@ -651,7 +829,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new MACHNGN2(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new MACHNGN2(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "MACHNGN3":
@@ -662,7 +840,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN3(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN3(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGN4":
@@ -673,7 +851,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN4(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN4(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGN5":
@@ -684,7 +862,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN5(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN5(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGN6":
@@ -695,7 +873,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN6(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN6(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGN7":
@@ -706,7 +884,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN7(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN7(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGN8":
@@ -717,7 +895,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGN8(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGN8(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MACHNGUN":
@@ -728,7 +906,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new MACHNGUN(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new MACHNGUN(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "MANESPD1":
@@ -837,7 +1015,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new POSITION(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new POSITION(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "PROPEFCY":
@@ -981,7 +1159,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new RIGHGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new RIGHGEAR(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "RKTSLOT_":
@@ -992,7 +1170,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new RKTSLOT_(ObjectFactory.CreatePoint3(x, y, z)));
+						Contents.Add(new RKTSLOT_(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "RKTVISIB":
@@ -1032,7 +1210,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new SMOKEGEN(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new SMOKEGEN(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "SMOKEOIL":
@@ -1119,7 +1297,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new TRSTDIR0(ObjectFactory.CreateVector3(x, y, z)));
+			            Contents.Add(new TRSTDIR0(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "TRSTDIR1":
@@ -1130,7 +1308,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 						if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-						Contents.Add(new TRSTDIR1(ObjectFactory.CreateVector3(x, y, z)));
+						Contents.Add(new TRSTDIR1(ObjectFactory.CreateCoordinate3(x, y, z)));
 						continue;
 					}
 					case "TRSTVCTR":
@@ -1219,7 +1397,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(4), out h)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(5), out p)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(6), out b)) goto Error;
-			            Contents.Add(new TURRETPO(quantifier, ObjectFactory.CreatePoint3(x, y, z), ObjectFactory.CreateOrientation3(h, p, b)));
+			            Contents.Add(new TURRETPO(quantifier, ObjectFactory.CreateCoordinate3(x, y, z), ObjectFactory.CreateOrientation3(h, p, b)));
 			            continue;
 		            }
 		            case "TURRETPT":
@@ -1252,7 +1430,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new VAPORPO0(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new VAPORPO0(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "VAPORPO1":
@@ -1263,7 +1441,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new VAPORPO1(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new VAPORPO1(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 		            case "VARGEOMW":
@@ -1329,7 +1507,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(0), out x)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(1), out y)) goto Error;
 			            if (!ObjectFactory.TryParse(thisLine.GetParameter(2), out z)) goto Error;
-			            Contents.Add(new WHELGEAR(ObjectFactory.CreatePoint3(x, y, z)));
+			            Contents.Add(new WHELGEAR(ObjectFactory.CreateCoordinate3(x, y, z)));
 			            continue;
 		            }
 					case "WINGAREA":

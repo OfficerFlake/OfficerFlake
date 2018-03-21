@@ -10,6 +10,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_12_LeaveFlight(IConnection thisConnection, IPacket_12_LeaveFlight packet)
 			{
+				return false;
 				throw new NotImplementedException();
 			}
 		}

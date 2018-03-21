@@ -101,7 +101,7 @@ namespace Com.OfficerFlake.Libraries
 					(int)thisTimeSpan.Hours.RawValue,
 					(int)thisTimeSpan.Minutes.RawValue,
 					(int)thisTimeSpan.Seconds.RawValue);
-				return output - new System.DateTime(0, 0, 0, 0, 0, 0);
+				return output - new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 			}
 			public static implicit operator OYSTimeSpan(System.TimeSpan thisTimeSpan)
 			{

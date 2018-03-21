@@ -69,13 +69,13 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region Math
 			//Coordinates
-			public ICoordinate2 CreateCoordinate2(double x, double y) => new Coordinate2(x,y);
-			public ICoordinate3 CreateCoordinate3(double x, double y, double z) => new Coordinate3(x,y,z);
+			public ICoordinate2 CreateCoordinate2(IDistance x, IDistance y) => new Coordinate2(x,y);
+			public ICoordinate3 CreateCoordinate3(IDistance x, IDistance y, IDistance z) => new Coordinate3(x,y,z);
 
-			public IPoint2 CreatePoint2(IDistance x, IDistance y) => new Point2(x,y);
-			public IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z) => new Point3(x,y,z);
-			public IVector2 CreateVector2(IDistance x, IDistance y) => new Vector2(x,y);
-			public IVector3 CreateVector3(IDistance x, IDistance y, IDistance z) => new Vector3(x,y,z);
+			public IPoint2<T> CreatePoint2<T>(T x, T y) => new Point2<T>(x,y);
+			public IPoint3<T> CreatePoint3<T>(T x, T y, T z) => new Point3<T>(x,y,z);
+			public IVector2<T> CreateVector2<T>(T x, T y) => new Vector2<T>(x,y);
+			public IVector3<T> CreateVector3<T>(T x, T y, T z) => new Vector3<T>(x,y,z);
 
 			public IOrientation2 CreateOrientation2(IAngle h, IAngle p) => new Orientation2(h,p);
 			public IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b) => new Orientation3(h,p,b);
@@ -97,12 +97,12 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_03_Error CreatePacket03Error() => new Type_03_Error();
 			public IPacket_04_Field CreatePacket04Field() => new Type_04_Field();
 			public IPacket_05_AddVehicle CreatePacket05AddVehicle() => new Type_05_EntityJoined();
-			public IPacket_06_Acknowledgement CreatePacket06Acknowledgement() => new Type_06_Acknowledgement();
+			public IPacket_06_Acknowledgement CreatePacket06Acknowledgement(params UInt32[] args) => new Type_06_Acknowledgement(args);
 			public IPacket_07_SmokeColor CreatePacket07SmokeColor() => new Type_07_SmokeColor();
 			public IPacket_08_JoinRequest CreatePacket08JoinRequest() => new Type_08_JoinRequest();
 			public IPacket_09_JoinRequestApproved CreatePacket09JoinRequestApproved() => new Type_09_JoinApproved();
 			public IPacket_10_JoinRequestDenied CreatePacket10JoinRequestDenied() => new Type_10_JoinDenied();
-			public IPacket_11_FlightData CreatePacket11FlightData() => new Type_11_FlightData();
+			public IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => new Type_11_FlightData(version);
 			public IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => new Type_12_Unjoin();
 			public IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => new Type_13_RemoveAircraft();
 			public IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => new Type_16_PrepareSimulation();

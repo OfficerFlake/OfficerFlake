@@ -10,6 +10,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_11_FlightData(IConnection thisConnection, IPacket_11_FlightData packet)
 			{
+				return true;
 				throw new NotImplementedException();
 			}
 		}

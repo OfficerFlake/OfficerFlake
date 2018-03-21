@@ -3,15 +3,15 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class HRDPOINT : DATProperty, IDAT_2_Parameters<IPoint3, IYSTypeHardpointDescription[]>
+	public class HRDPOINT : DATProperty, IDAT_2_Parameters<ICoordinate3, IYSTypeHardpointDescription[]>
 	{
-		public HRDPOINT(IPoint3 value1, IYSTypeHardpointDescription[] value2) : base("HRDPOINT" + " " + value1 + " " + string.Join(" ", value2.Select(x=>x.ToString())))
+		public HRDPOINT(ICoordinate3 value1, IYSTypeHardpointDescription[] value2) : base("HRDPOINT" + " " + value1 + " " + string.Join(" ", value2.Select(x=>x.ToString())))
 		{
 			Value1 = value1;
 			Value2 = value2;
 		}
 
-		public IPoint3 Value1 { get; set; }
+		public ICoordinate3 Value1 { get; set; }
 		public IYSTypeHardpointDescription[] Value2 { get; set; }
 
 		public uint GetWeaponQuantity(IYSTypeWeaponCategory Weapon)

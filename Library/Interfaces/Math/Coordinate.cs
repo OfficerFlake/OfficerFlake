@@ -25,24 +25,24 @@
 		IAngle B { get; set; }
 	}
 
-	public interface IPoint2 : IDimensionX<IDistance>, IDimensionY<IDistance>
+	public interface IPoint2<T> : IDimensionX<T>, IDimensionY<T>
 	{
 	}
-	public interface IPoint3 : IDimensionX<IDistance>, IDimensionY<IDistance>, IDimensionZ<IDistance>
-	{
-	}
-
-	public interface IVector2 : IDimensionX<IDistance>, IDimensionY<IDistance>
-	{
-	}
-	public interface IVector3 : IDimensionX<IDistance>, IDimensionY<IDistance>, IDimensionZ<IDistance>
+	public interface IPoint3<T> : IDimensionX<T>, IDimensionY<T>, IDimensionZ<T>
 	{
 	}
 
-	public interface ICoordinate2 : IDimensionX<double>, IDimensionY<double>
+	public interface IVector2<T> : IDimensionX<T>, IDimensionY<T>
 	{
 	}
-	public interface ICoordinate3 : IDimensionX<double>, IDimensionY<double>, IDimensionZ<double>
+	public interface IVector3<T> : IDimensionX<T>, IDimensionY<T>, IDimensionZ<T>
+	{
+	}
+
+	public interface ICoordinate2 : IDimensionX<IDistance>, IDimensionY<IDistance>
+	{
+	}
+	public interface ICoordinate3 : IDimensionX<IDistance>, IDimensionY<IDistance>, IDimensionZ<IDistance>
 	{
 	}
 

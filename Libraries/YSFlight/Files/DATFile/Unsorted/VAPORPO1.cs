@@ -2,13 +2,13 @@
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class VAPORPO1 : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class VAPORPO1 : DATProperty, IDAT_1_Parameter<ICoordinate3>
 	{
-		public VAPORPO1(IPoint3 value) : base("VAPORPO1" + " " + string.Join(" ", value))
+		public VAPORPO1(ICoordinate3 value) : base("VAPORPO1" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public ICoordinate3 Value { get; set; }
 	}
 }

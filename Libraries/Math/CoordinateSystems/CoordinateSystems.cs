@@ -2,20 +2,20 @@
 
 namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 {
-	public class Point2 : IPoint2
+	public class Point2<T> : IPoint2<T>
 	{
-		public IDistance X
+		public T X
 		{
 			get;
 			set;
 		}
-		public IDistance Y
+		public T Y
 		{
 			get;
 			set;
 		}
 
-		public Point2(IDistance x, IDistance y)
+		public Point2(T x, T y)
 		{
 			X = x;
 			Y = y;
@@ -26,25 +26,25 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			return "(" + X + ", " + Y + ")";
 		}
 	}
-	public class Point3 : IPoint3
+	public class Point3<T> : IPoint3<T>
 	{
-		public IDistance X
+		public T X
 		{
 			get;
 			set;
 		}
-		public IDistance Y
+		public T Y
 		{
 			get;
 			set;
 		}
-		public IDistance Z
+		public T Z
 		{
 			get;
 			set;
 		}
 
-		public Point3(IDistance x, IDistance y, IDistance z)
+		public Point3(T x, T y, T z)
 		{
 			X = x;
 			Y = y;
@@ -56,20 +56,20 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			return "(" + X + ", " + Y + ", " + Z + ")";
 		}
 	}
-	public class Vector2 : IVector2
+	public class Vector2<T> : IVector2<T>
 	{
-		public IDistance X
+		public T X
 		{
 			get;
 			set;
 		}
-		public IDistance Y
+		public T Y
 		{
 			get;
 			set;
 		}
 
-		public Vector2(IDistance x, IDistance y)
+		public Vector2(T x, T y)
 		{
 			X = x;
 			Y = y;
@@ -80,25 +80,25 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 			return "(" + X + ", " + Y + ")";
 		}
 	}
-	public class Vector3 : IVector3
+	public class Vector3<T> : IVector3<T>
 {
-		public IDistance X
+		public T X
 		{
 			get;
 			set;
 		}
-		public IDistance Y
+		public T Y
 		{
 			get;
 			set;
 		}
-		public IDistance Z
+		public T Z
 		{
 			get;
 			set;
 		}
 
-		public Vector3(IDistance x, IDistance y, IDistance z)
+		public Vector3(T x, T y, T z)
 		{
 			X = x;
 			Y = y;
@@ -113,18 +113,18 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 
 	public class Coordinate2 : ICoordinate2
 	{
-		public double X
+		public IDistance X
 		{
 			get;
 			set;
 		}
-		public double Y
+		public IDistance Y
 		{
 			get;
 			set;
 		}
 
-		public Coordinate2(double x, double y)
+		public Coordinate2(IDistance x, IDistance y)
 		{
 			X = x;
 			Y = y;
@@ -137,23 +137,23 @@ namespace Com.OfficerFlake.Libraries.Math.CoordinateSystems
 	}
 	public class Coordinate3 : ICoordinate3
 	{
-		public double X
+		public IDistance X
 		{
 			get;
 			set;
 		}
-		public double Y
+		public IDistance Y
 		{
 			get;
 			set;
 		}
-		public double Z
+		public IDistance Z
 		{
 			get;
 			set;
 		}
 
-		public Coordinate3(double x, double y, double z)
+		public Coordinate3(IDistance x, IDistance y, IDistance z)
 		{
 			X = x;
 			Y = y;

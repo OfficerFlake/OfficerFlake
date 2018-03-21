@@ -92,9 +92,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
 		public static IDate ToDate(this System.DateTime dateTime) => ObjectFactory.CreateDate(dateTime);
 		#region [Duration].ToDate
-		public static IDate ToDate(this ISecond input) => ObjectFactory.CreateDate(new System.DateTime(0, 0, 0, 0, 0, (int)input.RawValue));
-		public static IDate ToDate(this IMinute input) => ObjectFactory.CreateDate(new System.DateTime(0, 0, 0, 0, (int)input.RawValue, 0));
-		public static IDate ToDate(this IHour input) => ObjectFactory.CreateDate(new System.DateTime(0, 0, 0, (int)input.RawValue, 0, 0));
+		public static IDate ToDate(this ISecond input) => ObjectFactory.CreateDate(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, (int)input.RawValue));
+		public static IDate ToDate(this IMinute input) => ObjectFactory.CreateDate(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, (int)input.RawValue, 0));
+		public static IDate ToDate(this IHour input) => ObjectFactory.CreateDate(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, (int)input.RawValue, 0, 0));
 		public static IDate ToDate(this IDay input) => ObjectFactory.CreateDate(new System.DateTime(0, 0, (int)input.RawValue, 0, 0, 0));
 		public static IDate ToDate(this IWeek input) => ObjectFactory.CreateDate(new System.DateTime(0, 0, (int)input.RawValue*7, 0, 0, 0));
 		public static IDate ToDate(this IMonth input) => ObjectFactory.CreateDate(new System.DateTime(0, (int)input.RawValue, 0, 0, 0, 0));
@@ -103,9 +103,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
 		public static ITime ToTime(this System.DateTime dateTime) => ObjectFactory.CreateTime(dateTime);
 		#region [Duration].ToTime
-		public static ITime ToTime(this ISecond input) => ObjectFactory.CreateTime(new System.DateTime(0, 0, 0, 0, 0, (int)input.RawValue));
-		public static ITime ToTime(this IMinute input) => ObjectFactory.CreateTime(new System.DateTime(0, 0, 0, 0, (int)input.RawValue, 0));
-		public static ITime ToTime(this IHour input) => ObjectFactory.CreateTime(new System.DateTime(0, 0, 0, (int)input.RawValue, 0, 0));
+		public static ITime ToTime(this ISecond input) => ObjectFactory.CreateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, (int)input.RawValue));
+		public static ITime ToTime(this IMinute input) => ObjectFactory.CreateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, (int)input.RawValue, 0));
+		public static ITime ToTime(this IHour input) => ObjectFactory.CreateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, (int)input.RawValue, 0, 0));
 		public static ITime ToTime(this IDay input) => ObjectFactory.CreateTime(new System.DateTime(0, 0, (int)input.RawValue, 0, 0, 0));
 		public static ITime ToTime(this IWeek input) => ObjectFactory.CreateTime(new System.DateTime(0, 0, (int)input.RawValue * 7, 0, 0, 0));
 		public static ITime ToTime(this IMonth input) => ObjectFactory.CreateTime(new System.DateTime(0, (int)input.RawValue, 0, 0, 0, 0));
@@ -114,9 +114,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
 		public static IDateTime ToDateTime(this System.DateTime dateTime) => ObjectFactory.CreateDateTime(dateTime);
 		#region [Duration].ToDateTime
-		public static IDateTime ToDateTime(this ISecond input) => ObjectFactory.CreateDateTime(new System.DateTime(0, 0, 0, 0, 0, (int)input.RawValue));
-		public static IDateTime ToDateTime(this IMinute input) => ObjectFactory.CreateDateTime(new System.DateTime(0, 0, 0, 0, (int)input.RawValue, 0));
-		public static IDateTime ToDateTime(this IHour input) => ObjectFactory.CreateDateTime(new System.DateTime(0, 0, 0, (int)input.RawValue, 0, 0));
+		public static IDateTime ToDateTime(this ISecond input) => ObjectFactory.CreateDateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, (int)input.RawValue));
+		public static IDateTime ToDateTime(this IMinute input) => ObjectFactory.CreateDateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, (int)input.RawValue, 0));
+		public static IDateTime ToDateTime(this IHour input) => ObjectFactory.CreateDateTime(new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, (int)input.RawValue, 0, 0));
 		public static IDateTime ToDateTime(this IDay input) => ObjectFactory.CreateDateTime(new System.DateTime(0, 0, (int)input.RawValue, 0, 0, 0));
 		public static IDateTime ToDateTime(this IWeek input) => ObjectFactory.CreateDateTime(new System.DateTime(0, 0, (int)input.RawValue * 7, 0, 0, 0));
 		public static IDateTime ToDateTime(this IMonth input) => ObjectFactory.CreateDateTime(new System.DateTime(0, (int)input.RawValue, 0, 0, 0, 0));

@@ -54,7 +54,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public IUser Owner { get; set; } = Users.None;
 				public IMetaDataGround MetaData { get; set; } = Extensions.YSFlight.MetaData.Grounds.None;
 
-				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 
 				public override string ToString()
@@ -71,7 +71,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public int StartLine = 0;
 				public int EndLine = 0;
 
-				public IPoint3 Position = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public ICoordinate3 Position = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 
 				public I24BitColor GroundColor = ObjectFactory.CreateColor(0, 0, 0).Get24BitColor();
@@ -144,7 +144,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					//Console.WriteLine("END SUBSCENERY: " + Identify);
 					foreach (Path ThisPath in this.MotionPaths)
 					{
-						foreach (IPoint3 ThisPoint in ThisPath.Points.ToArray())
+						foreach (ICoordinate3 ThisPoint in ThisPath.Points.ToArray())
 						{
 							IDistance _PosX = (ThisPoint.X.ToMeters().RawValue + ThisPath.Position.X.ToMeters().RawValue).Meters();
 							IDistance _PosY = (ThisPoint.Y.ToMeters().RawValue + ThisPath.Position.Y.ToMeters().RawValue).Meters();
@@ -196,14 +196,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public Boolean IsLooping { get; set; } = false;
 				public WorldMotionPathAreaType AreaType { get; set; } = WorldMotionPathAreaType.Land;
 
-				public List<IPoint3> Points { get; set; } = new List<IPoint3>();
+				public List<ICoordinate3> Points { get; set; } = new List<ICoordinate3>();
 
-				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 
 				public IWorldMotionPath Interpolate()
 				{
-					List<IPoint3> OriginalList = this.Points;
+					List<ICoordinate3> OriginalList = this.Points;
 					IWorldMotionPath NewPath = new Path();
 
 					NewPath.Identify = this.Identify;
@@ -216,7 +216,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					for (int i = 0; i < OriginalList.Count - 1; i++)
 					{
 						NewPath.Points.Add(OriginalList.ToArray()[i]);
-						IPoint3 NewPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+						ICoordinate3 NewPoint = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 						NewPoint.X = ((OriginalList.ToArray()[i].X.ToMeters().RawValue + OriginalList.ToArray()[i + 1].X.ToMeters().RawValue) / 2f).Meters();
 						NewPoint.Y = ((OriginalList.ToArray()[i].Y.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Y.ToMeters().RawValue) / 2f).Meters();
 						NewPoint.Z = ((OriginalList.ToArray()[i].Z.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Z.ToMeters().RawValue) / 2f).Meters();
@@ -227,7 +227,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				public IWorldMotionPath Decimate()
 				{
-					List<IPoint3> OriginalList = this.Points;
+					List<ICoordinate3> OriginalList = this.Points;
 					IWorldMotionPath NewPath = new Path();
 
 					NewPath.Identify = this.Identify;
@@ -248,7 +248,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if ((OriginalList.Count - 2) % 2 == 0)
 						{
 							//even no.
-							IPoint3 NewPoint = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+							ICoordinate3 NewPoint = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 							NewPoint.X = ((OriginalList.ToArray()[i].X.ToMeters().RawValue + OriginalList.ToArray()[i + 1].X.ToMeters().RawValue) / 2f).Meters();
 							NewPoint.Y = ((OriginalList.ToArray()[i].Y.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Y.ToMeters().RawValue) / 2f).Meters();
 							NewPoint.Z = ((OriginalList.ToArray()[i].Z.ToMeters().RawValue + OriginalList.ToArray()[i + 1].Z.ToMeters().RawValue) / 2f).Meters();
@@ -280,7 +280,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public Boolean AllowIFF3 { get; set; } = true;
 				public Boolean AllowIFF4 { get; set; } = true;
 
-				public IPoint3 Position { get; set; } = ObjectFactory.CreatePoint3(0.Meters(), 0.Meters(), 0.Meters());
+				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
 			}
 			public static StartPosition NULL_StartPosition;

@@ -37,7 +37,7 @@ namespace Com.OfficerFlake.Libraries.Math
                 C = duplicate.C;
             }
 
-            public static Quadratic From3Coordinate2(ICoordinate2 A, ICoordinate2 B, ICoordinate2 C)
+            public static Quadratic From3Coordinate2(IVector2<double> A, IVector2<double> B, IVector2<double> C)
             {
                 //Convert the 3 points to quadratic equations.
                 var equation1 = new Quadratic(A.X, A.Y);
@@ -118,9 +118,9 @@ namespace Com.OfficerFlake.Libraries.Math
 			public static Quadratic StatisticCurve(double x1, double x2, double x3)
 	        {
 		        return Quadratic.From3Coordinate2(
-			        ObjectFactory.CreateCoordinate2(x1, 0.0d),
-			        ObjectFactory.CreateCoordinate2(x2, 0.5d),
-			        ObjectFactory.CreateCoordinate2(x3, 1.0d));
+			        ObjectFactory.CreateVector2(x1, 0.0d),
+			        ObjectFactory.CreateVector2(x2, 0.5d),
+			        ObjectFactory.CreateVector2(x3, 1.0d));
 	        }
         }
     }

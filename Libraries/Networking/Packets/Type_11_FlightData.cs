@@ -10,7 +10,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			Initialise(3);
 		}
-		public Type_11_FlightData(short version)
+		public Type_11_FlightData(short version) : base(11)
 		{
 			Initialise(version);
 		}
@@ -139,7 +139,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public IAngle HdgX
+		public IAngle HdgH
 		{
 			get
 			{
@@ -170,7 +170,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public IAngle HdgY
+		public IAngle HdgP
 		{
 			get
 			{
@@ -201,7 +201,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public IAngle HdgZ
+		public IAngle HdgB
 		{
 			get
 			{
@@ -327,7 +327,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 		}
 
-		public IAngle V_HdgX
+		public IAngle V_HdgH
 		{
 			get
 			{
@@ -358,7 +358,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public IAngle V_HdgY
+		public IAngle V_HdgP
 		{
 			get
 			{
@@ -389,7 +389,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public IAngle V_HdgZ
+		public IAngle V_HdgB
 		{
 			get
 			{
@@ -668,6 +668,33 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 					case 5:
 						SetInt32(46, (int)value.ToKiloGrams().RawValue);
 						break;
+				}
+			}
+		}
+
+		public UInt16 Strength
+		{
+			get
+			{
+				if (Version == 3)
+				{
+					return GetUInt16(46);
+				}
+				if (Version == 4 | Version == 5)
+				{
+					return GetByte(48);
+				}
+				return 0;
+			}
+			set
+			{
+				if (Version == 3)
+				{
+					SetUInt16(46, value);
+				}
+				if (Version == 4 | Version == 5)
+				{
+					SetByte(48, (byte)value);
 				}
 			}
 		}

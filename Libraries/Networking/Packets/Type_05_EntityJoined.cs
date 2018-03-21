@@ -93,21 +93,41 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			get => ((double)GetSingle(20)).Meters();
 			set => SetSingle(20, (Single)value.ToMeters().RawValue);
 		}
+		public ICoordinate3 Position
+		{
+			get => ObjectFactory.CreateCoordinate3(PosX, PosY, PosZ);
+			set
+			{
+				PosX = value.X;
+				PosY = value.Y;
+				PosZ = value.Z;
+			}
+		}
 
-		public IAngle RotX
+		public IAngle HdgH
 		{
 			get => ((double)GetSingle(24)).Radians();
 			set => SetSingle(24, (Single)value.ToRadians().RawValue);
 		}
-		public IAngle RotY
+		public IAngle HdgP
 		{
 			get => ((double)GetSingle(28)).Radians();
 			set => SetSingle(28, (Single)value.ToRadians().RawValue);
 		}
-		public IAngle RotZ
+		public IAngle HdgB
 		{
 			get => ((double)GetSingle(32)).Radians();
 			set => SetSingle(32, (Single)value.ToRadians().RawValue);
+		}
+		public IOrientation3 Attitude
+		{
+			get => ObjectFactory.CreateOrientation3(HdgH, HdgP, HdgB);
+			set
+			{
+				HdgH = value.H;
+				HdgP = value.P;
+				HdgB = value.B;
+			}
 		}
 
 		public String Identify

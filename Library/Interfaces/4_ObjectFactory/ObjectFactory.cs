@@ -52,13 +52,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region Math
 		//Coordinates
-		ICoordinate2 CreateCoordinate2(double x, double y);
-		ICoordinate3 CreateCoordinate3(double x, double y, double z);
+		ICoordinate2 CreateCoordinate2(IDistance x, IDistance y);
+		ICoordinate3 CreateCoordinate3(IDistance x, IDistance y, IDistance z);
 
-		IPoint2 CreatePoint2(IDistance x, IDistance y);
-		IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z);
-		IVector2 CreateVector2(IDistance x, IDistance y);
-		IVector3 CreateVector3(IDistance x, IDistance y, IDistance z);
+		IPoint2<T> CreatePoint2<T>(T x, T y);
+		IPoint3<T> CreatePoint3<T>(T x, T y, T z);
+		IVector2<T> CreateVector2<T>(T x, T y);
+		IVector3<T> CreateVector3<T>(T x, T y, T z);
 
 		IOrientation2 CreateOrientation2(IAngle h, IAngle p);
 		IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b);
@@ -81,12 +81,12 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_03_Error CreatePacket03Error();
 		IPacket_04_Field CreatePacket04Field();
 		IPacket_05_AddVehicle CreatePacket05AddVehicle();
-		IPacket_06_Acknowledgement CreatePacket06Acknowledgement();
+		IPacket_06_Acknowledgement CreatePacket06Acknowledgement(params UInt32[] args);
 		IPacket_07_SmokeColor CreatePacket07SmokeColor();
 		IPacket_08_JoinRequest CreatePacket08JoinRequest();
 		IPacket_09_JoinRequestApproved CreatePacket09JoinRequestApproved();
 		IPacket_10_JoinRequestDenied CreatePacket10JoinRequestDenied();
-		IPacket_11_FlightData CreatePacket11FlightData();
+		IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3);
 		IPacket_12_LeaveFlight CreatePacket12LeaveFlight();
 		IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft();
 		IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation();

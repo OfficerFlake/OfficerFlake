@@ -57,7 +57,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public static implicit operator System.DateTime(OYSTime thistime)
 			{
-				return new System.DateTime(0, 0, 0, (int)thistime.Hour.RawValue, (int)thistime.Minute.RawValue, (int)thistime.Second.RawValue);
+				return new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, (int)thistime.Hour.RawValue, (int)thistime.Minute.RawValue, (int)thistime.Second.RawValue);
 			}
 			public static implicit operator OYSTime(System.DateTime thisDate)
 			{

@@ -2,13 +2,13 @@
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class TRSTDIR1 : DATProperty, IDAT_1_Parameter<IVector3>
+	public class TRSTDIR1 : DATProperty, IDAT_1_Parameter<ICoordinate3>
 	{
-		public TRSTDIR1(IVector3 value) : base("TRSTDIR1" + " " + value)
+		public TRSTDIR1(ICoordinate3 value) : base("TRSTDIR1" + " " + value)
 		{
 			Value = value;
 		}
 
-		public IVector3 Value { get; set; }
+		public ICoordinate3 Value { get; set; }
 	}
 }

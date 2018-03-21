@@ -14,7 +14,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IUser Owner { get; set; }
 		IMetaDataAircraft MetaData { get; set; }
 
-		IPoint3 Position { get; set; }
+		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
 	public interface IWorldGround
@@ -28,7 +28,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IUser Owner { get; set; }
 		IMetaDataGround MetaData { get; set; }
 
-		IPoint3 Position { get; set; }
+		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
 
@@ -36,7 +36,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		String Identify { get; set; }
 
-		IPoint3 Position { get; set; }
+		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
 
@@ -52,7 +52,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Boolean AllowIFF3 { get; set; }
 		Boolean AllowIFF4 { get; set; }
 
-		IPoint3 Position { get; set; }
+		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
 	
@@ -63,9 +63,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Boolean IsLooping { get; set; }
 		WorldMotionPathAreaType AreaType { get; set; }
 
-		List<IPoint3> Points { get; set; }
+		List<ICoordinate3> Points { get; set; }
 
-		IPoint3 Position { get; set; }
+		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 
 		IWorldMotionPath Interpolate();

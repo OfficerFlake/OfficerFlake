@@ -55,13 +55,13 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region Math
 			//Coordinates
-			public ICoordinate2 CreateCoordinate2(double x, double y) => throw new NotImplementedException();
-			public ICoordinate3 CreateCoordinate3(double x, double y, double z) => throw new NotImplementedException();
+			public ICoordinate2 CreateCoordinate2(IDistance x, IDistance y) => throw new NotImplementedException();
+			public ICoordinate3 CreateCoordinate3(IDistance x, IDistance y, IDistance z) => throw new NotImplementedException();
 
-			public IPoint2 CreatePoint2(IDistance x, IDistance y) => throw new NotImplementedException();
-			public IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z) => throw new NotImplementedException();
-			public IVector2 CreateVector2(IDistance x, IDistance y) => throw new NotImplementedException();
-			public IVector3 CreateVector3(IDistance x, IDistance y, IDistance z) => throw new NotImplementedException();
+			public IPoint2<T> CreatePoint2<T>(T x, T y) => throw new NotImplementedException();
+			public IPoint3<T> CreatePoint3<T>(T x, T y, T z) => throw new NotImplementedException();
+			public IVector2<T> CreateVector2<T>(T x, T y) => throw new NotImplementedException();
+			public IVector3<T> CreateVector3<T>(T x, T y, T z) => throw new NotImplementedException();
 
 			public IOrientation2 CreateOrientation2(IAngle h, IAngle p) => throw new NotImplementedException();
 			public IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b) => throw new NotImplementedException();
@@ -83,12 +83,12 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_03_Error CreatePacket03Error() => throw new NotImplementedException();
 			public IPacket_04_Field CreatePacket04Field() => throw new NotImplementedException();
 			public IPacket_05_AddVehicle CreatePacket05AddVehicle() => throw new NotImplementedException();
-			public IPacket_06_Acknowledgement CreatePacket06Acknowledgement() => throw new NotImplementedException();
+			public IPacket_06_Acknowledgement CreatePacket06Acknowledgement(params UInt32[] args) => throw new NotImplementedException();
 			public IPacket_07_SmokeColor CreatePacket07SmokeColor() => throw new NotImplementedException();
 			public IPacket_08_JoinRequest CreatePacket08JoinRequest() => throw new NotImplementedException();
 			public IPacket_09_JoinRequestApproved CreatePacket09JoinRequestApproved() => throw new NotImplementedException();
 			public IPacket_10_JoinRequestDenied CreatePacket10JoinRequestDenied() => throw new NotImplementedException();
-			public IPacket_11_FlightData CreatePacket11FlightData() => throw new NotImplementedException();
+			public IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => throw new NotImplementedException();
 			public IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => throw new NotImplementedException();
 			public IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => throw new NotImplementedException();
 			public IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => throw new NotImplementedException();

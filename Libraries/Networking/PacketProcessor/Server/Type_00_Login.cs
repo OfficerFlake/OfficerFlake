@@ -436,12 +436,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 					GroundJoin.Identify = ThisGround.Identify;
 					GroundJoin.OwnerName = ThisGround.Tag;
 					GroundJoin.IFF = ThisGround.IFF;
-					GroundJoin.PosX = ThisGround.Position.X.ToMeters();
-					GroundJoin.PosY = ThisGround.Position.Y.ToMeters();
-					GroundJoin.PosZ = ThisGround.Position.Z.ToMeters();
-					GroundJoin.RotX = (ThisGround.Attitude.H.ToRadians());
-					GroundJoin.RotY = (ThisGround.Attitude.P.ToRadians());
-					GroundJoin.RotZ = (ThisGround.Attitude.B.ToRadians());
+					GroundJoin.PosX = ThisGround.Position.X;
+					GroundJoin.PosY = ThisGround.Position.Y;
+					GroundJoin.PosZ = ThisGround.Position.Z;
+					GroundJoin.HdgH = ThisGround.Attitude.H;
+					GroundJoin.HdgP = ThisGround.Attitude.P;
+					GroundJoin.HdgB = ThisGround.Attitude.B;
 
 					thisConnection.Send(GroundJoin);
 				}

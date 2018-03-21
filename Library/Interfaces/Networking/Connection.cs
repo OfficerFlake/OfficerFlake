@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -20,10 +21,13 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		FlightStatus FlightStatus { get; set; }
 		Boolean IsFlying { get; }
 
+		Boolean JoinRequestPending { get; set; }
+
 		bool Connect(Socket TCPSocket);
 		bool Disconnect(string Reason);
 
 		void GivePacket(IPacket thisPacket);
+		List<IPacket> Last5Packets { get; }
 
 		bool Send(IPacket packet);
 		Task<bool> SendAsync(IPacket packet);

@@ -53,14 +53,14 @@ namespace Com.OfficerFlake.Libraries
 		#endregion
 		#region Math
 		//Coordinates
-		public static ICoordinate2 CreateCoordinate2(double x, double y) => slaveFactory.CreateCoordinate2(x, y);
-		public static ICoordinate3 CreateCoordinate3(double x, double y, double z) => slaveFactory.CreateCoordinate3(x, y, z);
 
-		public static IPoint2 CreatePoint2(IDistance x, IDistance y) => slaveFactory.CreatePoint2(x, y);
-		public static IPoint3 CreatePoint3(IDistance x, IDistance y, IDistance z) => slaveFactory.CreatePoint3(x, y, z);
-		public static IVector2 CreateVector2(IDistance x, IDistance y) => slaveFactory.CreateVector2(x, y);
-		public static IVector3 CreateVector3(IDistance x, IDistance y, IDistance z) => slaveFactory.CreateVector3(x, y, z);
+		public static IPoint2<T> CreatePoint2<T>(T x, T y) => slaveFactory.CreatePoint2<T>(x, y);
+		public static IPoint3<T> CreatePoint3<T>(T x, T y, T z) => slaveFactory.CreatePoint3<T>(x, y, z);
+		public static IVector2<T> CreateVector2<T>(T x, T y) => slaveFactory.CreateVector2<T>(x, y);
+		public static IVector3<T> CreateVector3<T>(T x, T y, T z) => slaveFactory.CreateVector3<T>(x, y, z);
 
+		public static ICoordinate2 CreateCoordinate2(IDistance x, IDistance y) => slaveFactory.CreateCoordinate2(x, y);
+		public static ICoordinate3 CreateCoordinate3(IDistance x, IDistance y, IDistance z) => slaveFactory.CreateCoordinate3(x, y, z);
 		public static IOrientation2 CreateOrientation2(IAngle h, IAngle p) => slaveFactory.CreateOrientation2(h, p);
 		public static IOrientation3 CreateOrientation3(IAngle h, IAngle p, IAngle b) => slaveFactory.CreateOrientation3(h, p, b);
 
@@ -82,12 +82,12 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_03_Error CreatePacket03Error() => slaveFactory.CreatePacket03Error();
 		public static IPacket_04_Field CreatePacket04Field() => slaveFactory.CreatePacket04Field();
 		public static IPacket_05_AddVehicle CreatePacket05AddVehicle() => slaveFactory.CreatePacket05AddVehicle();
-		public static IPacket_06_Acknowledgement CreatePacket06Acknowledgement() => slaveFactory.CreatePacket06Acknowledgement();
+		public static IPacket_06_Acknowledgement CreatePacket06Acknowledgement(params UInt32[] args) => slaveFactory.CreatePacket06Acknowledgement(args);
 		public static IPacket_07_SmokeColor CreatePacket07SmokeColor() => slaveFactory.CreatePacket07SmokeColor();
 		public static IPacket_08_JoinRequest CreatePacket08JoinRequest() => slaveFactory.CreatePacket08JoinRequest();
 		public static IPacket_09_JoinRequestApproved CreatePacket09JoinRequestApproved() => slaveFactory.CreatePacket09JoinRequestApproved();
 		public static IPacket_10_JoinRequestDenied CreatePacket10JoinRequestDenied() => slaveFactory.CreatePacket10JoinRequestDenied();
-		public static IPacket_11_FlightData CreatePacket11FlightData() => slaveFactory.CreatePacket11FlightData();
+		public static IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => slaveFactory.CreatePacket11FlightData(version);
 		public static IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => slaveFactory.CreatePacket12LeaveFlight();
 		public static IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => slaveFactory.CreatePacket13RemoveAircraft();
 		public static IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => slaveFactory.CreatePacket16PrepareSimulation();

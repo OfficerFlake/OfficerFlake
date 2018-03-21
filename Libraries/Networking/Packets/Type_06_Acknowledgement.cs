@@ -10,9 +10,9 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		public Type_06_Acknowledgement() : base(6)
 		{
 		}
-		public Type_06_Acknowledgement(params Int32[] arguments) : base(6)
+		public Type_06_Acknowledgement(params UInt32[] arguments) : base(6)
 		{
-			Arguments = arguments.Select(x=>(uint)x).ToArray();
+			Arguments = arguments;
 		}
 
 		public UInt32[] Arguments

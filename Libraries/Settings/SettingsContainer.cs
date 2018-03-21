@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries
 {
 	public static partial class SettingsLibrary
 	{
-		public partial class _Settings : INotifyPropertyChanged
+		public class _Settings : INotifyPropertyChanged
 		{
 			public event PropertyChangedEventHandler PropertyChanged;
 
@@ -61,7 +61,7 @@ namespace Com.OfficerFlake.Libraries
 				#region Weapons
 
 				public Boolean AllowMissiles { get; set; } = true;
-				public Boolean AllowUnguided { get; set; } = true;
+				public Boolean AllowUnguidedWeapons { get; set; } = true;
 
 				#endregion
 
@@ -123,9 +123,10 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public static UInt32 TCP = 7915;
-					public static UInt32 UDP = 7964;
+					public UInt32 TCP = 7915;
+					public UInt32 UDP = 7964;
 				}
+				public readonly _ListeningPorts ListeningPorts = new _ListeningPorts();
 
 				#endregion
 
@@ -135,13 +136,14 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public static UInt32 DestinationPort = 7915;
-					public static IPAddress DestinationAddress = IPAddress.Parse("127.0.0.1");
+					public UInt32 DestinationPort = 7915;
+					public IPAddress DestinationAddress = IPAddress.Parse("127.0.0.1");
 				}
+				public readonly _ProxyServer ProxyServer = new _ProxyServer();
 
 				#endregion
 
-				public static IDuration RestartTimer = 120.Minutes();
+				public IDuration RestartTimer = 120.Minutes();
 			}
 			public readonly _Server Server = new _Server();
 
@@ -159,6 +161,7 @@ namespace Com.OfficerFlake.Libraries
 					public Boolean Notification = true;
 					public Boolean UseWheelChocks = true;
 				}
+				public readonly _Join Join = new _Join();
 
 				#endregion
 
@@ -176,9 +179,11 @@ namespace Com.OfficerFlake.Libraries
 
 					public Boolean Notification = true;
 				}
+				public readonly _Leave Leave = new _Leave();
 
 				#endregion
 			}
+			public readonly _Flight Flight = new _Flight();
 
 			public class _Colors : INotifyPropertyChanged
 			{
@@ -192,8 +197,8 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(0, 0, 0, 05, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(0, 0, 0, 07, 0, 0).ToTime();
+						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 05, 0, 0).ToTime();
+						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 07, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -206,6 +211,7 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
@@ -214,14 +220,18 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Color Color = new _Color();
 					}
+					public readonly _Dawn Dawn = new _Dawn();
+
 					public class _Day : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(0, 0, 0, 06, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(0, 0, 0, 18, 0, 0).ToTime();
+						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
+						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -234,6 +244,7 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
@@ -242,14 +253,18 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Color Color = new _Color();
 					}
+					public readonly _Day Day = new _Day();
+
 					public class _Dusk : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(0, 0, 0, 17, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(0, 0, 0, 19, 0, 0).ToTime();
+						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0).ToTime();
+						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -262,6 +277,7 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
@@ -270,14 +286,18 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Color Color = new _Color();
 					}
+					public readonly _Dusk Dusk = new _Dusk();
+
 					public class _Night : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(0, 0, 0, 18, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(0, 0, 0, 06, 0, 0).ToTime();
+						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
+						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -292,6 +312,8 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
+
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
@@ -299,9 +321,14 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Color Color = new _Color();
 					}
+					public readonly _Night Night = new _Night();
 				}
+				public readonly _Time Time = new _Time();
+
 				public class _Altitude : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
@@ -319,6 +346,7 @@ namespace Com.OfficerFlake.Libraries
 							public IDistance Starts = 0.Feet();
 							public IDistance Ends = 50000.Feet();
 						}
+						public readonly _Range Range = new _Range();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -331,6 +359,7 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
@@ -339,8 +368,12 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Color Color = new _Color();
 					}
+					public readonly _Day Day = new _Day();
+
 					public class _Ceiling : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
@@ -352,6 +385,7 @@ namespace Com.OfficerFlake.Libraries
 							public IDistance Starts = 30000.Feet();
 							public IDistance Ends = 100000.Feet();
 						}
+						public readonly _Range Range = new _Range();
 
 						public class _Colors : INotifyPropertyChanged
 						{
@@ -364,6 +398,7 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
@@ -372,8 +407,12 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
+							public readonly _Horizon Horizon = new _Horizon();
 						}
+						public readonly _Colors Colors = new _Colors();
 					}
+					public readonly _Ceiling Ceiling = new _Ceiling();
+
 					public class _Space : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
@@ -385,6 +424,8 @@ namespace Com.OfficerFlake.Libraries
 							public IDistance Starts = 50000.Feet();
 							public IDistance Ends = 120000.Feet();
 						}
+						public readonly _Range Range = new _Range();
+
 						public class _Colors : INotifyPropertyChanged
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
@@ -396,6 +437,8 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 							}
+							public readonly _Sky Sky = new _Sky();
+
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
@@ -403,10 +446,15 @@ namespace Com.OfficerFlake.Libraries
 								public Double Opacity = 0.0;
 								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							
+							public readonly _Horizon Horizon = new _Horizon();
+
 						}
+						public readonly _Colors Colors = new _Colors();
 					}
+					public readonly _Space Space = new _Space();
 				}
+				public readonly _Altitude Altitude = new _Altitude();
+
 				public class _Defaults : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
@@ -418,6 +466,7 @@ namespace Com.OfficerFlake.Libraries
 						public Double Opacity = 0.0;
 						public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
 					}
+					public readonly _Sky Sky = new _Sky();
 
 					public class _Horizon : INotifyPropertyChanged
 					{
@@ -425,6 +474,7 @@ namespace Com.OfficerFlake.Libraries
 
 						public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
 					}
+					public readonly _Horizon Horizon = new _Horizon();
 
 					public class _Ground : INotifyPropertyChanged
 					{
@@ -433,6 +483,7 @@ namespace Com.OfficerFlake.Libraries
 						public Double Opacity = 0.0;
 						public IColor Color = ObjectFactory.CreateColor(0, 0, 160);
 					}
+					public readonly _Ground Ground = new _Ground();
 
 					public class _Fog : INotifyPropertyChanged
 					{
@@ -440,8 +491,11 @@ namespace Com.OfficerFlake.Libraries
 
 						public IColor Color = ObjectFactory.CreateColor(160, 160, 160);
 					}
+					public readonly _Fog Fog = new _Fog();
 				}
+				public readonly _Defaults Defaults = new _Defaults();
 			}
+			public readonly _Colors Colors = new _Colors();
 
 			public class _Day : INotifyPropertyChanged
 			{
@@ -449,6 +503,8 @@ namespace Com.OfficerFlake.Libraries
 
 				public ITime Duration = 24.Minutes().ToTime();
 			}
+			public readonly _Day Day = new _Day();
+
 			public class _Time : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
@@ -456,12 +512,13 @@ namespace Com.OfficerFlake.Libraries
 				public ITime Current = 12.Hours().ToTime();
 				public ITime Default = 12.Hours().ToTime();
 			}
+			public readonly _Time Time = new _Time();
 
 			public class _Weather : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public class ForceObedience : INotifyPropertyChanged
+				public class _ForceObedience : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
@@ -470,7 +527,9 @@ namespace Com.OfficerFlake.Libraries
 					public Boolean BlackOut = false;
 					public Boolean Fog = false;
 				}
-				public class Enable : INotifyPropertyChanged
+				public readonly _ForceObedience ForceObedience = new _ForceObedience();
+
+				public class _Enable : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
@@ -479,6 +538,7 @@ namespace Com.OfficerFlake.Libraries
 					public Boolean BlackOut = false;
 					public Boolean Fog = true;
 				}
+				public readonly _Enable Enable = new _Enable();
 
 				public class _Wind : INotifyPropertyChanged
 				{
@@ -488,46 +548,52 @@ namespace Com.OfficerFlake.Libraries
 					public ISpeed WindY = 0.MetersPerSecond();
 					public ISpeed WindZ = 0.MetersPerSecond();
 				}
+				public readonly _Wind Wind = new _Wind();
+
 				public IDistance Visibility = 0.Meters();
 			}
+			public readonly _Weather Weather = new _Weather();
 
-			public class OwnerInformation : INotifyPropertyChanged
+			public class _OwnerInformation : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
 				public String PreferredName = "???";
 				public String ContactEmail = "???";
 			}
+			public readonly _OwnerInformation OwnerInformation = new _OwnerInformation();
 
-			public class IRC : INotifyPropertyChanged
+			public class _IRC : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
 				#region UseIRC?
-				public static Boolean Enabled = false;
+				public Boolean Enabled = false;
 				#endregion
 				#region IRC Server
-				public class Server : INotifyPropertyChanged
+				public class _Server : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public static IPAddress Address = IPAddress.Parse("127.0.0.1");
-					public static UInt32 Port = 6667;
+					public IPAddress Address = IPAddress.Parse("127.0.0.1");
+					public UInt32 Port = 6667;
 
-					public static String Channel = "None";
+					public String Channel = "None";
 				}
+				public readonly _Server Server = new _Server();
 				#endregion
 				#region OpenYS Nickname
-				public static String Nickname = "OpenYS";
+				public String Nickname = "OpenYS";
 
 				public class _Authentication : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public static Boolean Enabled = false;
-					public static String Service = "NickServ";
-					public static String Password = "PASSWORD";
+					public Boolean Enabled = false;
+					public String Service = "NickServ";
+					public String Password = "PASSWORD";
 				}
+				public readonly _Authentication Authentication = new _Authentication();
 				#endregion
 				#region Messaging Control
 				public class _Messages : INotifyPropertyChanged
@@ -543,18 +609,23 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean ShowEvents = true;
 						public String MessageColor = "&d";
 					}
+					public readonly _IRCtoOYS IRCtoOYS = new _IRCtoOYS();
+
 					public class _OYStoIRC : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public static Boolean Enabled = true;
-						public static Boolean StripFormatting = false;
-						public static Boolean ShowEvents = true;
-						public static String MessageColor = "&0";
+						public Boolean Enabled = true;
+						public Boolean StripFormatting = false;
+						public Boolean ShowEvents = true;
+						public String MessageColor = "&0";
 					}
+					public readonly _OYStoIRC OYStoIRC = new _OYStoIRC();
 				}
+				public readonly _Messages Messages = new _Messages();
 				#endregion
 			}
+			public readonly _IRC IRC = new _IRC();
 
 			public class _UserInterface : INotifyPropertyChanged
 			{
@@ -571,7 +642,7 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Console { get; set; } = true;
 						public Boolean User { get; set; } = true;
 					}
-					public _ShowMessages ShowMessages = new _ShowMessages();
+					public readonly _ShowMessages ShowMessages = new _ShowMessages();
 
 					public class _ShowDebug : INotifyPropertyChanged
 					{
@@ -583,14 +654,14 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Error { get; set; } = true;
 						public Boolean Crash { get; set; } = true;
 					}
-					public _ShowDebug ShowDebug = new _ShowDebug();
+					public readonly _ShowDebug ShowDebug = new _ShowDebug();
 				}
 				public readonly _Console Console = new _Console();
 
 			}
 			public readonly _UserInterface UserInterface = new _UserInterface();
 		}
-		public static _Settings Settings { get; set; } = new _Settings();
+		public static _Settings Settings { get; }
 
 		static SettingsLibrary()
 		{

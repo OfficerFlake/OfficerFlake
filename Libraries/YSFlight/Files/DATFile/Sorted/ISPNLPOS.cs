@@ -2,13 +2,13 @@
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT.Properties
 {
-	public class ISPNLPOS : DATProperty, IDAT_1_Parameter<IPoint3>
+	public class ISPNLPOS : DATProperty, IDAT_1_Parameter<ICoordinate3>
 	{
-		public ISPNLPOS(IPoint3 value) : base("ISPNLPOS" + " " + string.Join(" ", value))
+		public ISPNLPOS(ICoordinate3 value) : base("ISPNLPOS" + " " + string.Join(" ", value))
 		{
 			Value = value;
 		}
 
-		public IPoint3 Value { get; set; }
+		public ICoordinate3 Value { get; set; }
 	}
 }

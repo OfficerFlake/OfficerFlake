@@ -94,9 +94,11 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IDistance PosX { get; set; }
 		IDistance PosY { get; set; }
 		IDistance PosZ { get; set; }
-		IAngle RotX { get; set; }
-		IAngle RotY { get; set; }
-		IAngle RotZ { get; set; }
+		ICoordinate3 Position { get;}
+		IAngle HdgH { get; set; }
+		IAngle HdgP { get; set; }
+		IAngle HdgB { get; set; }
+		IOrientation3 Attitude { get;}
 		String Identify { get; set; }
 		Packet_05OwnerType OwnerType { get; set; }
 		String OwnerName { get; set; }
@@ -142,15 +144,15 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IDistance PosX { get; set; }
 		IDistance PosY { get; set; }
 		IDistance PosZ { get; set; }
-		IAngle HdgX { get; set; }
-		IAngle HdgY { get; set; }
-		IAngle HdgZ { get; set; }
+		IAngle HdgH { get; set; }
+		IAngle HdgP { get; set; }
+		IAngle HdgB { get; set; }
 		ISpeed V_PosX { get; set; }
 		ISpeed V_PosY { get; set; }
 		ISpeed V_PosZ { get; set; }
-		IAngle V_HdgX { get; set; }
-		IAngle V_HdgY { get; set; }
-		IAngle V_HdgZ { get; set; }
+		IAngle V_HdgH { get; set; }
+		IAngle V_HdgP { get; set; }
+		IAngle V_HdgB { get; set; }
 		Single LoadFactor { get; set; }
 		UInt16 AmmoGUN { get; set; }
 		UInt16 AmmoAAM { get; set; }
@@ -159,6 +161,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMass WeightSmokeOil { get; set; }
 		IMass WeightFuel { get; set; }
 		IMass WeightClean { get; set; }
+		UInt16 Strength { get; set; }
 		Byte FlightState { get; set; }
 		Single AnimVGW { get; set; }
 		Single AnimBoards { get; set; }
