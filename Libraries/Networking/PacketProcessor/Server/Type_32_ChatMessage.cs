@@ -8,12 +8,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_32_ChatMessage(IConnection thisConnection, IPacket_32_ChatMessage ChatMessagePacket)
+			private static bool Process_Type_32_ChatMessage(IConnection thisConnection, IPacket_32_ChatMessage packet)
 			{
-				Console.AddUserMessage(ChatMessagePacket.User, ChatMessagePacket.Message);
+				Console.AddUserMessage(packet.User, packet.Message);
 				foreach (IConnection connection in Connections.AllConnections)
 				{
-					connection.SendMessageAsync("(" + ChatMessagePacket.User.UserName.ToUnformattedSystemString() + ")" + ChatMessagePacket.Message).ConfigureAwait(false);
+					connection.SendMessageAsync("(" + packet.User.UserName.ToUnformattedSystemString() + ")" + packet.Message);
 				}
 				return true;
 			}

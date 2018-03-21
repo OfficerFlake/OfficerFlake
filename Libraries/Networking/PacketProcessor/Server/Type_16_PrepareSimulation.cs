@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_43_ServerCommand(IConnection thisConnection, IPacket_43_ServerCommand packet)
+			private static bool Process_Type_16_PrepareSimulation(IConnection thisConnection, IPacket_16_PrepareSimulation packet)
 			{
 				//Don't need to do anything...
 				return true;

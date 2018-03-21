@@ -1,4 +1,5 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
@@ -7,10 +8,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_03_Error(IConnection thisConnection, IPacket_03_Error errorPacket)
+			private static bool Process_Type_03_Error(IConnection thisConnection, IPacket_03_Error packet)
 			{
-				//Don't need to do anything...
-				return true;
+				throw new NotImplementedException();
 			}
 		}
 	}

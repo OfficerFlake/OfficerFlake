@@ -573,8 +573,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 
 		#region Set Up Packet Processor
-		public delegate bool DelegatePacketProcessor(Connection thisConnection, IPacket thisPacket);
-	    private static bool DummyPacketProcessor(Connection thisConnection, IPacket thisPacket)
+		public delegate Task<bool> DelegatePacketProcessor(Connection thisConnection, IPacket thisPacket);
+	    private static Task<bool> DummyPacketProcessor(Connection thisConnection, IPacket thisPacket)
 	    {
 		    throw new NotImplementedException();
 	    }
@@ -586,7 +586,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    }
 		#endregion
 		#region Process Packet
-		private void ProcessPacket(IPacket thisPacket)
+		private async Task ProcessPacket(IPacket thisPacket)
 		{
 			if (thisPacket == null)
 			{
@@ -601,11 +601,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 			try
 			{
-				PacketProcessor.BeginInvoke(this, thisPacket, null, null);
+				await Task.Run(() => PacketProcessor(this, thisPacket));
+			}
+			catch (NotImplementedException e)
+			{
+				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " is not yet implemented.");
+				this.SendMessageAsync("Sorry, that feature or packet is not implemented yet! Please try something else...");
 			}
 			catch (Exception e)
 			{
-				int i = 0;
+				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
+				this.SendMessageAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
 			}
 		}
 		#endregion

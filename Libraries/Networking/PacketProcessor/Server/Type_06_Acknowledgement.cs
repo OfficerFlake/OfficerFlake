@@ -1,4 +1,5 @@
-﻿using Com.OfficerFlake.Libraries.Extensions;
+﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking
@@ -7,10 +8,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_06_Acknowledgement(IConnection thisConnection, IPacket_06_Acknowledgement acknowledgementPacket)
+			private static bool Process_Type_06_Acknowledgement(IConnection thisConnection, IPacket_06_Acknowledgement packet)
 			{
-				//Don't need to do anything...
-				return true;
+				throw new NotImplementedException();
 			}
 		}
 	}

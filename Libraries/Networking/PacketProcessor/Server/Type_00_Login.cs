@@ -10,14 +10,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_01_Login(IConnection thisConnection, IPacket_01_Login LoginPacket)
+			private static bool Process_Type_01_Login(IConnection thisConnection, IPacket_01_Login packet)
 			{
 				thisConnection.SendMessage("TESTING...");
 
 				#region Get Login(01)
-				var username = LoginPacket.Username.Split('\0')[0];
+				var username = packet.Username.Split('\0')[0];
 				thisConnection.User = ObjectFactory.CreateUser(username.AsRichTextString());
-				thisConnection.Version = LoginPacket.Version;
+				thisConnection.Version = packet.Version;
 				thisConnection.LoginState = LoginStatus.LoggingIn;
 				thisConnection.FlightStatus = FlightStatus.Idle;
 				#endregion
@@ -529,8 +529,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 #endif
 				*/
 				#endregion
-
-				thisConnection.SendMessage("DONE");
 
 				return true;
 			}

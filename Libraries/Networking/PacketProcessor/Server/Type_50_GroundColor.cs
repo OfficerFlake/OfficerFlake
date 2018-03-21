@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_08_JoinRequest(IConnection thisConnection, IPacket_08_JoinRequest packet)
+			private static bool Process_Type_50_GroundColor(IConnection thisConnection, IPacket_50_GroundColor packet)
 			{
 				throw new NotImplementedException();
 			}

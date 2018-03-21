@@ -7,9 +7,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_33_Weather(IConnection thisConnection, IPacket_33_Weather weatherPacket)
+			private static bool Process_Type_33_Weather(IConnection thisConnection, IPacket_33_Weather packet)
 			{
-				if (weatherPacket.Data.Length == 0)
+				if (packet.Data.Length == 0)
 				{
 					//TODO: [3] Send Weather Packet
 					IPacket_33_Weather newWeather = ObjectFactory.CreatePacket33Weather();

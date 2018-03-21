@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		public static partial class Server
 		{
-			private static bool Process_Type_04_Field(IConnection thisConnection, IPacket_04_Field fieldPacket)
+			private static bool Process_Type_04_Field(IConnection thisConnection, IPacket_04_Field packet)
 			{
 				//Don't need to do anything...
 				return true;
