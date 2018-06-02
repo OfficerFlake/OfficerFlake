@@ -41,14 +41,17 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		{
 			var Output = new List<IConnection>();
 			Output.AddRange(originalList);
-			Output.RemoveAll(x => x == excludeConnection);
+			Output.RemoveAll(x => x.ConnectionNumber == excludeConnection.ConnectionNumber);
 			return Output;
 		}
 		public static List<IConnection> Exclude(this List<IConnection> originalList, List<IConnection> excludeConnections)
 		{
 			var Output = new List<IConnection>();
 			Output.AddRange(originalList);
-			Output.RemoveAll(excludeConnections.Contains);
+			foreach (IConnection otherconnection in excludeConnections)
+			{
+				Output.RemoveAll(x => x.ConnectionNumber == otherconnection.ConnectionNumber);
+			}
 			return Output;
 		}
 		#endregion

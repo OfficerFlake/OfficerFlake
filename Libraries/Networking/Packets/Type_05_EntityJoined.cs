@@ -142,7 +142,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get
 			{
-				switch (GetUInt32(108))
+				switch (GetByte(108))
 				{
 					case 3:
 						return Packet_05OwnerType.Self;
@@ -155,10 +155,10 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (value)
 				{
 					case Packet_05OwnerType.Self:
-						SetUInt32(108, 3);
+						SetByte(108, 3);
 						return;
 					default:
-						SetUInt32(0, 2);
+						SetByte(108, 2);
 						return;
 				}
 			}

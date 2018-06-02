@@ -121,8 +121,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 				FlightData.HdgH = EntityJoined.HdgH;
 				FlightData.HdgP = EntityJoined.HdgP;
 				FlightData.HdgB = EntityJoined.HdgB;
-				FlightData.V_PosX = ((Math.Sin(-StartPosition.Attitude.H.ToRadians().RawValue) * (StartPosition.Speed.ToMetersPerSecond().RawValue)) * 10 ).MetersPerSecond();
-				FlightData.V_PosZ = ((Math.Cos(-StartPosition.Attitude.H.ToRadians().RawValue) * (StartPosition.Speed.ToMetersPerSecond().RawValue)) * 10).MetersPerSecond();
+				FlightData.V_PosX = ((Math.Sin(-StartPosition.Attitude.H.ToRadians().RawValue) * (StartPosition.Speed.ToMetersPerSecond().RawValue))).MetersPerSecond();
+				FlightData.V_PosZ = ((Math.Cos(-StartPosition.Attitude.H.ToRadians().RawValue) * (StartPosition.Speed.ToMetersPerSecond().RawValue))).MetersPerSecond();
 
 				#region Turn on the brakes if Velocity == 0
 				if (FlightData.V_PosX.ToMetersPerSecond().RawValue == 0 && FlightData.V_PosZ.ToMetersPerSecond().RawValue == 0 && Settings.Flight.Join.UseWheelChocks)
@@ -208,6 +208,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
 					}
 					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
+					Logger.Console.AddInformationMessage("Sending Join Notification.");
+					OtherClient.Send(OtherJoinPacket);
 
 					if (!OtherClient.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
 					{
@@ -215,6 +217,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 						//thisConnection.Disconnect();
 						//return false;
 					}
+					Logger.Console.AddInformationMessage("Sent Join Notification.");
 				}
 				#endregion
 				return true;

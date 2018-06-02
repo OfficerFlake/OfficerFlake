@@ -246,7 +246,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				output.ResizeData((int)size);
 				output.Type = type;
 				output.Data = data;
-				Debug.AddDetailMessage("&aIn Packet (" + output.Type + ")\n" +
+				Debug.AddDetailMessage("&aIn Packet (" + output.Type + ") from Conection [" + ConnectionNumber + "]\n" +
 				                       output.Serialise().ToHexString() + "\n" +
 				                       output.Serialise().ToSystemString());
 				return output;
@@ -280,7 +280,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 			{
 				TCPSocket.Send(thisPacket.Serialise());
-				Debug.AddDetailMessage("&cOut Packet (" + thisPacket.Type  + ")\n" +
+				Debug.AddDetailMessage("&cOut Packet (" + thisPacket.Type  + ") to Conection [" + ConnectionNumber + "]\n" +
 				thisPacket.Serialise().ToHexString() + "\n" +
 				thisPacket.Serialise().ToSystemString());
 				if (thisPacket.Type == 0)

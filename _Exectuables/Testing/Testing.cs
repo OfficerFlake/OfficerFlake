@@ -172,11 +172,14 @@ namespace Com.OfficerFlake.Executables.Testing
 		    Connection.SetPacketProcessor(PacketProcessor.Server.Process);
 		    #endregion
 		    #region LINK UI LAST!
+			UserInterface.Initialise();
 		    OpenYSServerModeUserInterface.CreateWindow();
-		    OpenYSServerModeUserInterface.LinkDebug();
+		    OpenYSPacketInspectorUserInterface.CreateWindow();
+			OpenYSServerModeUserInterface.LinkDebug();
 		    OpenYSServerModeUserInterface.LinkConsole();
 		    #endregion
 		    OpenYSServerModeUserInterface.Show();
+			OpenYSPacketInspectorUserInterface.Show();
 		    #endregion
 		}
 		#endregion
@@ -201,6 +204,8 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
 
+			//OpenYSServerModeUserInterface.ClearAllMessages();
+
 			#region Start Server
 			Console.AddInformationMessage("Starting Server...");
 			Server.Start();
@@ -210,6 +215,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("");
 
 			OpenYSServerModeUserInterface.WaitForClose();
+			OpenYSPacketInspectorUserInterface.CloseWindow();
 
 			Server.Stop();
 		}

@@ -10,15 +10,18 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class ServerModeUserInterface : Window
+	public partial class ServerModeUserInterface : OYS_Window
 	{
-		#region Creation
 		public ServerModeUserInterface()
 		{
-			Visibility = Visibility.Hidden;
-			ShowInTaskbar = false;
 			InitializeComponent();
 		}
+
+		#region Properties
+		public Boolean ShowConsoleMessages { get; set; } = true;
+		public Boolean ShowDebugMessages { get; set; } = true;
+		#endregion
+		#region Methods
 		public void LinkConsole()
 		{
 			Logger.Console.LinkConsole(ConsoleOutputView);
@@ -27,31 +30,19 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		{
 			Logger.Debug.LinkDebug(ConsoleOutputView);
 		}
-		#endregion
-		#region Load/Close
-		#region Load
-		private void OnLoaded(object sender, EventArgs e)
-		{
-			LoadedSignal.Set();
-		}
-		public readonly ManualResetEvent LoadedSignal = new ManualResetEvent(false);
-		public Boolean IsLoadd => LoadedSignal.WaitOne(0);
-		public Boolean WaitForLoad(int timeout = Int32.MaxValue) => LoadedSignal.WaitOne(timeout);
-		#endregion
-		#region Close
-		private void OnClosed(object sender, EventArgs e)
-		{
-			ClosedSignal.Set();
-		}
-		public readonly ManualResetEvent ClosedSignal = new ManualResetEvent(false);
-		public Boolean IsClosed => ClosedSignal.WaitOne(0);
-		public Boolean WaitForClose(int timeout = Int32.MaxValue) => ClosedSignal.WaitOne(timeout);
-		#endregion
-		#endregion
 
-		#region Properties
-		public Boolean ShowConsoleMessages { get; set; } = true;
-		public Boolean ShowDebugMessages { get; set; } = true;
+		public void ClearAllMessages()
+		{
+			ConsoleOutputView.ClearAllMessages();
+		}
+		public void ClearConsoleMessages()
+		{
+			ConsoleOutputView.ClearConsoleMessages();
+		}
+		public void ClearDebugMessages()
+		{
+			ConsoleOutputView.ClearDebugMessages();
+		}
 		#endregion
 	}
 
@@ -60,44 +51,26 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 	/// </summary>
 	public static class OpenYSServerModeUserInterface
 	{
-		public static ServerModeUserInterface consoleWindow;
+		private static ServerModeUserInterface consoleWindow;
 
-		#region Creation
-		public static void CreateWindow()
-		{
-			ManualResetEvent ready = new ManualResetEvent(false);
-			Thread newThread = new Thread(() =>
-			{
-				Application newApp = new Application();
-				consoleWindow = new ServerModeUserInterface();
-				ready.Set();
-				newApp.Run();
-			});
-			newThread.SetApartmentState(ApartmentState.STA);
-			newThread.Start();
-			ready.WaitOne();
-			ready.Dispose();
-		}
-		public static void LinkConsole() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.LinkConsole());
-		public static void LinkDebug() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.LinkDebug());
+		#region Create/Close
+		public static void CreateWindow() => consoleWindow = UserInterface.CreateWindow<ServerModeUserInterface>();
+		public static void CloseWindow() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.Close());
 		#endregion
 		#region Show/Hide
-		public static void Show() => consoleWindow.Dispatcher.Invoke(() =>
-		{
-			consoleWindow.ShowInTaskbar = true;
-			consoleWindow.Visibility = Visibility.Visible;
-			consoleWindow.Show();
-		});
-		public static void Hide() => consoleWindow.Dispatcher.Invoke(() =>
-		{
-			consoleWindow.ShowInTaskbar = false;
-			consoleWindow.Visibility = Visibility.Hidden;
-			consoleWindow.Hide();
-		});
+		public static void Show() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.Show());
+		public static void Hide() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.Hide());
 		#endregion
 		#region Wait Load/Close
-		public static bool WaitForLoad(int timeout = Int32.MaxValue) => consoleWindow.Dispatcher.Invoke(() => (consoleWindow.IsVisible) || consoleWindow.WaitForLoad(timeout));
-		public static bool WaitForClose(int timeout = Int32.MaxValue) => (!consoleWindow.IsVisible) || consoleWindow.WaitForClose(timeout);
+		public static bool WaitForCreation(int timeout = Int32.MaxValue) => consoleWindow.Dispatcher.Invoke(() => consoleWindow.WaitForCreation(timeout));
+		public static bool WaitForClose(int timeout = Int32.MaxValue) => consoleWindow.WaitForClose(timeout);
 		#endregion
+
+		public static void LinkConsole() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.LinkConsole());
+		public static void LinkDebug() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.LinkDebug());
+
+		public static void ClearAllMessages() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.ClearAllMessages());
+		public static void ClearConsoleMessages() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.ClearConsoleMessages());
+		public static void ClearDebugMessages() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.ClearDebugMessages());
 	}
 }

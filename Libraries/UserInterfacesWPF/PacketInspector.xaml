@@ -1,17 +1,14 @@
-﻿<Window x:Class="WpfSandbox.Testing"
+﻿<local:OYS_Window x:Class="Com.OfficerFlake.Libraries.UserInterfaces.PacketInspectorUserInterface"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfSandbox"
+        xmlns:local="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces"
         mc:Ignorable="d"
-        Title="Packet Inspector" Height="520" Width="120" ResizeMode="NoResize">
+        Title="Packet Inspector" Height="480" Width="140" ResizeMode="NoResize">
 
 	<Grid HorizontalAlignment="Center">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
@@ -19,77 +16,91 @@
 			<ColumnDefinition Width="120"/>
 		</Grid.ColumnDefinitions>
 		
-		<StackPanel x:Name="ClientStackPanel"
-					Margin="10"
-		            Grid.Row="0">
-			<TextBlock x:Name="ClientTextBlock"
-					   Text="Client"
-					   HorizontalAlignment="Center"
-					   Padding="10, 0"/>
-			<ComboBox x:Name="ClientSelector"
-					  HorizontalAlignment="Center">
-				<ComboBoxItem HorizontalAlignment="Center"
-							  IsSelected="True">
-					None
-				</ComboBoxItem>
-			</ComboBox>
-		</StackPanel>
-		<StackPanel x:Name="DirectionStackPanel"
-					Margin="10"
-		            Grid.Row="1">
-			<TextBlock x:Name="DirectionTextBlock"
-				   Text="Direction"
-		           HorizontalAlignment="Center"
-		           Padding="10, 0"/>
-			<ComboBox x:Name="DirectionSelector"
-		          HorizontalAlignment="Center">
-			<ComboBoxItem HorizontalAlignment="Center"
-			              IsSelected="True">
-				Server->Client
-			</ComboBoxItem>
-			<ComboBoxItem HorizontalAlignment="Center">
-				Client->Server
-			</ComboBoxItem>
-		</ComboBox>
-		</StackPanel>
-		<StackPanel x:Name="TypeStackPanel"
-					Margin="10"
-			        Grid.Row="2">
-			<TextBlock x:Name="TypeTextBlock"
-				   Text="Packet Type"
-		           HorizontalAlignment="Center"
-		           Padding="10, 0"/>
-			<TextBox x:Name="TypeTextBox"
-				 Text="0"
-		         HorizontalAlignment="Center"/>
-		</StackPanel>
-		<StackPanel x:Name="LengthStackPanel"
-					Margin="10"
-		            Grid.Row="3"
-					Orientation="Horizontal"
-					HorizontalAlignment="Center">
-			<StackPanel Width="50">
-				<TextBlock x:Name="StartTextBlock"
-						   Text="Start"
+		<StackPanel x:Name="SelectionStackPanel"
+					Grid.Row="0"
+					Margin="0,10,0,10">
+			<StackPanel x:Name="ClientStackPanel">
+				<TextBlock x:Name="ClientTextBlock"
+						   Text="Client"
+						   TextAlignment="Center"
+						   Width="100"
 						   HorizontalAlignment="Center"
 						   Padding="10, 0"/>
-				<TextBox x:Name="StartTextBox"
-				 Text="0"
-		         HorizontalAlignment="Center"/>
+				<ComboBox x:Name="ClientSelector"
+						  Width="100"
+						  HorizontalAlignment="Center"
+						  DropDownOpened="ClientSelector_OnDropDownOpened">
+					<ComboBoxItem HorizontalAlignment="Center"
+								  IsSelected="True">
+						None
+					</ComboBoxItem>
+				</ComboBox>
 			</StackPanel>
-			<StackPanel Width="50">
-				<TextBlock x:Name="EndTextBlock"
-				   Text="End"
-		           HorizontalAlignment="Center"
-		           Padding="10, 0"/>
-				<TextBox x:Name="EndTextBox"
-				 Text="0"
-		         HorizontalAlignment="Center"/>
+			<StackPanel x:Name="DirectionStackPanel">
+				<TextBlock x:Name="DirectionTextBlock"
+						   Text="Direction"
+						   TextAlignment="Center"
+						   Width="100"
+						   HorizontalAlignment="Center"
+						   Padding="10, 0"/>
+				<ComboBox x:Name="DirectionSelector"
+						  HorizontalAlignment="Center">
+				<ComboBoxItem HorizontalAlignment="Center"
+							  IsSelected="True">
+					Server->Client
+				</ComboBoxItem>
+				<ComboBoxItem HorizontalAlignment="Center">
+					Client->Server
+				</ComboBoxItem>
+			</ComboBox>
+			</StackPanel>
+			<StackPanel x:Name="TypeStackPanel">
+				<TextBlock x:Name="TypeTextBlock"
+						   Text="Packet Type"
+						   TextAlignment="Center"
+						   Width="100"
+						   HorizontalAlignment="Center"
+						   Padding="10, 0"/>
+				<TextBox x:Name="TypeTextBox"
+						 TextAlignment="Center"
+						 Width="100"
+						 Text="0"
+						 HorizontalAlignment="Center"/>
+			</StackPanel>
+			<StackPanel x:Name="LengthStackPanel"
+						Orientation="Horizontal"
+						HorizontalAlignment="Center">
+				<StackPanel Width="50">
+					<TextBlock x:Name="StartTextBlock"
+							   TextAlignment="Center"
+							   Width="50"
+							   Text="Start"
+							   HorizontalAlignment="Center"
+							   Padding="10, 0"/>
+					<TextBox x:Name="StartTextBox"
+							 TextAlignment="Center"
+							 Width="50"
+							 Text="0"
+							 HorizontalAlignment="Center"/>
+				</StackPanel>
+				<StackPanel Width="50">
+					<TextBlock x:Name="EndTextBlock"
+							   Text="End"
+							   TextAlignment="Center"
+							   Width="50"
+							   HorizontalAlignment="Center"
+							   Padding="10, 0"/>
+					<TextBox x:Name="EndTextBox"
+							 Text="0"
+							 TextAlignment="Center"
+							 Width="50"
+							 HorizontalAlignment="Center"/>
+				</StackPanel>
 			</StackPanel>
 		</StackPanel>
 		<StackPanel x:Name="DataOutputStackPanel"
-					Margin="10"
-		            Grid.Row="4"
+					Margin="0,0,0,10"
+		            Grid.Row="1"
 					HorizontalAlignment="Center">
 			<StackPanel x:Name="BinaryStackPanel"
 						Orientation="Horizontal"
@@ -233,6 +244,38 @@
 					         IsReadOnly="True"/>
 				</StackPanel>
 			</StackPanel>
+			<StackPanel x:Name="FloatStackPanel"
+			            Orientation="Horizontal"
+			            HorizontalAlignment="Center">
+				<StackPanel Width="50">
+					<TextBlock x:Name="SingleTextBlock"
+					           Width="50"
+					           TextAlignment="Center"
+					           Text="Single"
+					           HorizontalAlignment="Center"
+					           Padding="10, 0"/>
+					<TextBox x:Name="SingleTextBox"
+					         Width="50"
+					         TextAlignment="Center"
+					         Text="0"
+					         HorizontalAlignment="Center"
+					         IsReadOnly="True"/>
+				</StackPanel>
+				<StackPanel Width="50">
+					<TextBlock x:Name="DoubleTextBlock"
+					           Width="50"
+					           TextAlignment="Center"
+					           Text="Double"
+					           HorizontalAlignment="Center"
+					           Padding="10, 0"/>
+					<TextBox x:Name="DoubleTextBox"
+					         Width="50"
+					         TextAlignment="Center"
+					         Text="0"
+					         HorizontalAlignment="Center"
+					         IsReadOnly="True"/>
+				</StackPanel>
+			</StackPanel>
 			<StackPanel x:Name="StringStackPanel"
 						Orientation="Horizontal"
 			            HorizontalAlignment="Center">
@@ -272,4 +315,4 @@
 			</StackPanel>
 		</StackPanel>
 	</Grid>
-</Window>
+</local:OYS_Window>

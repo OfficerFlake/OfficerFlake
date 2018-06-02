@@ -146,11 +146,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(24).Radians();
+						return (GetInt16(24) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(22).Radians();
+						return (GetInt16(22) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -160,12 +160,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(24, (Single)value.ToRadians().RawValue);
+						SetInt16(24, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(22, (Single)value.ToRadians().RawValue);
+						SetInt16(22, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}
@@ -177,11 +177,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(26).Radians();
+						return (GetInt16(26) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(24).Radians();
+						return (GetInt16(24) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -191,12 +191,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(26, (Single)value.ToRadians().RawValue);
+						SetInt16(26, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(24, (Single)value.ToRadians().RawValue);
+						SetInt16(24, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}
@@ -208,11 +208,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(28).Radians();
+						return (GetInt16(28) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(26).Radians();
+						return (GetInt16(26) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -222,12 +222,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(28, (Single)value.ToRadians().RawValue);
+						SetInt16(28, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(26, (Single)value.ToRadians().RawValue);
+						SetInt16(26, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}
@@ -240,11 +240,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(30).MetersPerSecond();
+						return (GetInt16(30)/10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(28).MetersPerSecond();
+						return (GetInt16(28)/10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -254,12 +254,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(30, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(30, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(28, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(28, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}
@@ -271,11 +271,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(32).MetersPerSecond();
+						return (GetInt16(32) / 10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(30).MetersPerSecond();
+						return (GetInt16(30) / 10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -285,12 +285,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(32, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(32, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(30, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(30, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}
@@ -302,11 +302,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(34).MetersPerSecond();
+						return (GetInt16(34) / 10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(32).MetersPerSecond();
+						return (GetInt16(32) / 10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -316,12 +316,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(34, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(34, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(32, (Int16)value.ToMetersPerSecond().RawValue);
+						SetInt16(32, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}

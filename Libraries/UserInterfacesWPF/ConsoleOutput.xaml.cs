@@ -247,6 +247,23 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		}
 		#endregion
 		#endregion
+		#region Clear Messages
+		public void ClearAllMessages()
+		{
+			_messageList.RemoveAll(x => x is IConsoleUserMessage | x is IConsoleInformationMessage | x is IDebugSummaryMessage | x is IDebugDetailMessage | x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage);
+			RefreshGrid();
+		}
+		public void ClearConsoleMessages()
+		{
+			_messageList.RemoveAll(x => x is IConsoleUserMessage | x is IConsoleInformationMessage);
+			RefreshGrid();
+		}
+		public void ClearDebugMessages()
+		{
+			_messageList.RemoveAll(x => x is IDebugSummaryMessage | x is IDebugDetailMessage | x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage);
+			RefreshGrid();
+		}
+		#endregion
 
 		private void OnSettingChanged(object obj, PropertyChangedEventArgs e)
 		{

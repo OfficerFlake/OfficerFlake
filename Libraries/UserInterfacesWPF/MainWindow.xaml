@@ -1,13 +1,13 @@
-﻿<Window x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ServerModeUserInterface"
+﻿<local:OYS_Window x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ServerModeUserInterface"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces"
         mc:Ignorable="d"
-        Title="OpenYS" Width="640" Height="480"
-		Loaded="OnLoaded"
-		Closed="OnClosed">
+		Loaded="OnCreated"
+		Closed="OnClosed"
+        Title="OpenYS" Width="640" Height="480">
 
 	<Grid>
 		<Grid.RowDefinitions>
@@ -42,4 +42,4 @@
 				FontStyle="Italic"/>
 		</StatusBar>
 	</Grid>
-</Window>
+</local:OYS_Window>
