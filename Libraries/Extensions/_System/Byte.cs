@@ -6,7 +6,23 @@ namespace Com.OfficerFlake.Libraries.Extensions
     public static class ByteExtensions
     {
 		/// <summary>
-		/// Converts a Bytes into it's hexadecimal string representation.
+		/// Converts a Byte into its binary string representation
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+	    public static string ToBinaryString(this byte input)
+	    {
+		    StringBuilder output = new StringBuilder();
+		    for (int i = 7; i >= 0; i--)
+		    {
+			    output.Append((input & 1 << i) == 1 << i ? "1" : "0");
+		    }
+		    return output.ToString();
+	    }
+
+
+		/// <summary>
+		/// Converts a Byte into its hexadecimal string representation.
 		/// </summary>
 		/// <param name="input">the byte to convert</param>
 		/// <returns>Hexadecimal representation as string</returns>

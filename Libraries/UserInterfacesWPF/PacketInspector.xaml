@@ -29,7 +29,8 @@
 				<ComboBox x:Name="ClientSelector"
 						  Width="100"
 						  HorizontalAlignment="Center"
-						  DropDownOpened="ClientSelector_OnDropDownOpened">
+						  DropDownOpened="ClientSelector_OnDropDownOpened"
+						  SelectionChanged="ClientSelector_OnSelectionChanged">
 					<ComboBoxItem HorizontalAlignment="Center"
 								  IsSelected="True">
 						None
@@ -44,7 +45,8 @@
 						   HorizontalAlignment="Center"
 						   Padding="10, 0"/>
 				<ComboBox x:Name="DirectionSelector"
-						  HorizontalAlignment="Center">
+						  HorizontalAlignment="Center"
+						  SelectionChanged="DirectionSelector_OnSelectionChanged">
 				<ComboBoxItem HorizontalAlignment="Center"
 							  IsSelected="True">
 					Server->Client
@@ -65,7 +67,8 @@
 						 TextAlignment="Center"
 						 Width="100"
 						 Text="0"
-						 HorizontalAlignment="Center"/>
+						 HorizontalAlignment="Center"
+						 TextChanged="TypeTextBox_OnTextChanged"/>
 			</StackPanel>
 			<StackPanel x:Name="LengthStackPanel"
 						Orientation="Horizontal"
@@ -81,7 +84,8 @@
 							 TextAlignment="Center"
 							 Width="50"
 							 Text="0"
-							 HorizontalAlignment="Center"/>
+							 HorizontalAlignment="Center"
+							 TextChanged="StartTextBox_OnTextChanged"/>
 				</StackPanel>
 				<StackPanel Width="50">
 					<TextBlock x:Name="EndTextBlock"
@@ -94,7 +98,8 @@
 							 Text="0"
 							 TextAlignment="Center"
 							 Width="50"
-							 HorizontalAlignment="Center"/>
+							 HorizontalAlignment="Center"
+							 TextChanged="EndTextBox_OnTextChanged"/>
 				</StackPanel>
 			</StackPanel>
 		</StackPanel>

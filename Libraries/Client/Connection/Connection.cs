@@ -246,9 +246,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 				output.ResizeData((int)size);
 				output.Type = type;
 				output.Data = data;
+				if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
+				{
+					if (Logger.PacketInspector.Type == output.Type) Logger.PacketInspector.UpdatePacket(output);
+				}
 				Debug.AddDetailMessage("&aIn Packet (" + output.Type + ") from Conection [" + ConnectionNumber + "]\n" +
 				                       output.Serialise().ToHexString() + "\n" +
 				                       output.Serialise().ToSystemString());
+
 				return output;
 			}
 			catch (ArgumentNullException)

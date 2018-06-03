@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0__BuildEnvironment\BuildEnvironment.cs" />
+    <Compile Include="1_Logger\PacketInspector.cs" />
     <Compile Include="Colors\Formatting.cs" />
     <Compile Include="Colors\Colors.cs" />
     <Compile Include="2_ExceptionHandling\ExceptionHandling.cs" />

@@ -175,6 +175,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			UserInterface.Initialise();
 		    OpenYSServerModeUserInterface.CreateWindow();
 		    OpenYSPacketInspectorUserInterface.CreateWindow();
+		    OpenYSPacketInspectorUserInterface.LinkPacketInspector();
 			OpenYSServerModeUserInterface.LinkDebug();
 		    OpenYSServerModeUserInterface.LinkConsole();
 		    #endregion
@@ -204,7 +205,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
 
-			//OpenYSServerModeUserInterface.ClearAllMessages();
+			OpenYSServerModeUserInterface.ClearAllMessages();
 
 			#region Start Server
 			Console.AddInformationMessage("Starting Server...");
