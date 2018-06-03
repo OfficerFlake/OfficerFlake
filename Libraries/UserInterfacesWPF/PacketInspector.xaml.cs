@@ -238,7 +238,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 				}
 			});
 		}
-		public void RecalculatePacket()
+		private void RecalculatePacket()
 		{
 			UpdatePacket(LastPacket);
 		}
@@ -248,10 +248,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		{
 			RefreshClientList();
 		}
-		public void RefreshClientList()
+		private void RefreshClientList()
 		{
 			ClientSelector.Items.Clear();
-			ClientSelector.Items.Add("None");
 			foreach (IConnection thisConnection in Connections.AllConnections)
 			{
 				ClientSelector.Items.Add(thisConnection.User.UserName.ToUnformattedSystemString());

@@ -20,10 +20,11 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		FlightStatus FlightStatus { get; set; }
 		Boolean IsFlying { get; }
+		UInt32 VehicleID { get; set; }
 
 		Boolean JoinRequestPending { get; set; }
 
-		bool Connect(Socket TCPSocket);
+		bool Connect(Socket TCPSocket, Boolean isProxyMode);
 		bool Disconnect(string Reason);
 
 		void GivePacket(IPacket thisPacket);

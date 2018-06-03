@@ -89,7 +89,7 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region Networking
 			//Connection
-			public IConnection CreateConnection(Socket TCPSocket) => new Connection(TCPSocket);
+			public IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode) => new Connection(TCPSocket, isProxyMode);
 
 			//Packets
 			public IPacket CreateGenericPacket() => new GenericPacket();

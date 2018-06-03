@@ -136,7 +136,7 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public UInt32 DestinationPort = 7915;
+					public UInt32 DestinationPort = 7914;
 					public IPAddress DestinationAddress = IPAddress.Parse("127.0.0.1");
 				}
 				public readonly _ProxyServer ProxyServer = new _ProxyServer();

@@ -89,6 +89,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_05_AddVehicle : IPacket
 	{
 		Packet_05VehicleType VehicleType { get; set; }
+		UInt16 Version { get; set; }
 		UInt32 ID { get; set; }
 		UInt32 IFF { get; set; }
 		IDistance PosX { get; set; }

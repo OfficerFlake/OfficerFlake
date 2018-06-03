@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region ConnectionType
 	    public ConnectionType ConnectionType { get; set; }= ConnectionType.YSFlight;
 	    public bool IsConnected { get; set; } = false;
+	    public bool IsProxyMode { get; private set; } = false;
 		#endregion
 
 		#region LoginStatus
@@ -38,7 +40,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region FlightStatus
 	    public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
 		public bool IsFlying => FlightStatus == FlightStatus.Flying;
-
+	    public UInt32 VehicleID { get; set; } = 0;
 	    public bool JoinRequestPending { get; set; } = false;
 		#endregion
 
@@ -47,10 +49,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 		#region DataFlow
 		#region Connect
-		public bool Connect(Socket incomingSocket)
+
+	    public bool Connect(Socket incomingSocket, bool isProxyMode = false)
 	    {
 			ConnectionNumber = ConnectionIDIncrementer++;
-		    SetTCPSocket(incomingSocket).ConfigureAwait(false);
+		    IsProxyMode = isProxyMode;
+			SetTCPSocket(incomingSocket).ConfigureAwait(false);
+		    if (isProxyMode) CreateProxySocket().ConfigureAwait(false);
 			AddToServerList();
 		    return true;
 	    }
@@ -60,6 +65,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region TCP/IP
 		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		private Socket TCPSocket = BlankTCPSocket;
+	    private Socket ProxyServerSocket = BlankTCPSocket;
 		private async Task<bool> SetTCPSocket(Socket incomingSocket)
 		{
 			if (TCPSocket == BlankTCPSocket)
@@ -71,6 +77,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
+	    private async Task<bool> CreateProxySocket()
+	    {
+		    if (ProxyServerSocket == BlankTCPSocket)
+		    {
+			    ProxyServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			    ProxyServerSocket.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
+			    await ProxyGetPacket();
+			    return true;
+		    }
+		    return false;
+	    }
 		#region Recieve
 		private UInt32 TCPGetPacketHeader()
 		{
@@ -248,12 +265,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 				output.Data = data;
 				if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
 				{
-					if (Logger.PacketInspector.Type == output.Type) Logger.PacketInspector.UpdatePacket(output);
+					if (Logger.PacketInspector.DataDirection == DataDirection.ClientToServer)
+					{
+						if (Logger.PacketInspector.Type == output.Type) Logger.PacketInspector.UpdatePacket(output);
+					}
 				}
-				Debug.AddDetailMessage("&aIn Packet (" + output.Type + ") from Conection [" + ConnectionNumber + "]\n" +
-				                       output.Serialise().ToHexString() + "\n" +
-				                       output.Serialise().ToSystemString());
-
 				return output;
 			}
 			catch (ArgumentNullException)
@@ -275,8 +291,214 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				return;
 			}
-			ProcessPacket(receivedPacket);
-			await TCPGetPacket();
+			if (receivedPacket.Type == 01)
+			{
+				IPacket_01_Login loginPacket = ObjectFactory.CreatePacket01Login();
+				loginPacket.Data = receivedPacket.Data;
+				User.UserName = (loginPacket.Username ?? ("nameless_" + DateTime.Now.InStandardForm().hhmmss)).AsRichTextString();
+			}
+			if (IsProxyMode) ProxyServerSocket.Send(receivedPacket.Serialise());
+			else ProcessPacket(receivedPacket);
+			TCPGetPacket().ConfigureAwait(false);
+		}
+
+		private UInt32 ProxyGetPacketHeader()
+		{
+			byte[] sizeBuffer = new byte[4];
+			goto Receive;
+
+			//Get Data.
+			Receive:
+			try
+			{
+				ProxyServerSocket.Receive(sizeBuffer, 4, SocketFlags.None);
+				goto Convert;
+			}
+			catch (ArgumentNullException)
+			{
+				//buffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//size exceeds buffer.
+			}
+			catch (SocketException)
+			{
+				//WinSock Error.
+			}
+			catch (ObjectDisposedException)
+			{
+				//Socket Closed.
+			}
+			catch (System.Security.SecurityException)
+			{
+				//Caller in Stack doesn't have permissions.
+			}
+			return 0;
+
+			//Convert Data.
+			Convert:
+			try
+			{
+				return BitConverter.ToUInt32(sizeBuffer, 0);
+			}
+			catch (ArgumentNullException)
+			{
+				//sizeBuffer is Null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//StartIndex outside bounds of array.
+			}
+			catch (ArgumentException)
+			{
+				//StartIndex != 0
+			}
+			return 0;
+		}
+		private byte[] ProxyGetPacketBody(UInt32 size)
+		{
+			byte[] bodyBuffer = new byte[size];
+
+			//Get Data.
+			try
+			{
+				ProxyServerSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
+			}
+			catch (ArgumentNullException)
+			{
+				//buffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//size exceeds buffer.
+			}
+			catch (SocketException)
+			{
+				//WinSock Error.
+			}
+			catch (ObjectDisposedException)
+			{
+				//Socket Closed.
+			}
+			catch (System.Security.SecurityException)
+			{
+				//Caller in Stack doesn't have permissions.
+			}
+			return bodyBuffer;
+		}
+		private async Task<IPacket> ProxyGetPacketAsync()
+		{
+			#region Init
+			IPacket output = null;
+
+			UInt32 size;
+			byte[] body;
+			#endregion
+			#region GetData
+			try
+			{
+				size = await Task.Run(() => ProxyGetPacketHeader());
+				goto Body;
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return output;
+
+			Body:
+			try
+			{
+				body = await Task.Run(() => ProxyGetPacketBody(size));
+				goto PrepareType;
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return output;
+			#endregion
+			#region Type
+			PrepareType:
+			byte[] typeBuffer;
+			try
+			{
+				typeBuffer = body.Take(4).ToArray();
+				goto ConvertType;
+			}
+			catch (ArgumentNullException)
+			{
+				//body is null.
+			}
+			return output;
+
+			ConvertType:
+			UInt32 type;
+			try
+			{
+				type = BitConverter.ToUInt32(typeBuffer, 0);
+				goto PrepareData;
+			}
+			catch (ArgumentNullException)
+			{
+				//typebuffer is null.
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				//start index not 0.
+			}
+			catch (ArgumentException)
+			{
+				//start index would not fit insidde array.
+			}
+			return output;
+			#endregion
+			#region Data
+			PrepareData:
+			byte[] data;
+			try
+			{
+				data = body.Skip(4).ToArray();
+				goto Combine;
+			}
+			catch (ArgumentNullException)
+			{
+				//body is null.
+			}
+			return output;
+			#endregion
+			#region BuildPacket
+			Combine:
+			try
+			{
+				output = ObjectFactory.CreateGenericPacket();
+				output.ResizeData((int)size);
+				output.Type = type;
+				output.Data = data;
+				return output;
+			}
+			catch (ArgumentNullException)
+			{
+				//output is null.
+				output = null;
+				return output;
+			}
+			#endregion
+		}
+		private async Task ProxyGetPacket()
+		{
+			IPacket receivedPacket = null;
+			receivedPacket = await ProxyGetPacketAsync();
+			if (receivedPacket == null)
+			{
+				//Disconnect! Got Nothing!
+				Disconnect("End of datastream.");
+
+				return;
+			}
+			Send(receivedPacket);
+			ProxyGetPacket().ConfigureAwait(false);
 		}
 		#endregion
 		#region Send
@@ -285,12 +507,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 			try
 			{
 				TCPSocket.Send(thisPacket.Serialise());
-				Debug.AddDetailMessage("&cOut Packet (" + thisPacket.Type  + ") to Conection [" + ConnectionNumber + "]\n" +
-				thisPacket.Serialise().ToHexString() + "\n" +
-				thisPacket.Serialise().ToSystemString());
-				if (thisPacket.Type == 0)
+				if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
 				{
-					int i = 0;
+					if (Logger.PacketInspector.DataDirection == DataDirection.ServerToClient)
+					{
+						if (Logger.PacketInspector.Type == thisPacket.Type) Logger.PacketInspector.UpdatePacket(thisPacket);
+					}
 				}
 				return true;
 			}
@@ -651,7 +873,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 			    {
 			    }
 		    }
-		    try
+		    if (IsProxyMode & ProxyServerSocket.Connected)
+		    {
+			    try
+			    {
+				    ProxyServerSocket.Disconnect(false);
+			    }
+			    catch
+			    {
+			    }
+		    }
+			try
 		    {
 			    TCPSocket.Dispose();
 		    }
@@ -674,9 +906,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		#endregion
 
-		public Connection(Socket incomingSocket)
+	    public Connection(Socket incomingSocket, bool isProxyMode = false)
 	    {
-		    Connect(incomingSocket);
+		    Connect(incomingSocket, isProxyMode);
 		}
 	    ~Connection()
 	    {

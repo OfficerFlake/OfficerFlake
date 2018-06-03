@@ -84,12 +84,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#region Build EntityJoined(05)
 				IPacket_05_AddVehicle EntityJoined = ObjectFactory.CreatePacket05AddVehicle();
 				EntityJoined.VehicleType = Packet_05VehicleType.Aircraft;
-
+				EntityJoined.Version = 0;
 				EntityJoined.ID = World.GetNextID() | 256 * 256;
 				EntityJoined.IFF = JoinRequest.IFF;
 				EntityJoined.PosX = StartPosition.Position.X;
 				EntityJoined.PosY = StartPosition.Position.Y;
-				//EntityJoined.PosY = (StartPosition.Position.Y.ToMeters().RawValue + 3000).Meters();
 				EntityJoined.PosZ = StartPosition.Position.Z;
 				EntityJoined.HdgH = StartPosition.Attitude.H;
 				EntityJoined.HdgP = StartPosition.Attitude.P;
@@ -147,6 +146,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Send Owner Join Data
+				thisConnection.VehicleID = EntityJoined.ID;
 				thisConnection.Send(EntityJoined);
 				if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeJoinPacket, EntityJoined))
 				{
@@ -178,7 +178,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 					//thisConnection.Disconnect();
 					//return false;
 				}
-
 				thisConnection.JoinRequestPending = false;
 				#endregion
 

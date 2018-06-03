@@ -73,7 +73,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region Networking
 		//Connection
-		IConnection CreateConnection(Socket TCPSocket);
+		IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode);
 
 		//Packets
 		IPacket CreateGenericPacket();

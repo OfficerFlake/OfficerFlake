@@ -11,10 +11,11 @@ namespace Com.OfficerFlake.Libraries.Networking
     public class OpenYSServer : IServer
     {
 		#region Start/Stop
-		public bool Start(uint TCPPort, uint UDPPort)
+		public bool Start(uint TCPPort, uint UDPPort, bool isProxyMode = false)
 		{
 			_TCPPort = TCPPort;
 			_UDPPort = UDPPort;
+			IsProxyMode = isProxyMode;
 			TCPListener = new TcpListener(IPAddress.Any, (Int32)_TCPPort);
 			UDPEndPoint = new IPEndPoint(IPAddress.Any, (Int32)_UDPPort);
 
@@ -49,6 +50,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    return IsShuttingDown;
 	    }
 	    public bool IsShuttingDown { get; private set; }
+		public bool IsProxyMode { get; private set; }
 		#endregion
 
 	    #region TCP/IP
@@ -61,7 +63,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    try
 		    {
 			    Socket newSocket = TCPListener.AcceptSocket();
-			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket);
+			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket, IsProxyMode);
 		    }
 		    catch (SocketException)
 		    {
@@ -127,7 +129,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		private static IServer server = new OpenYSServer();
 
-		public static bool Start(uint TCPPort = 7915, uint UDPPort = 7916) => server.Start(TCPPort, UDPPort);
+		public static bool Start(uint TCPPort = 7915, uint UDPPort = 7916, bool IsProxyMode = false) => server.Start(TCPPort, UDPPort, IsProxyMode);
 		public static bool Stop() => server.Stop();
 		public static bool IsShuttingDown => server.IsShuttingDown;
 	}

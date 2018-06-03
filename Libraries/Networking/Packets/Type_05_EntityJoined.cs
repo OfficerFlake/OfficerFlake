@@ -8,24 +8,15 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 	{
 		public Type_05_EntityJoined() : base(5)
 		{
-			ResizeData(140);
-			Initialise();
-		}
-
-		private void Initialise()
-		{
-			ResizeData(108 + 16 + 48);
-			SetString(108, 16, "" +
-			    //No clue what this data is but seems to be required...
-			    (char)03 + (char)00 + (char)00 + (char)00 + (char)00 + (char)00 + (char)20 + (char)41 +
-			    (char)00 + (char)00 + (char)03 + (char)00 + (char)00 + (char)00 + (char)00 + (char)00);
+			ResizeData(172);
+			Version = 1;
 		}
 
 		public Packet_05VehicleType VehicleType
 		{
 			get
 			{
-				switch (GetUInt32(0))
+				switch (GetUInt16(0))
 				{
 					case 0:
 						return Packet_05VehicleType.Aircraft;
@@ -38,10 +29,10 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (value)
 				{
 					case Packet_05VehicleType.Aircraft:
-						SetUInt32(0, 0);
+						SetUInt16(0, 0);
 						return;
 					default:
-						SetUInt32(0, 65537);
+						SetUInt16(0, 1);
 						return;
 				}
 			}
@@ -65,6 +56,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get => !IsAircraft;
 			set => IsAircraft = !value;
+		}
+
+		public UInt16 Version
+		{
+			get => GetUInt16(2);
+			set => SetUInt16(2, value);
 		}
 
 		public UInt32 ID
@@ -136,13 +133,17 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			set => SetString(36, 32, value);
 		}
 
-		//Skip 68 => 108 (???)
+		public String Unknown_01
+		{
+			get => GetString(68, 40);
+			set => SetString(68, 40, value);
+		}
 
 		public Packet_05OwnerType OwnerType
 		{
 			get
 			{
-				switch (GetByte(108))
+				switch (GetUInt32(108))
 				{
 					case 3:
 						return Packet_05OwnerType.Self;
@@ -155,10 +156,10 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (value)
 				{
 					case Packet_05OwnerType.Self:
-						SetByte(108, 3);
+						SetUInt32(108, 3);
 						return;
 					default:
-						SetByte(108, 2);
+						SetUInt32(108, 2);
 						return;
 				}
 			}
@@ -177,6 +178,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			get => GetString(124, 16);
 			set => SetString(124, 16, value);
+		}
+
+		public String Unknown_02
+		{
+			get => GetString(140, 32);
+			set => SetString(140, 32, value);
 		}
 	}
 }

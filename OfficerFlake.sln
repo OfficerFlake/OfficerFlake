@@ -110,6 +110,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterfaces", "Libraries
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfSandbox", "Executables\WpfSandbox\WpfSandbox.csproj", "{583F7C78-11FC-4CC9-9ED1-A4C9DEA842C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXE_ProxyMode", "ConsoleApp1\EXE_ProxyMode.csproj", "{469D3811-5F93-4EF8-AE8F-230731F34194}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -358,6 +360,14 @@ Global
 		{583F7C78-11FC-4CC9-9ED1-A4C9DEA842C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{583F7C78-11FC-4CC9-9ED1-A4C9DEA842C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{583F7C78-11FC-4CC9-9ED1-A4C9DEA842C5}.Release|x86.Build.0 = Release|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Debug|x86.Build.0 = Debug|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Release|Any CPU.Build.0 = Release|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Release|x86.ActiveCfg = Release|Any CPU
+		{469D3811-5F93-4EF8-AE8F-230731F34194}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -413,6 +423,7 @@ Global
 		{34A02763-5FCF-4D80-AC04-51C2B5B9E8AF} = {393342B8-3254-4C91-A4AB-7D80E569A552}
 		{87C6C663-15BE-4C3F-84EE-2A5A861FE022} = {B85F99E4-3F77-4828-80C1-DE0099CD5E28}
 		{583F7C78-11FC-4CC9-9ED1-A4C9DEA842C5} = {26A80C4F-DCEB-4B4D-BB58-68A6551FF760}
+		{469D3811-5F93-4EF8-AE8F-230731F34194} = {26A80C4F-DCEB-4B4D-BB58-68A6551FF760}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

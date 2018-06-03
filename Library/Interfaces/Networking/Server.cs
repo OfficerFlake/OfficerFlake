@@ -2,7 +2,7 @@
 {
 	public interface IServer
 	{
-		bool Start(uint TCPPort, uint UDPPort);
+		bool Start(uint TCPPort, uint UDPPort, bool IsProxyMode);
 		bool Stop();
 		bool IsShuttingDown { get; }
 	}
