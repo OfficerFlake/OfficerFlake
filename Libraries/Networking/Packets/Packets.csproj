@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="GenericPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type_00_Null.cs" />
     <Compile Include="Type_14_RequestTestAirplane.cs" />
     <Compile Include="Type_64_UserPacket.cs" />
     <Compile Include="Type_46_ReportScore.cs" />

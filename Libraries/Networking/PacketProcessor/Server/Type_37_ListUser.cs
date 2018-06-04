@@ -15,6 +15,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 					thisConnection.SendMessageAsync("ListUsers is disabled on this server.");
 					return true;
 				}
+
+				IPacket_37_ListUser ListConsole = ObjectFactory.CreatePacket37ListUser();
+				ListConsole.ID = 0;
+				ListConsole.IFF = 0;
+				ListConsole.Identify = Users.Console.UserName.ToUnformattedSystemString();
+				ListConsole.UserType = Packet_37UserType.ServerIdle;
+				thisConnection.SendAsync(ListConsole);
+
 				foreach (IConnection OtherClient in Connections.AllConnections)
 				{
 					short ClientType = 0;

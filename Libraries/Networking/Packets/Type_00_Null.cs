@@ -2,9 +2,9 @@
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_46_ReportScore : GenericPacket, IPacket_46_ReportScore
+	public class Type_00_Null : GenericPacket, IPacket_00_Null
 	{
-		public Type_46_ReportScore() : base(46)
+		public Type_00_Null() : base(02)
 		{
 		}
 	}

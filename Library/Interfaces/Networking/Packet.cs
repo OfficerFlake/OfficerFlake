@@ -66,10 +66,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		byte[] Serialise();
 	}
+	public interface IPacket_00_Null : IPacket
+	{
+	}
 	public interface IPacket_01_Login : IPacket
 	{
 		String Username { get; }
 		UInt32 Version { get; }
+	}
+	public interface IPacket_02_Logoff : IPacket
+	{
 	}
 	public interface IPacket_03_Error : IPacket
 	{
@@ -198,6 +204,12 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		UInt32 ID { get; set; }
 	}
+	public interface IPacket_14_RequestTestAirplane : IPacket
+	{
+	}
+	public interface IPacket_15_KillServer : IPacket
+	{
+	}
 	public interface IPacket_16_PrepareSimulation : IPacket
 	{
 	}
@@ -276,6 +288,24 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Packet_OrdinanceType OrdinanceType { get; set; }
 		UInt32 Unknown { get; set; }
 	}
+	public interface IPacket_23_GroundTurretState : IPacket
+	{
+	}
+	public interface IPacket_24_SetTestAutoPilot : IPacket
+	{
+	}
+	public interface IPacket_25_RequestToBeSideWindowOfServer : IPacket
+	{
+	}
+	public interface IPacket_26_AssignSideWindow : IPacket
+	{
+	}
+	public interface IPacket_27_ResendAirRequest : IPacket
+	{
+	}
+	public interface IPacket_28_ResendGroundRequest : IPacket
+	{
+	}
 	public interface IPacket_29_NetcodeVersion : IPacket
 	{
 		UInt32 Version { get; set; }
@@ -299,7 +329,6 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		String Message { get; set; }
 	}
-
 	public interface IPacket_33_Weather : IPacket
 	{
 		Packet_33WeatherLighting Lighting { get; set; }
@@ -323,6 +352,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		Day,
 		Night
+	}
+	public interface IPacket_34_NeedResendJoinApproval : IPacket
+	{
 	}
 	public interface IPacket_35_ReviveAllGrounds : IPacket
 	{
@@ -361,6 +393,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		Boolean Enabled { get; set; }
 	}
+	public interface IPacket_40_AirTurretState : IPacket
+	{
+	}
 	public interface IPacket_41_UsernameDistance : IPacket
 	{
 		IDistance Distance { get; set; }
@@ -368,6 +403,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		void SetAlwaysVisible();
 		Boolean IsNeverVisible { get; }
 		void SetNeverVisible();
+	}
+	public interface IPacket_42_ConfirmExistence : IPacket
+	{
 	}
 	public interface IPacket_43_ServerCommand : IPacket
 	{
@@ -386,6 +424,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		String Command { get; set; }
 		String Parameters { get; set; }
 	}
+	public interface IPacket_46_ReportScore : IPacket
+	{
+	}
 	public interface IPacket_47_ForceJoin : IPacket
 	{
 	}
@@ -400,5 +441,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	public interface IPacket_50_GroundColor : IPacket
 	{
 		I24BitColor Color { get; set; }
+	}
+	public interface IPacket_64_UserPacket : IPacket
+	{
 	}
 }
