@@ -93,7 +93,9 @@ namespace Com.OfficerFlake.Libraries
 
 			//Packets
 			public IPacket CreateGenericPacket() => new GenericPacket();
+			public IPacket_00_Null CreatePacket00Null() => new Type_00_Null();
 			public IPacket_01_Login CreatePacket01Login() => new Type_01_Login();
+			public IPacket_02_Logoff CreatePacket02Logoff() => new Type_02_Logoff();
 			public IPacket_03_Error CreatePacket03Error() => new Type_03_Error();
 			public IPacket_04_Field CreatePacket04Field() => new Type_04_Field();
 			public IPacket_05_AddVehicle CreatePacket05AddVehicle() => new Type_05_EntityJoined();
@@ -105,6 +107,8 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => new Type_11_FlightData(version);
 			public IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => new Type_12_Unjoin();
 			public IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => new Type_13_RemoveAircraft();
+			public IPacket_14_RequestTestAirplane CreatePacket14RequestTestAirplane() => new Type_14_RequestTestAirplane();
+			public IPacket_15_KillServer CreatePacket15KillServer() => new Type_15_KillServer();
 			public IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => new Type_16_PrepareSimulation();
 			public IPacket_17_HeartBeat CreatePacket17HeartBeat() => new Type_17_Heartbeat();
 			public IPacket_18_LockOn CreatePacket18LockOn() => new Type_18_LockOn();
@@ -112,25 +116,36 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn() => new Type_20_OrdinanceLaunched();
 			public IPacket_21_GroundData CreatePacket21GroundData() => new Type_21_GroundData();
 			public IPacket_22_Damage CreatePacket22Damage() => new Type_22_Damage();
+			public IPacket_23_GroundTurretState CreatePacket23GroundTurretState() => new Type_23_GroundTurretState();
+			public IPacket_24_SetTestAutoPilot CreatePacket24SetTestAutoPilot() => new Type_24_SetTestAutoPilot();
+			public IPacket_25_RequestToBeSideWindowOfServer CreatePacket25RequestToBeSideWindowOfServer() => new Type_25_RequestToBeSideWindowOfServer();
+			public IPacket_26_AssignSideWindow CreatePacket26AssignSideWindow() => new Type_26_AssignSideWindow();
+			public IPacket_27_ResendAirRequest CreatePacket27ResendAirRequest() => new Type_27_ResendAirRequest();
+			public IPacket_28_ResendGroundRequest CreatePacket28ResendGroundRequest() => new Type_28_ResendGroundRequest();
 			public IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => new Type_29_NetcodeVersion();
 			public IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => throw new NotImplementedException();
 			public IPacket_31_MissilesOption CreatePacket31MissilesOption() => new Type_31_MissilesOption();
 			public IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => new Type_32_ChatMessage(user, message);
 			public IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => new Type_32_ServerMessage(message);
 			public IPacket_33_Weather CreatePacket33Weather() => new Type_33_Weather();
+			public IPacket_34_NeedResendJoinApproval CreatePacket34NeedResendJoinApproval() => new Type_34_NeedResendJoinApproval();
 			public IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => new Type_35_ReviveAllGrounds();
 			public IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout() => new Type_36_WeaponsLoadout();
 			public IPacket_37_ListUser CreatePacket37ListUser() => new Type_37_ListUser();
 			public IPacket_38_QueryAirstate CreatePacket38QueryAirstate() => new Type_38_QueryAirstate();
 			public IPacket_39_WeaponsOption CreatePacket39WeaponsOption() => new Type_39_WeaponsOption();
+			public IPacket_40_AirTurretState CreatePacket40AirTurretState() => new Type_40_AirTurretState();
 			public IPacket_41_UsernameDistance CreatePacket41UsernameDistance() => new Type_41_UsernameDistance();
+			public IPacket_42_ConfirmExistence CreatePacket42ConfirmExistence() => new Type_42_ConfirmExistence();
 			public IPacket_43_ServerCommand CreatePacket43ServerCommand() => new Type_43_ServerCommand();
 			public IPacket_44_AircraftList CreatePacket44AircraftList() => new Type_44_AircraftList();
 			public IPacket_45_GroundCommand CreatePacket45GroundCommand() => new Type_45_GroundCommand();
+			public IPacket_46_ReportScore CreatePacket46ReportScore() => new Type_46_ReportScore();
 			public IPacket_47_ForceJoin CreatePacket47ForceJoin() => new Type_47_ForceJoin();
 			public IPacket_48_FogColor CreatePacket48FogColor() => new Type_48_FogColor();
 			public IPacket_49_SkyColor CreatePacket49SkyColor() => new Type_49_SkyColor();
 			public IPacket_50_GroundColor CreatePacket50GroundColor() => new Type_50_GroundColor();
+			public IPacket_64_UserPacket CreatePacket64UserPacket() => new Type_64_UserPacket();
 
 			//PacketProcessor
 

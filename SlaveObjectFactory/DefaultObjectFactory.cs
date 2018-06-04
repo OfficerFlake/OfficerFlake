@@ -79,7 +79,9 @@ namespace Com.OfficerFlake.Libraries
 
 			//Packets
 			public IPacket CreateGenericPacket() => throw new NotImplementedException();
+			public IPacket_00_Null CreatePacket00Null() => throw new NotImplementedException();
 			public IPacket_01_Login CreatePacket01Login() => throw new NotImplementedException();
+			public IPacket_02_Logoff CreatePacket02Logoff() => throw new NotImplementedException();
 			public IPacket_03_Error CreatePacket03Error() => throw new NotImplementedException();
 			public IPacket_04_Field CreatePacket04Field() => throw new NotImplementedException();
 			public IPacket_05_AddVehicle CreatePacket05AddVehicle() => throw new NotImplementedException();
@@ -91,6 +93,8 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => throw new NotImplementedException();
 			public IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => throw new NotImplementedException();
 			public IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => throw new NotImplementedException();
+			public IPacket_14_RequestTestAirplane CreatePacket14RequestTestAirplane() => throw new NotImplementedException();
+			public IPacket_15_KillServer CreatePacket15KillServer() => throw new NotImplementedException();
 			public IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => throw new NotImplementedException();
 			public IPacket_17_HeartBeat CreatePacket17HeartBeat() => throw new NotImplementedException();
 			public IPacket_18_LockOn CreatePacket18LockOn() => throw new NotImplementedException();
@@ -98,25 +102,36 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn() => throw new NotImplementedException();
 			public IPacket_21_GroundData CreatePacket21GroundData() => throw new NotImplementedException();
 			public IPacket_22_Damage CreatePacket22Damage() => throw new NotImplementedException();
+			public IPacket_23_GroundTurretState CreatePacket23GroundTurretState() => throw new NotImplementedException();
+			public IPacket_24_SetTestAutoPilot CreatePacket24SetTestAutoPilot() => throw new NotImplementedException();
+			public IPacket_25_RequestToBeSideWindowOfServer CreatePacket25RequestToBeSideWindowOfServer() => throw new NotImplementedException();
+			public IPacket_26_AssignSideWindow CreatePacket26AssignSideWindow() => throw new NotImplementedException();
+			public IPacket_27_ResendAirRequest CreatePacket27ResendAirRequest() => throw new NotImplementedException();
+			public IPacket_28_ResendGroundRequest CreatePacket28ResendGroundRequest() => throw new NotImplementedException();
 			public IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => throw new NotImplementedException();
 			public IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => throw new NotImplementedException();
 			public IPacket_31_MissilesOption CreatePacket31MissilesOption() => throw new NotImplementedException();
 			public IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => throw new NotImplementedException();
 			public IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => throw new NotImplementedException();
 			public IPacket_33_Weather CreatePacket33Weather() => throw new NotImplementedException();
+			public IPacket_34_NeedResendJoinApproval CreatePacket34NeedResendJoinApproval() => throw new NotImplementedException();
 			public IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => throw new NotImplementedException();
 			public IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout() => throw new NotImplementedException();
 			public IPacket_37_ListUser CreatePacket37ListUser() => throw new NotImplementedException();
 			public IPacket_38_QueryAirstate CreatePacket38QueryAirstate() => throw new NotImplementedException();
 			public IPacket_39_WeaponsOption CreatePacket39WeaponsOption() => throw new NotImplementedException();
+			public IPacket_40_AirTurretState CreatePacket40AirTurretState() => throw new NotImplementedException();
 			public IPacket_41_UsernameDistance CreatePacket41UsernameDistance() => throw new NotImplementedException();
+			public IPacket_42_ConfirmExistence CreatePacket42ConfirmExistence() => throw new NotImplementedException();
 			public IPacket_43_ServerCommand CreatePacket43ServerCommand() => throw new NotImplementedException();
 			public IPacket_44_AircraftList CreatePacket44AircraftList() => throw new NotImplementedException();
 			public IPacket_45_GroundCommand CreatePacket45GroundCommand() => throw new NotImplementedException();
+			public IPacket_46_ReportScore CreatePacket46ReportScore() => throw new NotImplementedException();
 			public IPacket_47_ForceJoin CreatePacket47ForceJoin() => throw new NotImplementedException();
 			public IPacket_48_FogColor CreatePacket48FogColor() => throw new NotImplementedException();
 			public IPacket_49_SkyColor CreatePacket49SkyColor() => throw new NotImplementedException();
 			public IPacket_50_GroundColor CreatePacket50GroundColor() => throw new NotImplementedException();
+			public IPacket_64_UserPacket CreatePacket64UserPacket() => throw new NotImplementedException();
 
 			//PacketProcessor
 

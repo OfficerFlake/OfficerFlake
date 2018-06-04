@@ -77,7 +77,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		//Packets
 		IPacket CreateGenericPacket();
+		IPacket_00_Null CreatePacket00Null();
 		IPacket_01_Login CreatePacket01Login();
+		IPacket_02_Logoff CreatePacket02Logoff();
 		IPacket_03_Error CreatePacket03Error();
 		IPacket_04_Field CreatePacket04Field();
 		IPacket_05_AddVehicle CreatePacket05AddVehicle();
@@ -89,6 +91,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3);
 		IPacket_12_LeaveFlight CreatePacket12LeaveFlight();
 		IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft();
+		IPacket_14_RequestTestAirplane CreatePacket14RequestTestAirplane();
+		IPacket_15_KillServer CreatePacket15KillServer();
 		IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation();
 		IPacket_17_HeartBeat CreatePacket17HeartBeat();
 		IPacket_18_LockOn CreatePacket18LockOn();
@@ -96,25 +100,36 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn();
 		IPacket_21_GroundData CreatePacket21GroundData();
 		IPacket_22_Damage CreatePacket22Damage();
+		IPacket_23_GroundTurretState CreatePacket23GroundTurretState();
+		IPacket_24_SetTestAutoPilot CreatePacket24SetTestAutoPilot();
+		IPacket_25_RequestToBeSideWindowOfServer CreatePacket25RequestToBeSideWindowOfServer();
+		IPacket_26_AssignSideWindow CreatePacket26AssignSideWindow();
+		IPacket_27_ResendAirRequest CreatePacket27ResendAirRequest();
+		IPacket_28_ResendGroundRequest CreatePacket28ResendGroundRequest();
 		IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion();
 		IPacket_30_AircraftCommand CreatePacket30AircraftCommand();
 		IPacket_31_MissilesOption CreatePacket31MissilesOption();
 		IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message);
 		IPacket_32_ServerMessage CreatePacket32ServerMessage(string message);
 		IPacket_33_Weather CreatePacket33Weather();
+		IPacket_34_NeedResendJoinApproval CreatePacket34NeedResendJoinApproval();
 		IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds();
 		IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout();
 		IPacket_37_ListUser CreatePacket37ListUser();
 		IPacket_38_QueryAirstate CreatePacket38QueryAirstate();
 		IPacket_39_WeaponsOption CreatePacket39WeaponsOption();
+		IPacket_40_AirTurretState CreatePacket40AirTurretState();
 		IPacket_41_UsernameDistance CreatePacket41UsernameDistance();
+		IPacket_42_ConfirmExistence CreatePacket42ConfirmExistence();
 		IPacket_43_ServerCommand CreatePacket43ServerCommand();
 		IPacket_44_AircraftList CreatePacket44AircraftList();
 		IPacket_45_GroundCommand CreatePacket45GroundCommand();
+		IPacket_46_ReportScore CreatePacket46ReportScore();
 		IPacket_47_ForceJoin CreatePacket47ForceJoin();
 		IPacket_48_FogColor CreatePacket48FogColor();
 		IPacket_49_SkyColor CreatePacket49SkyColor();
 		IPacket_50_GroundColor CreatePacket50GroundColor();
+		IPacket_64_UserPacket CreatePacket64UserPacket();
 
 		//PacketProcessor
 
