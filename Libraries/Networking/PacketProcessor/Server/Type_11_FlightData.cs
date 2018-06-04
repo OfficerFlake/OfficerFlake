@@ -10,7 +10,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_11_FlightData(IConnection thisConnection, IPacket_11_FlightData packet)
 			{
-				if (packet.ID != thisConnection.VehicleID) return true;
+				if (packet.ID != thisConnection.Vehicle.ID) return true;
 				foreach (IConnection otherConnection in Connections.LoggedIn.Exclude(thisConnection))
 				{
 					otherConnection.Send(packet);

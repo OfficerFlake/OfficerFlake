@@ -284,6 +284,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values);
 		IYSTypeWeaponType CreateYSTypeWeaponType(string[] values);
 
+		IWorldVehicle CreateVehicle();
+		IWorldAircraft CreateAircraft();
+		IWorldGround CreateGround();
+
 		IMetaDataAircraft CreateMetaDataAircraft(string identify);
 		IMetaDataGround CreateMetaDataGround(string identify);
 		IMetaDataScenery CreateMetaDataScenery(string identify);

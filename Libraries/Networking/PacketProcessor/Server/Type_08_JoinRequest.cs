@@ -146,7 +146,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Send Owner Join Data
-				thisConnection.VehicleID = EntityJoined.ID;
+				thisConnection.Vehicle = ObjectFactory.CreateVehicle();
+				thisConnection.Vehicle.ID = EntityJoined.ID;
 				thisConnection.Send(EntityJoined);
 				if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeJoinPacket, EntityJoined))
 				{

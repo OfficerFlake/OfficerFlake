@@ -298,6 +298,10 @@ namespace Com.OfficerFlake.Libraries
 			public IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values) => new WeaponCategory(values);
 			public IYSTypeWeaponType CreateYSTypeWeaponType(string[] values) => new WeaponType(values);
 
+			public IWorldVehicle CreateVehicle() => new World.Objects.Vehicle();
+			public IWorldAircraft CreateAircraft() => new World.Objects.Aircraft();
+			public IWorldGround CreateGround() => new World.Objects.Ground();
+
 			public IMetaDataAircraft CreateMetaDataAircraft(string identify) => new Metadata.Aircraft(identify);
 			public IMetaDataGround CreateMetaDataGround(string identify) => new Metadata.Ground(identify);
 			public IMetaDataScenery CreateMetaDataScenery(string identify) => new Metadata.Scenery(identify);

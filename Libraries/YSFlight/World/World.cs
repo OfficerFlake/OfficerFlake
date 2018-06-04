@@ -10,49 +10,21 @@ using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
-	public static class World
+	public static partial class World
 	{
-		public static class Objects
+		public static partial class Objects
 		{
-			private static volatile uint NextID = 1;
-			public static uint GetNextID()
+			public class Vehicle : IWorldVehicle
 			{
-				return NextID++;
-			}
+				public String Identify { get; set; } = "NULL";
+				public String Tag { get; set; } = "";
 
-			public class Aircraft
-			{
-				public string Identify;
-				public uint IFF;
-
-				public class _Position
-				{
-					public double X;
-					public double Y;
-					public double Z;
-				}
-				public _Position Position = new _Position();
-
-				public class _Attitude
-				{
-					public double X;
-					public double Y;
-					public double Z;
-				}
-				public _Attitude Attitude = new _Attitude();
-			}
-			public static Aircraft NULL_Aircraft;
-
-			public class Ground : IWorldGround
-			{
-				public String Identify { get; set; } = "<NULL>";
-				public String Tag { get; set; } = "<NULL>";
-				public UInt32 Strength { get; set; } = 255;
-				public UInt32 IFF { get; set; } = 0;
-				public UInt32 ID { get; set; } = 0;
-
+				public IMetaDataVehicle MetaData { get; set; } = Extensions.YSFlight.MetaData.Aircraft.None;
 				public IUser Owner { get; set; } = Users.None;
-				public IMetaDataGround MetaData { get; set; } = Extensions.YSFlight.MetaData.Grounds.None;
+
+				public UInt32 ID { get; set; } = 0;
+				public UInt32 IFF { get; set; } = 0;
+				public UInt32 Strength { get; set; } = 10;
 
 				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
@@ -61,6 +33,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				{
 					return "[" + Tag + "]" + Identify + " (" + Position + ")";
 				}
+			}
+
+			public class Aircraft : Vehicle, IWorldAircraft
+			{
+			}
+			public static Aircraft NULL_Aircraft;
+
+			public class Ground : Vehicle, IWorldGround
+			{
 			}
 			public static Ground NULL_Ground;
 

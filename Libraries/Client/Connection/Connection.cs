@@ -40,7 +40,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region FlightStatus
 	    public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
 		public bool IsFlying => FlightStatus == FlightStatus.Flying;
-	    public UInt32 VehicleID { get; set; } = 0;
+	    public IWorldVehicle Vehicle { get; set; } = Extensions.YSFlight.World.NoVehicle;
 	    public bool JoinRequestPending { get; set; } = false;
 		#endregion
 

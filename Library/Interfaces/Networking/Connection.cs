@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		FlightStatus FlightStatus { get; set; }
 		Boolean IsFlying { get; }
-		UInt32 VehicleID { get; set; }
+		IWorldVehicle Vehicle { get; set; }
 
 		Boolean JoinRequestPending { get; set; }
 

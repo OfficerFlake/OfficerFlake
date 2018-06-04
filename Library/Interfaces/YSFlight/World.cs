@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Com.OfficerFlake.Libraries.Interfaces
 {
-	public interface IWorldAircraft
+	public interface IWorldVehicle
 	{
 		String Identify { get; set; }
 		String Tag { get; set; }
@@ -12,24 +12,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		UInt32 ID { get; set; }
 
 		IUser Owner { get; set; }
-		IMetaDataAircraft MetaData { get; set; }
+		IMetaDataVehicle MetaData { get; set; }
 
 		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 	}
-	public interface IWorldGround
+	public interface IWorldAircraft : IWorldVehicle
 	{
-		String Identify { get; set; }
-		String Tag { get; set; }
-		UInt32 Strength { get; set; }
-		UInt32 IFF { get; set; }
-		UInt32 ID { get; set; }
-
-		IUser Owner { get; set; }
-		IMetaDataGround MetaData { get; set; }
-
-		ICoordinate3 Position { get; set; }
-		IOrientation3 Attitude { get; set; }
+	}
+	public interface IWorldGround : IWorldVehicle
+	{
 	}
 
 	public interface IWorldScenery

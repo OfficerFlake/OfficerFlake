@@ -13,6 +13,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
 			public static List<IWorldAircraft> AllAircraft { get; } = new List<IWorldAircraft>();
 			public static List<IWorldGround> AllGrounds { get; } = new List<IWorldGround>();
+			public static IWorldVehicle NoVehicle { get; } = ObjectFactory.CreateVehicle();
 
 			public static List<IWorldScenery> AllScenerys { get; } = new List<IWorldScenery>();
 			public static List<IWorldMotionPath> AllMotionPaths { get; } = new List<IWorldMotionPath>();

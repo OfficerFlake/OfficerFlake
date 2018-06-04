@@ -285,6 +285,10 @@ namespace Com.OfficerFlake.Libraries
 		public static IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values) => slaveFactory.CreateYSTypeWeaponCategory(values);
 		public static IYSTypeWeaponType CreateYSTypeWeaponType(string[] values) => slaveFactory.CreateYSTypeWeaponType(values);
 
+		public static IWorldVehicle CreateVehicle() => slaveFactory.CreateVehicle();
+		public static IWorldAircraft CreateAircraft() => slaveFactory.CreateAircraft();
+		public static IWorldGround CreateGround() => slaveFactory.CreateGround();
+
 		public static IMetaDataAircraft CreateMetaDataAircraft(string identify) => slaveFactory.CreateMetaDataAircraft(identify);
 		public static IMetaDataGround CreateMetaDataGround(string identify) => slaveFactory.CreateMetaDataGround(identify);
 		public static IMetaDataScenery CreateMetaDataScenery(string identify) => slaveFactory.CreateMetaDataScenery(identify);

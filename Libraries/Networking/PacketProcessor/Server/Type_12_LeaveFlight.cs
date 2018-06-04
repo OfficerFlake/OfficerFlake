@@ -18,6 +18,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				IPacket_13_RemoveAircraft RemoveAirplane = ObjectFactory.CreatePacket13RemoveAircraft();
 				RemoveAirplane.ID = Unjoin.ID;
 
+				thisConnection.Vehicle = World.NoVehicle;
 				thisConnection.FlightStatus = FlightStatus.Idle;
 				if (Settings.Flight.Join.Notification)
 				{

@@ -285,6 +285,10 @@ namespace Com.OfficerFlake.Libraries
 			public IYSTypeWeaponCategory CreateYSTypeWeaponCategory(string[] values) => throw new NotImplementedException();
 			public IYSTypeWeaponType CreateYSTypeWeaponType(string[] values) => throw new NotImplementedException();
 
+			public IWorldVehicle CreateVehicle() => throw new NotImplementedException();
+			public IWorldAircraft CreateAircraft() => throw new NotImplementedException();
+			public IWorldGround CreateGround() => throw new NotImplementedException();
+
 			public IMetaDataAircraft CreateMetaDataAircraft(string identify) => throw new NotImplementedException();
 			public IMetaDataGround CreateMetaDataGround(string identify) => throw new NotImplementedException();
 			public IMetaDataScenery CreateMetaDataScenery(string identify) => throw new NotImplementedException();
