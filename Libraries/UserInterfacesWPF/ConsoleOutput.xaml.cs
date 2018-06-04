@@ -189,19 +189,31 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Console
 		public void AddInformationMessage(string message)
 		{
-			Dispatcher.Invoke(() =>
+			try
 			{
-				IRichTextMessage informationMessage = ObjectFactory.CreateConsoleInformationMessage(message.AsRichTextString());
-				AddMessage(informationMessage);
-			});
+				Dispatcher.Invoke(() =>
+				{
+					IRichTextMessage informationMessage = ObjectFactory.CreateConsoleInformationMessage(message.AsRichTextString());
+					AddMessage(informationMessage);
+				});
+			}
+			catch
+			{
+			}
 		}
 		public void AddUserMessage(IUser user, string message)
 		{
-			Dispatcher.Invoke(() =>
+			try
 			{
-				IRichTextMessage userMessage = ObjectFactory.CreateConsoleUserMessage(user, message.AsRichTextString());
-				AddMessage(userMessage);
-			});
+				Dispatcher.Invoke(() =>
+				{
+					IRichTextMessage userMessage = ObjectFactory.CreateConsoleUserMessage(user, message.AsRichTextString());
+					AddMessage(userMessage);
+				});
+			}
+			catch
+			{
+			}
 		}
 		#endregion
 		#region Debug

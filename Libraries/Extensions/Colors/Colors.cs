@@ -45,7 +45,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		public static ISimpleColor DarkYellow => Color6;
 
 		public static readonly ISimpleColor Color6 = ObjectFactory.CreateSimpleColor(
-			ObjectFactory.CreateColor(0, 170, 0), '6');
+			ObjectFactory.CreateColor(255, 170, 0), '6');
 
 		public static ISimpleColor Gray => Color7;
 

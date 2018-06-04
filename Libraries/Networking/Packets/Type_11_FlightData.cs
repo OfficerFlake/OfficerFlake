@@ -678,11 +678,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			{
 				if (Version == 3)
 				{
-					return GetUInt16(46);
+					return GetUInt16(62);
 				}
 				if (Version == 4 | Version == 5)
 				{
-					return GetByte(48);
+					return GetByte(61);
 				}
 				return 0;
 			}
@@ -690,11 +690,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			{
 				if (Version == 3)
 				{
-					SetUInt16(46, value);
+					SetUInt16(62, value);
 				}
 				if (Version == 4 | Version == 5)
 				{
-					SetByte(48, (byte)value);
+					SetByte(61, (byte)value);
 				}
 			}
 		}

@@ -11,12 +11,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 			private static bool Process_Type_11_FlightData(IConnection thisConnection, IPacket_11_FlightData packet)
 			{
 				if (packet.ID != thisConnection.Vehicle.ID) return true;
+				thisConnection.Vehicle.Update(packet);
 				foreach (IConnection otherConnection in Connections.LoggedIn.Exclude(thisConnection))
 				{
 					otherConnection.Send(packet);
 				}
 				return true;
-				throw new NotImplementedException();
 			}
 		}
 	}

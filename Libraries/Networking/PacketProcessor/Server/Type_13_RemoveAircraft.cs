@@ -10,7 +10,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_13_RemoveAircraft(IConnection thisConnection, IPacket_13_RemoveAircraft packet)
 			{
-				throw new NotImplementedException();
+				IPacket_06_Acknowledgement removeAcknowledgement = ObjectFactory.CreatePacket06Acknowledgement(2, packet.ID);
+				thisConnection.Send(removeAcknowledgement);
+				return true;
 			}
 		}
 	}

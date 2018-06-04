@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Extensions
@@ -11,8 +12,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			private static UInt32 CurrentID = 0;
 			public static UInt32 GetNextID() => ++CurrentID;
 
-			public static List<IWorldAircraft> AllAircraft { get; } = new List<IWorldAircraft>();
-			public static List<IWorldGround> AllGrounds { get; } = new List<IWorldGround>();
+			public static List<IWorldVehicle> Vehicles { get; } = new List<IWorldVehicle>();
+			public static List<IWorldAircraft> AllAircraft => Vehicles.OfType<IWorldAircraft>().ToList();
+			public static List<IWorldGround> AllGrounds => Vehicles.OfType<IWorldGround>().ToList();
 			public static IWorldVehicle NoVehicle { get; } = ObjectFactory.CreateVehicle();
 
 			public static List<IWorldScenery> AllScenerys { get; } = new List<IWorldScenery>();

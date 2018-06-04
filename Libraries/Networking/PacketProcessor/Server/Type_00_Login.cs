@@ -362,12 +362,31 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Send Entities(05)
 				//Create all the other players aircraft.
-				//foreach (Client OtherClient in Clients.AllClients.Where(x => x.Vehicle != null).Where(y => y.Vehicle != Vehicles.NoVehicle).ToArray())
-				//{
-				//    //Client.Connection.PacketWaiter ThisListener = //thisConnection.YSFClient.ExpectAcknowledgement(0, OtherClient.Vehicle.ID);
-				//    Packets.Type_06_Acknowledgement AcknowledgeJoin = new Packets.Type_06_Acknowledgement(0, OtherClient.Vehicle.ID);
-				//    thisConnection.SendPacketGetPacket(OtherClient.Vehicle.GetJoinPacket(false), AcknowledgeJoin);
-				//}
+				foreach (IWorldVehicle vehicle in Extensions.YSFlight.World.Vehicles)
+				{
+					IPacket_05_AddVehicle OtherJoinPacket = vehicle.GetJoinPacket();
+					OtherJoinPacket.OwnerType = Packet_05OwnerType.Other;
+
+					IPacketWaiter PacketWaiter_AcknowledgeOtherJoinPacket = thisConnection.CreatePacketWaiter(6);
+					if (OtherJoinPacket.VehicleType == Packet_05VehicleType.Aircraft)
+					{
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
+					}
+					else
+					{
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
+					}
+					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
+					Logger.Console.AddInformationMessage("Sending Join Notification.");
+					thisConnection.Send(OtherJoinPacket);
+
+					if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
+					{
+						thisConnection.SendMessage("Expected a Other Entity Join Acknowldge for ID " + OtherJoinPacket.ID + " and didn't get an answer.");
+						//thisConnection.Disconnect();
+						//return false;
+					}
+				}
 
 				#region Online Vehicles
 				/*

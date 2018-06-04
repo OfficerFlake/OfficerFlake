@@ -145,9 +145,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 				PacketWaiter_AcknowledgeJoinPacket.StartListening();
 				#endregion
 
-				#region Send Owner Join Data
+				#region Assign Vehicle
 				thisConnection.Vehicle = ObjectFactory.CreateVehicle();
-				thisConnection.Vehicle.ID = EntityJoined.ID;
+				thisConnection.Vehicle.Owner = thisConnection.User;
+				thisConnection.Vehicle.MetaData = MetaAircraft;
+				#endregion
+
+				#region Send Owner Join Data
+				thisConnection.Vehicle.Update(EntityJoined);
+				thisConnection.Vehicle.CreateVehicle();
 				thisConnection.Send(EntityJoined);
 				if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeJoinPacket, EntityJoined))
 				{
@@ -161,6 +167,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					//thisConnection.Disconnect();
 					//return false;
 				}
+				thisConnection.Vehicle.Update(FlightData);
 				thisConnection.Send(FlightData);
 				#endregion
 
@@ -213,7 +220,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 					if (!OtherClient.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
 					{
-						thisConnection.SendMessage("Expected a Other Entity Join Acknowldge and didn't get an answer. Disconnecting...");
+						thisConnection.SendMessage("Expected a Other Entity Join Acknowldge for ID " + OtherJoinPacket.ID + " and didn't get an answer.");
 						//thisConnection.Disconnect();
 						//return false;
 					}

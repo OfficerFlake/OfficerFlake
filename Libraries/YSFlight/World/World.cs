@@ -16,6 +16,17 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 		{
 			public class Vehicle : IWorldVehicle
 			{
+				public void CreateVehicle()
+				{
+					Extensions.YSFlight.World.Vehicles.Add(this);
+					Logger.Debug.AddSummaryMessage("&aAdded Vehicle: [" + this.ID + "]" + this.Identify);
+				}
+				public void DestroyVehicle()
+				{
+					Extensions.YSFlight.World.Vehicles.RemoveAll(x=> x == this);
+					Logger.Debug.AddSummaryMessage("&cRemoved Vehicle: [" + this.ID + "]" + this.Identify);
+				}
+
 				public String Identify { get; set; } = "NULL";
 				public String Tag { get; set; } = "";
 
@@ -28,6 +39,44 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
+
+				public void Update(IPacket_05_AddVehicle packet)
+				{
+					Identify = packet.Identify;
+					Tag = packet.OwnerName;
+
+					ID = packet.ID;
+					IFF = packet.IFF;
+					Strength = 65535;
+
+					Position = packet.Position;
+					Attitude = packet.Attitude;
+				}
+				public void Update(IPacket_11_FlightData packet)
+				{
+					Strength = packet.Strength;
+
+					Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
+					Attitude = ObjectFactory.CreateOrientation3(packet.HdgH, packet.HdgP, packet.HdgB);
+				}
+
+				public IPacket_05_AddVehicle GetJoinPacket()
+				{
+					IPacket_05_AddVehicle joinPacket = ObjectFactory.CreatePacket05AddVehicle();
+					joinPacket.ID = ID;
+					joinPacket.IFF = IFF;
+					joinPacket.Identify = Identify;
+					joinPacket.OwnerName = Tag;
+					joinPacket.PosX = Position.X;
+					joinPacket.PosY = Position.Y;
+					joinPacket.PosZ = Position.Z;
+					joinPacket.HdgH = Attitude.H;
+					joinPacket.HdgP = Attitude.P;
+					joinPacket.HdgB = Attitude.B;
+					joinPacket.OwnerType = Packet_05OwnerType.Other;
+					joinPacket.VehicleType = Packet_05VehicleType.Aircraft;
+					return joinPacket;
+				}
 
 				public override string ToString()
 				{

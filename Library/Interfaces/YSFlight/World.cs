@@ -5,6 +5,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 {
 	public interface IWorldVehicle
 	{
+		void CreateVehicle();
+		void DestroyVehicle();
+
 		String Identify { get; set; }
 		String Tag { get; set; }
 		UInt32 Strength { get; set; }
@@ -16,6 +19,11 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
+
+		IPacket_05_AddVehicle GetJoinPacket();
+
+		void Update(IPacket_05_AddVehicle packet);
+		void Update(IPacket_11_FlightData packet);
 	}
 	public interface IWorldAircraft : IWorldVehicle
 	{

@@ -10,7 +10,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_22_Damage(IConnection thisConnection, IPacket_22_Damage packet)
 			{
-				throw new NotImplementedException();
+				Connections.LoggedIn.SendAsync(packet).ConfigureAwait(false);
+				return true;
 			}
 		}
 	}

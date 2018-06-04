@@ -844,7 +844,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (NotImplementedException e)
 			{
 				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " is not yet implemented.");
-				this.SendMessageAsync("Sorry, that feature or packet is not implemented yet! Please try something else...");
+				//this.SendMessageAsync("Sorry, that feature or packet is not implemented yet! Please try something else...");
 			}
 			catch (Exception e)
 			{

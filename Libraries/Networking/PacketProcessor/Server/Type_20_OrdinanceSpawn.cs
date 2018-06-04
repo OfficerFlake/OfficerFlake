@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
@@ -10,7 +11,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_20_OrdinanceSpawn(IConnection thisConnection, IPacket_20_OrdinanceSpawn packet)
 			{
-				throw new NotImplementedException();
+				Connections.LoggedIn.Exclude(thisConnection).SendAsync(packet).ConfigureAwait(false);
+				return true;
 			}
 		}
 	}

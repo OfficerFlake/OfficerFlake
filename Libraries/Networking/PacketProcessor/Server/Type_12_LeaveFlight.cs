@@ -18,8 +18,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 				IPacket_13_RemoveAircraft RemoveAirplane = ObjectFactory.CreatePacket13RemoveAircraft();
 				RemoveAirplane.ID = Unjoin.ID;
 
-				thisConnection.Vehicle = World.NoVehicle;
-				thisConnection.FlightStatus = FlightStatus.Idle;
 				if (Settings.Flight.Join.Notification)
 				{
 					Logger.Console.AddInformationMessage("&9" + thisConnection.User.UserName.ToInternallyFormattedSystemString() + "&9 left the aircraft");
@@ -35,17 +33,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 					if (!otherconnection.GetResponseOrResend(PacketWaiter_AcknowledgeOtherLeavePacket, RemoveAirplane))
 					{
-						thisConnection.SendMessage("Expected a Other Entity Leave Acknowldge and didn't get an answer. Disconnecting...");
-						//thisConnection.Disconnect();
+						otherconnection.SendMessage("Expected a Other Entity Leave Acknowldge and didn't get an answer. Disconnecting...");
+						//otherconnection.Disconnect();
 						//return false;
 					}
 
 					if (Settings.Flight.Leave.Notification) otherconnection.SendMessageAsync(thisConnection.User.UserName.ToUnformattedSystemString() + " left the aircraft.");
 				}
+				thisConnection.Vehicle.DestroyVehicle();
+				thisConnection.Vehicle = World.NoVehicle;
+				thisConnection.FlightStatus = FlightStatus.Idle;
 				return true;
-
-				return false;
-				throw new NotImplementedException();
 			}
 		}
 	}
