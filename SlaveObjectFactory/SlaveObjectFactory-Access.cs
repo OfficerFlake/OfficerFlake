@@ -78,7 +78,9 @@ namespace Com.OfficerFlake.Libraries
 
 		//Packets
 		public static IPacket CreateGenericPacket() => slaveFactory.CreateGenericPacket();
+		public static IPacket_00_Null CreatePacket00Null() => slaveFactory.CreatePacket00Null();
 		public static IPacket_01_Login CreatePacket01Login() => slaveFactory.CreatePacket01Login();
+		public static IPacket_02_Logoff CreatePacket02Logoff() => slaveFactory.CreatePacket02Logoff();
 		public static IPacket_03_Error CreatePacket03Error() => slaveFactory.CreatePacket03Error();
 		public static IPacket_04_Field CreatePacket04Field() => slaveFactory.CreatePacket04Field();
 		public static IPacket_05_AddVehicle CreatePacket05AddVehicle() => slaveFactory.CreatePacket05AddVehicle();
@@ -90,6 +92,8 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_11_FlightData CreatePacket11FlightData(Int16 version = 3) => slaveFactory.CreatePacket11FlightData(version);
 		public static IPacket_12_LeaveFlight CreatePacket12LeaveFlight() => slaveFactory.CreatePacket12LeaveFlight();
 		public static IPacket_13_RemoveAircraft CreatePacket13RemoveAircraft() => slaveFactory.CreatePacket13RemoveAircraft();
+		public static IPacket_14_RequestTestAirplane CreatePacket14RequestTestAirplane() => slaveFactory.CreatePacket14RequestTestAirplane();
+		public static IPacket_15_KillServer CreatePacket15KillServer() => slaveFactory.CreatePacket15KillServer();
 		public static IPacket_16_PrepareSimulation CreatePacket16PrepareSimulation() => slaveFactory.CreatePacket16PrepareSimulation();
 		public static IPacket_17_HeartBeat CreatePacket17HeartBeat() => slaveFactory.CreatePacket17HeartBeat();
 		public static IPacket_18_LockOn CreatePacket18LockOn() => slaveFactory.CreatePacket18LockOn();
@@ -97,25 +101,36 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_20_OrdinanceSpawn CreatePacket20OrdinanceSpawn() => slaveFactory.CreatePacket20OrdinanceSpawn();
 		public static IPacket_21_GroundData CreatePacket21GroundData() => slaveFactory.CreatePacket21GroundData();
 		public static IPacket_22_Damage CreatePacket22Damage() => slaveFactory.CreatePacket22Damage();
+		public static IPacket_23_GroundTurretState CreatePacket23GroundTurretState() => slaveFactory.CreatePacket23GroundTurretState();
+		public static IPacket_24_SetTestAutoPilot CreatePacket24SetTestAutoPilot() => slaveFactory.CreatePacket24SetTestAutoPilot();
+		public static IPacket_25_RequestToBeSideWindowOfServer CreatePacket25RequestToBeSideWindowOfServer() => slaveFactory.CreatePacket25RequestToBeSideWindowOfServer();
+		public static IPacket_26_AssignSideWindow CreatePacket26AssignSideWindow() => slaveFactory.CreatePacket26AssignSideWindow();
+		public static IPacket_27_ResendAirRequest CreatePacket27ResendAirRequest() => slaveFactory.CreatePacket27ResendAirRequest();
+		public static IPacket_28_ResendGroundRequest CreatePacket28ResendGroundRequest() => slaveFactory.CreatePacket28ResendGroundRequest();
 		public static IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => slaveFactory.CreatePacket29NetcodeVersion();
 		public static IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => slaveFactory.CreatePacket30AircraftCommand();
 		public static IPacket_31_MissilesOption CreatePacket31MissilesOption() => slaveFactory.CreatePacket31MissilesOption();
 		public static IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => slaveFactory.CreatePacket32ChatMessage(user, message);
 		public static IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => slaveFactory.CreatePacket32ServerMessage(message);
 		public static IPacket_33_Weather CreatePacket33Weather() => slaveFactory.CreatePacket33Weather();
+		public static IPacket_34_NeedResendJoinApproval CreatePacket34NeedResendJoinApproval() => slaveFactory.CreatePacket34NeedResendJoinApproval();
 		public static IPacket_35_ReviveAllGrounds CreatePacket35ReviveAllGrounds() => slaveFactory.CreatePacket35ReviveAllGrounds();
 		public static IPacket_36_WeaponsLoadout CreatePacket36WeaponsLoadout() => slaveFactory.CreatePacket36WeaponsLoadout();
 		public static IPacket_37_ListUser CreatePacket37ListUser() => slaveFactory.CreatePacket37ListUser();
 		public static IPacket_38_QueryAirstate CreatePacket38QueryAirstate() => slaveFactory.CreatePacket38QueryAirstate();
 		public static IPacket_39_WeaponsOption CreatePacket39WeaponsOption() => slaveFactory.CreatePacket39WeaponsOption();
+		public static IPacket_40_AirTurretState CreatePacket40AirTurretState() => slaveFactory.CreatePacket40AirTurretState();
 		public static IPacket_41_UsernameDistance CreatePacket41UsernameDistance() => slaveFactory.CreatePacket41UsernameDistance();
+		public static IPacket_42_ConfirmExistence CreatePacket42ConfirmExistence() => slaveFactory.CreatePacket42ConfirmExistence();
 		public static IPacket_43_ServerCommand CreatePacket43ServerCommand() => slaveFactory.CreatePacket43ServerCommand();
 		public static IPacket_44_AircraftList CreatePacket44AircraftList() => slaveFactory.CreatePacket44AircraftList();
 		public static IPacket_45_GroundCommand CreatePacket45GroundCommand() => slaveFactory.CreatePacket45GroundCommand();
+		public static IPacket_46_ReportScore CreatePacket46ReportScore() => slaveFactory.CreatePacket46ReportScore();
 		public static IPacket_47_ForceJoin CreatePacket47ForceJoin() => slaveFactory.CreatePacket47ForceJoin();
 		public static IPacket_48_FogColor CreatePacket48FogColor() => slaveFactory.CreatePacket48FogColor();
 		public static IPacket_49_SkyColor CreatePacket49SkyColor() => slaveFactory.CreatePacket49SkyColor();
 		public static IPacket_50_GroundColor CreatePacket50GroundColor() => slaveFactory.CreatePacket50GroundColor();
+		public static IPacket_64_UserPacket CreatePacket64UserPacket() => slaveFactory.CreatePacket64UserPacket();
 
 		//PacketProcessor
 
