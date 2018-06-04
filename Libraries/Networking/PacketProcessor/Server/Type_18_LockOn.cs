@@ -10,7 +10,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_18_LockOn(IConnection thisConnection, IPacket_18_LockOn packet)
 			{
-				throw new NotImplementedException();
+				Connections.LoggedIn.Exclude(thisConnection).SendAsync(packet).ConfigureAwait(false);
+				return true;
 			}
 		}
 	}

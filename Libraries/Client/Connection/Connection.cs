@@ -849,7 +849,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (Exception e)
 			{
 				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-				this.SendMessageAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
+				this.SendMessageAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
 			}
 		}
 		#endregion

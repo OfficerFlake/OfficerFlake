@@ -57,7 +57,21 @@
   <ItemGroup>
     <Compile Include="GenericPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type_14_RequestTestAirplane.cs" />
+    <Compile Include="Type_64_UserPacket.cs" />
+    <Compile Include="Type_46_ReportScore.cs" />
+    <Compile Include="Type_42_ConfirmExistence.cs" />
+    <Compile Include="Type_40_AirTurretState.cs" />
+    <Compile Include="Type_34_NeedResendJoinApproval.cs" />
+    <Compile Include="Type_28_ResendGroundRequest.cs" />
+    <Compile Include="Type_27_ResendAirRequest.cs" />
+    <Compile Include="Type_26_AssignSideWindow.cs" />
+    <Compile Include="Type_25_RequestToBeSideWindowOfServer.cs" />
+    <Compile Include="Type_24_SetTestAutoPilot.cs" />
+    <Compile Include="Type_23_GroundTurretState.cs" />
+    <Compile Include="Type_15_KillServer.cs" />
     <Compile Include="Type_03_Error.cs" />
+    <Compile Include="Type_02_Logoff.cs" />
     <Compile Include="Type_32_ServerMessage.cs" />
     <Compile Include="Type_38_QueryAirstate.cs" />
     <Compile Include="Type_22_Damage.cs" />
