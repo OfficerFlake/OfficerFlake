@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenYSAutoLoginService")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSAuthenticator")]
+[assembly: AssemblyDescription("System Tray application for authenticating users with YSFHQ automatically.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("OpenYSAutoLoginService")]
+[assembly: AssemblyProduct("OpenYSAuthenticator")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

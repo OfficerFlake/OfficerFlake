@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SlaveObjectFactory")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSObjectFactory")]
+[assembly: AssemblyDescription("The common interface that all OpenYS components use to interact with each other.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SlaveObjectFactory")]
+[assembly: AssemblyProduct("OpenYSObjectFactory")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

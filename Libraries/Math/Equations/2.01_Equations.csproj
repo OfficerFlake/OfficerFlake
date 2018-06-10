@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}</ProjectGuid>
+    <ProjectGuid>{9D0D870C-93E5-4BAA-8387-200A0CC2395D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SlaveObjectFactory</RootNamespace>
-    <AssemblyName>SlaveObjectFactory</AssemblyName>
+    <RootNamespace>OpenYSEquations</RootNamespace>
+    <AssemblyName>OpenYSEquations</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -53,29 +56,45 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SlaveObjectFactory-Linking.cs" />
-    <Compile Include="SlaveObjectFactory-Variables.cs" />
-    <Compile Include="SlaveObjectFactory-Access.cs" />
-    <Compile Include="DefaultObjectFactory.cs" />
+    <Compile Include="Equations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Libararies\IO\Logger\1.01_Logger.csproj">
+    <ProjectReference Include="..\..\..\Libararies\IO\Logger\1.03_Loggers.csproj">
       <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
-      <Name>1.01_Logger</Name>
+      <Name>1.03_Loggers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\ExceptionHandling\1.02_ExceptionHandling.csproj">
+    <ProjectReference Include="..\..\..\Library\Interfaces\1.02_Interfaces.csproj">
+      <Project>{60286C68-AB78-4F34-8199-E8CF255AB284}</Project>
+      <Name>1.02_Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SlaveObjectFactory\1.06_ObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ExceptionHandling\1.04_ExceptionHandling.csproj">
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
-      <Name>1.02_ExceptionHandling</Name>
+      <Name>1.04_ExceptionHandling</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\IO\1.03_FileIO.csproj">
+    <ProjectReference Include="..\..\Extensions\1.07_Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>1.07_Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IO\1.05_FileIO.csproj">
       <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
-      <Name>1.03_FileIO</Name>
+      <Name>1.05_FileIO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library\Interfaces\1.00__Interfaces.csproj">
-      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
-      <Name>1.00__Interfaces</Name>
+    <ProjectReference Include="..\..\Settings\1.08_Settings.csproj">
+      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
+      <Name>1.08_Settings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

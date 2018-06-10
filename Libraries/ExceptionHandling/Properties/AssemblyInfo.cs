@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ExceptionHandling")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSExceptionHandling")]
+[assembly: AssemblyDescription("A common class library for handling how certain errors in OpenYS should be handled.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExceptionHandling")]
+[assembly: AssemblyProduct("OpenYSExceptionHandling")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

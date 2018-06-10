@@ -46,7 +46,7 @@ namespace Com.OfficerFlake.Libraries
 			//No objects to create in interfaces!
 			#endregion
 
-			//UNITS
+			//COMPONENTS
 			#region Colors
 			//Colors
 			public ISimpleColor CreateSimpleColor(IColor color, char colorCode) => new SimpleColor(color, colorCode);

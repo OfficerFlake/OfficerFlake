@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.Math.Statistics")]
+[assembly: AssemblyTitle("OpenYSStatistics")]
 [assembly: AssemblyDescription("A class library for working with statistical analysis")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.Math.Statistics")]
+[assembly: AssemblyProduct("OpenYSStatistics")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

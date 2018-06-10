@@ -9,104 +9,104 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Executables", "Executables"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{393342B8-3254-4C91-A4AB-7D80E569A552}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_UserInterfaces", "2.00_UserInterfaces", "{B85F99E4-3F77-4828-80C1-DE0099CD5E28}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_UserInterfaces", "2.01_UserInterfaces", "{B85F99E4-3F77-4828-80C1-DE0099CD5E28}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_UnitsOfMeasurement", "2.00_UnitsOfMeasurement", "{78D66966-73BA-4B16-B452-52C712FC8F9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_UnitsOfMeasurement", "2.01_UnitsOfMeasurement", "{78D66966-73BA-4B16-B452-52C712FC8F9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_UnitsOfMeasurement", "Libraries\UnitsOfMeasurement\2.00_UnitsOfMeasurement.csproj", "{BEB82D31-C638-420B-B388-F79D599F2A3F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_UnitsOfMeasurement", "Libraries\UnitsOfMeasurement\2.01_UnitsOfMeasurement.csproj", "{BEB82D31-C638-420B-B388-F79D599F2A3F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_YSFlight", "2.00_YSFlight", "{8C3FA163-8EBA-46C3-85BE-64EB21701353}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_YSFlight", "2.01_YSFlight", "{8C3FA163-8EBA-46C3-85BE-64EB21701353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_YSTypes", "Libraries\YSFlight\YSTypes\2.00_YSTypes.csproj", "{9377B52B-3CD6-4EDD-AA19-1C1AE0CC59A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_YSTypes", "Libraries\YSFlight\YSTypes\2.01_YSTypes.csproj", "{9377B52B-3CD6-4EDD-AA19-1C1AE0CC59A0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{B0E7687E-B54C-429E-BDEF-473C12A1E2EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Statistics", "Libraries\Math\Statistics\2.00_Statistics.csproj", "{24009F81-9D6A-48D7-B8D1-EBB599A4D260}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Statistics", "Libraries\Math\Statistics\2.01_Statistics.csproj", "{24009F81-9D6A-48D7-B8D1-EBB599A4D260}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_Math", "2.00_Math", "{11174DE1-0026-4E4E-9CF7-57476F7121E9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Math", "2.01_Math", "{11174DE1-0026-4E4E-9CF7-57476F7121E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Equations", "Libraries\Math\Equations\2.00_Equations.csproj", "{9D0D870C-93E5-4BAA-8387-200A0CC2395D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Equations", "Libraries\Math\Equations\2.01_Equations.csproj", "{9D0D870C-93E5-4BAA-8387-200A0CC2395D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.05_Extensions", "1.05_Extensions", "{904C8082-1AA0-48AB-ADD3-51A0D69E0278}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.07_Extensions", "1.07_Extensions", "{904C8082-1AA0-48AB-ADD3-51A0D69E0278}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.03_FileIO", "1.03_FileIO", "{B03110EC-C35D-4C63-A911-99B152854A0D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.05_InputOutput", "1.05_InputOutput", "{B03110EC-C35D-4C63-A911-99B152854A0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.05_Extensions", "Libraries\Extensions\1.05_Extensions.csproj", "{BB8DD7CB-3E53-4E98-907E-115AD4FADFB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.07_Extensions", "Libraries\Extensions\1.07_Extensions.csproj", "{BB8DD7CB-3E53-4E98-907E-115AD4FADFB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.03_FileIO", "Libraries\IO\1.03_FileIO.csproj", "{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.05_FileIO", "Libraries\IO\1.05_FileIO.csproj", "{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_CoordinateSystems", "Libraries\Math\CoordinateSystems\2.00_CoordinateSystems.csproj", "{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_CoordinateSystems", "Libraries\Math\CoordinateSystems\2.01_CoordinateSystems.csproj", "{714AA2CD-08CB-4610-AE53-FA7994D8A0A2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_RichText", "2.00_RichText", "{121A9A3E-3D2B-4335-BA07-92C54C41230C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_RichText", "2.01_RichText", "{121A9A3E-3D2B-4335-BA07-92C54C41230C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_Color", "2.00_Color", "{312948DC-3326-4FEE-B93F-3DE8AA021093}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Color", "2.01_Color", "{312948DC-3326-4FEE-B93F-3DE8AA021093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Color", "Libraries\Color\2.00_Color.csproj", "{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Color", "Libraries\Color\2.01_Color.csproj", "{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_Databases", "2.00_Databases", "{FE19A8F9-0921-45DB-A776-7F35033041E7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Database", "2.01_Database", "{FE19A8F9-0921-45DB-A776-7F35033041E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_RichTextMessage", "Libraries\RichText\RichTextMessage\2.00_RichTextMessage.csproj", "{CFA4AA58-B4D0-4B19-AF9D-D18780528320}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_RichTextMessage", "Libraries\RichText\RichTextMessage\2.01_RichTextMessage.csproj", "{CFA4AA58-B4D0-4B19-AF9D-D18780528320}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_RichTextString", "Libraries\RichText\RichTextString\2.00_RichTextString.csproj", "{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_RichTextString", "Libraries\RichText\RichTextString\2.01_RichTextString.csproj", "{6A513941-EF4E-46A6-92AA-85ACE6DF2B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_YSFHQ", "Libraries\Databases\YSFHQ\2.00_YSFHQ.csproj", "{9AF66488-66D0-4BFE-96C7-B436E3733480}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_YSFHQ", "Libraries\Databases\YSFHQ\2.01_YSFHQ.csproj", "{9AF66488-66D0-4BFE-96C7-B436E3733480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Database", "Libraries\Databases\2.00_Database.csproj", "{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Database", "Libraries\Databases\2.01_Database.csproj", "{B82B5787-1D0E-4EC2-88F9-2C5359DF7E31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_DATFile", "Libraries\YSFlight\Files\DATFile\2.00_DATFile.csproj", "{183CC3FE-296E-4518-82E3-AD59B6D092B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_DATFile", "Libraries\YSFlight\Files\DATFile\2.01_DATFile.csproj", "{183CC3FE-296E-4518-82E3-AD59B6D092B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_LSTFile", "Libraries\YSFlight\Files\LSTFile\2.00_LSTFile.csproj", "{1AA42ED0-FE51-4F6F-893D-0833CCFD9D5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_LSTFile", "Libraries\YSFlight\Files\LSTFile\2.01_LSTFile.csproj", "{1AA42ED0-FE51-4F6F-893D-0833CCFD9D5A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_Icons", "2.00_Icons", "{513F2903-0CE9-4C65-9D18-869FAD97366A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Icons", "2.01_Icons", "{513F2903-0CE9-4C65-9D18-869FAD97366A}"
 	ProjectSection(SolutionItems) = preProject
 		Libraries\Icons\2.00_OfficerFlake.ico = Libraries\Icons\2.00_OfficerFlake.ico
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0.00_EXE_OpenYSAuthenticator", "_Exectuables\OpenYSAutoLoginService\0.00_EXE_OpenYSAuthenticator.csproj", "{B72150DF-5378-4AD3-91EE-685885C43D60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Connection", "Libraries\Client\Connection\2.00_Connection.csproj", "{E3529CF0-4AD1-494B-8BBC-B313CB608A79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Connection", "Libraries\Client\Connection\2.01_Connection.csproj", "{E3529CF0-4AD1-494B-8BBC-B313CB608A79}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.00_Networking", "2.00_Networking", "{49C7C96E-F161-4278-9846-685F5DB44CAC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Networking", "2.01_Networking", "{49C7C96E-F161-4278-9846-685F5DB44CAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Packets", "Libraries\Networking\Packets\2.00_Packets.csproj", "{EAD62E25-6A74-432A-801C-4A5C79FC9176}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Packets", "Libraries\Networking\Packets\2.01_Packets.csproj", "{EAD62E25-6A74-432A-801C-4A5C79FC9176}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Metadata", "Libraries\YSFlight\Metadata\2.00_Metadata.csproj", "{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Metadata", "Libraries\YSFlight\Metadata\2.01_Metadata.csproj", "{1E6CEF24-35CE-42E0-BD97-9D27EB93ED46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_World", "Libraries\YSFlight\World\2.00_World.csproj", "{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_World", "Libraries\YSFlight\World\2.01_World.csproj", "{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_Server", "Libraries\Networking\Server\2.00_Server.csproj", "{30F0E352-9FCD-46DA-8503-7137D1001A0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_Server", "Libraries\Networking\Server\2.01_Server.csproj", "{30F0E352-9FCD-46DA-8503-7137D1001A0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_PacketProcessor", "Libraries\Networking\PacketProcessor\2.00_PacketProcessor.csproj", "{4825E8AF-F859-47E0-A1BB-C936604C72EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_PacketProcessor", "Libraries\Networking\PacketProcessor\2.01_PacketProcessor.csproj", "{4825E8AF-F859-47E0-A1BB-C936604C72EF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.06_Settings", "1.06_Settings", "{30FBF19A-9C05-4C25-A774-B81D431DD80C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.08_Settings", "1.08_Settings", "{30FBF19A-9C05-4C25-A774-B81D431DD80C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.06_Settings", "Libraries\Settings\1.06_Settings.csproj", "{04BE1922-5B80-40DF-8B36-1F512A52BE70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.08_Settings", "Libraries\Settings\1.08_Settings.csproj", "{04BE1922-5B80-40DF-8B36-1F512A52BE70}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.00_Interfaces", "1.00_Interfaces", "{2645CB3B-B051-4242-BCF3-FCFC3AD4FBC2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.02_Interfaces", "1.02_Interfaces", "{2645CB3B-B051-4242-BCF3-FCFC3AD4FBC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.00__Interfaces", "Library\Interfaces\1.00__Interfaces.csproj", "{60286C68-AB78-4F34-8199-E8CF255AB284}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.02_Interfaces", "Library\Interfaces\1.02_Interfaces.csproj", "{60286C68-AB78-4F34-8199-E8CF255AB284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.01_Logger", "Libararies\IO\Logger\1.01_Logger.csproj", "{F1CA4A7F-8272-4D8E-8569-4D72E55F314B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.03_Loggers", "Libararies\IO\Logger\1.03_Loggers.csproj", "{F1CA4A7F-8272-4D8E-8569-4D72E55F314B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.01_Logger", "1.01_Logger", "{0AA90E5B-9078-4C8A-8FD6-4D71CFEE88A7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.03_Loggers", "1.03_Loggers", "{0AA90E5B-9078-4C8A-8FD6-4D71CFEE88A7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.02_ExceptionHandling", "1.02_ExceptionHandling", "{752E1E80-4B98-408F-8D0D-9D9736B5B43E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.04_ExceptionHandlers", "1.04_ExceptionHandlers", "{752E1E80-4B98-408F-8D0D-9D9736B5B43E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.02_ExceptionHandling", "Libraries\ExceptionHandling\1.02_ExceptionHandling.csproj", "{091E7A9F-085E-427A-8679-07C1E4490D7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.04_ExceptionHandling", "Libraries\ExceptionHandling\1.04_ExceptionHandling.csproj", "{091E7A9F-085E-427A-8679-07C1E4490D7B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_MasterObjectFactory", "3_MasterObjectFactory", "{D2A955B0-266F-48DE-A686-D479CB944D9C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3_Master", "3_Master", "{D2A955B0-266F-48DE-A686-D479CB944D9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.00_MasterObjectFactory", "Libraries\MasterObjectFactory\3.00_MasterObjectFactory.csproj", "{E61ADA91-5CB8-49B1-9418-FB353FF5CB7E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.04_SlaveObjectFactory", "1.04_SlaveObjectFactory", "{FEB42109-5C5B-41B5-8B0A-AD6CFB25AA97}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.06_ObjectFactory", "1.06_ObjectFactory", "{FEB42109-5C5B-41B5-8B0A-AD6CFB25AA97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.04_SlaveObjectFactory", "SlaveObjectFactory\1.04_SlaveObjectFactory.csproj", "{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.06_ObjectFactory", "SlaveObjectFactory\1.06_ObjectFactory.csproj", "{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_Components", "2_Components", "{65AF4794-AADD-4029-B4A3-EFAA1FE0F2FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1_Core", "1_Core", "{34A02763-5FCF-4D80-AC04-51C2B5B9E8AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.00_UserInterfaces", "Libraries\UserInterfacesWPF\2.00_UserInterfaces.csproj", "{87C6C663-15BE-4C3F-84EE-2A5A861FE022}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_UserInterfaces", "Libraries\UserInterfacesWPF\2.01_UserInterfaces.csproj", "{87C6C663-15BE-4C3F-84EE-2A5A861FE022}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0.00_EXE_OpenYSProxy", "ConsoleApp1\0.00_EXE_OpenYSProxy.csproj", "{469D3811-5F93-4EF8-AE8F-230731F34194}"
 EndProject
@@ -115,6 +115,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.00_MasterObjectFactory", "3.00_MasterObjectFactory", "{6D200111-B4C2-4A66-9F10-0DEE51E3CDBC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_Executables", "0_Executables", "{093C7C0C-F64D-4480-B602-F050201CC65B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.01_BuildEnvironment", "1.01_BuildEnvironment", "{9653CA2C-ED6E-479F-8C84-E5C8029404D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -430,6 +432,7 @@ Global
 		{D149ABCF-FED0-4B77-B2E9-14AE293F586A} = {093C7C0C-F64D-4480-B602-F050201CC65B}
 		{6D200111-B4C2-4A66-9F10-0DEE51E3CDBC} = {D2A955B0-266F-48DE-A686-D479CB944D9C}
 		{093C7C0C-F64D-4480-B602-F050201CC65B} = {26A80C4F-DCEB-4B4D-BB58-68A6551FF760}
+		{9653CA2C-ED6E-479F-8C84-E5C8029404D8} = {34A02763-5FCF-4D80-AC04-51C2B5B9E8AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

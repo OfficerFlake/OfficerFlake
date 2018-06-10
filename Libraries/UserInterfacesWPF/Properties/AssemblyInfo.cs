@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UserInterfaces")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSUserInterfaces")]
+[assembly: AssemblyDescription("A class library of multiple different WPF user interfaces used by OpenYS.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UserInterfaces")]
+[assembly: AssemblyProduct("OpenYSUserInterfaces")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -5,7 +5,7 @@
 		#region Linking
 		public static void LinkMasterFactory()
 		{
-			ObjectFactory.LinkSlaveFactory(masterFactory);
+			ObjectFactory.LinkObjectFactory(masterFactory);
 		}
 		#endregion
 	}

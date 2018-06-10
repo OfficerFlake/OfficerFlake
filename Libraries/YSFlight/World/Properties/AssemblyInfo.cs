@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("World")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSWorld")]
+[assembly: AssemblyDescription("Definitions and management of the current server world state - ground objects, aircraft positions etc.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("World")]
+[assembly: AssemblyProduct("OpenYSWorld")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

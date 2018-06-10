@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Connection")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSConnection")]
+[assembly: AssemblyDescription("A class libary for managing connections with YSFlight clients.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Connection")]
+[assembly: AssemblyProduct("OpenYSConnection")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

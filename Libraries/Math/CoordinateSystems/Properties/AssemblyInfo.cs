@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.Math.CoordinateSystems")]
+[assembly: AssemblyTitle("OpenYSCoordinateSystems")]
 [assembly: AssemblyDescription("A class library for managing Points and Vectors, and other mathematical constructs of this nature.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.Math.CoordinateSystems")]
+[assembly: AssemblyProduct("OpenYSCoordinateSystems")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

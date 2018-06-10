@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Packets")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSPackets")]
+[assembly: AssemblyDescription("Definitions of all the YSFlight Vanilla and User Definied packet types.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Packets")]
+[assembly: AssemblyProduct("OpenYSPackets")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

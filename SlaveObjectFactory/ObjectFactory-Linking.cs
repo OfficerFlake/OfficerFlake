@@ -5,9 +5,9 @@ namespace Com.OfficerFlake.Libraries
 	public static partial class ObjectFactory
 	{
 		#region Linking
-		public static void LinkSlaveFactory(IObjectFactory newFactory)
+		public static void LinkObjectFactory(IObjectFactory newFactory)
 		{
-			slaveFactory = newFactory;
+			objectFactory = newFactory;
 		}
 		#endregion
 	}

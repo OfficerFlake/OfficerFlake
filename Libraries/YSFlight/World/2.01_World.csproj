@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1CA4A7F-8272-4D8E-8569-4D72E55F314B}</ProjectGuid>
+    <ProjectGuid>{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logger</RootNamespace>
-    <AssemblyName>Logger</AssemblyName>
+    <RootNamespace>OpenYSWorld</RootNamespace>
+    <AssemblyName>OpenYSWorld</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -53,15 +55,37 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PacketInspector.cs" />
-    <Compile Include="Debug.cs" />
-    <Compile Include="Console.cs" />
+    <Compile Include="World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Library\Interfaces\1.00__Interfaces.csproj">
+    <ProjectReference Include="..\..\..\Libararies\IO\Logger\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\Interfaces\1.02_Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
-      <Name>1.00__Interfaces</Name>
+      <Name>1.02_Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SlaveObjectFactory\1.06_ObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ExceptionHandling\1.04_ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>1.04_ExceptionHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\1.07_Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>1.07_Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\IO\1.05_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>1.05_FileIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Settings\1.08_Settings.csproj">
+      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
+      <Name>1.08_Settings</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

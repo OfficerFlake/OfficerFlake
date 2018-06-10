@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Settings")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSSettings")]
+[assembly: AssemblyDescription("A class library for loading, saving, storing and interacting with program settings.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Settings")]
+[assembly: AssemblyProduct("OpenYSSettings")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

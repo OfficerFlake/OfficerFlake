@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.IO")]
-[assembly: AssemblyDescription("A class library for managing I/O streams.")]
+[assembly: AssemblyTitle("OpenYSFileIO")]
+[assembly: AssemblyDescription("A class library for managing file I/O streams.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.IO")]
+[assembly: AssemblyProduct("OpenYSFileIO")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

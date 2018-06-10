@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Com.OfficerFlake.Libraries.Extensions")]
-[assembly: AssemblyDescription("A class library for extension methods.")]
+[assembly: AssemblyTitle("OpenYSExtensions")]
+[assembly: AssemblyDescription("A class library for OpenYS extension methods.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Com.OfficerFlake.Libraries.Extensions")]
+[assembly: AssemblyProduct("OpenYSExtensions")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Logger")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OpenYSLoggers")]
+[assembly: AssemblyDescription("Logging of Errors, Messages, Information and anything else.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Logger")]
+[assembly: AssemblyProduct("OpenYSLoggers")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
