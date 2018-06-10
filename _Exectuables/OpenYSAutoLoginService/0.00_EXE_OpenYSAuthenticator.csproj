@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B72150DF-5378-4AD3-91EE-685885C43D60}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OpenYSAuthenticator</RootNamespace>
-    <AssemblyName>OpenYSAuthenticator</AssemblyName>
+    <RootNamespace>OpenYSAuthenticatorExecutable</RootNamespace>
+    <AssemblyName>OpenYSAuthenticatorExecutable</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -50,6 +50,12 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -98,6 +104,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OfficerFlake.snk" />
     <None Include="Resources\OpenYS.ico" />
   </ItemGroup>
   <ItemGroup>

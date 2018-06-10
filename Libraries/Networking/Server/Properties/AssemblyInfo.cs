@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenYSServer")]
+[assembly: AssemblyTitle("OpenYS Client Server")]
 [assembly: AssemblyDescription("The server connection interface for OpenYS, handles new connection requests and UDP")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("OpenYSServer")]
+[assembly: AssemblyProduct("OpenYS Client Server")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

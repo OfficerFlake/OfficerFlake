@@ -1,4 +1,4 @@
-﻿namespace OpenYSAuthenticator
+﻿namespace OpenYSAuthenticatorExecutable
 {
 	partial class AuthenticationForm
 	{

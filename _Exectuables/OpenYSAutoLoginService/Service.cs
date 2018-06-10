@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace OpenYSAuthenticator
+namespace OpenYSAuthenticatorExecutable
 {
 	public partial class YSFHQAuthenticationService : Form
 	{

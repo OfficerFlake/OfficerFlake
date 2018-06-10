@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Com.OfficerFlake.Libraries.YSFHQ;
 
-namespace OpenYSAuthenticator
+namespace OpenYSAuthenticatorExecutable
 {
 	public partial class AuthenticationForm : Form
 	{
