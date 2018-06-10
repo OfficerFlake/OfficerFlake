@@ -20,45 +20,45 @@ using Console = Com.OfficerFlake.Libraries.Logger.Console;
 using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
-namespace Com.OfficerFlake.Executables.Testing
+namespace Com.OfficerFlake.Executables.ProxyMode
 {
-    public static class Program
-    {
+	public static class Program
+	{
 		#region Start Program!
 		[STAThread]
-        public static void Main()
+		public static void Main()
 		{
 			//LoadAllDLLs();
 
 			Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+			Application.SetCompatibleTextRenderingDefault(false);
 
-	        AppDomain currentDomain = AppDomain.CurrentDomain;
-	        currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromLibrariesFolder);
+			AppDomain currentDomain = AppDomain.CurrentDomain;
+			currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromLibrariesFolder);
 
-	        LinkObjects();
+			LinkObjects();
 			MainProgram();
 
-        }
+		}
 		#endregion
 
-	    public static void LoadAllDLLs()
-	    {
-		    string[] files = Directory.GetFiles("./Libraries/", "*.dll").Select(Path.GetFileNameWithoutExtension).ToArray();
-		    foreach (string thisfile in files)
-		    {
-			    try
-			    {
-				    byte[] DLLBytes = File.ReadAllBytes("./Libraries/" + thisfile + ".DLL");
-				    byte[] PDBBytes = File.ReadAllBytes("./ProgramDebugSymbols/" + thisfile + ".PDB");
-				    Assembly.Load(DLLBytes, PDBBytes);
-			    }
-			    catch
-			    {
-				    int i = 0;
-			    }
-		    }
-	    }
+		public static void LoadAllDLLs()
+		{
+			string[] files = Directory.GetFiles("./Libraries/", "*.dll").Select(Path.GetFileNameWithoutExtension).ToArray();
+			foreach (string thisfile in files)
+			{
+				try
+				{
+					byte[] DLLBytes = File.ReadAllBytes("./Libraries/" + thisfile + ".DLL");
+					byte[] PDBBytes = File.ReadAllBytes("./ProgramDebugSymbols/" + thisfile + ".PDB");
+					Assembly.Load(DLLBytes, PDBBytes);
+				}
+				catch
+				{
+					int i = 0;
+				}
+			}
+		}
 		#region LoadFromLibrariesFolder
 		private static Assembly LoadFromLibrariesFolder(object sender, ResolveEventArgs args)
 		{
@@ -102,7 +102,7 @@ namespace Com.OfficerFlake.Executables.Testing
 					#endregion
 					#region Found it!
 					if (currentIterationAssemblyName == desiredAssemblyName)
-					{             
+					{
 						assemblyFileameWithoutExtension = args.Name.Substring(0, args.Name.IndexOf(","));
 						break;
 					}
@@ -163,25 +163,25 @@ namespace Com.OfficerFlake.Executables.Testing
 		#endregion
 		#region Link Objects
 		private static void LinkObjects()
-	    {
+		{
 			#region Link Objects Together
-		    #region LINK FACTORY FIRST!
-		    MasterObjectFactory.LinkMasterFactory();
-		    #endregion
-		    #region Link Interacting Components
-		    Connection.SetPacketProcessor(PacketProcessor.Server.Process);
-		    #endregion
-		    #region LINK UI LAST!
+			#region LINK FACTORY FIRST!
+			MasterObjectFactory.LinkMasterFactory();
+			#endregion
+			#region Link Interacting Components
+			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
+			#endregion
+			#region LINK UI LAST!
 			UserInterface.Initialise();
-		    OpenYSServerModeUserInterface.CreateWindow();
-		    OpenYSPacketInspectorUserInterface.CreateWindow();
-		    OpenYSPacketInspectorUserInterface.LinkPacketInspector();
+			OpenYSServerModeUserInterface.CreateWindow();
+			OpenYSPacketInspectorUserInterface.CreateWindow();
+			OpenYSPacketInspectorUserInterface.LinkPacketInspector();
 			OpenYSServerModeUserInterface.LinkDebug();
-		    OpenYSServerModeUserInterface.LinkConsole();
-		    #endregion
-		    OpenYSServerModeUserInterface.Show();
+			OpenYSServerModeUserInterface.LinkConsole();
+			#endregion
+			OpenYSServerModeUserInterface.Show();
 			OpenYSPacketInspectorUserInterface.Show();
-		    #endregion
+			#endregion
 		}
 		#endregion
 		#region Run Server

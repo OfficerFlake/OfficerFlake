@@ -132,7 +132,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Prepare Acknolwedgement Reponse.
-				IPacket_06_Acknowledgement AcknowledgeJoin;
 				IPacketWaiter PacketWaiter_AcknowledgeJoinPacket = thisConnection.CreatePacketWaiter(6);
 				if (EntityJoined.VehicleType == Packet_05VehicleType.Aircraft)
 				{
