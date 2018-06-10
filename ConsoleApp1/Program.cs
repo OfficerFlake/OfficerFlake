@@ -20,7 +20,7 @@ using Console = Com.OfficerFlake.Libraries.Logger.Console;
 using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
-namespace Com.OfficerFlake.Executables.Testing
+namespace Com.OfficerFlake.Executables.ProxyMode
 {
 	public static class Program
 	{

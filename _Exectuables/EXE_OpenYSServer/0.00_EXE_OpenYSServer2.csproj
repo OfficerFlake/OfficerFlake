@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D149ABCF-FED0-4B77-B2E9-14AE293F586A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OpenYSServerExecutable2</RootNamespace>
+    <RootNamespace>OpenYSServerExecutable5</RootNamespace>
     <AssemblyName>OpenYS Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -92,7 +92,14 @@
     <ManifestKeyFile>0.00_EXE_OpenYSServer_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -237,6 +244,7 @@
   <ItemGroup>
     <Content Include="OfficerFlake.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY  *.DLL .\Libraries\  /Y
