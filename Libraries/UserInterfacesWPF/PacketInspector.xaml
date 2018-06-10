@@ -33,7 +33,7 @@
 						  SelectionChanged="ClientSelector_OnSelectionChanged">
 					<ComboBoxItem HorizontalAlignment="Center"
 								  IsSelected="True">
-						None
+						All
 					</ComboBoxItem>
 				</ComboBox>
 			</StackPanel>

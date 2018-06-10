@@ -65,7 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Library\Interfaces\1.02_Interfaces.csproj">
+    <ProjectReference Include="..\..\Library\Interfaces\1.02_Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>1.02_Interfaces</Name>
     </ProjectReference>

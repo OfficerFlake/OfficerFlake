@@ -117,10 +117,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libararies\IO\Logger\1.03_Loggers.csproj">
-      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
-      <Name>1.03_Loggers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\Client\Connection\2.01_Connection.csproj">
       <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
       <Name>2.01_Connection</Name>
@@ -224,6 +220,10 @@
     <ProjectReference Include="..\..\SlaveObjectFactory\1.06_ObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
       <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1.03_Loggers\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

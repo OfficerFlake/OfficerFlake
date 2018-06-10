@@ -250,12 +250,14 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		}
 		private void RefreshClientList()
 		{
+			int currentIndex = ClientSelector.SelectedIndex;
 			ClientSelector.Items.Clear();
+			ClientSelector.Items.Add("All");
 			foreach (IConnection thisConnection in Connections.AllConnections)
 			{
 				ClientSelector.Items.Add(thisConnection.User.UserName.ToUnformattedSystemString());
 			}
-			ClientSelector.Items.Add("All");
+			ClientSelector.SelectedIndex = currentIndex;
 		}
 
 		private void ClientSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

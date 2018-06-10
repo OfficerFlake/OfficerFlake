@@ -69,10 +69,6 @@
     <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libararies\IO\Logger\1.03_Loggers.csproj">
-      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
-      <Name>1.03_Loggers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\Interfaces\1.02_Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>1.02_Interfaces</Name>
@@ -80,6 +76,10 @@
     <ProjectReference Include="..\..\SlaveObjectFactory\1.06_ObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
       <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1.03_Loggers\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExceptionHandling\1.04_ExceptionHandling.csproj">
       <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
