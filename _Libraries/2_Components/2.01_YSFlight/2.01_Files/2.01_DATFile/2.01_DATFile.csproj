@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{183CC3FE-296E-4518-82E3-AD59B6D092B0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenYSDATFile</RootNamespace>
+    <AssemblyName>OpenYSDATFile</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Source\DAT_Types\DAT_Angle.cs" />
+    <Compile Include="Source\File.cs" />
+    <Compile Include="Source\Performance.cs" />
+    <Compile Include="Source\PropertyTypes.cs" />
+    <Compile Include="Source\Sorted\AAMSLOT_.cs" />
+    <Compile Include="Source\Sorted\AAMVISIB.cs" />
+    <Compile Include="Source\Sorted\AFTBURNR.cs" />
+    <Compile Include="Source\Sorted\AGMSLOT_.cs" />
+    <Compile Include="Source\Sorted\AGMVISIB.cs" />
+    <Compile Include="Source\Sorted\AIRCLASS.cs" />
+    <Compile Include="Source\Sorted\ARRESTER.cs" />
+    <Compile Include="Source\Sorted\ATTITUDE.cs" />
+    <Compile Include="Source\Sorted\AUTOCALC.cs" />
+    <Compile Include="Source\Sorted\BMBAYRCS.cs" />
+    <Compile Include="Source\Sorted\BOMBSLOT.cs" />
+    <Compile Include="Source\Sorted\BOMINBAY.cs" />
+    <Compile Include="Source\Sorted\BOMVISIB.cs" />
+    <Compile Include="Source\Sorted\CATEGORY.cs" />
+    <Compile Include="Source\Sorted\CDBYFLAP.cs" />
+    <Compile Include="Source\Sorted\CDBYGEAR.cs" />
+    <Compile Include="Source\Sorted\CDSPOILR.cs" />
+    <Compile Include="Source\Sorted\CDVARGEO.cs" />
+    <Compile Include="Source\Sorted\CKPITHUD.cs" />
+    <Compile Include="Source\Sorted\CKPITIST.cs" />
+    <Compile Include="Source\Sorted\CLBYFLAP.cs" />
+    <Compile Include="Source\Sorted\CLDECAY1.cs" />
+    <Compile Include="Source\Sorted\CLDECAY2.cs" />
+    <Compile Include="Source\Sorted\CLVARGEO.cs" />
+    <Compile Include="Source\Sorted\COCKPITA.cs" />
+    <Compile Include="Source\Sorted\COCKPITP.cs" />
+    <Compile Include="Source\Sorted\CPITMANE.cs" />
+    <Compile Include="Source\Sorted\CPITSTAB.cs" />
+    <Compile Include="Source\Sorted\CRITAOAM.cs" />
+    <Compile Include="Source\Sorted\CRITAOAP.cs" />
+    <Compile Include="Source\Sorted\CRITSPED.cs" />
+    <Compile Include="Source\Sorted\CROLLMAN.cs" />
+    <Compile Include="Source\Sorted\CTLABRNR.cs" />
+    <Compile Include="Source\Sorted\CTLATVGW.cs" />
+    <Compile Include="Source\Sorted\CTLBRAKE.cs" />
+    <Compile Include="Source\Sorted\CTLIFLAP.cs" />
+    <Compile Include="Source\Sorted\CTLINVGW.cs" />
+    <Compile Include="Source\Sorted\CTLLDGEA.cs" />
+    <Compile Include="Source\Sorted\CTLSPOIL.cs" />
+    <Compile Include="Source\Sorted\CTLTHROT.cs" />
+    <Compile Include="Source\Sorted\CYAWMANE.cs" />
+    <Compile Include="Source\Sorted\CYAWSTAB.cs" />
+    <Compile Include="Source\Sorted\EXCAMERA.cs" />
+    <Compile Include="Source\Sorted\FLAPPOSI.cs" />
+    <Compile Include="Source\Sorted\FLAREPOS.cs" />
+    <Compile Include="Source\Sorted\FLATCLR1.cs" />
+    <Compile Include="Source\Sorted\FLATCLR2.cs" />
+    <Compile Include="Source\Sorted\FUELABRN.cs" />
+    <Compile Include="Source\Sorted\FUELMILI.cs" />
+    <Compile Include="Source\Sorted\GEARHORN.cs" />
+    <Compile Include="Source\Sorted\GUNDIREC.cs" />
+    <Compile Include="Source\Sorted\GUNINTVL.cs" />
+    <Compile Include="Source\Sorted\GUNPOWER.cs" />
+    <Compile Include="Source\Sorted\GUNSIGHT.cs" />
+    <Compile Include="Source\Sorted\HASSPOIL.cs" />
+    <Compile Include="Source\Sorted\HRDPOINT.cs" />
+    <Compile Include="Source\Sorted\HTRADIUS.cs" />
+    <Compile Include="Source\Sorted\IDENTIFY.cs" />
+    <Compile Include="Source\Sorted\INITAAMM.cs" />
+    <Compile Include="Source\Sorted\INITBOMB.cs" />
+    <Compile Include="Source\Sorted\INITFUEL.cs" />
+    <Compile Include="Source\Sorted\INITIAAM.cs" />
+    <Compile Include="Source\Sorted\INITIAGM.cs" />
+    <Compile Include="Source\Sorted\INITIGUN.cs" />
+    <Compile Include="Source\Sorted\INITLOAD.cs" />
+    <Compile Include="Source\Sorted\INITRCKT.cs" />
+    <Compile Include="Source\Sorted\INITSPED.cs" />
+    <Compile Include="Source\Sorted\INSTPANL.cs" />
+    <Compile Include="Source\Sorted\ISPNLATT.cs" />
+    <Compile Include="Source\Sorted\ISPNLHUD.cs" />
+    <Compile Include="Source\Sorted\ISPNLPOS.cs" />
+    <Compile Include="Source\Sorted\ISPNLSCL.cs" />
+    <Compile Include="Source\Sorted\LEFTGEAR.cs" />
+    <Compile Include="Source\Sorted\LMTBYHDP.cs" />
+    <Compile Include="Source\Sorted\LOADWEPN.cs" />
+    <Compile Include="Source\Sorted\LOOKOFST.cs" />
+    <Compile Include="Source\Sorted\MACHNGN2.cs" />
+    <Compile Include="Source\Sorted\MACHNGN3.cs" />
+    <Compile Include="Source\Sorted\MACHNGN4.cs" />
+    <Compile Include="Source\Sorted\MACHNGN5.cs" />
+    <Compile Include="Source\Sorted\MACHNGN6.cs" />
+    <Compile Include="Source\Sorted\MACHNGN7.cs" />
+    <Compile Include="Source\Sorted\MACHNGN8.cs" />
+    <Compile Include="Source\Sorted\MACHNGUN.cs" />
+    <Compile Include="Source\Sorted\MANESPD1.cs" />
+    <Compile Include="Source\Sorted\MANESPD2.cs" />
+    <Compile Include="Source\Sorted\MAXCDAOA.cs" />
+    <Compile Include="Source\Sorted\MAXNAAMM.cs" />
+    <Compile Include="Source\Sorted\MAXNBOMB.cs" />
+    <Compile Include="Source\Sorted\MAXNMAAM.cs" />
+    <Compile Include="Source\Sorted\MAXNMAGM.cs" />
+    <Compile Include="Source\Sorted\MAXNMFLR .cs" />
+    <Compile Include="Source\Sorted\MAXNMRKT.cs" />
+    <Compile Include="Source\Sorted\MAXSPEED.cs" />
+    <Compile Include="Source\Sorted\MXIPTAOA.cs" />
+    <Compile Include="Source\Sorted\MXIPTROL.cs" />
+    <Compile Include="Source\Sorted\MXIPTSSA.cs" />
+    <Compile Include="Source\Sorted\NMTURRET.cs" />
+    <Compile Include="Source\Sorted\POSITION.cs" />
+    <Compile Include="Source\Sorted\PROPEFCY.cs" />
+    <Compile Include="Source\Sorted\PROPELLR.cs" />
+    <Compile Include="Source\Sorted\PROPVMIN.cs" />
+    <Compile Include="Source\Sorted\PSTMPTCH.cs" />
+    <Compile Include="Source\Sorted\PSTMPWR1.cs" />
+    <Compile Include="Source\Sorted\PSTMPWR2.cs" />
+    <Compile Include="Source\Sorted\PSTMROLL.cs" />
+    <Compile Include="Source\Sorted\PSTMSPD1.cs" />
+    <Compile Include="Source\Sorted\PSTMSPD2.cs" />
+    <Compile Include="Source\Sorted\PSTMYAW_.cs" />
+    <Compile Include="Source\Sorted\RADARCRS.cs" />
+    <Compile Include="Source\Sorted\REFACRUS.cs" />
+    <Compile Include="Source\Sorted\REFAOALD.cs" />
+    <Compile Include="Source\Sorted\REFLNRWY.cs" />
+    <Compile Include="Source\Sorted\REFTCRUS.cs" />
+    <Compile Include="Source\Sorted\REFTHRLD.cs" />
+    <Compile Include="Source\Sorted\REFVCRUS.cs" />
+    <Compile Include="Source\Sorted\REFVLAND.cs" />
+    <Compile Include="Source\Sorted\RETRGEAR.cs" />
+    <Compile Include="Source\Sorted\RIGHGEAR.cs" />
+    <Compile Include="Source\Sorted\RKTSLOT_.cs" />
+    <Compile Include="Source\Sorted\RKTVISIB.cs" />
+    <Compile Include="Source\Sorted\SCRNCNTR.cs" />
+    <Compile Include="Source\Sorted\SMOKECOL.cs" />
+    <Compile Include="Source\Sorted\SMOKEGEN.cs" />
+    <Compile Include="Source\Sorted\SMOKEOIL.cs" />
+    <Compile Include="Source\Sorted\STALHORN.cs" />
+    <Compile Include="Source\Sorted\STRENGTH.cs" />
+    <Compile Include="Source\Sorted\SUBSTNAM.cs" />
+    <Compile Include="Source\Unsorted\THRAFTBN.cs" />
+    <Compile Include="Source\Unsorted\THRMILIT.cs" />
+    <Compile Include="Source\Unsorted\THRSTREV.cs" />
+    <Compile Include="Source\Unsorted\TRIGGER1.cs" />
+    <Compile Include="Source\Unsorted\TRIGGER2.cs" />
+    <Compile Include="Source\Unsorted\TRIGGER3.cs" />
+    <Compile Include="Source\Unsorted\TRIGGER4.cs" />
+    <Compile Include="Source\Unsorted\TRSTDIR0.cs" />
+    <Compile Include="Source\Unsorted\TRSTDIR1.cs" />
+    <Compile Include="Source\Unsorted\TRSTVCTR.cs" />
+    <Compile Include="Source\Unsorted\TURRETAM.cs" />
+    <Compile Include="Source\Unsorted\TURRETAR.cs" />
+    <Compile Include="Source\Unsorted\TURRETCT.cs" />
+    <Compile Include="Source\Unsorted\TURRETGD.cs" />
+    <Compile Include="Source\Unsorted\TURRETHD.cs" />
+    <Compile Include="Source\Unsorted\TURRETIV.cs" />
+    <Compile Include="Source\Unsorted\TURRETNM.cs" />
+    <Compile Include="Source\Unsorted\TURRETPO.cs" />
+    <Compile Include="Source\Unsorted\TURRETPT.cs" />
+    <Compile Include="Source\Unsorted\TURRETRG.cs" />
+    <Compile Include="Source\Unsorted\VAPORPO0.cs" />
+    <Compile Include="Source\Unsorted\VAPORPO1.cs" />
+    <Compile Include="Source\Unsorted\VARGEOMW.cs" />
+    <Compile Include="Source\Unsorted\VGWSPED1.cs" />
+    <Compile Include="Source\Unsorted\VGWSPED2.cs" />
+    <Compile Include="Source\Unsorted\VRGMNOSE.cs" />
+    <Compile Include="Source\Unsorted\WEAPONCH.cs" />
+    <Compile Include="Source\Unsorted\WEIGFUEL.cs" />
+    <Compile Include="Source\Unsorted\WEIGHCLN.cs" />
+    <Compile Include="Source\Unsorted\WEIGLOAD.cs" />
+    <Compile Include="Source\Unsorted\WHELGEAR.cs" />
+    <Compile Include="Source\Unsorted\WINGAREA.cs" />
+    <Compile Include="Source\Unsorted\WPNSHAPE.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\1_Core\1.03_Loggers\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\1_Core\1.02_Interfaces\1.02_Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>1.02_Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\1_Core\1.06_ObjectFactory\1.06_ObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\1_Core\1.04_ExceptionHandling\1.04_ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>1.04_ExceptionHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\1_Core\1.07_Extensions\1.07_Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>1.07_Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\1_Core\1.05_FileIO\1.05_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>1.05_FileIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Settings\1.08_Settings.csproj">
+      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
+      <Name>1.08_Settings</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

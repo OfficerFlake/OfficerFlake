@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{22BB1D14-86FD-4192-91A4-BF762A35BF85}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenYSSettings</RootNamespace>
+    <AssemblyName>OpenYSSettings</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PropertyChanged, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\PropertyChanged.Fody.2.2.5\lib\net452\PropertyChanged.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\SettingsContainer.cs" />
+    <Compile Include="Source\SettingsFile.cs" />
+    <Compile Include="Source\SettingsHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OfficerFlake.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\1.02_Interfaces\1.02_Interfaces.csproj">
+      <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
+      <Name>1.02_Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\1.03_Loggers\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\1.04_ExceptionHandling\1.04_ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>1.04_ExceptionHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\1.05_FileIO\1.05_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>1.05_FileIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\1.06_ObjectFactory\1.06_ObjectFactory.csproj">
+      <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
+      <Name>1.06_ObjectFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\1.07_Extensions\1.07_Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>1.07_Extensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\packages\Fody.2.4.1\build\Fody.targets" Condition="Exists('..\..\..\packages\Fody.2.4.1\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Fody.2.4.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Fody.2.4.1\build\Fody.targets'))" />
+  </Target>
+</Project>

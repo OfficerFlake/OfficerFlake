@@ -117,109 +117,117 @@
     <None Include="Resources\Shield_Unknown.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Client\Connection\2.01_Connection.csproj">
-      <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
-      <Name>2.01_Connection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Color\2.01_Color.csproj">
-      <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
-      <Name>2.01_Color</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Databases\2.01_Database.csproj">
-      <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
-      <Name>2.01_Database</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Databases\YSFHQ\2.01_YSFHQ.csproj">
-      <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
-      <Name>2.01_YSFHQ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\ExceptionHandling\1.04_ExceptionHandling.csproj">
-      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
-      <Name>1.04_ExceptionHandling</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Extensions\1.07_Extensions.csproj">
-      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
-      <Name>1.07_Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\IO\1.05_FileIO.csproj">
-      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
-      <Name>1.05_FileIO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\MasterObjectFactory\3.00_MasterObjectFactory.csproj">
-      <Project>{e61ada91-5cb8-49b1-9418-fb353ff5cb7e}</Project>
-      <Name>3.00_MasterObjectFactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Math\CoordinateSystems\2.01_CoordinateSystems.csproj">
-      <Project>{714aa2cd-08cb-4610-ae53-fa7994d8a0a2}</Project>
-      <Name>2.01_CoordinateSystems</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Math\Equations\2.01_Equations.csproj">
-      <Project>{9d0d870c-93e5-4baa-8387-200a0cc2395d}</Project>
-      <Name>2.01_Equations</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Math\Statistics\2.01_Statistics.csproj">
-      <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
-      <Name>2.01_Statistics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Networking\PacketProcessor\2.01_PacketProcessor.csproj">
-      <Project>{4825e8af-f859-47e0-a1bb-c936604c72ef}</Project>
-      <Name>2.01_PacketProcessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Networking\Packets\2.01_Packets.csproj">
-      <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
-      <Name>2.01_Packets</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Networking\Server\2.01_Server.csproj">
-      <Project>{30f0e352-9fcd-46da-8503-7137d1001a0c}</Project>
-      <Name>2.01_Server</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\RichText\RichTextMessage\2.01_RichTextMessage.csproj">
-      <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
-      <Name>2.01_RichTextMessage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\RichText\RichTextString\2.01_RichTextString.csproj">
-      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
-      <Name>2.01_RichTextString</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\Settings\1.08_Settings.csproj">
-      <Project>{04be1922-5b80-40df-8b36-1f512a52be70}</Project>
-      <Name>1.08_Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\UnitsOfMeasurement\2.01_UnitsOfMeasurement.csproj">
-      <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
-      <Name>2.01_UnitsOfMeasurement</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\Files\DATFile\2.01_DATFile.csproj">
-      <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
-      <Name>2.01_DATFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\Files\LSTFile\2.01_LSTFile.csproj">
-      <Project>{1aa42ed0-fe51-4f6f-893d-0833ccfd9d5a}</Project>
-      <Name>2.01_LSTFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\Metadata\2.01_Metadata.csproj">
-      <Project>{1e6cef24-35ce-42e0-bd97-9d27eb93ed46}</Project>
-      <Name>2.01_Metadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\World\2.01_World.csproj">
-      <Project>{3460e682-d1fe-4ce5-8134-168b9c1d8fec}</Project>
-      <Name>2.01_World</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\YSFlight\YSTypes\2.01_YSTypes.csproj">
-      <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
-      <Name>2.01_YSTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Library\Interfaces\1.02_Interfaces.csproj">
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.02_Interfaces\1.02_Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>1.02_Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SlaveObjectFactory\1.06_ObjectFactory.csproj">
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.03_Loggers\1.03_Loggers.csproj">
+      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
+      <Name>1.03_Loggers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.04_ExceptionHandling\1.04_ExceptionHandling.csproj">
+      <Project>{091e7a9f-085e-427a-8679-07c1e4490d7b}</Project>
+      <Name>1.04_ExceptionHandling</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.05_FileIO\1.05_FileIO.csproj">
+      <Project>{eb3f7295-fea3-4ec4-be07-c9ee2dd776e8}</Project>
+      <Name>1.05_FileIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.06_ObjectFactory\1.06_ObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
       <Name>1.06_ObjectFactory</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\_Libraries\1.03_Loggers\1.03_Loggers.csproj">
-      <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
-      <Name>1.03_Loggers</Name>
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.07_Extensions\1.07_Extensions.csproj">
+      <Project>{bb8dd7cb-3e53-4e98-907e-115ad4fadfb5}</Project>
+      <Name>1.07_Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\1_Core\1.08_Settings\1.08_Settings.csproj">
+      <Project>{22bb1d14-86fd-4192-91a4-bf762a35bf85}</Project>
+      <Name>1.08_Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Color\2.01_Color.csproj">
+      <Project>{9e97a54f-d837-4b90-b1a0-48f1abfe1f6b}</Project>
+      <Name>2.01_Color</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Databases\2.01_Database\2.01_Database.csproj">
+      <Project>{b82b5787-1d0e-4ec2-88f9-2c5359df7e31}</Project>
+      <Name>2.01_Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Databases\2.01_Permissions\2.01_Permissions.csproj">
+      <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
+      <Name>2.01_Permissions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Databases\2.01_YSFHQ\2.01_YSFHQ.csproj">
+      <Project>{9af66488-66d0-4bfe-96c7-b436e3733480}</Project>
+      <Name>2.01_YSFHQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Math\2.01_CoordinateSystems\2.01_CoordinateSystems.csproj">
+      <Project>{714aa2cd-08cb-4610-ae53-fa7994d8a0a2}</Project>
+      <Name>2.01_CoordinateSystems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Math\2.01_Equations\2.01_Equations.csproj">
+      <Project>{9d0d870c-93e5-4baa-8387-200a0cc2395d}</Project>
+      <Name>2.01_Equations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Math\2.01_Statistics\2.01_Statistics.csproj">
+      <Project>{24009f81-9d6a-48d7-b8d1-ebb599a4d260}</Project>
+      <Name>2.01_Statistics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Networking\2.01_Connection\2.01_Connection.csproj">
+      <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
+      <Name>2.01_Connection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Networking\2.01_PacketProcessor\2.01_PacketProcessor.csproj">
+      <Project>{4825e8af-f859-47e0-a1bb-c936604c72ef}</Project>
+      <Name>2.01_PacketProcessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Networking\2.01_Packets\2.01_Packets.csproj">
+      <Project>{ead62e25-6a74-432a-801c-4a5c79fc9176}</Project>
+      <Name>2.01_Packets</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_Networking\2.01_Server\2.01_Server.csproj">
+      <Project>{30f0e352-9fcd-46da-8503-7137d1001a0c}</Project>
+      <Name>2.01_Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_RichText\2.01_RichTextMessage\2.01_RichTextMessage.csproj">
+      <Project>{cfa4aa58-b4d0-4b19-af9d-d18780528320}</Project>
+      <Name>2.01_RichTextMessage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_RichText\2.01_RichTextString\2.01_RichTextString.csproj">
+      <Project>{6a513941-ef4e-46a6-92aa-85ace6df2b89}</Project>
+      <Name>2.01_RichTextString</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_UnitsOfMeasurement\2.01_UnitsOfMeasurement.csproj">
+      <Project>{beb82d31-c638-420b-b388-f79d599f2a3f}</Project>
+      <Name>2.01_UnitsOfMeasurement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_UserInterfaces\2.01_UserInterfaces.csproj">
+      <Project>{87c6c663-15be-4c3f-84ee-2a5a861fe022}</Project>
+      <Name>2.01_UserInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_YSFlight\2.01_Files\2.01_DATFile\2.01_DATFile.csproj">
+      <Project>{183cc3fe-296e-4518-82e3-ad59b6d092b0}</Project>
+      <Name>2.01_DATFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_YSFlight\2.01_Files\2.01_LSTFile\2.01_LSTFile.csproj">
+      <Project>{1aa42ed0-fe51-4f6f-893d-0833ccfd9d5a}</Project>
+      <Name>2.01_LSTFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_YSFlight\2.01_Metadata\2.01_Metadata.csproj">
+      <Project>{1e6cef24-35ce-42e0-bd97-9d27eb93ed46}</Project>
+      <Name>2.01_Metadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_YSFlight\2.01_World\2.01_World.csproj">
+      <Project>{3460e682-d1fe-4ce5-8134-168b9c1d8fec}</Project>
+      <Name>2.01_World</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\2_Components\2.01_YSFlight\2.01_YSTypes\2.01_YSTypes.csproj">
+      <Project>{9377b52b-3cd6-4edd-aa19-1c1ae0cc59a0}</Project>
+      <Name>2.01_YSTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\_Libraries\3_Master\3.00_MasterObjectFactory\3.00_MasterObjectFactory.csproj">
+      <Project>{e61ada91-5cb8-49b1-9418-fb353ff5cb7e}</Project>
+      <Name>3.00_MasterObjectFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
