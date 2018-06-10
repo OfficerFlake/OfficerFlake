@@ -1,4 +1,4 @@
-﻿namespace OpenYSAutoLoginService
+﻿namespace OpenYSAuthenticator
 {
 	partial class YSFHQAuthenticationService
 	{

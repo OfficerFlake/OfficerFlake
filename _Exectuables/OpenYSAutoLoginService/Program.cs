@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries.Extensions;
 
-namespace OpenYSAutoLoginService
+namespace OpenYSAuthenticator
 {
 	static class Program
 	{

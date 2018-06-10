@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace OpenYSAutoLoginService
+namespace OpenYSAuthenticator
 {
 	public partial class YSFHQAuthenticationService : Form
 	{
