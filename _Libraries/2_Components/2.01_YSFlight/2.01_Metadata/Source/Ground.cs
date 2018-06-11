@@ -214,17 +214,20 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						string[] DatFileContents = File.ReadAllLines(SettingsLibrary.Settings.YSFlight.Directory + ThisMetaGround.Path_0_PropertiesFile);
 						#endregion
 						#region Find IDENTIFY in DAT
-						foreach (string DatFileLine in DatFileContents)
+						for (int j = 0; j < DatFileContents.Length; j++)
 						{
+							string ThisLine = DatFileContents[j];
+							int CurrentLineNumber = j;
+
 							#region Identify
-							if (DatFileLine.ToUpperInvariant().Contains(@"IDENTIFY"))
+							if (ThisLine.ToUpperInvariant().Contains(@"IDENTIFY"))
 							{
-								string[] SplitLine = DatFileLine.SplitPresevingQuotes();
+								string[] SplitLine = ThisLine.SplitPresevingQuotes();
 								if (SplitLine.Length <= 1)
 								{
 									string message = "Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.Path_0_PropertiesFile + ".";
 									Debug.AddWarningMessage(message);
-									Debug.AddWarningMessage("----" + DatFileLine);
+									Debug.AddDetailMessage("---Line Contents (" + CurrentLineNumber + "): " + ThisLine);
 									loadingErrors++;
 									continue;
 								}
