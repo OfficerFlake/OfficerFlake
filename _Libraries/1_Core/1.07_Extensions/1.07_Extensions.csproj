@@ -91,6 +91,10 @@
     <Compile Include="Source\_System\Time.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
+      <Project>{b8dc8f84-f514-4175-8f15-c271fb0862b7}</Project>
+      <Name>1.01_BuildEnvironment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\1.06_ObjectFactory\1.06_ObjectFactory.csproj">
       <Project>{eed61364-9b4c-48d8-9fa3-117e3fe3eaa4}</Project>
       <Name>1.06_ObjectFactory</Name>

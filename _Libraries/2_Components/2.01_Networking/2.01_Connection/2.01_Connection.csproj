@@ -65,6 +65,10 @@
     <Compile Include="Source\Connection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\1_Core\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
+      <Project>{b8dc8f84-f514-4175-8f15-c271fb0862b7}</Project>
+      <Name>1.01_BuildEnvironment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\1_Core\1.03_Loggers\1.03_Loggers.csproj">
       <Project>{f1ca4a7f-8272-4d8e-8569-4d72e55f314b}</Project>
       <Name>1.03_Loggers</Name>

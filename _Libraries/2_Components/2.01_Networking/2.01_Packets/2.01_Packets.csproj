@@ -121,6 +121,10 @@
     <None Include="OfficerFlake.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\1_Core\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
+      <Project>{b8dc8f84-f514-4175-8f15-c271fb0862b7}</Project>
+      <Name>1.01_BuildEnvironment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\1_Core\1.02_Interfaces\1.02_Interfaces.csproj">
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>1.02_Interfaces</Name>

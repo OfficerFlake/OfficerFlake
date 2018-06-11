@@ -60,7 +60,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.01_BuildEnvironment", "1.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96AAE4E4-7304-45CB-AEA7-ED84BD07FA97}"
 	ProjectSection(SolutionItems) = preProject
-		_Ignore\OfficerFlake.snk = _Ignore\OfficerFlake.snk
+		_Supplement\DeveloperInfo.cs = _Supplement\DeveloperInfo.cs
+		_Supplement\DeveloperInfoInstructions.cs.txt = _Supplement\DeveloperInfoInstructions.cs.txt
+		_Supplement\SigningKey.snk = _Supplement\SigningKey.snk
+		_Supplement\SigningKeyInstructions.snk.txt = _Supplement\SigningKeyInstructions.snk.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0.00_EXE_OpenYSProxy", "_Exectuables\0.00_EXE_OpenYSProxy\0.00_EXE_OpenYSProxy.csproj", "{469D3811-5F93-4EF8-AE8F-230731F34194}"
@@ -126,6 +129,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.08_Settings", "_Libraries\1_Core\1.08_Settings\1.08_Settings.csproj", "{22BB1D14-86FD-4192-91A4-BF762A35BF85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_DATFile", "_Libraries\2_Components\2.01_YSFlight\2.01_Files\2.01_DATFile\2.01_DATFile.csproj", "{183CC3FE-296E-4518-82E3-AD59B6D092B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.01_BuildEnvironment", "_Libraries\1_Core\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj", "{B8DC8F84-F514-4175-8F15-C271FB0862B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -391,6 +396,14 @@ Global
 		{183CC3FE-296E-4518-82E3-AD59B6D092B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{183CC3FE-296E-4518-82E3-AD59B6D092B0}.Release|x86.ActiveCfg = Release|x86
 		{183CC3FE-296E-4518-82E3-AD59B6D092B0}.Release|x86.Build.0 = Release|x86
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -451,6 +464,7 @@ Global
 		{E61ADA91-5CB8-49B1-9418-FB353FF5CB7E} = {6D200111-B4C2-4A66-9F10-0DEE51E3CDBC}
 		{22BB1D14-86FD-4192-91A4-BF762A35BF85} = {30FBF19A-9C05-4C25-A774-B81D431DD80C}
 		{183CC3FE-296E-4518-82E3-AD59B6D092B0} = {B0E7687E-B54C-429E-BDEF-473C12A1E2EB}
+		{B8DC8F84-F514-4175-8F15-C271FB0862B7} = {9653CA2C-ED6E-479F-8C84-E5C8029404D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

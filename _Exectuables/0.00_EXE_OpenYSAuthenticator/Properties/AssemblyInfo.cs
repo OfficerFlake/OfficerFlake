@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OpenYSAuthenticatorExecutable")]
 [assembly: AssemblyDescription("System Tray application for authenticating users with YSFHQ automatically.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany(DeveloperAttributes.DeveloperInfo.Username)]
 [assembly: AssemblyProduct("OpenYSAuthenticatorExecutable")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]

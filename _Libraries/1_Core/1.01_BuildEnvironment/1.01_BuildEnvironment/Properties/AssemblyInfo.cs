@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenYS Proxy Server")]
-[assembly: AssemblyDescription("Open Source YSFlight Proxy Server")]
+[assembly: AssemblyTitle("1.01_BuildEnvironment")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(DeveloperAttributes.DeveloperInfo.Username)]
-[assembly: AssemblyProduct("OpenYS Proxy Server")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("1.01_BuildEnvironment")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("469d3811-5f93-4ef8-ae8f-230731f34194")]
+[assembly: Guid("b8dc8f84-f514-4175-8f15-c271fb0862b7")]
 
 // Version information for an assembly consists of the following four values:
 //

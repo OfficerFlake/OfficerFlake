@@ -1,0 +1,14 @@
+﻿//Developer Information Instructions
+//==================================
+//Replace the attributes below with your details, and then change the extension of this file from "Instructions.cs.txt" to ".cs"
+//
+//The Source Code will pull info from this file when building and signing.
+
+namespace DeveloperAttributes
+{
+	public static class DeveloperInfo
+	{
+		public const string Username = "<Username>";
+		public const string Email = "<Email>";
+	}
+}

@@ -1,0 +1,17 @@
+Add Your Strong Name Key File
+=============================
+Put your Strong Name Key (*.snk) in this folder to sign the assemblies with your developer name!
+
+No default key has been provided, as this would defeat the purpose of signing if everyone shared a signing key.
+
+
+
+How To Create a Strong Name Key File
+====================================
+You can create your own key using the Visual Studio Developer Console.
+
+1) Hit "Start" from Windows, then type "dev" - you should see the developer console show up.
+2) In the dev console type "CD \" to move to the root of your drive.
+3) Run the command "sn -k SigningKey.snk" to create your strong name key pair.
+4) Your new key should be in the root of your current drive (c:)
+5) Just cut it and paste that file to this folder.

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OpenYS Server")]
 [assembly: AssemblyDescription("Open Source YSFlight Server")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("OfficerFlake")]
+[assembly: AssemblyCompany(DeveloperAttributes.DeveloperInfo.Username)]
 [assembly: AssemblyProduct("OpenYS Server")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
