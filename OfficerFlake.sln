@@ -58,7 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0_Executables", "0_Executab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.01_BuildEnvironment", "1.01_BuildEnvironment", "{9653CA2C-ED6E-479F-8C84-E5C8029404D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96AAE4E4-7304-45CB-AEA7-ED84BD07FA97}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Supplement", "Supplement", "{96AAE4E4-7304-45CB-AEA7-ED84BD07FA97}"
 	ProjectSection(SolutionItems) = preProject
 		_Supplement\DeveloperInfo.cs = _Supplement\DeveloperInfo.cs
 		_Supplement\DeveloperInfoInstructions.cs.txt = _Supplement\DeveloperInfoInstructions.cs.txt
