@@ -1,4 +1,5 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 using static Com.OfficerFlake.Libraries.UnitsOfMeasurement.Durations;
 
@@ -47,7 +48,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			#endregion
 			#region CTOR
-			public OYSTimeSpan(Year Y, Month M, Week W, Day D, Hour h, Minute m, Second s)
+			public OYSTimeSpan(IYear Y, IMonth M, IWeek W, IDay D, IHour h, IMinute m, ISecond s)
 			{
 				this.Years = Y;
 				this.Months = M;
@@ -58,13 +59,24 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public OYSTimeSpan(TimeSpan timespan)
 			{
-				Years = new Year((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Year);
-				Months = new Month((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Month);
+				Years = new Year((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Year - (new DateTime(2018, 01, 01, 0, 0, 0).Year));
+				Months = new Month((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Month - (new DateTime(2018, 01, 01, 0, 0, 0).Month));
 				Weeks = 0.Weeks();
-				Days = new Day((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Day);
-				Hours = new Hour((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Hour);
-				Minutes = new Minute((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Minute);
-				Seconds = new Second((new DateTime(0, 0, 0, 0, 0, 0) + timespan).Second);
+				Days = new Day((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Day - (new DateTime(2018, 01, 01, 0, 0, 0).Day));
+				Hours = new Hour((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Hour - (new DateTime(2018, 01, 01, 0, 0, 0).Hour));
+				Minutes = new Minute((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Minute - (new DateTime(2018, 01, 01, 0, 0, 0).Minute));
+				Seconds = new Second((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Second - (new DateTime(2018, 01, 01, 0, 0, 0).Second));
+			}
+			public OYSTimeSpan(string date)
+			{
+				OYSTimeSpan conversion;
+				TryParse(date, out conversion);
+				this.Years = conversion.Years;
+				this.Months = conversion.Months;
+				this.Days = conversion.Days;
+				this.Hours = conversion.Hours;
+				this.Minutes = conversion.Minutes;
+				this.Seconds = conversion.Seconds;
 			}
 			#endregion
 
@@ -112,12 +124,12 @@ namespace Com.OfficerFlake.Libraries
 			public string ToSystemString() => ToString();
 			public override string ToString()
 			{
-				return Years.ToString() + "Y" +
-					   Months.ToString() + "M" +
-					   Days.ToString() + "D" +
-					   Hours.ToString() + "h" +
-					   Minutes.ToString() + "m" +
-					   Seconds.ToString() + "s";
+				return Years.RawValue + "Y" +
+					   Months.RawValue + "M" +
+					   Days.RawValue + "D" +
+					   Hours.RawValue + "h" +
+					   Minutes.RawValue + "m" +
+					   Seconds.RawValue + "s";
 			}
 			public static bool TryParse(string input, out OYSTimeSpan output)
 			{
@@ -140,7 +152,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("Y"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("Y"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						Y = duration;
 						continue;
@@ -148,7 +160,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("M"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("M"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						M = duration;
 						continue;
@@ -156,7 +168,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("W"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("W"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						W = duration;
 						continue;
@@ -164,7 +176,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("D"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("D"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						D = duration;
 						continue;
@@ -180,7 +192,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("m"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("m"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						m = duration;
 						continue;
@@ -188,7 +200,7 @@ namespace Com.OfficerFlake.Libraries
 					if (remaining.Contains("s"))
 					{
 						string convertable = remaining.Substring(0, remaining.IndexOf("s"));
-						remaining = remaining.Substring(convertable.Length + 1, remaining.Length - convertable.Length + 1);
+						remaining = remaining.Substring(convertable.Length+1, remaining.Length - convertable.Length - 1);
 						failed |= !Int32.TryParse(convertable, out Int32 duration);
 						s = duration;
 						continue;

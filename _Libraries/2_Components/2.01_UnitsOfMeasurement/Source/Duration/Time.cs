@@ -29,6 +29,14 @@ namespace Com.OfficerFlake.Libraries
 				Minute = new Minute(datetime.Minute);
 				Second = new Second(datetime.Second);
 			}
+			public OYSTime(string date)
+			{
+				OYSTime conversion;
+				TryParse(date, out conversion);
+				this.Hour = conversion.Hour;
+				this.Minute = conversion.Minute;
+				this.Second = conversion.Second;
+			}
 			#endregion
 
 			#region Operators
@@ -68,8 +76,8 @@ namespace Com.OfficerFlake.Libraries
 			public string ToSystemString() => ToString();
 			public override string ToString()
 			{
-				return Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
-					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') +
+				return Hour.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
+					   Minute.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0') + ":" +
 					   Second.RawValue.ToString(CultureInfo.InvariantCulture).ResizeOnLeft(2, '0');
 			}
 			public static bool TryParse(string input, out OYSTime output)

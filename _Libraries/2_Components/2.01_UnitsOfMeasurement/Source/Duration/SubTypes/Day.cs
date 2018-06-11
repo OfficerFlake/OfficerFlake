@@ -32,12 +32,12 @@ namespace Com.OfficerFlake.Libraries
 				#endregion
 			}
 			#region [Number].Days
-			public static Day Days(this Byte input) => new Day(input);
-			public static Day Days(this Int16 input) => new Day(input);
-			public static Day Days(this Int32 input) => new Day(input);
-			public static Day Days(this Int64 input) => new Day(input);
-			public static Day Days(this Single input) => new Day(input);
-			public static Day Days(this Double input) => new Day(input);
+			public static Day Days(Byte input) => new Day(input);
+			public static Day Days(Int16 input) => new Day(input);
+			public static Day Days(Int32 input) => new Day(input);
+			public static Day Days(Int64 input) => new Day(input);
+			public static Day Days(Single input) => new Day(input);
+			public static Day Days(Double input) => new Day(input);
 			#endregion
 		}
 	}

@@ -199,10 +199,14 @@ namespace Com.OfficerFlake.Libraries
 			public IMonth CreateMonth(double value) => throw new NotImplementedException();
 			public IYear CreateYear(double value) => throw new NotImplementedException();
 
-			public IDate CreateDate(System.DateTime dateTime) => throw new NotImplementedException();
-			public ITime CreateTime(System.DateTime dateTime) => throw new NotImplementedException();
+			public IDate CreateDate(System.DateTime date) => throw new NotImplementedException();
+			public IDate CreateDate(string date) => throw new NotImplementedException();
+			public ITime CreateTime(System.DateTime time) => throw new NotImplementedException();
+			public ITime CreateTime(string time) => throw new NotImplementedException();
 			public IDateTime CreateDateTime(System.DateTime dateTime) => throw new NotImplementedException();
+			public IDateTime CreateDateTime(string dateTime) => throw new NotImplementedException();
 			public ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan) => throw new NotImplementedException();
+			public ITimeSpan CreateTimeSpan(string timeSpan) => throw new NotImplementedException();
 			#endregion
 			#region Energy
 			public bool TryParse(string value, out IEnergy output) => throw new NotImplementedException();

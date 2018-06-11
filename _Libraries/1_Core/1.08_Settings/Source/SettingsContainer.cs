@@ -209,7 +209,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -218,7 +218,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -242,7 +242,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -251,7 +251,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -275,7 +275,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -284,7 +284,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -310,7 +310,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -319,7 +319,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -357,7 +357,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -366,7 +366,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -396,7 +396,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -405,7 +405,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
@@ -435,7 +435,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 							}
 							public _Sky Sky { get; } = new _Sky();
 
@@ -444,7 +444,7 @@ namespace Com.OfficerFlake.Libraries
 								public event PropertyChangedEventHandler PropertyChanged;
 
 								public Double Opacity { get; set; } = 0.0;
-								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+								public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 
@@ -464,7 +464,7 @@ namespace Com.OfficerFlake.Libraries
 						public event PropertyChangedEventHandler PropertyChanged;
 
 						public Double Opacity { get; set; } = 0.0;
-						public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
+						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186).Get24BitColor();
 					}
 					public _Sky Sky { get; } = new _Sky();
 
@@ -472,7 +472,7 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
+						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 					}
 					public _Horizon Horizon { get; } = new _Horizon();
 
@@ -481,7 +481,7 @@ namespace Com.OfficerFlake.Libraries
 						public event PropertyChangedEventHandler PropertyChanged;
 
 						public Double Opacity { get; set; } = 0.0;
-						public IColor Color { get; set; } = ObjectFactory.CreateColor(0, 0, 160);
+						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(0, 0, 160).Get24BitColor();
 					}
 					public _Ground Ground { get; } = new _Ground();
 
@@ -489,7 +489,7 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public IColor Color { get; set; } = ObjectFactory.CreateColor(160, 160, 160);
+						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(160, 160, 160).Get24BitColor();
 					}
 					public _Fog Fog { get; } = new _Fog();
 				}
@@ -511,6 +511,7 @@ namespace Com.OfficerFlake.Libraries
 
 				public ITime Current { get; set; } = 12.Hours().ToTime();
 				public ITime Default { get; set; } = 12.Hours().ToTime();
+				public IDateTime Test { get; set; } = ObjectFactory.CreateDateTime("20170102030405");
 			}
 			public _Time Time { get; } = new _Time();
 

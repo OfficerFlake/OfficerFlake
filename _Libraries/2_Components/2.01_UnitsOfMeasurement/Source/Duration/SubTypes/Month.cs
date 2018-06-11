@@ -32,12 +32,12 @@ namespace Com.OfficerFlake.Libraries
 				#endregion
 			}
 			#region [Number].Months
-			public static Month Months(this Byte input) => new Month(input);
-			public static Month Months(this Int16 input) => new Month(input);
-			public static Month Months(this Int32 input) => new Month(input);
-			public static Month Months(this Int64 input) => new Month(input);
-			public static Month Months(this Single input) => new Month(input);
-			public static Month Months(this Double input) => new Month(input);
+			public static Month Months(Byte input) => new Month(input);
+			public static Month Months(Int16 input) => new Month(input);
+			public static Month Months(Int32 input) => new Month(input);
+			public static Month Months(Int64 input) => new Month(input);
+			public static Month Months(Single input) => new Month(input);
+			public static Month Months(Double input) => new Month(input);
 			#endregion
 		}
 	}

@@ -34,6 +34,11 @@ namespace Com.OfficerFlake.Libraries.Color
 		{
 			return new ARGBColor(Alpha, Red, Green, Blue);
 		}
+
+		public override string ToString()
+		{
+			return "#" + Alpha.ToHexString() + Red.ToHexString() + Green.ToHexString() + Blue.ToHexString();
+		}
 	}
 	public class XRGBColor : I24BitColor
 	{
@@ -56,6 +61,11 @@ namespace Com.OfficerFlake.Libraries.Color
 		public string ToHexString()
 		{
 			return "#" + Red.ToHexString() + Green.ToHexString() + Blue.ToHexString();
+		}
+
+		public override string ToString()
+		{
+			return ToHexString();
 		}
 	}
 	public class ARGBColor : I32BitColor
@@ -81,6 +91,11 @@ namespace Com.OfficerFlake.Libraries.Color
 		public string ToHexString()
 		{
 			return "#" + Red.ToHexString() + Green.ToHexString() + Blue.ToHexString();
+		}
+
+		public override string ToString()
+		{
+			return ToHexString();
 		}
 	}
 

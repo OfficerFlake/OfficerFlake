@@ -28,6 +28,14 @@ namespace Com.OfficerFlake.Libraries
 				this.Month = new Month(datetime.Month);
 				this.Day = new Day(datetime.Day);
 			}
+			public OYSDate(string date)
+			{
+				OYSDate conversion;
+				TryParse(date, out conversion);
+				this.Year = conversion.Year;
+				this.Month = conversion.Month;
+				this.Day = conversion.Day;
+			}
 			#endregion
 
 			#region Operators

@@ -185,9 +185,9 @@ namespace Com.OfficerFlake.Executables.Testing
 		private static void MainProgram()
 		{
 			Console.AddInformationMessage("Testing Interface Ready");
-			Console.AddInformationMessage(Settings.Options.ConnectionLocked.ToString());
-			SettingsLibrary.SettingsHandler.LoadAll();
-			Console.AddInformationMessage(Settings.Options.ConnectionLocked.ToString());
+			Console.AddInformationMessage(Settings.Time.Test.ToString());
+			SettingsHandler.LoadAll();
+			Console.AddInformationMessage(Settings.Time.Test.ToString());
 			OpenYSServerModeUserInterface.WaitForClose();
 		}
 		#endregion

@@ -32,12 +32,12 @@ namespace Com.OfficerFlake.Libraries
 				#endregion
 			}
 			#region [Number].Years
-			public static Year Years(this Byte input) => new Year(input);
-			public static Year Years(this Int16 input) => new Year(input);
-			public static Year Years(this Int32 input) => new Year(input);
-			public static Year Years(this Int64 input) => new Year(input);
-			public static Year Years(this Single input) => new Year(input);
-			public static Year Years(this Double input) => new Year(input);
+			public static Year Years(Byte input) => new Year(input);
+			public static Year Years(Int16 input) => new Year(input);
+			public static Year Years(Int32 input) => new Year(input);
+			public static Year Years(Int64 input) => new Year(input);
+			public static Year Years(Single input) => new Year(input);
+			public static Year Years(Double input) => new Year(input);
 			#endregion
 		}
 	}

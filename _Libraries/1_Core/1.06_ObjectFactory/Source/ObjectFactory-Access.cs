@@ -199,10 +199,14 @@ namespace Com.OfficerFlake.Libraries
 		public static IMonth CreateMonth(double value) => objectFactory.CreateMonth(value);
 		public static IYear CreateYear(double value) => objectFactory.CreateYear(value);
 
-		public static IDate CreateDate(System.DateTime dateTime) => objectFactory.CreateDate(dateTime);
-		public static ITime CreateTime(System.DateTime dateTime) => objectFactory.CreateTime(dateTime);
+		public static IDate CreateDate(System.DateTime date) => objectFactory.CreateDate(date);
+		public static IDate CreateDate(string date) => objectFactory.CreateDate(date);
+		public static ITime CreateTime(System.DateTime time) => objectFactory.CreateTime(time);
+		public static ITime CreateTime(string time) => objectFactory.CreateTime(time);
 		public static IDateTime CreateDateTime(System.DateTime dateTime) => objectFactory.CreateDateTime(dateTime);
+		public static IDateTime CreateDateTime(string dateTime) => objectFactory.CreateDateTime(dateTime);
 		public static ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan) => objectFactory.CreateTimeSpan(timeSpan);
+		public static ITimeSpan CreateTimeSpan(string timeSpan) => objectFactory.CreateTimeSpan(timeSpan);
 		#endregion
 		#region Energy
 		public static bool TryParse(string value, out IEnergy output) => objectFactory.TryParse(value, out output);

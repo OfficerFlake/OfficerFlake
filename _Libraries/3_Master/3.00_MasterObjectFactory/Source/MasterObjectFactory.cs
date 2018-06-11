@@ -213,10 +213,14 @@ namespace Com.OfficerFlake.Libraries
 			public IMonth CreateMonth(double value) => new Durations.Month(value);
 			public IYear CreateYear(double value) => new Durations.Year(value);
 
-			public IDate CreateDate(System.DateTime dateTime) => new OYSDate(dateTime);
-			public ITime CreateTime(System.DateTime dateTime) => new OYSTime(dateTime);
+			public IDate CreateDate(System.DateTime date) => new OYSDate(date);
+			public IDate CreateDate(string date) => new OYSDate(date);
+			public ITime CreateTime(System.DateTime time) => new OYSTime(time);
+			public ITime CreateTime(string time) => new OYSTime(time);
 			public IDateTime CreateDateTime(System.DateTime dateTime) => new OYSDateTime(dateTime);
+			public IDateTime CreateDateTime(string dateTime) => new OYSDateTime(dateTime);
 			public ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan) => new OYSTimeSpan(timeSpan);
+			public ITimeSpan CreateTimeSpan(string timeSpan) => new OYSTimeSpan(timeSpan);
 			#endregion
 			#region Energy
 			public bool TryParse(string value, out IEnergy output) => Energy.TryParse(value, out output);

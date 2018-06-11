@@ -7,6 +7,7 @@ using System.Security.Permissions;
 
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Extensions;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -56,77 +57,105 @@ namespace Com.OfficerFlake.Libraries
 					#region Boolean
 
 					if (desiredType == typeof(Boolean))
-						return Convert.ChangeType(Boolean.Parse(parameters), desiredType);
+					{
+						Boolean output;
+						return Boolean.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
 					#region Byte
 
 					if (desiredType == typeof(Byte))
-						return Convert.ChangeType(Byte.Parse(parameters), desiredType);
+					{
+						Byte output;
+						return Byte.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
-
 					#region SByte
 
 					if (desiredType == typeof(SByte))
-						return Convert.ChangeType(SByte.Parse(parameters), desiredType);
+					{
+						SByte output;
+						return SByte.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
 					#region Int16
 
 					if (desiredType == typeof(Int16))
-						return Convert.ChangeType(Int16.Parse(parameters), desiredType);
+					{
+						Int16 output;
+						return Int16.TryParse(parameters, out output) ? output : defaultObject;
+					}
+
+					#endregion
+					#region UInt16
+
+					if (desiredType == typeof(UInt16))
+					{
+						UInt16 output;
+						return UInt16.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
 					#region Int32
 
 					if (desiredType == typeof(Int32))
-						return Convert.ChangeType(Int32.Parse(parameters), desiredType);
+					{
+						Int32 output;
+						return Int32.TryParse(parameters, out output) ? output : defaultObject;
+					}
+
+					#endregion
+					#region UInt32
+
+					if (desiredType == typeof(UInt32))
+					{
+						UInt32 output;
+						return UInt32.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
 					#region Int64
 
 					if (desiredType == typeof(Int64))
-						return Convert.ChangeType(Int64.Parse(parameters), desiredType);
+					{
+						Int64 output;
+						return Int64.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
-
-					#region UInt16
-
-					if (desiredType == typeof(UInt16))
-						return Convert.ChangeType(UInt16.Parse(parameters), desiredType);
-
-					#endregion
-
-					#region UInt32
-
-					if (desiredType == typeof(UInt32))
-						return Convert.ChangeType(UInt32.Parse(parameters), desiredType);
-
-					#endregion
-
 					#region UInt64
 
 					if (desiredType == typeof(UInt64))
-						return Convert.ChangeType(UInt64.Parse(parameters), desiredType);
+					{
+						UInt64 output;
+						return UInt64.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
 					#region Single
 
 					if (desiredType == typeof(Single))
-						return Convert.ChangeType(Single.Parse(parameters), desiredType);
+					{
+						Single output;
+						return Single.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
-
 					#region Double
 
 					if (desiredType == typeof(Double))
-						return Convert.ChangeType(Double.Parse(parameters), desiredType);
+					{
+						Double output;
+						return Double.TryParse(parameters, out output) ? output : defaultObject;
+					}
 
 					#endregion
 
@@ -138,6 +167,7 @@ namespace Com.OfficerFlake.Libraries
 						try
 						{
 							matchingIPAddress = Dns.GetHostAddresses(parameters)[0];
+							return matchingIPAddress;
 						}
 						catch
 						{
@@ -145,11 +175,12 @@ namespace Com.OfficerFlake.Libraries
 						try
 						{
 							matchingIPAddress = IPAddress.Parse(parameters);
+							return matchingIPAddress;
 						}
 						catch
 						{
 						}
-						return Convert.ChangeType(matchingIPAddress, desiredType);
+						return defaultObject;
 					}
 
 					#endregion
@@ -157,7 +188,7 @@ namespace Com.OfficerFlake.Libraries
 					#region String
 
 					if (desiredType == typeof(String))
-						return Convert.ChangeType(Double.Parse(parameters), desiredType);
+						return parameters;
 
 					#endregion
 
@@ -169,106 +200,117 @@ namespace Com.OfficerFlake.Libraries
 					{
 						IAngle thisAngle;
 						ObjectFactory.TryParse(parameters, out thisAngle);
-						return Convert.ChangeType(thisAngle, desiredType);
+						return thisAngle;
 					}
 
 					#endregion
-
 					#region Area
 
 					if (desiredType == typeof(IArea))
 					{
 						IArea thisArea;
 						ObjectFactory.TryParse(parameters, out thisArea);
-						return Convert.ChangeType(thisArea, desiredType);
+						return thisArea;
 					}
 
 					#endregion
-
-					#region Energy				
-
-					if (desiredType == typeof(IEnergy))
-					{
-						IEnergy thisEnergy;
-						ObjectFactory.TryParse(parameters, out thisEnergy);
-						return Convert.ChangeType(thisEnergy, desiredType);
-					}
-
-					#endregion
-
 					#region Distance				
 
 					if (desiredType == typeof(IDistance))
 					{
 						IDistance thisDistance;
 						ObjectFactory.TryParse(parameters, out thisDistance);
-						return Convert.ChangeType(thisDistance, desiredType);
+						return thisDistance;
 					}
 
 					#endregion
+					#region Durations				
 
+					if (desiredType == typeof(IDate))
+					{
+						return ObjectFactory.CreateDate(parameters);
+					}
+					if (desiredType == typeof(IDateTime))
+					{
+						return ObjectFactory.CreateDateTime(parameters);
+					}
+					if (desiredType == typeof(ITime))
+					{
+						return ObjectFactory.CreateTime(parameters);
+					}
+					if (desiredType == typeof(ITimeSpan))
+					{
+						return ObjectFactory.CreateTimeSpan(parameters);
+					}
+
+					#endregion
+					#region Energy				
+
+					if (desiredType == typeof(IEnergy))
+					{
+						IEnergy thisEnergy;
+						ObjectFactory.TryParse(parameters, out thisEnergy);
+						return thisEnergy;
+					}
+
+					#endregion
 					#region Mass				
 
 					if (desiredType == typeof(IMass))
 					{
 						IMass thisMass;
 						ObjectFactory.TryParse(parameters, out thisMass);
-						return Convert.ChangeType(thisMass, desiredType);
+						return thisMass;
 					}
 
 					#endregion
-
 					#region Power				
 
 					if (desiredType == typeof(IPower))
 					{
 						IPower thisPower;
 						ObjectFactory.TryParse(parameters, out thisPower);
-						return Convert.ChangeType(thisPower, desiredType);
+						return thisPower;
 					}
 
 					#endregion
-
 					#region Pressure				
 
 					if (desiredType == typeof(IPressure))
 					{
 						IPressure thisPressure;
 						ObjectFactory.TryParse(parameters, out thisPressure);
-						return Convert.ChangeType(thisPressure, desiredType);
+						return thisPressure;
 					}
 
 					#endregion
-
 					#region Speed				
 
 					if (desiredType == typeof(ISpeed))
 					{
 						ISpeed thisSpeed;
 						ObjectFactory.TryParse(parameters, out thisSpeed);
-						return Convert.ChangeType(thisSpeed, desiredType);
+						return thisSpeed;
 					}
 
 					#endregion
-
 					#region Temperature				
 
 					if (desiredType == typeof(ITemperature))
 					{
 						ITemperature thisTemperature;
 						ObjectFactory.TryParse(parameters, out thisTemperature);
-						return Convert.ChangeType(thisTemperature, desiredType);
+						return thisTemperature;
 					}
 
 					#endregion
-
 					#region Volume				
 
 					if (desiredType == typeof(IVolume))
 					{
 						IVolume thisVolume;
 						ObjectFactory.TryParse(parameters, out thisVolume);
-						return Convert.ChangeType(thisVolume, desiredType);
+						return thisVolume;
 					}
 
 					#endregion
@@ -308,14 +350,16 @@ namespace Com.OfficerFlake.Libraries
 							//Debug
 							return Convert.ChangeType(White, desiredType);
 						}
-						return Convert.ChangeType(ObjectFactory.CreateColor(red, green, blue).Get24BitColor(), desiredType);
+						I24BitColor output = ObjectFactory.CreateColor(red, green, blue).Get24BitColor();
+						return output;
 					}
 
 					#endregion
 
 				}
-				catch
+				catch (Exception e)
 				{
+					Debug.AddErrorMessage(e, "Error converting setting from string.");
 				}
 				return defaultObject;
 			}
@@ -401,7 +445,7 @@ namespace Com.OfficerFlake.Libraries
 						string command = thisLine.Command;
 						List<string> parameters = new List<string>();
 						for (int j = 0; j < thisLine.NumberOfParameters; j++)
-							parameters.Add(thisLine.GetParameter(i));
+							parameters.Add(thisLine.GetParameter(j));
 						FindAndUpdateSetting(command, string.Join(" ", parameters));
 					}
 					return true;

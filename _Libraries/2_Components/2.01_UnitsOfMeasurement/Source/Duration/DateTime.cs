@@ -37,6 +37,17 @@ namespace Com.OfficerFlake.Libraries
 				Minute = new Minute(datetime.Minute);
 				Second = new Second(datetime.Second);
 			}
+			public OYSDateTime(string date)
+			{
+				OYSDateTime conversion;
+				TryParse(date, out conversion);
+				this.Year = conversion.Year;
+				this.Month = conversion.Month;
+				this.Day = conversion.Day;
+				this.Hour = conversion.Hour;
+				this.Minute = conversion.Minute;
+				this.Second = conversion.Second;
+			}
 			#endregion
 
 			#region Operators
@@ -83,7 +94,7 @@ namespace Com.OfficerFlake.Libraries
 			public static bool TryParse(string input, out OYSDateTime output)
 			{
 				#region Initialise Output
-				output = new DateTime(0, 0, 0, 0, 0, 0);
+				output = new DateTime(2018, 01, 01, 0, 0, 0);
 				#endregion
 				#region Not enough Parameters!
 				if (input.Length < 14) return false;

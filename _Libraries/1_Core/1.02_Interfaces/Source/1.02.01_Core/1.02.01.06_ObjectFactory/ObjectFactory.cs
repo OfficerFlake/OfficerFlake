@@ -198,10 +198,14 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IMonth CreateMonth(double value);
 		IYear CreateYear(double value);
 
-		IDate CreateDate(System.DateTime dateTime);
-		ITime CreateTime(System.DateTime dateTime);
+		IDate CreateDate(System.DateTime date);
+		IDate CreateDate(string date);
+		ITime CreateTime(System.DateTime time);
+		ITime CreateTime(string time);
 		IDateTime CreateDateTime(System.DateTime dateTime);
+		IDateTime CreateDateTime(string dateTime);
 		ITimeSpan CreateTimeSpan(System.TimeSpan timeSpan);
+		ITimeSpan CreateTimeSpan(string timeSpan);
 		#endregion
 		#region Energy
 		bool TryParse(string value, out IEnergy output);
