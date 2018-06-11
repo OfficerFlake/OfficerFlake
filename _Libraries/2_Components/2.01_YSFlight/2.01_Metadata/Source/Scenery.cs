@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
@@ -25,7 +26,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				Identify = identify;
 			}
-			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 			#region Load All
 			/// <summary>
@@ -34,34 +34,70 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			/// <returns></returns>
 			public static bool LoadAll()
 			{
-				//Invalidate the old Scenery list!
+				Debug.AddSummaryMessage("Starting MetaData.Scenery.LoadAll()");
 				Extensions.YSFlight.MetaData.Scenery.List.Clear();
-				DebugInformation.Clear();
 
+				int loadingErrors = 0;
+
+				#region Load All Scenery MetaData
 				try
 				{
-					string YSFlightSceneryDirectory = YSFlightDirectory + @"Scenery/";
-					if (!Directory.Exists(YSFlightSceneryDirectory)) return false;
+					string YSFlightSceneryDirectory = SettingsLibrary.Settings.YSFlight.Directory + @"Scenery/";
+
+					#region Scenery Directory Not Found on Disk
+					if (!Directory.Exists(YSFlightSceneryDirectory))
+					{
+						Debug.AddErrorMessage(new DirectoryNotFoundException(), "YSFlight Scenery Directory Not Found.");
+						return false;
+					}
+					#endregion
+					#region Initialise Variables
 					string[] FullFilenames = Directory.GetFiles(YSFlightSceneryDirectory);
 					string[] Filenames = FullFilenames.Select(Path.GetFileName).ToArray();
 					string[] SceneryLists = Filenames
 						.Where(x => x.ToUpperInvariant().StartsWith(@"SCE") && x.ToUpperInvariant().EndsWith(@".LST")).ToArray();
-					foreach (string SceneryList in SceneryLists)
+					#endregion
+
+					#region Load Each Scenery List
+					foreach (string thisSceneryListFile in SceneryLists)
 					{
-						if (!File.Exists(YSFlightSceneryDirectory + SceneryList)) continue;
-						string[] SceneryListContents = File.ReadAllLines(YSFlightSceneryDirectory + SceneryList);
-						SceneryListContents = SceneryListContents.Where(x => x.ToUpperInvariant().Contains(@".FLD")).ToArray();
-						foreach (string Line in SceneryListContents)
+						#region Aircraft List Not Found on Disk
+						if (!File.Exists(YSFlightSceneryDirectory + thisSceneryListFile))
 						{
-							string ProcessedLine = Line.Replace("\\", "/");
-							string[] SplitString = ProcessedLine.SplitPresevingQuotes();
+							string message = "Aircraft List defined in directory tree not found.";
+							Debug.AddWarningMessage(message);
+							loadingErrors++;
+							continue;
+						}
+						#endregion
+						#region Get Lines with .FLD Definitions
+						string[] SceneryListContents = File.ReadAllLines(YSFlightSceneryDirectory + thisSceneryListFile);
+						SceneryListContents = SceneryListContents.Where(x => x.ToUpperInvariant().Contains(@".FLD")).ToArray();
+						#endregion
+						#region Iterate over LST Contents
+						for (int i = 0; i < SceneryListContents.Length; i++)
+						{
+							#region Update Line Number and Contents
+							string thisLine = SceneryListContents[i];
+							string ProcessedLine = thisLine.Replace("\\", "/");
+							string[] SplitString = ProcessedLine.ToUpperInvariant().SplitPresevingQuotes();
+							#endregion
+
+							if (thisLine == "") continue; //skip blank lines.
+
+							#region Initialise Variables
 							string SceneryPath1Fld = "";
 							string SceneryPath2Stp = "";
 							string SceneryPath3Yfs = "";
 							string Identify = "";
+							#endregion
 
+							#region Assign File Paths for This Scenery
 							switch (SplitString.Length - 1)
 							{
+								default:
+									if (SplitString.Length > 3) goto case 3;
+									break;
 								case 3:
 									SceneryPath3Yfs = SplitString[3];
 									goto case 2;
@@ -75,26 +111,30 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 									Identify = SplitString[0];
 									break;
 							}
-
+							#endregion
+							#region Create a New MetaScenery
 							Scenery NewMetaScenery = new Scenery(Identify);
 							NewMetaScenery.Path_1_FieldFile = SceneryPath1Fld;
 							NewMetaScenery.Path_2_StartPositionFile = SceneryPath2Stp;
 							NewMetaScenery.Path_3_YFSFile = SceneryPath3Yfs;
+							#endregion
 
 							Extensions.YSFlight.MetaData.Scenery.List.Add(NewMetaScenery);
 						}
+						#endregion
 					}
-
-					//AT THIS POINT, ALL YSFLIGHT Scenery LST's ARE FULLY LOADED.
-					return (DebugInformation.Count <= 0);
+					#endregion
 				}
 				catch (Exception e)
 				{
-					var Error = ("MetaData.Scenery.LoadAll Crashed!").AsDebugErrorMessage(e);
-					DebugInformation.Add(Error);
+					string message = "MetaData.Scenery.LoadAll Crashed!";
+					Debug.AddErrorMessage(e, message);
+					loadingErrors++;
 				}
+				#endregion
 
-				return (DebugInformation.Count(x=>x is IDebugWarningMessage | x is IDebugErrorMessage | x is IDebugCrashMessage) <= 0);
+				Debug.AddSummaryMessage("Finished MetaData.Scenery.LoadAll()" + (loadingErrors > 0 ? (" with " + loadingErrors + " errors.") : (".")));
+				return (loadingErrors <= 0);
 			}
 			#endregion
 		}

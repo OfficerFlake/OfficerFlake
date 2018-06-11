@@ -648,7 +648,7 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public Boolean Summary { get; set; } = false;
+						public Boolean Summary { get; set; } = true;
 						public Boolean Detail { get; set; } = false;
 						public Boolean Warning { get; set; } = true;
 						public Boolean Error { get; set; } = true;

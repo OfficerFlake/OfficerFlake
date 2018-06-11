@@ -80,7 +80,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				Identify = identify;
 			}
-			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 			#region Load All
 			/// <summary>
@@ -92,15 +91,18 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				//Invalidate the old Ground list!
 				Debug.AddSummaryMessage("Starting MetaData.Ground.LoadAll()");
 				Extensions.YSFlight.MetaData.Grounds.List.Clear();
-				DebugInformation.Clear();
 
+				int loadingErrors = 0;
+
+				#region Load All Ground MetaData
 				try
 				{
-					string YSFlightGroundDirectory = YSFlightDirectory + @"Ground/";
+					string YSFlightGroundDirectory = SettingsLibrary.Settings.YSFlight.Directory + @"Ground/";
+
 					#region Ground Directory Not Found on Disk
 					if (!Directory.Exists(YSFlightGroundDirectory))
 					{
-						Debug.AddWarningMessage("YSFlight Ground Directory Not Found.");
+						Debug.AddErrorMessage(new DirectoryNotFoundException(), "YSFlight Ground Directory Not Found.");
 						return false;
 					}
 					#endregion
@@ -118,18 +120,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if (!File.Exists(YSFlightGroundDirectory + thisGroundListFile))
 						{
 							string message = "Ground List defined in directory tree not found.";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
-							return false;
+							loadingErrors++;
+							continue;
 						}
 						#endregion
 						#region Get Lines With .DAT Definitions.
 						string[] groundListContents = File.ReadAllLines(YSFlightGroundDirectory + thisGroundListFile);
 						groundListContents = groundListContents.Where(x => x.ToUpperInvariant().Contains(@".DAT")).ToArray();
 						#endregion
-
 						#region Iterate Over LST Contents
 						for (int i = 0; i < groundListContents.Length; i++)
 						{
@@ -152,6 +151,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#region Assign File Paths for This Ground
 							switch (SplitString.Length - 1)
 							{
+								default:
+									if (SplitString.Length > 4) goto case 4;
+									break;
 								case 4:
 									GroundPath4Coarse = SplitString[4];
 									goto case 3;
@@ -180,43 +182,37 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								});
 							#endregion
 							#region Ensure .DAT is defined.
-							if (NewMetaGround.Path_0_PropertiesFile.Length < 4)
+							if (NewMetaGround.Path_0_PropertiesFile.Length < 3)
 							{
-								string message = "Blank line in Ground List: " + thisGroundListFile + ".";
-								IRichTextMessage debugmessage = message.AsDebugDetailMessage();
-
+								string message = "Incomplete line in Ground List: " + thisGroundListFile + ".";
 								Debug.AddDetailMessage(message);
 								Debug.AddDetailMessage("----" + thisLine);
-								DebugInformation.Add(debugmessage);
+								loadingErrors++;
 								continue;
 							}
 							#endregion
 
 							Extensions.YSFlight.MetaData.Grounds.List.Add(NewMetaGround);
 						}
+						Debug.AddDetailMessage("Loaded GroundLST: " + thisGroundListFile);
 						#endregion
 					}
 					#endregion
 					#region Cache MetaGround Names
 					for (int i = 0; i < Extensions.YSFlight.MetaData.Grounds.List.Count; i++)
 					{
-						#region Update Line Number and Contents
-						IMetaDataGround ThisMetaGround = Extensions.YSFlight.MetaData.Grounds.List[i];
-						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaGround.Path_0_PropertiesFile);
-						#endregion
-
 						#region .DAT Not Found on Disk
-						if (!File.Exists(YSFlightDirectory + ThisMetaGround.Path_0_PropertiesFile))
+						IMetaDataGround ThisMetaGround = Extensions.YSFlight.MetaData.Grounds.List[i];
+						if (!File.Exists(SettingsLibrary.Settings.YSFlight.Directory + ThisMetaGround.Path_0_PropertiesFile))
 						{
 							string message = "Ground DAT file doesn't exist: " + ThisMetaGround.Path_0_PropertiesFile + ".";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
 							continue;
 						}
 						#endregion
-
+						#region Update Line Number and Contents
+						string[] DatFileContents = File.ReadAllLines(SettingsLibrary.Settings.YSFlight.Directory + ThisMetaGround.Path_0_PropertiesFile);
+						#endregion
 						#region Find IDENTIFY in DAT
 						foreach (string DatFileLine in DatFileContents)
 						{
@@ -227,11 +223,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								if (SplitLine.Length <= 1)
 								{
 									string message = "Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.Path_0_PropertiesFile + ".";
-									IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 									Debug.AddWarningMessage(message);
 									Debug.AddWarningMessage("----" + DatFileLine);
-									DebugInformation.Add(debugmessage);
+									loadingErrors++;
 									continue;
 								}
 								string GroundName = SplitLine[1];
@@ -245,10 +239,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if (ThisMetaGround.Identify == null)
 						{
 							string message = "Ground DAT file doesn't contain IDENTIFY: " + ThisMetaGround.Path_0_PropertiesFile + ".";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
+							loadingErrors++;
 							continue;
 						}
 						#endregion
@@ -258,14 +250,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				catch (Exception e)
 				{
 					string message = "MetaData.Ground.LoadAll Crashed!";
-					IRichTextMessage debugmessage = message.AsDebugErrorMessage(e);
-
 					Debug.AddErrorMessage(e, message);
-					DebugInformation.Add(debugmessage);
+					loadingErrors++;
 				}
+				#endregion
 
 				Debug.AddSummaryMessage("Finished MetaData.Ground.LoadAll()");
-				return (DebugInformation.Count <= 0);
+				return (loadingErrors <= 0);
 			}
 			#endregion
 		}

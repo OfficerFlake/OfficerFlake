@@ -187,14 +187,6 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 		#region Run Server
 		private static void MainProgram()
 		{
-			#region Debug Tests
-			//Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
-			//Debug.AddErrorMessage(new Exception("ERROR TEST"), "ERROR TEST");
-			//Debug.AddWarningMessage("WARNING TEST");
-			//Debug.AddDetailMessage("DETAIL TEST");
-			//Debug.AddSummaryMessage("SUMMARY TEST");
-			#endregion
-
 			#region Load World
 			Console.AddInformationMessage("Loading World");
 
@@ -204,16 +196,14 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 
 			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
-
-			OpenYSServerModeUserInterface.ClearAllMessages();
-
+			Console.AddInformationMessage("");
 			#region Start Server
 			Console.AddInformationMessage("Starting Server...");
 			Server.Start();
 			Console.AddInformationMessage("Now Listening on Port 7915!");
 			#endregion
-
 			Console.AddInformationMessage("");
+			Console.AddInformationMessage("--------");
 
 			OpenYSServerModeUserInterface.WaitForClose();
 			OpenYSPacketInspectorUserInterface.CloseWindow();

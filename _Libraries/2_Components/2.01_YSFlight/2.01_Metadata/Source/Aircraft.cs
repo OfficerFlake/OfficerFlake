@@ -82,7 +82,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			{
 				Identify = identify;
 			}
-			public static List<IRichTextMessage> DebugInformation = new List<IRichTextMessage>();
 
 			#region Load All
 			/// <summary>
@@ -91,19 +90,20 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 			/// <returns></returns>
 			public static bool LoadAll()
 			{
-				//Invalidate the old aircraft list!
 				Debug.AddSummaryMessage("Starting MetaData.Aircraft.LoadAll()");
 				Extensions.YSFlight.MetaData.Aircraft.List.Clear();
-				DebugInformation.Clear();
 
+				int loadingErrors = 0;
+
+				#region Load All Aircraft MetaData
 				try
 				{
-					string YSFlightAircraftDirectory = YSFlightDirectory + @"Aircraft/";
+					string YSFlightAircraftDirectory = SettingsLibrary.Settings.YSFlight.Directory + @"Aircraft/";
 
 					#region Aircraft Directory Not Found on Disk
 					if (!Directory.Exists(YSFlightAircraftDirectory))
 					{
-						Debug.AddWarningMessage("YSFlight Aircraft Directory Not Found.");
+						Debug.AddErrorMessage(new DirectoryNotFoundException(), "YSFlight Aircraft Directory Not Found.");
 						return false;
 					}
 					#endregion
@@ -121,18 +121,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if (!File.Exists(YSFlightAircraftDirectory + thisAircraftListFile))
 						{
 							string message = "Aircraft List defined in directory tree not found.";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
-							return false;
+							loadingErrors++;
+							continue;
 						}
 						#endregion
-						#region Get Lines With .DAT Definitions.
+						#region Get Lines With .DAT Definitions
 						string[] aircraftListContents = File.ReadAllLines(YSFlightAircraftDirectory + thisAircraftListFile);
 						aircraftListContents = aircraftListContents.Where(x => x.ToUpperInvariant().Contains(@".DAT")).ToArray();
 						#endregion
-
 						#region Iterate Over LST Contents
 						for (int i =0; i < aircraftListContents.Length; i++)
 						{
@@ -155,6 +152,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							#region Assign File Paths for This Aircraft
 							switch (SplitString.Length - 1)
 							{
+								default:
+									if (SplitString.Length > 4) goto case 4;
+									break;
 								case 4:
 									AircraftPath4Coarse = SplitString[4];
 									goto case 3;
@@ -184,14 +184,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								});
 							#endregion
 							#region Ensure .DAT is defined.
-							if (NewMetaAircraft.Path_0_PropertiesFile.Length < 4)
+							if (NewMetaAircraft.Path_0_PropertiesFile.Length < 3)
 							{
-								string message = "Blank line in Aircraft List: " + thisAircraftListFile + ".";
-								IRichTextMessage debugmessage = message.AsDebugDetailMessage();
-
+								string message = "Incomplete line in Aircraft List: " + thisAircraftListFile + ".";
 								Debug.AddDetailMessage(message);
 								Debug.AddDetailMessage("----" + thisLine);
-								DebugInformation.Add(debugmessage);
+								loadingErrors++;
 								continue;
 							}
 							#endregion
@@ -205,23 +203,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					#region Cache MetaAircraft Names
 					for (int i = 0; i < Extensions.YSFlight.MetaData.Aircraft.List.Count; i++)
 					{
-						#region Update Line Number and Contents
-						IMetaDataAircraft ThisMetaAircraft = Extensions.YSFlight.MetaData.Aircraft.List[i];
-						string[] DatFileContents = File.ReadAllLines(YSFlightDirectory + ThisMetaAircraft.Path_0_PropertiesFile);
-						#endregion
-
 						#region .DAT Not Found on Disk
-						if (!File.Exists(YSFlightDirectory + ThisMetaAircraft.Path_0_PropertiesFile))
+						IMetaDataAircraft ThisMetaAircraft = Extensions.YSFlight.MetaData.Aircraft.List[i];
+						if (!File.Exists(SettingsLibrary.Settings.YSFlight.Directory + ThisMetaAircraft.Path_0_PropertiesFile))
 						{
 							string message = "Aircraft DAT file doesn't exist: " + ThisMetaAircraft.Path_0_PropertiesFile + ".";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
+							loadingErrors++;
 							continue;
 						}
 						#endregion
-
+						#region Update Line Number and Contents
+						string[] DatFileContents = File.ReadAllLines(SettingsLibrary.Settings.YSFlight.Directory + ThisMetaAircraft.Path_0_PropertiesFile);
+						#endregion
 						#region Find IDENTIFY in DAT
 						foreach (string DatFileLine in DatFileContents)
 						{
@@ -232,11 +226,9 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								if (SplitLine.Length <= 1)
 								{
 									string message = "Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaAircraft.Path_0_PropertiesFile + ".";
-									IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 									Debug.AddWarningMessage(message);
 									Debug.AddWarningMessage("----" + DatFileLine);
-									DebugInformation.Add(debugmessage);
+									loadingErrors++;
 									continue;
 								}
 								string AircraftName = SplitLine[1];
@@ -251,10 +243,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 						if (ThisMetaAircraft.Identify == null)
 						{
 							string message = "Aircraft DAT file doesn't contain IDENTIFY: " + ThisMetaAircraft.Path_0_PropertiesFile + ".";
-							IRichTextMessage debugmessage = message.AsDebugWarningMessage();
-
 							Debug.AddWarningMessage(message);
-							DebugInformation.Add(debugmessage);
+							loadingErrors++;
 							continue;
 						}
 						#endregion
@@ -264,14 +254,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				catch (Exception e)
 				{
 					string message = "MetaData.Aircraft.LoadAll Crashed!";
-					IRichTextMessage debugmessage = message.AsDebugErrorMessage(e);
-
 					Debug.AddErrorMessage(e, message);
-					DebugInformation.Add(debugmessage);
+					loadingErrors++;
 				}
+				#endregion
 
-				Debug.AddSummaryMessage("Finished MetaData.Aircraft.LoadAll()");
-				return (DebugInformation.Count <= 0);
+				Debug.AddSummaryMessage("Finished MetaData.Aircraft.LoadAll()" + (loadingErrors > 0 ? (" with " + loadingErrors + " errors.") : (".")));
+				return (loadingErrors <= 0);
 			}
 			#endregion
 		}
