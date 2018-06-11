@@ -49,7 +49,7 @@ namespace Com.OfficerFlake.Libraries
 			{
 				try
 				{
-					//DO NOT ADD CUTSOM CLASSES TO CONVERT TYPE! USE A DATABASE PRIMARY KEY INSTEAD!
+					//DO NOT ADD CUSTOM CLASSES TO CONVERT TYPE! USE A DATABASE PRIMARY KEY INSTEAD!
 
 					//System Objects
 
@@ -326,20 +326,22 @@ namespace Com.OfficerFlake.Libraries
 				{
 					#region Split Command
 
-					string[] commandSplit = parameters.Split('.');
+					string[] commandSplit = command.Split('.');
 
 					#endregion
 
 					#region Find and Modify the Setting.
 
-					Type TargetClass = typeof(_Settings);
+					object TargetClass = Settings;
+					PropertyInfo TargetProperty = typeof(SettingsLibrary).GetProperty("Settings", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Static);
 					for (int i = 0; i < commandSplit.Length; i++)
 					{
 						#region Found a Matching Sub-Class, Move into it.
 
 						if (i < commandSplit.Length - 1)
 						{
-							TargetClass = TargetClass.GetNestedType(commandSplit[i]);
+							TargetProperty = TargetProperty.PropertyType.GetProperty(commandSplit[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+							TargetClass = TargetProperty.GetValue(TargetClass);
 							continue;
 						}
 
@@ -347,14 +349,14 @@ namespace Com.OfficerFlake.Libraries
 
 						#region Convert the Paramters to an Object
 
-						FieldInfo thisField = TargetClass.GetField(commandSplit[i]);
-						object valueToSet = ConvertParameterStringToObject(thisField.FieldType, parameters, thisField.GetValue(null));
+						PropertyInfo thisProperty = TargetProperty.PropertyType.GetProperty(commandSplit[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+						object valueToSet = ConvertParameterStringToObject(thisProperty.PropertyType, parameters, thisProperty.GetValue(TargetClass));
 
 						#endregion
 
 						#region Set the Field to the Converted Value
 
-						thisField.SetValue(null, valueToSet);
+						thisProperty.SetValue(TargetClass, valueToSet);
 						return true;
 
 						#endregion
@@ -374,7 +376,6 @@ namespace Com.OfficerFlake.Libraries
 				}
 			}
 
-
 			public static bool LoadAll()
 			{
 				#region Settings Not Found on Disk
@@ -385,7 +386,7 @@ namespace Com.OfficerFlake.Libraries
 
 				#region Load Settings File Contents
 
-				SettingsLibrary.SettingsFile.Load();
+				SettingsFile.Load();
 
 				#endregion
 

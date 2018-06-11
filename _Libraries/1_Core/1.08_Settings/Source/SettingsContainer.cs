@@ -18,7 +18,7 @@ namespace Com.OfficerFlake.Libraries
 
 				public String Directory { get; set; } = "C:/Games/YSFLIGHT20120701/";
 			}
-			public readonly _YSFlight YSFlight = new _YSFlight();
+			public _YSFlight YSFlight { get; } = new _YSFlight();
 
 			public class _Options : INotifyPropertyChanged
 			{
@@ -111,7 +111,7 @@ namespace Com.OfficerFlake.Libraries
 
 				#endregion
 			}
-			public readonly _Options Options = new _Options();
+			public _Options Options { get; } = new _Options();
 
 			public class _Server : INotifyPropertyChanged
 			{
@@ -123,10 +123,10 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public UInt32 TCP = 7915;
-					public UInt32 UDP = 7964;
+					public UInt32 TCP { get; set; } = 7915;
+					public UInt32 UDP { get; set; } = 7964;
 				}
-				public readonly _ListeningPorts ListeningPorts = new _ListeningPorts();
+				public  _ListeningPorts ListeningPorts { get; } = new _ListeningPorts();
 
 				#endregion
 
@@ -136,16 +136,16 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public UInt32 DestinationPort = 7914;
-					public IPAddress DestinationAddress = IPAddress.Parse("127.0.0.1");
+					public UInt32 DestinationPort { get; set; } = 7914;
+					public IPAddress DestinationAddress { get; set; } = IPAddress.Parse("127.0.0.1");
 				}
-				public readonly _ProxyServer ProxyServer = new _ProxyServer();
+				public _ProxyServer ProxyServer { get; } = new _ProxyServer();
 
 				#endregion
 
-				public IDuration RestartTimer = 120.Minutes();
+				public IDuration RestartTimer { get; set; } = 120.Minutes();
 			}
-			public readonly _Server Server = new _Server();
+			public _Server Server { get; } = new _Server();
 
 			public class _Flight : INotifyPropertyChanged
 			{
@@ -157,17 +157,17 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Boolean Lock = false;
-					public Boolean Notification = true;
-					public Boolean UseWheelChocks = true;
+					public Boolean Lock { get; set; } = false;
+					public Boolean Notification { get; set; } = true;
+					public Boolean UseWheelChocks { get; set; } = true;
 				}
-				public readonly _Join Join = new _Join();
+				public _Join Join { get; } = new _Join();
 
 				#endregion
 
 				#region Flight
-				public Boolean Smoke = true;
-				public Boolean MidAirRefueling = true;
+				public Boolean Smoke { get; set; } = true;
+				public Boolean MidAirRefueling { get; set; } = true;
 
 				#endregion
 
@@ -177,13 +177,13 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Boolean Notification = true;
+					public Boolean Notification { get; set; } = true;
 				}
-				public readonly _Leave Leave = new _Leave();
+				public _Leave Leave { get; } = new _Leave();
 
 				#endregion
 			}
-			public readonly _Flight Flight = new _Flight();
+			public _Flight Flight { get; } = new _Flight();
 
 			public class _Colors : INotifyPropertyChanged
 			{
@@ -197,8 +197,8 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 05, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 07, 0, 0).ToTime();
+						public ITime Starts { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 05, 0, 0).ToTime();
+						public ITime Ends { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 07, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -208,30 +208,30 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Color Color = new _Color();
+						public _Color Color { get; } = new _Color();
 					}
-					public readonly _Dawn Dawn = new _Dawn();
+					public _Dawn Dawn { get; } = new _Dawn();
 
 					public class _Day : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
+						public ITime Starts { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
+						public ITime Ends { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -241,30 +241,30 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Color Color = new _Color();
+						public _Color Color { get; } = new _Color();
 					}
-					public readonly _Day Day = new _Day();
+					public _Day Day { get; } = new _Day();
 
 					public class _Dusk : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 0, 0).ToTime();
+						public ITime Starts { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0).ToTime();
+						public ITime Ends { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 19, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -274,66 +274,66 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Color Color = new _Color();
+						public _Color Color { get; } = new _Color();
 					}
-					public readonly _Dusk Dusk = new _Dusk();
+					public _Dusk Dusk { get; } = new _Dusk();
 
 					public class _Night : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
-						public ITime Ends =   new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
+						public ITime Starts { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 18, 0, 0).ToTime();
+						public ITime Ends { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 06, 0, 0).ToTime();
 
 						public class _Color : INotifyPropertyChanged
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
-							public Double NightDarkeningFactor = 0.12;
+							public Double NightDarkeningFactor { get; set; } = 0.12;
 
 							public class _Sky : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Color Color = new _Color();
+						public _Color Color { get; } = new _Color();
 					}
-					public readonly _Night Night = new _Night();
+					public _Night Night { get; } = new _Night();
 				}
-				public readonly _Time Time = new _Time();
+				public _Time Time { get; } = new _Time();
 
 				public class _Altitude : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Double Opacity = 1.0;
+					public Double Opacity { get; set; } = 1.0;
 
 					public class _Floor : INotifyPropertyChanged
 					{
@@ -343,10 +343,10 @@ namespace Com.OfficerFlake.Libraries
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
-							public IDistance Starts = 0.Feet();
-							public IDistance Ends = 50000.Feet();
+							public IDistance Starts { get; set; } = 0.Feet();
+							public IDistance Ends { get; set; } = 50000.Feet();
 						}
-						public readonly _Range Range = new _Range();
+						public _Range Range { get; } = new _Range();
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -356,23 +356,23 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Color Color = new _Color();
+						public _Color Color { get; } = new _Color();
 					}
-					public readonly _Day Day = new _Day();
+					public _Day Day { get; } = new _Day();
 
 					public class _Ceiling : INotifyPropertyChanged
 					{
@@ -382,10 +382,10 @@ namespace Com.OfficerFlake.Libraries
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
-							public IDistance Starts = 30000.Feet();
-							public IDistance Ends = 100000.Feet();
+							public IDistance Starts { get; set; } = 30000.Feet();
+							public IDistance Ends { get; set; } = 100000.Feet();
 						}
-						public readonly _Range Range = new _Range();
+						public _Range Range { get; } = new _Range();
 
 						public class _Colors : INotifyPropertyChanged
 						{
@@ -395,23 +395,23 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public readonly _Colors Colors = new _Colors();
+						public _Colors Colors { get; } = new _Colors();
 					}
-					public readonly _Ceiling Ceiling = new _Ceiling();
+					public _Ceiling Ceiling { get; } = new _Ceiling();
 
 					public class _Space : INotifyPropertyChanged
 					{
@@ -421,10 +421,10 @@ namespace Com.OfficerFlake.Libraries
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
-							public IDistance Starts = 50000.Feet();
-							public IDistance Ends = 120000.Feet();
+							public IDistance Starts { get; set; } = 50000.Feet();
+							public IDistance Ends { get; set; } = 120000.Feet();
 						}
-						public readonly _Range Range = new _Range();
+						public _Range Range { get; } = new _Range();
 
 						public class _Colors : INotifyPropertyChanged
 						{
@@ -434,26 +434,26 @@ namespace Com.OfficerFlake.Libraries
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 							}
-							public readonly _Sky Sky = new _Sky();
+							public _Sky Sky { get; } = new _Sky();
 
 							public class _Horizon : INotifyPropertyChanged
 							{
 								public event PropertyChangedEventHandler PropertyChanged;
 
-								public Double Opacity = 0.0;
-								public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+								public Double Opacity { get; set; } = 0.0;
+								public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 							}
-							public readonly _Horizon Horizon = new _Horizon();
+							public _Horizon Horizon { get; } = new _Horizon();
 
 						}
-						public readonly _Colors Colors = new _Colors();
+						public _Colors Colors { get; } = new _Colors();
 					}
-					public readonly _Space Space = new _Space();
+					public _Space Space { get; } = new _Space();
 				}
-				public readonly _Altitude Altitude = new _Altitude();
+				public _Altitude Altitude { get; } = new _Altitude();
 
 				public class _Defaults : INotifyPropertyChanged
 				{
@@ -463,56 +463,56 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public Double Opacity = 0.0;
-						public IColor Color = ObjectFactory.CreateColor(180, 184, 186);
+						public Double Opacity { get; set; } = 0.0;
+						public IColor Color { get; set; } = ObjectFactory.CreateColor(180, 184, 186);
 					}
-					public readonly _Sky Sky = new _Sky();
+					public _Sky Sky { get; } = new _Sky();
 
 					public class _Horizon : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public IColor Color = ObjectFactory.CreateColor(120, 140, 160);
+						public IColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160);
 					}
-					public readonly _Horizon Horizon = new _Horizon();
+					public _Horizon Horizon { get; } = new _Horizon();
 
 					public class _Ground : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public Double Opacity = 0.0;
-						public IColor Color = ObjectFactory.CreateColor(0, 0, 160);
+						public Double Opacity { get; set; } = 0.0;
+						public IColor Color { get; set; } = ObjectFactory.CreateColor(0, 0, 160);
 					}
-					public readonly _Ground Ground = new _Ground();
+					public _Ground Ground { get; } = new _Ground();
 
 					public class _Fog : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public IColor Color = ObjectFactory.CreateColor(160, 160, 160);
+						public IColor Color { get; set; } = ObjectFactory.CreateColor(160, 160, 160);
 					}
-					public readonly _Fog Fog = new _Fog();
+					public _Fog Fog { get; } = new _Fog();
 				}
-				public readonly _Defaults Defaults = new _Defaults();
+				public  _Defaults Defaults { get; } = new _Defaults();
 			}
-			public readonly _Colors Colors = new _Colors();
+			public _Colors Colors { get; } = new _Colors();
 
 			public class _Day : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public ITime Duration = 24.Minutes().ToTime();
+				public ITime Duration { get; set; } = 24.Minutes().ToTime();
 			}
-			public readonly _Day Day = new _Day();
+			public _Day Day { get; } = new _Day();
 
 			public class _Time : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public ITime Current = 12.Hours().ToTime();
-				public ITime Default = 12.Hours().ToTime();
+				public ITime Current { get; set; } = 12.Hours().ToTime();
+				public ITime Default { get; set; } = 12.Hours().ToTime();
 			}
-			public readonly _Time Time = new _Time();
+			public _Time Time { get; } = new _Time();
 
 			public class _Weather : INotifyPropertyChanged
 			{
@@ -522,78 +522,78 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Boolean LandEverywhere = true;
-					public Boolean Collisions = false;
-					public Boolean BlackOut = false;
-					public Boolean Fog = false;
+					public Boolean LandEverywhere { get; set; } = true;
+					public Boolean Collisions { get; set; } = false;
+					public Boolean BlackOut { get; set; } = false;
+					public Boolean Fog { get; set; } = false;
 				}
-				public readonly _ForceObedience ForceObedience = new _ForceObedience();
+				public _ForceObedience ForceObedience { get; } = new _ForceObedience();
 
 				public class _Enable : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Boolean LandEverywhere = true;
-					public Boolean Collisions = false;
-					public Boolean BlackOut = false;
-					public Boolean Fog = true;
+					public Boolean LandEverywhere { get; set; } = true;
+					public Boolean Collisions { get; set; } = false;
+					public Boolean BlackOut { get; set; } = false;
+					public Boolean Fog { get; set; } = true;
 				}
-				public readonly _Enable Enable = new _Enable();
+				public _Enable Enable { get; } = new _Enable();
 
 				public class _Wind : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public ISpeed WindX = 0.MetersPerSecond();
-					public ISpeed WindY = 0.MetersPerSecond();
-					public ISpeed WindZ = 0.MetersPerSecond();
+					public ISpeed WindX { get; set; } = 0.MetersPerSecond();
+					public ISpeed WindY { get; set; } = 0.MetersPerSecond();
+					public ISpeed WindZ { get; set; } = 0.MetersPerSecond();
 				}
-				public readonly _Wind Wind = new _Wind();
+				public _Wind Wind { get; } = new _Wind();
 
-				public IDistance Visibility = 0.Meters();
+				public IDistance Visibility { get; set; } = 0.Meters();
 			}
-			public readonly _Weather Weather = new _Weather();
+			public _Weather Weather { get; } = new _Weather();
 
 			public class _OwnerInformation : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public String PreferredName = "???";
-				public String ContactEmail = "???";
+				public String PreferredName { get; set; } = "???";
+				public String ContactEmail { get; set; } = "???";
 			}
-			public readonly _OwnerInformation OwnerInformation = new _OwnerInformation();
+			public _OwnerInformation OwnerInformation { get; } = new _OwnerInformation();
 
 			public class _IRC : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
 				#region UseIRC?
-				public Boolean Enabled = false;
+				public Boolean Enabled { get; set; } = false;
 				#endregion
 				#region IRC Server
 				public class _Server : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public IPAddress Address = IPAddress.Parse("127.0.0.1");
-					public UInt32 Port = 6667;
+					public IPAddress Address { get; set; } = IPAddress.Parse("127.0.0.1");
+					public UInt32 Port { get; set; } = 6667;
 
-					public String Channel = "None";
+					public String Channel { get; set; } = "None";
 				}
-				public readonly _Server Server = new _Server();
+				public _Server Server { get; } = new _Server();
 				#endregion
 				#region OpenYS Nickname
-				public String Nickname = "OpenYS";
+				public String Nickname { get; set; } = "OpenYS";
 
 				public class _Authentication : INotifyPropertyChanged
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public Boolean Enabled = false;
-					public String Service = "NickServ";
-					public String Password = "PASSWORD";
+					public Boolean Enabled { get; set; } = false;
+					public String Service { get; set; } = "NickServ";
+					public String Password { get; set; } = "PASSWORD";
 				}
-				public readonly _Authentication Authentication = new _Authentication();
+				public _Authentication Authentication { get; } = new _Authentication();
 				#endregion
 				#region Messaging Control
 				public class _Messages : INotifyPropertyChanged
@@ -604,28 +604,28 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public Boolean Enabled = true;
-						public Boolean StripFormatting = false;
-						public Boolean ShowEvents = true;
-						public String MessageColor = "&d";
+						public Boolean Enabled { get; set; } = true;
+						public Boolean StripFormatting { get; set; } = false;
+						public Boolean ShowEvents { get; set; } = true;
+						public String MessageColor { get; set; } = "&d";
 					}
-					public readonly _IRCtoOYS IRCtoOYS = new _IRCtoOYS();
+					public  _IRCtoOYS IRCtoOYS { get; } = new _IRCtoOYS();
 
 					public class _OYStoIRC : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public Boolean Enabled = true;
-						public Boolean StripFormatting = false;
-						public Boolean ShowEvents = true;
-						public String MessageColor = "&0";
+						public Boolean Enabled { get; set; } = true;
+						public Boolean StripFormatting { get; set; } = false;
+						public Boolean ShowEvents { get; set; } = true;
+						public String MessageColor { get; set; } = "&0";
 					}
-					public readonly _OYStoIRC OYStoIRC = new _OYStoIRC();
+					public _OYStoIRC OYStoIRC { get; } = new _OYStoIRC();
 				}
-				public readonly _Messages Messages = new _Messages();
+				public _Messages Messages { get; } = new _Messages();
 				#endregion
 			}
-			public readonly _IRC IRC = new _IRC();
+			public _IRC IRC { get; } = new _IRC();
 
 			public class _UserInterface : INotifyPropertyChanged
 			{
@@ -642,7 +642,7 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Console { get; set; } = true;
 						public Boolean User { get; set; } = true;
 					}
-					public readonly _ShowMessages ShowMessages = new _ShowMessages();
+					public _ShowMessages ShowMessages { get; } = new _ShowMessages();
 
 					public class _ShowDebug : INotifyPropertyChanged
 					{
@@ -654,12 +654,12 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Error { get; set; } = true;
 						public Boolean Crash { get; set; } = true;
 					}
-					public readonly _ShowDebug ShowDebug = new _ShowDebug();
+					public _ShowDebug ShowDebug { get; } = new _ShowDebug();
 				}
-				public readonly _Console Console = new _Console();
+				public _Console Console { get; } = new _Console();
 
 			}
-			public readonly _UserInterface UserInterface = new _UserInterface();
+			public _UserInterface UserInterface { get; } = new _UserInterface();
 		}
 		public static _Settings Settings { get; }
 

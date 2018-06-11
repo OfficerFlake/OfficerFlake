@@ -8,6 +8,7 @@
 			{
 
 			}
+
 		}
 		public static SettingFile SettingsFile = new SettingFile(@"./Settings.Dat");
 	}
