@@ -35,7 +35,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\_Supplement\SigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\2_Components\2.01_Icons\OpenYS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PropertyChanged, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
@@ -57,7 +60,9 @@
     <Compile Include="Source\SettingsHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OfficerFlake.snk" />
+    <None Include="..\..\..\_Supplement\SigningKey.snk">
+      <Link>SigningKey.snk</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +96,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\2_Components\2.01_Icons\OpenYS.ico">
+      <Link>OpenYS.ico</Link>
+    </Content>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

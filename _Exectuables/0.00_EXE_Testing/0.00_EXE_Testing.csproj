@@ -55,13 +55,13 @@
     <StartupObject>Com.OfficerFlake.Executables.Testing.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>OfficerFlake.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\_Libraries\2_Components\2.01_Icons\OpenYS.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\_Supplement\SigningKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -105,7 +105,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="OfficerFlake.snk" />
+    <None Include="..\..\_Supplement\SigningKey.snk">
+      <Link>SigningKey.snk</Link>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -122,9 +124,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="OfficerFlake.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\_Libraries\1_Core\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
@@ -243,6 +242,11 @@
       <Project>{e61ada91-5cb8-49b1-9418-fb353ff5cb7e}</Project>
       <Name>3.00_MasterObjectFactory</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\_Libraries\2_Components\2.01_Icons\OpenYS.ico">
+      <Link>OpenYS.ico</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

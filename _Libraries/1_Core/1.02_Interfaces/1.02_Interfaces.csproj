@@ -52,7 +52,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\_Supplement\SigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\2_Components\2.01_Icons\OpenYS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -99,13 +102,20 @@
     <Folder Include="Source\1.02.03_Master\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OfficerFlake.snk" />
+    <None Include="..\..\..\_Supplement\SigningKey.snk">
+      <Link>SigningKey.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
       <Project>{b8dc8f84-f514-4175-8f15-c271fb0862b7}</Project>
       <Name>1.01_BuildEnvironment</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\2_Components\2.01_Icons\OpenYS.ico">
+      <Link>OpenYS.ico</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

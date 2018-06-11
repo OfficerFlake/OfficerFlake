@@ -52,7 +52,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OfficerFlake.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\_Supplement\SigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\2_Components\2.01_Icons\OpenYS.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -65,9 +68,6 @@
     <Compile Include="Source\PacketInspector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OfficerFlake.snk" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">
       <Project>{b8dc8f84-f514-4175-8f15-c271fb0862b7}</Project>
       <Name>1.01_BuildEnvironment</Name>
@@ -76,6 +76,16 @@
       <Project>{60286c68-ab78-4f34-8199-e8cf255ab284}</Project>
       <Name>1.02_Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\2_Components\2.01_Icons\OpenYS.ico">
+      <Link>OpenYS.ico</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\_Supplement\SigningKey.snk">
+      <Link>SigningKey.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
