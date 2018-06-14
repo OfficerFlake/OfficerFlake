@@ -187,26 +187,13 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 		#region Run Server
 		private static void MainProgram()
 		{
-			#region Debug Tests
-			//Debug.AddCrashMessage(new Exception("CRASH TEST"), "CRASH TEST");
-			//Debug.AddErrorMessage(new Exception("ERROR TEST"), "ERROR TEST");
-			//Debug.AddWarningMessage("WARNING TEST");
-			//Debug.AddDetailMessage("DETAIL TEST");
-			//Debug.AddSummaryMessage("SUMMARY TEST");
+			Console.AddInformationMessage("Starting OpenYS Version: " + DeveloperAttributes.DeveloperInfo.BuildVersion);
+
+			#region Load Settings
+			Console.AddInformationMessage("Loading Settings...");
+			SettingsHandler.LoadAll();
+			Console.AddInformationMessage("Settings Loading Complete.");
 			#endregion
-
-			#region Load World
-			Console.AddInformationMessage("Loading World");
-
-			Metadata.LoadAll();
-
-			World.Load(Settings.Options.FieldName);
-
-			Console.AddInformationMessage("World Loading Complete!");
-			#endregion
-
-			OpenYSServerModeUserInterface.ClearAllMessages();
-
 			#region Start Server
 			Console.AddInformationMessage("Starting Proxy Server...");
 			Server.Start(IsProxyMode: true);

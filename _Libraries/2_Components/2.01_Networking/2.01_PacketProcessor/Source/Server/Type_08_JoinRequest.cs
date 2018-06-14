@@ -81,11 +81,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//CachedData.Aircraft CachedAircraft = MetaAircraft.Cache();
 				#endregion
 
+				#region Assign Vehicle
+				thisConnection.Vehicle = ObjectFactory.CreateAircraft();
+				thisConnection.Vehicle.Owner = thisConnection.User;
+				thisConnection.Vehicle.MetaData = MetaAircraft;
+				#endregion
+
 				#region Build EntityJoined(05)
 				IPacket_05_AddVehicle EntityJoined = ObjectFactory.CreatePacket05AddVehicle();
 				EntityJoined.VehicleType = Packet_05VehicleType.Aircraft;
 				EntityJoined.Version = 0;
-				EntityJoined.ID = World.GetNextID() | 256 * 256;
+				EntityJoined.ID = thisConnection.Vehicle.ID;
 				EntityJoined.IFF = JoinRequest.IFF;
 				EntityJoined.PosX = StartPosition.Position.X;
 				EntityJoined.PosY = StartPosition.Position.Y;
@@ -142,12 +148,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 					PacketWaiter_AcknowledgeJoinPacket.Require(0, 1);
 				}
 				PacketWaiter_AcknowledgeJoinPacket.StartListening();
-				#endregion
-
-				#region Assign Vehicle
-				thisConnection.Vehicle = ObjectFactory.CreateVehicle();
-				thisConnection.Vehicle.Owner = thisConnection.User;
-				thisConnection.Vehicle.MetaData = MetaAircraft;
 				#endregion
 
 				#region Send Owner Join Data

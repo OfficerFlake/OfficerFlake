@@ -262,7 +262,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 
 		private void ClientSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			string text = (sender as ComboBox)?.SelectedItem as string ?? "None";
+			var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "All";
 			try
 			{
 				TargetClient = Connections.AllConnections?
@@ -277,7 +277,9 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		}
 		private void DirectionSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			ServerToClient = (((sender as ComboBox)?.SelectedItem as string) ?? "Server->Client") == "Server->Client";
+			var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Server->Client";
+			ServerToClient = (text == "Server->Client");
+			int test = 0;
 		}
 		private void TypeTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
 		{

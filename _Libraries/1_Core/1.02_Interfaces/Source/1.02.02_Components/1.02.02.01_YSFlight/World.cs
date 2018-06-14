@@ -14,6 +14,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		UInt32 IFF { get; set; }
 		UInt32 ID { get; set; }
 
+		Packet_05VehicleType VehicleType { get; set; }
+
 		IUser Owner { get; set; }
 		IMetaDataVehicle MetaData { get; set; }
 

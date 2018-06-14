@@ -17,6 +17,11 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 		{
 			public class Vehicle : IWorldVehicle
 			{
+				public Vehicle()
+				{
+					ID = Extensions.YSFlight.World.GetNextID();
+				}
+
 				public void CreateVehicle()
 				{
 					Extensions.YSFlight.World.Vehicles.Add(this);
@@ -34,7 +39,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public IMetaDataVehicle MetaData { get; set; } = Extensions.YSFlight.MetaData.Aircraft.None;
 				public IUser Owner { get; set; } = Users.None;
 
-				public UInt32 ID { get; set; } = 0;
+				public Packet_05VehicleType VehicleType { get; set; } = Packet_05VehicleType.Aircraft;
+
+				public UInt32 ID { get;
+					set; } = 0;
 				public UInt32 IFF { get; set; } = 0;
 				public UInt32 Strength { get; set; } = 10;
 
@@ -45,6 +53,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				{
 					Identify = packet.Identify;
 					Tag = packet.OwnerName;
+					VehicleType = packet.VehicleType;
 
 					ID = packet.ID;
 					IFF = packet.IFF;
@@ -87,11 +96,19 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			public class Aircraft : Vehicle, IWorldAircraft
 			{
+				public Aircraft()
+				{
+					VehicleType = Packet_05VehicleType.Aircraft;
+				}
 			}
 			public static Aircraft NULL_Aircraft;
 
 			public class Ground : Vehicle, IWorldGround
 			{
+				public Ground()
+				{
+					VehicleType = Packet_05VehicleType.Ground;
+				}
 			}
 			public static Ground NULL_Ground;
 
@@ -754,7 +771,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							bool failed = false;
 							failed |= !UInt32.TryParse(Split[1], out var temp);
-							CurrentGround.ID = temp;
+							//CurrentGround.ID = temp;
 
 							if (failed)
 							{
@@ -1108,7 +1125,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			foreach (Objects.Ground ThisGround in Objects.RootScenery.GroundObjects)
 			{
-				Extensions.YSFlight.World.AllGrounds.Add(ThisGround);
+				Extensions.YSFlight.World.Vehicles.Add(ThisGround);
 			}
 			#region DEBUG: Added GroundObjects from RootScenery to World.Ground.AllGrounds
 			{

@@ -735,7 +735,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				PacketWaiters.RemoveAll(x => x == this);
 			}
 			internal void CheckIfReceived(IPacket thisPacket)
-			{
+			{				
 				bool GetDesired = (false | Desired.Count <= 0);
 				foreach (var desiredPacketSegment in Desired)
 				{
@@ -834,7 +834,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 			for (int i = 0; i < PacketWaiters.Count; i++)
 			{
 				PacketWaiter thisWaiter = PacketWaiters[i];
-				thisWaiter.CheckIfReceived(thisPacket);
+				if (thisPacket.Type == thisWaiter.RequireType)
+				{
+					if (thisWaiter.RequireType == 6)
+					{
+						int z = 0;
+					}
+					thisWaiter.CheckIfReceived(thisPacket);
+				}
 			}
 
 			try
@@ -860,8 +867,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    {
 		    RemoveFromServerList();
 		    Logger.Console.AddInformationMessage("&c" + this.User.UserName.ToUnformattedSystemString() + " left the server.");
-			Connections.AllConnections.Exclude(this).ToList().SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
-		    SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
+		    foreach (IConnection otherConnection in Connections.AllConnections.Exclude(this))
+		    {
+			    otherConnection.SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+		    }
+			SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
 		    SendMessageAsync("Disconnection reason: " + reason).ConfigureAwait(false);
 			if (TCPSocket.Connected)
 		    {

@@ -362,22 +362,26 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Send Entities(05)
 				//Create all the other players aircraft.
-				foreach (IWorldVehicle vehicle in Extensions.YSFlight.World.Vehicles)
+				for(int i = 0; i < Extensions.YSFlight.World.AllAircraft.Count; i++)
 				{
+					IWorldVehicle vehicle = Extensions.YSFlight.World.AllAircraft[i];
+
 					IPacket_05_AddVehicle OtherJoinPacket = vehicle.GetJoinPacket();
 					OtherJoinPacket.OwnerType = Packet_05OwnerType.Other;
+					OtherJoinPacket.VehicleType = vehicle.VehicleType;
 
 					IPacketWaiter PacketWaiter_AcknowledgeOtherJoinPacket = thisConnection.CreatePacketWaiter(6);
 					if (OtherJoinPacket.VehicleType == Packet_05VehicleType.Aircraft)
 					{
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 0);
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
 					}
 					else
 					{
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
 					}
 					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
-					Logger.Console.AddInformationMessage("Sending Join Notification.");
 					thisConnection.Send(OtherJoinPacket);
 
 					if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
@@ -388,50 +392,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 				}
 
-				#region Online Vehicles
-				/*
-				foreach (Vehicle ThisVehicle in Vehicles.List.ToArray())
-				{
-					Packets.Type_06_Acknowledgement AcknowledgeJoin = new Packets.Type_06_Acknowledgement(0, ThisVehicle.ID);
-					//thisConnection.SendPacketGetPacket(ThisVehicle.GetJoinPacket(false), AcknowledgeJoin);
-					thisConnection.SendPacket(ThisVehicle.GetJoinPacket(false));
-
-					Packets.Type_36_WeaponsConfig Loading = ThisVehicle.WeaponsLoading;
-					thisConnection.SendPacket(Loading);
-
-					if (ThisVehicle.VirtualCarrierObject_ID != 0)
-					{
-						MetaData.Ground VirtualCarrierObject = ThisVehicle.VirtualCarrierObject_MetaData;
-						ThisVehicle.VirtualCarrierObject_MetaData = VirtualCarrierObject;
-
-						if (VirtualCarrierObject != MetaData._Ground.None)
-						{
-							Packets.Type_05_EntityJoined VCOJoined;
-							VCOJoined = new Packets.Type_05_EntityJoined();
-							VCOJoined.IsGround = true;
-							VCOJoined.ID = ThisVehicle.VirtualCarrierObject_ID;
-							VCOJoined.IFF = ThisVehicle.IFF;
-							VCOJoined.PosX = ThisVehicle.PosX;
-							VCOJoined.PosY = ThisVehicle.PosY;
-							VCOJoined.PosZ = ThisVehicle.PosZ;
-							VCOJoined.RotX = (float)(ThisVehicle.HdgX / 32767d * Math.PI);
-							VCOJoined.RotY = (float)(ThisVehicle.HdgY / 32767d * Math.PI);
-							VCOJoined.RotZ = (float)(ThisVehicle.HdgZ / 32767d * Math.PI);
-							VCOJoined.Identify = VirtualCarrierObject.Identify;
-							VCOJoined.OwnerName = ThisVehicle.OwnerName;
-							VCOJoined.IsOwnedByThisPlayer = false;
-
-							thisConnection.SendPacket(VCOJoined);
-						}
-					}
-				}
-				*/
-				#endregion
-
 				//Create all the ground objects.
 				Percentage = 0;
-
-				for (int i = 0; i < YSFlight.World.AllGrounds.Count; i++)
+				List<IPacket_05_AddVehicle> JoinPackets = new List<IPacket_05_AddVehicle>();
+				List<IPacketWaiter> JoinWaiters = new List<IPacketWaiter>();
+				for (int i = 0; i < Extensions.YSFlight.World.AllGrounds.Count; i++)
 				{
 					#region Tell YSClient the Percentage
 					bool UpdatedPercentage = false;
@@ -448,31 +413,45 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					#endregion
 
-					IWorldGround ThisGround = YSFlight.World.AllGrounds[i];
-					IPacket_05_AddVehicle GroundJoin = ObjectFactory.CreatePacket05AddVehicle();
-					GroundJoin.VehicleType = Packet_05VehicleType.Ground;
-					GroundJoin.ID = ThisGround.ID;
-					GroundJoin.Identify = ThisGround.Identify;
-					GroundJoin.OwnerName = ThisGround.Tag;
-					GroundJoin.IFF = ThisGround.IFF;
-					GroundJoin.PosX = ThisGround.Position.X;
-					GroundJoin.PosY = ThisGround.Position.Y;
-					GroundJoin.PosZ = ThisGround.Position.Z;
-					GroundJoin.HdgH = ThisGround.Attitude.H;
-					GroundJoin.HdgP = ThisGround.Attitude.P;
-					GroundJoin.HdgB = ThisGround.Attitude.B;
+					IWorldVehicle vehicle = Extensions.YSFlight.World.AllGrounds[i];
 
-					thisConnection.Send(GroundJoin);
+					IPacket_05_AddVehicle OtherJoinPacket = vehicle.GetJoinPacket();
+					OtherJoinPacket.OwnerType = Packet_05OwnerType.Other;
+					OtherJoinPacket.VehicleType = vehicle.VehicleType;
+					JoinPackets.Add(OtherJoinPacket);
+
+					IPacketWaiter PacketWaiter_AcknowledgeOtherJoinPacket = thisConnection.CreatePacketWaiter(6);
+					if (OtherJoinPacket.VehicleType == Packet_05VehicleType.Aircraft)
+					{
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 0);
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
+					}
+					else
+					{
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
+						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
+					}
+					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
+					JoinWaiters.Add(PacketWaiter_AcknowledgeOtherJoinPacket);
+					thisConnection.Send(OtherJoinPacket);
 				}
-
+				for (int i = 0; i < JoinPackets.Count; i++)
+				{
+					if (!thisConnection.GetResponseOrResend(JoinWaiters[i], JoinPackets[i]))
+					{
+						thisConnection.SendMessage("Expected a Other Entity Join Acknowldge for ID " + JoinPackets[i].ID + " and didn't get an answer.");
+						//thisConnection.Disconnect();
+						//return false;
+					}
+				}
 				#endregion
 
 				#region Send PrepareSimulation(16)
 				//Build Prepare Simulation (16)
 				IPacket_16_PrepareSimulation PrepareSimulation = ObjectFactory.CreatePacket16PrepareSimulation();
 
-				IPacketWaiter packetWaiter_AcknowledgePrepareSimulation = thisConnection.CreatePacketWaiter(16);
-				packetWaiter_AcknowledgePrepareSimulation.Require(0, (Int32)7);
+				IPacketWaiter packetWaiter_AcknowledgePrepareSimulation = thisConnection.CreatePacketWaiter(6);
+				packetWaiter_AcknowledgePrepareSimulation.Require(0, 7);
 				packetWaiter_AcknowledgePrepareSimulation.StartListening();
 
 				//Send Prepare Simulation (16)
