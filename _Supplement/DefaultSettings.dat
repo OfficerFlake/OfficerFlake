@@ -1,0 +1,128 @@
+Settings.YSFlight.Directory						C:\Program Files\YSFLIGHT.COM\YSFlight\
+Settings.Options.FieldName						HAWAII
+
+Settings.Options.ConnectionLocked					False
+Settings.Options.YSFNetcodeVersion					20110207
+Settings.Options.AllowOYSExtendedPackets				True
+Settings.Options.OYSNetcodeVersion					20170207
+Settings.Options.SendWelcomeMessageOnJoinServer				True
+Settings.Options.NotifyServerWhenBotConnects				False
+Settings.Options.AllowMissiles						True
+Settings.Options.AllowUnguidedWeapons					True
+Settings.Options.AllowExternalAirView					True
+Settings.Options.RadarBaseAltitude					0METERS
+Settings.Options.AllowListUsers						True
+Settings.Options.AircraftListPacketSize					32
+Settings.Options.SendAircraftListLoadPercentNotification		True
+Settings.Options.LoadGrounds						True
+Settings.Options.SendGroundObjectListLoadPercentNotification		True
+Settings.Options.SendLoginCompleteNotification				True
+Settings.Options.SendWelcomeMessageOnLoginComplete			True
+Settings.Options.KickBotsOnLoginComplete				True
+
+Settings.Server.ListeningPorts.TCP					7915
+Settings.Server.ListeningPorts.UDP					7916
+Settings.Server.ProxyServer.DestinationPort				7914
+Settings.Server.ProxyServer.DestinationAddress				127.0.0.1
+Settings.Server.RestartTimer						06:00:00
+
+Settings.Flight.Join.Lock						False
+Settings.Flight.Join.Notification					True
+Settings.Flight.Join.UseWheelChocks					True
+Settings.Flight.Smoke							True
+Settings.Flight.MidAirRefueling						True
+Settings.Flight.Leave.Notification					True
+
+Settings.Colors.Time.Opacity						1.00
+Settings.Colors.Time.Dawn.Starts					05:00:00
+Settings.Colors.Time.Dawn.Ends						09:00:00
+Settings.Colors.Time.Dawn.Color.Sky.Color				180 184 186
+Settings.Colors.Time.Dawn.Color.Sky.Opacity				1.00
+Settings.Colors.Time.Dawn.Color.Horizon.Color				120 140 160
+Settings.Colors.Time.Dawn.Color.Horizon.Opacity				1.00
+Settings.Colors.Time.Day.Starts						07:00:00
+Settings.Colors.Time.Day.Ends						19:00:00
+Settings.Colors.Time.Day.Color.Sky.Color				180 184 186
+Settings.Colors.Time.Day.Color.Sky.Opacity				1.00
+Settings.Colors.Time.Day.Color.Horizon.Color				120 140 160
+Settings.Colors.Time.Day.Color.Horizon.Opacity				1.00
+Settings.Colors.Time.Dusk.Starts					16:00:00
+Settings.Colors.Time.Dusk.Ends						20:00:00
+Settings.Colors.Time.Dusk.Color.Sky.Color				180 184 186
+Settings.Colors.Time.Dusk.Color.Sky.Opacity				1.00
+Settings.Colors.Time.Dusk.Color.Horizon.Color				120 140 160
+Settings.Colors.Time.Dusk.Color.Horizon.Opacity				1.00
+Settings.Colors.Time.Night.Starts					19:00:00
+Settings.Colors.Time.Night.Ends						07:00:00
+Settings.Colors.Time.Night.Color.Sky.Color				180 184 186
+Settings.Colors.Time.Night.Color.Sky.Opacity				1.00
+Settings.Colors.Time.Night.Color.Horizon.Color				120 140 160
+Settings.Colors.Time.Night.Color.Horizon.Opacity			1.00
+Settings.Colors.Altitude.Opacity					1.00
+Settings.Colors.Altitude.Floor.Range.Ends				10000FEET
+Settings.Colors.Altitude.Floor.Color.Sky.Color				180 184 186
+Settings.Colors.Altitude.Floor.Color.Sky.Opacity			1.00
+Settings.Colors.Altitude.Floor.Color.Horizon.Color			120 140 160
+Settings.Colors.Altitude.Floor.Color.Horizon.Opacity			1.00
+Settings.Colors.Altitude.Ceiling.Range.Starts				30000FEET
+Settings.Colors.Altitude.Ceiling.Range.Ends				50000FEET
+Settings.Colors.Altitude.Ceiling.Color.Sky.Color			180 184 186
+Settings.Colors.Altitude.Ceiling.Color.Sky.Opacity			1.00
+Settings.Colors.Altitude.Ceiling.Color.Horizon.Color			120 140 160
+Settings.Colors.Altitude.Ceiling.Color.Horizon.Opacity			1.00
+Settings.Colors.Altitude.Space.Range.Starts				90000FEET
+Settings.Colors.Altitude.Space.Color.Sky.Color				180 184 186
+Settings.Colors.Altitude.Space.Color.Sky.Opacity			1.00
+Settings.Colors.Altitude.Space.Color.Horizon.Color			120 140 160
+Settings.Colors.Altitude.Space.Color.Horizon.Opacity			1.00
+Settings.Colors.Defaults.Sky.Color					180 184 186
+Settings.Colors.Defaults.Sky.Opacity					1.00
+Settings.Colors.Defaults.Horizon.Color					120 140 160
+Settings.Colors.Defaults.Horizon.Opacity				1.00
+Settings.Colors.Defaults.Ground.Color					0 100 200
+Settings.Colors.Defaults.Ground.Opacity					0.00
+Settings.Colors.Defaults.Fog.Color					240 240 240
+Settings.Colors.Defaults.Fog.Opacity					1.00
+
+Settings.Day.Duration							00:24:00
+Settings.Time.Default							10:00:00
+
+Settings.Weather.ForceObedience.LandEverywhere				True
+Settings.Weather.ForceObedience.Collisions				False
+Settings.Weather.ForceObedience.BlackOut				False
+Settings.Weather.ForceObedience.Fog					True
+Settings.Weather.Enable.LandEverywhere					True
+Settings.Weather.Enable.Collisions					True
+Settings.Weather.Enable.BlackOut					False
+Settings.Weather.Enable.Fog						True
+Settings.Weather.Wind.WindX						0M/S
+Settings.Weather.Wind.WindY						0M/S
+Settings.Weather.Wind.WindZ						0M/S
+
+Settings.OwnerInformation.PrefferedName					???
+Settings.OwnerInformation.ContactEmail					N/A
+
+Settings.IRC.Enabled							False
+Settings.IRC.Server.Address						www.irc.com
+Settings.IRC.Server.Port						80
+Settings.IRC.Nickname							OpenYS
+Settings.IRC.Authentication.Enabled					False
+Settings.IRC.Authentication.ServiceName					NickServ
+Settings.IRC.Authentication.Password					Password
+Settings.IRC.Messages.IRCtoOYS.Enabled					True
+Settings.IRC.Messages.IRCtoOYS.StripFormatting				False
+Settings.IRC.Messages.IRCtoOYS.ShowEvents				True
+Settings.IRC.Messages.IRCtoOYS.MessageColor				240 240 240
+Settings.IRC.Messages.OYStoIRC.Enabled					True
+Settings.IRC.Messages.OYStoIRC.StripFormatting				False
+Settings.IRC.Messages.OYStoIRC.ShowEvents				True
+Settings.IRC.Messages.OYStoIRC.MessageColor				0 0 0
+
+Settings.UserInterface.ShowMessages.User				True
+Settings.UserInterface.ShowMessages.Console				True
+Settings.UserInterface.ShowDebug.Summary				False
+Settings.UserInterface.ShowDebug.Detail					False
+Settings.UserInterface.ShowDebug.Warning				True
+Settings.UserInterface.ShowDebug.Error					True
+Settings.UserInterface.ShowDebug.Crash					True
+

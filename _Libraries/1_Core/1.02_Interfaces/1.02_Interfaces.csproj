@@ -85,6 +85,7 @@
     <Compile Include="Source\1.02.02_Components\1.02.02.01_Networking\Connection.cs" />
     <Compile Include="Source\1.02.02_Components\1.02.02.01_Networking\Packet.cs" />
     <Compile Include="Source\1.02.02_Components\1.02.02.01_Networking\PacketProcessor.cs" />
+    <Compile Include="Source\1.02.02_Components\1.02.02.01_Networking\HostAddress.cs" />
     <Compile Include="Source\1.02.02_Components\1.02.02.01_Networking\Server.cs" />
     <Compile Include="Source\1.02.02_Components\1.02.02.01_RichText\RichText.cs" />
     <Compile Include="Source\1.02.02_Components\1.02.02.01_UnitsOfMeasurement\UnitsOfMeasurement.cs" />

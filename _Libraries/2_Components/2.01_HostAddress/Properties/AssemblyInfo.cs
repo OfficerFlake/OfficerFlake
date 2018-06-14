@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("OpenYSConnection")]
-[assembly: AssemblyDescription("A class libary for managing connections with YSFlight clients.")]
+[assembly: AssemblyTitle("Host Address")]
+[assembly: AssemblyDescription("Simple Library for converting a Host Address to and from an IP Address")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(DeveloperAttributes.DeveloperInfo.Username)]
-[assembly: AssemblyProduct("OpenYSConnection")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("2.01_HostAddress")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e3529cf0-4ad1-494b-8bbc-b313cb608a79")]
+[assembly: Guid("bb1331f4-9e8c-4086-9e80-fb0f98903372")]
 
 // Version information for an assembly consists of the following four values:
 //

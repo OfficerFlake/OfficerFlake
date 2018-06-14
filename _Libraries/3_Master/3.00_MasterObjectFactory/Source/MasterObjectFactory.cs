@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Database;
@@ -90,6 +91,10 @@ namespace Com.OfficerFlake.Libraries
 			#region Networking
 			//Connection
 			public IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode) => new Connection(TCPSocket, isProxyMode);
+
+			//HostAddress
+			public IHostAddress CreateHostAddress(IPAddress IP) => new HostAddress(IP);
+			public IHostAddress CreateHostAddress(string DomainName) => new HostAddress(DomainName);
 
 			//Packets
 			public IPacket CreateGenericPacket() => new GenericPacket();

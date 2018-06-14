@@ -40,11 +40,11 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] Watt = new[] { "WATT", "W" };
-			public static readonly string[] KiloWatt = new[] { "KILOWATT", "KW" };
+			public static readonly string[] Watt = new[] { "WATTS", "W" };
+			public static readonly string[] KiloWatt = new[] { "KILOWATTS", "KW" };
 			public static readonly string[] USHorsePower = new[] { "USHORSEPOWER", "HORSEPOWER", "HP" };
-			public static readonly string[] FootPoundPerMinute = new[] { "FT.LB/MIN", "FT*LB/MIN" };
-			public static readonly string[] BTUPerMinute = new[] { "BTU/MIN", };
+			public static readonly string[] FootPoundPerMinute = new[] { "FT.LBS/MIN", "FT*LB/MIN" };
+			public static readonly string[] BTUPerMinute = new[] { "BTUS/MIN", };
 		}
 		private static readonly string[] DefaultSuffixes = Suffixes.KiloWatt;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
@@ -109,7 +109,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Power conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Powers.KiloWatt(conversion);
+			output = new Powers.KiloWatt(0);
 			return false;
 			#endregion
 

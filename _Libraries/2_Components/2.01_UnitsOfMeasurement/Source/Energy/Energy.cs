@@ -40,17 +40,17 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] ElectronVolt = new[] { "ELECTRONVOLT", "VOLT", "EV", "V" };
+			public static readonly string[] ElectronVolt = new[] { "ELECTRONVOLTS", "VOLTS", "EV", "V" };
 
-			public static readonly string[] ThermalCalorie = new[] { "THERMALCALORIE" };
-			public static readonly string[] FoodCalorie = new[] { "FOODCALORIE", "CALORIE", "CAL" };
+			public static readonly string[] ThermalCalorie = new[] { "THERMALCALORIES" };
+			public static readonly string[] FoodCalorie = new[] { "FOODCALORIES", "CALORIES", "CAL" };
 
-			public static readonly string[] Joule = new[] { "JOULE", "J" };
-			public static readonly string[] KiloJoule = new[] { "KILOJOULE", "KJ" };
+			public static readonly string[] Joule = new[] { "JOULES", "J" };
+			public static readonly string[] KiloJoule = new[] { "KILOJOULES", "KJ" };
 
-			public static readonly string[] FootPound = new[] { "FOOTPOUND", "FT.LB", "FT*LB", "FTLB" };
+			public static readonly string[] FootPound = new[] { "FOOTPOUNDS", "FT.LB", "FT*LB", "FTLB" };
 
-			public static readonly string[] BritishThermalUnit = new[] { "BRITISHTHERMALUNIT", "BTU" };
+			public static readonly string[] BritishThermalUnit = new[] { "BRITISHTHERMALUNITS", "BTU" };
 		}
 		private static readonly string[] DefaultSuffixes = Suffixes.KiloJoule;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
@@ -131,7 +131,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Energy conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Energys.KiloJoule(conversion);
+			output = new Energys.KiloJoule(0);
 			return false;
 			#endregion
 

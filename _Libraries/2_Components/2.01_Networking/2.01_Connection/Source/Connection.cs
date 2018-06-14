@@ -82,7 +82,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    if (ProxyServerSocket == BlankTCPSocket)
 		    {
 			    ProxyServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			    ProxyServerSocket.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
+			    ProxyServerSocket.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
 			    await ProxyGetPacket();
 			    return true;
 		    }

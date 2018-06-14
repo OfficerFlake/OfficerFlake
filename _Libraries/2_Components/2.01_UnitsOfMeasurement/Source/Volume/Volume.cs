@@ -40,8 +40,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] MilliLitre = { "MILLILITRE", "ML" };
-			public static readonly string[] Litre = { "LITRE", "L" };
+			public static readonly string[] MilliLitre = { "MILLILITRES", "ML" };
+			public static readonly string[] Litre = { "LITRES", "L" };
 
 			public static readonly string[] CubicCentiMeter = { "CM^3" };
 			public static readonly string[] CubicMeter = { "M^3" };
@@ -227,7 +227,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Volume conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Volumes.Litre(conversion);
+			output = new Volumes.Litre(0);
 			return false;
 			#endregion
 

@@ -98,7 +98,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input angle conversion. Break here for details...");
 		    Debug.AddDetailMessage("----" + capInput);
-		    output = new Angles.Degree(conversion);
+		    output = new Angles.Degree(0);
 		    return false;
 		    #endregion
 

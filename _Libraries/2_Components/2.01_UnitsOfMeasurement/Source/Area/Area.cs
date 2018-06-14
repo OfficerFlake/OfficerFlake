@@ -40,11 +40,11 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] SquareMilliMeter = { "SQUAREMilliMeterS", "SQMM", "MM^2" };
-			public static readonly string[] SquareCentiMeter = { "SQUARECentiMeterS", "SQCM", "CM^2" };
+			public static readonly string[] SquareMilliMeter = { "SQUAREMILLIMETERS", "SQMM", "MM^2" };
+			public static readonly string[] SquareCentiMeter = { "SQUARECENTIMETERS", "SQCM", "CM^2" };
 			public static readonly string[] SquareMeter = { "SQUAREMETERS", "SQM", "M^2" };
 			public static readonly string[] SquareNauticalMile = { "SQUARENAUTICALMILE" };
-			public static readonly string[] SquareKiloMeter = { "SQUAREKiloMeterS", "SQKM", "KM^2" };
+			public static readonly string[] SquareKiloMeter = { "SQUAREKILOMETERS", "SQKM", "KM^2" };
 			public static readonly string[] SquareInch = { "SQUAREINCHES", "SQIN", "IN^2" };
 			public static readonly string[] SquareFoot = { "SQUAREFEET", "SQFT", "FT^2" };
 			public static readonly string[] SquareYard = { "SQUAREYARDS", "SQYD", "YD^2" };
@@ -140,7 +140,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Area conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Areas.SquareMeter(conversion);
+			output = new Areas.SquareMeter(0);
 			return false;
 			#endregion
 

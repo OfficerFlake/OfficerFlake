@@ -161,21 +161,13 @@ namespace Com.OfficerFlake.Libraries
 
 					#region IPAddress
 
-					if (desiredType == typeof(IPAddress))
+					if (desiredType == typeof(IHostAddress))
 					{
-						IPAddress matchingIPAddress = IPAddress.Parse("127.0.0.1");
+						IHostAddress Default = defaultObject as IHostAddress;
 						try
 						{
-							matchingIPAddress = Dns.GetHostAddresses(parameters)[0];
-							return matchingIPAddress;
-						}
-						catch
-						{
-						}
-						try
-						{
-							matchingIPAddress = IPAddress.Parse(parameters);
-							return matchingIPAddress;
+							IHostAddress HostAddress = ObjectFactory.CreateHostAddress(parameters);
+							return (Default.IpAddress.ToString() == HostAddress.IpAddress.ToString()) ? Default : HostAddress;
 						}
 						catch
 						{
@@ -198,9 +190,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IAngle))
 					{
-						IAngle thisAngle;
-						ObjectFactory.TryParse(parameters, out thisAngle);
-						return thisAngle;
+						IAngle nullConversion; ObjectFactory.TryParse("0DEGREES", out nullConversion);
+						IAngle converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -208,9 +200,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IArea))
 					{
-						IArea thisArea;
-						ObjectFactory.TryParse(parameters, out thisArea);
-						return thisArea;
+						IArea nullConversion; ObjectFactory.TryParse("0SQUAREMETERS", out nullConversion);
+						IArea converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -218,9 +210,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IDistance))
 					{
-						IDistance thisDistance;
-						ObjectFactory.TryParse(parameters, out thisDistance);
-						return thisDistance;
+						IDistance nullConversion; ObjectFactory.TryParse("0METERS", out nullConversion);
+						IDistance converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -228,19 +220,27 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IDate))
 					{
-						return ObjectFactory.CreateDate(parameters);
+						IDate nullConversion = ObjectFactory.CreateDate("");
+						IDate converted = ObjectFactory.CreateDate(parameters);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 					if (desiredType == typeof(IDateTime))
 					{
-						return ObjectFactory.CreateDateTime(parameters);
+						IDateTime nullConversion = ObjectFactory.CreateDateTime("");
+						IDateTime converted = ObjectFactory.CreateDateTime(parameters);
+						return (converted.ToString() == nullConversion.ToSystemString()) ? defaultObject : converted;
 					}
 					if (desiredType == typeof(ITime))
 					{
-						return ObjectFactory.CreateTime(parameters);
+						ITime nullConversion = ObjectFactory.CreateTime("");
+						ITime converted = ObjectFactory.CreateTime(parameters);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 					if (desiredType == typeof(ITimeSpan))
 					{
-						return ObjectFactory.CreateTimeSpan(parameters);
+						ITimeSpan nullConversion = ObjectFactory.CreateTimeSpan("");
+						ITimeSpan converted = ObjectFactory.CreateTimeSpan(parameters);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -248,9 +248,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IEnergy))
 					{
-						IEnergy thisEnergy;
-						ObjectFactory.TryParse(parameters, out thisEnergy);
-						return thisEnergy;
+						IEnergy nullConversion; ObjectFactory.TryParse("0KILOJOULES", out nullConversion);
+						IEnergy converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -258,9 +258,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IMass))
 					{
-						IMass thisMass;
-						ObjectFactory.TryParse(parameters, out thisMass);
-						return thisMass;
+						IMass nullConversion; ObjectFactory.TryParse("0KILOGRAMS", out nullConversion);
+						IMass converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -268,9 +268,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IPower))
 					{
-						IPower thisPower;
-						ObjectFactory.TryParse(parameters, out thisPower);
-						return thisPower;
+						IPower nullConversion; ObjectFactory.TryParse("0KILOWATTS", out nullConversion);
+						IPower converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -278,9 +278,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IPressure))
 					{
-						IPressure thisPressure;
-						ObjectFactory.TryParse(parameters, out thisPressure);
-						return thisPressure;
+						IPressure nullConversion; ObjectFactory.TryParse("0PASCALS", out nullConversion);
+						IPressure converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -288,9 +288,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(ISpeed))
 					{
-						ISpeed thisSpeed;
-						ObjectFactory.TryParse(parameters, out thisSpeed);
-						return thisSpeed;
+						ISpeed nullConversion; ObjectFactory.TryParse("0M/SEC", out nullConversion);
+						ISpeed converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -298,9 +298,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(ITemperature))
 					{
-						ITemperature thisTemperature;
-						ObjectFactory.TryParse(parameters, out thisTemperature);
-						return thisTemperature;
+						ITemperature nullConversion; ObjectFactory.TryParse("0CELCIUS", out nullConversion);
+						ITemperature converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -308,9 +308,9 @@ namespace Com.OfficerFlake.Libraries
 
 					if (desiredType == typeof(IVolume))
 					{
-						IVolume thisVolume;
-						ObjectFactory.TryParse(parameters, out thisVolume);
-						return thisVolume;
+						IVolume nullConversion; ObjectFactory.TryParse("0LITRES", out nullConversion);
+						IVolume converted; ObjectFactory.TryParse(parameters, out converted);
+						return (converted.ToString() == nullConversion.ToString()) ? defaultObject : converted;
 					}
 
 					#endregion
@@ -327,11 +327,11 @@ namespace Com.OfficerFlake.Libraries
 						byte green = 255;
 						byte blue = 255;
 
-						I24BitColor White = ObjectFactory.CreateColor(255, 255, 255).Get24BitColor();
+						I24BitColor Default = defaultObject as I24BitColor;
 
 						if (split.Length < 3)
 						{
-							return Convert.ChangeType(White, desiredType);
+							return Default;
 						}
 
 						try
@@ -343,12 +343,12 @@ namespace Com.OfficerFlake.Libraries
 						catch (OverflowException)
 						{
 							//Debug
-							return Convert.ChangeType(White, desiredType);
+							return Default;
 						}
 						catch (FormatException)
 						{
 							//Debug
-							return Convert.ChangeType(White, desiredType);
+							return Default;
 						}
 						I24BitColor output = ObjectFactory.CreateColor(red, green, blue).Get24BitColor();
 						return output;
@@ -384,8 +384,17 @@ namespace Com.OfficerFlake.Libraries
 
 						if (i < commandSplit.Length - 1)
 						{
-							TargetProperty = TargetProperty.PropertyType.GetProperty(commandSplit[i], BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-							TargetClass = TargetProperty.GetValue(TargetClass);
+							try
+							{
+								TargetProperty = TargetProperty.PropertyType.GetProperty(commandSplit[i],
+									BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+								TargetClass = TargetProperty.GetValue(TargetClass);
+							}
+							catch (Exception e)
+							{
+								Debug.AddErrorMessage(e, "Setting Not Found: \"" + command + "\".");
+								return false;
+							}
 							continue;
 						}
 
@@ -401,6 +410,7 @@ namespace Com.OfficerFlake.Libraries
 						#region Set the Field to the Converted Value
 
 						thisProperty.SetValue(TargetClass, valueToSet);
+						Debug.AddDetailMessage("Successfully Read Setting: \"" + command + "\".");
 						return true;
 
 						#endregion
@@ -414,8 +424,9 @@ namespace Com.OfficerFlake.Libraries
 
 					#endregion
 				}
-				catch
+				catch (Exception e)
 				{
+					Debug.AddErrorMessage(e, "Error in FindAndUpdateSetting");
 					return false;
 				}
 			}
@@ -440,13 +451,18 @@ namespace Com.OfficerFlake.Libraries
 				{
 					for (int i = 0; i < SettingsLibrary.SettingsFile.Contents.Count; i++)
 					{
+						if (SettingsLibrary.SettingsFile.Contents[i].Command == "") continue;
 						ICommandFileLine thisLine = SettingsLibrary.SettingsFile.Contents[i];
 
 						string command = thisLine.Command;
 						List<string> parameters = new List<string>();
 						for (int j = 0; j < thisLine.NumberOfParameters; j++)
 							parameters.Add(thisLine.GetParameter(j));
-						FindAndUpdateSetting(command, string.Join(" ", parameters));
+						bool Failed = !FindAndUpdateSetting(command, string.Join(" ", parameters));
+						if (Failed)
+						{
+							Debug.AddWarningMessage("Setting Not Recognised or Failed Conversion: \"" + command + "\".");
+						}
 					}
 					return true;
 				}

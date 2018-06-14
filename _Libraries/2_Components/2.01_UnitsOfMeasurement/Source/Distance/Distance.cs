@@ -40,20 +40,20 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] NanoMeter = new[] { "NanoMeter", "NM" };
-			public static readonly string[] Micron = new[] { "MICRON", "MICROMETER", "µM" };
+			public static readonly string[] NanoMeter = new[] { "NANOMETERS", "NM" };
+			public static readonly string[] Micron = new[] { "MICRONS", "MICROMETER", "µM" };
 
-			public static readonly string[] MilliMeter = new[] { "MilliMeter", "MM" };
-			public static readonly string[] CentiMeter = new[] { "CentiMeter", "CM" };
-			public static readonly string[] Meter = new[] { "METER", "M" };
-			public static readonly string[] KiloMeter = new[] { "KiloMeter", "KM" };
+			public static readonly string[] MilliMeter = new[] { "MILLIMETERS", "MM" };
+			public static readonly string[] CentiMeter = new[] { "CENTIMETERS", "CM" };
+			public static readonly string[] Meter = new[] { "METERS", "M" };
+			public static readonly string[] KiloMeter = new[] { "KILOMETERS", "KM" };
 
-			public static readonly string[] Inch = new[] { "INCH", "IN" };
+			public static readonly string[] Inch = new[] { "INCHES", "IN" };
 			public static readonly string[] Foot = new[] { "FEET", "FT" };
-			public static readonly string[] Yard = new[] { "YARD", "YD" };
-			public static readonly string[] Mile = new[] { "MILE", "MI" };
+			public static readonly string[] Yard = new[] { "YARDS", "YD" };
+			public static readonly string[] Mile = new[] { "MILES", "MI" };
 
-			public static readonly string[] NauticalMile = new[] { "NAUTICALMILE" };
+			public static readonly string[] NauticalMile = new[] { "NAUTICALMILES" };
 		}
 		private static readonly string[] DefaultSuffixes = Suffixes.Meter;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
@@ -157,7 +157,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Distance conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Distances.Meter(conversion);
+			output = new Distances.Meter(0);
 			return false;
 			#endregion
 

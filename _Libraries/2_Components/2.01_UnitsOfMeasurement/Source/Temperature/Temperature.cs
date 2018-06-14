@@ -92,7 +92,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Temperature conversion. Break here for details...");
 		    Debug.AddDetailMessage("----" + capInput);
-		    output = new Temperatures.DegreeCelsius(conversion);
+		    output = new Temperatures.DegreeCelsius(0);
 		    return false;
 		    #endregion
 

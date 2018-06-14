@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using Com.OfficerFlake.Libraries.Interfaces;
 
@@ -76,6 +77,10 @@ namespace Com.OfficerFlake.Libraries
 			#region Networking
 			//Connection
 			public IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode) => throw new NotImplementedException();
+
+			//HostAddress
+			public IHostAddress CreateHostAddress(IPAddress IP) => throw new NotImplementedException();
+			public IHostAddress CreateHostAddress(string DomainName) => throw new NotImplementedException();
 
 			//Packets
 			public IPacket CreateGenericPacket() => throw new NotImplementedException();

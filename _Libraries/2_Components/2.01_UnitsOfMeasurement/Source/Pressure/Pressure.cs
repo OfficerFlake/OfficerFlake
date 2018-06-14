@@ -40,12 +40,12 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] Atmosphere = new[] { "ATMOSPHERE", "ATM" };
-			public static readonly string[] Bar = new[] { "BAR" };
-			public static readonly string[] KiloPascal = new[] { "KILOPASCAL", "KP" };
-			public static readonly string[] MilliMeterOfMercury = new[] { "MMOFMERCURY", "MMHG" };
-			public static readonly string[] Pascal = new[] { "PASCAL", "P" };
-			public static readonly string[] PoundPerSquareInch = new[] { "LBPERSQUAREIN", "LB/IN^2" };
+			public static readonly string[] Atmosphere = new[] { "ATMOSPHERES", "ATM" };
+			public static readonly string[] Bar = new[] { "BARS" };
+			public static readonly string[] KiloPascal = new[] { "KILOPASCALS", "KP" };
+			public static readonly string[] MilliMeterOfMercury = new[] { "MMSOFMERCURY", "MMHG" };
+			public static readonly string[] Pascal = new[] { "PASCALS", "P" };
+			public static readonly string[] PoundPerSquareInch = new[] { "LBSPERSQUAREIN", "LB/IN^2" };
 		}
 		private static readonly string[] DefaultSuffixes = Suffixes.Pascal;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
@@ -116,7 +116,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Pressure conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Pressures.Pascal(conversion);
+			output = new Pressures.Pascal(0);
 			return false;
 			#endregion
 		}

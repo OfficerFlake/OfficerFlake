@@ -130,7 +130,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Speed conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Speeds.MeterPerSecond(conversion);
+			output = new Speeds.MeterPerSecond(0);
 			return false;
 			#endregion
 

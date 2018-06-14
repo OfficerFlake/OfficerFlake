@@ -40,22 +40,22 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 		#region Suffix
 		protected struct Suffixes
 		{
-			public static readonly string[] MilliGram = { "MilliGram", "MG" };
-			public static readonly string[] CentiGram = { "CentiGram" };
-			public static readonly string[] DeciGram = { "DeciGram" };
-			public static readonly string[] Gram = { "GRAM", "G" };
-			public static readonly string[] DecaGram = { "DecaGram" };
-			public static readonly string[] HectoGram = { "HectoGram" };
-			public static readonly string[] KiloGram = { "KiloGram", "KG" };
-			public static readonly string[] MetricTonne = { "METRICTONNE", "TONNE", "T" };
+			public static readonly string[] MilliGram = { "MILLIGRAMS", "MG" };
+			public static readonly string[] CentiGram = { "CENTIGRAMS" };
+			public static readonly string[] DeciGram = { "DECIGRAMS" };
+			public static readonly string[] Gram = { "GRAMS", "G" };
+			public static readonly string[] DecaGram = { "DECAGRAMS" };
+			public static readonly string[] HectoGram = { "HECTOGRAMS" };
+			public static readonly string[] KiloGram = { "KILOGRAMS", "KG" };
+			public static readonly string[] MetricTonne = { "METRICTONNES", "TONNES", "T" };
 
-			public static readonly string[] Carat = { "CARAT", "CT" };
-			public static readonly string[] Ounce = { "OUNCE", "OZ" };
-			public static readonly string[] Pound = { "POUND", "LB" };
-			public static readonly string[] Stone = { "STONE", "ST" };
+			public static readonly string[] Carat = { "CARATS", "CT" };
+			public static readonly string[] Ounce = { "OUNCES", "OZ" };
+			public static readonly string[] Pound = { "POUNDS", "LB" };
+			public static readonly string[] Stone = { "STONES", "ST" };
 
-			public static readonly string[] USShortTon = { "USSHORTTON", "SHORTTON", "USTON" };
-			public static readonly string[] UKLongTon = { "UKLONGTON", "LONGTON", "UKTON" };
+			public static readonly string[] USShortTon = { "USSHORTTONS", "SHORTTONS", "USTONS" };
+			public static readonly string[] UKLongTon = { "UKLONGTONS", "LONGTONS", "UKTONS" };
 		}
 		private static readonly string[] DefaultSuffixes = Suffixes.KiloGram;
 		private readonly string[] CurrentSuffixes = DefaultSuffixes;
@@ -166,7 +166,7 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#region Type Unrecognised
 			Debug.AddDetailMessage("No Type for input Mass conversion. Break here for details...");
 			Debug.AddDetailMessage("----" + capInput);
-			output = new Masses.KiloGram(conversion);
+			output = new Masses.KiloGram(0);
 			return false;
 			#endregion
 

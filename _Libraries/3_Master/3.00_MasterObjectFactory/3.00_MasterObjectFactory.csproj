@@ -114,6 +114,10 @@
       <Project>{a242c949-4081-4800-92ef-242e6771e767}</Project>
       <Name>2.01_Permissions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\2_Components\2.01_HostAddress\2.01_HostAddress.csproj">
+      <Project>{bb1331f4-9e8c-4086-9e80-fb0f98903372}</Project>
+      <Name>2.01_HostAddress</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\2_Components\2.01_Networking\2.01_Connection\2.01_Connection.csproj">
       <Project>{e3529cf0-4ad1-494b-8bbc-b313cb608a79}</Project>
       <Name>2.01_Connection</Name>

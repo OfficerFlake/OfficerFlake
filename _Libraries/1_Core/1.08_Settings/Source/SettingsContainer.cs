@@ -137,7 +137,7 @@ namespace Com.OfficerFlake.Libraries
 					public event PropertyChangedEventHandler PropertyChanged;
 
 					public UInt32 DestinationPort { get; set; } = 7914;
-					public IPAddress DestinationAddress { get; set; } = IPAddress.Parse("127.0.0.1");
+					public IHostAddress DestinationAddress { get; set; } = ObjectFactory.CreateHostAddress(IPAddress.None);
 				}
 				public _ProxyServer ProxyServer { get; } = new _ProxyServer();
 
@@ -185,7 +185,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public _Flight Flight { get; } = new _Flight();
 
-			public class _Colors : INotifyPropertyChanged
+			public class _Color : INotifyPropertyChanged
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
@@ -193,12 +193,14 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
+					public Double Opacity { get; set; } = 1.0;
+
 					public class _Dawn : INotifyPropertyChanged
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
-						public ITime Starts { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 05, 0, 0).ToTime();
-						public ITime Ends { get; set; } = new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 07, 0, 0).ToTime();
+						public ITime Starts { get; set; } = ObjectFactory.CreateTime("05:00:00");
+						public ITime Ends { get; set; } = ObjectFactory.CreateTime("08:00:00");
 
 						public class _Color : INotifyPropertyChanged
 						{
@@ -343,7 +345,6 @@ namespace Com.OfficerFlake.Libraries
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
-							public IDistance Starts { get; set; } = 0.Feet();
 							public IDistance Ends { get; set; } = 50000.Feet();
 						}
 						public _Range Range { get; } = new _Range();
@@ -372,7 +373,7 @@ namespace Com.OfficerFlake.Libraries
 						}
 						public _Color Color { get; } = new _Color();
 					}
-					public _Day Day { get; } = new _Day();
+					public _Floor Floor { get; } = new _Floor();
 
 					public class _Ceiling : INotifyPropertyChanged
 					{
@@ -387,7 +388,7 @@ namespace Com.OfficerFlake.Libraries
 						}
 						public _Range Range { get; } = new _Range();
 
-						public class _Colors : INotifyPropertyChanged
+						public class _Color : INotifyPropertyChanged
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
@@ -409,7 +410,7 @@ namespace Com.OfficerFlake.Libraries
 							}
 							public _Horizon Horizon { get; } = new _Horizon();
 						}
-						public _Colors Colors { get; } = new _Colors();
+						public _Color Color { get; } = new _Color();
 					}
 					public _Ceiling Ceiling { get; } = new _Ceiling();
 
@@ -422,11 +423,10 @@ namespace Com.OfficerFlake.Libraries
 							public event PropertyChangedEventHandler PropertyChanged;
 
 							public IDistance Starts { get; set; } = 50000.Feet();
-							public IDistance Ends { get; set; } = 120000.Feet();
 						}
 						public _Range Range { get; } = new _Range();
 
-						public class _Colors : INotifyPropertyChanged
+						public class _Color : INotifyPropertyChanged
 						{
 							public event PropertyChangedEventHandler PropertyChanged;
 
@@ -449,7 +449,7 @@ namespace Com.OfficerFlake.Libraries
 							public _Horizon Horizon { get; } = new _Horizon();
 
 						}
-						public _Colors Colors { get; } = new _Colors();
+						public _Color Color { get; } = new _Color();
 					}
 					public _Space Space { get; } = new _Space();
 				}
@@ -472,6 +472,7 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
+						public Double Opacity { get; set; } = 0.0;
 						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(120, 140, 160).Get24BitColor();
 					}
 					public _Horizon Horizon { get; } = new _Horizon();
@@ -489,13 +490,14 @@ namespace Com.OfficerFlake.Libraries
 					{
 						public event PropertyChangedEventHandler PropertyChanged;
 
+						public Double Opacity { get; set; } = 0.0;
 						public I24BitColor Color { get; set; } = ObjectFactory.CreateColor(160, 160, 160).Get24BitColor();
 					}
 					public _Fog Fog { get; } = new _Fog();
 				}
 				public  _Defaults Defaults { get; } = new _Defaults();
 			}
-			public _Colors Colors { get; } = new _Colors();
+			public _Color Color { get; } = new _Color();
 
 			public class _Day : INotifyPropertyChanged
 			{
@@ -511,7 +513,6 @@ namespace Com.OfficerFlake.Libraries
 
 				public ITime Current { get; set; } = 12.Hours().ToTime();
 				public ITime Default { get; set; } = 12.Hours().ToTime();
-				public IDateTime Test { get; set; } = ObjectFactory.CreateDateTime("20170102030405");
 			}
 			public _Time Time { get; } = new _Time();
 
@@ -576,7 +577,7 @@ namespace Com.OfficerFlake.Libraries
 				{
 					public event PropertyChangedEventHandler PropertyChanged;
 
-					public IPAddress Address { get; set; } = IPAddress.Parse("127.0.0.1");
+					public IHostAddress Address { get; set; } = ObjectFactory.CreateHostAddress(IPAddress.None);
 					public UInt32 Port { get; set; } = 6667;
 
 					public String Channel { get; set; } = "None";
@@ -591,7 +592,7 @@ namespace Com.OfficerFlake.Libraries
 					public event PropertyChangedEventHandler PropertyChanged;
 
 					public Boolean Enabled { get; set; } = false;
-					public String Service { get; set; } = "NickServ";
+					public String ServiceName { get; set; } = "NickServ";
 					public String Password { get; set; } = "PASSWORD";
 				}
 				public _Authentication Authentication { get; } = new _Authentication();
@@ -608,7 +609,7 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Enabled { get; set; } = true;
 						public Boolean StripFormatting { get; set; } = false;
 						public Boolean ShowEvents { get; set; } = true;
-						public String MessageColor { get; set; } = "&d";
+						public I24BitColor MessageColor { get; set; } = SimpleColors.White.Color.Get24BitColor();
 					}
 					public  _IRCtoOYS IRCtoOYS { get; } = new _IRCtoOYS();
 
@@ -619,7 +620,7 @@ namespace Com.OfficerFlake.Libraries
 						public Boolean Enabled { get; set; } = true;
 						public Boolean StripFormatting { get; set; } = false;
 						public Boolean ShowEvents { get; set; } = true;
-						public String MessageColor { get; set; } = "&0";
+						public I24BitColor MessageColor { get; set; } = SimpleColors.Black.Color.Get24BitColor();
 					}
 					public _OYStoIRC OYStoIRC { get; } = new _OYStoIRC();
 				}
@@ -662,7 +663,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public _UserInterface UserInterface { get; } = new _UserInterface();
 		}
-		public static _Settings Settings { get; }
+		public static _Settings Settings { get; }		
 
 		static SettingsLibrary()
 		{
