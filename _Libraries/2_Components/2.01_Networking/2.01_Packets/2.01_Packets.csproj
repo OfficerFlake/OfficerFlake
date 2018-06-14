@@ -7,8 +7,8 @@
     <ProjectGuid>{EAD62E25-6A74-432A-801C-4A5C79FC9176}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSPackets</RootNamespace>
-    <AssemblyName>OpenYSPackets</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Packets</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

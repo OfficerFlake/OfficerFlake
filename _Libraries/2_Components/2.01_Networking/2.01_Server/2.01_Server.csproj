@@ -7,8 +7,8 @@
     <ProjectGuid>{30F0E352-9FCD-46DA-8503-7137D1001A0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSClientServer</RootNamespace>
-    <AssemblyName>OpenYS Client Server</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

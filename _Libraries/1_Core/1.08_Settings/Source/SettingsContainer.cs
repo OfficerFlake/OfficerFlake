@@ -16,7 +16,7 @@ namespace Com.OfficerFlake.Libraries
 			{
 				public event PropertyChangedEventHandler PropertyChanged;
 
-				public String Directory { get; set; } = "C:/Games/YSFLIGHT20120701/";
+				public String Directory { get; set; } = "C:/Program Files/YSFLIGHT.COM/YSFlight/";
 			}
 			public _YSFlight YSFlight { get; } = new _YSFlight();
 

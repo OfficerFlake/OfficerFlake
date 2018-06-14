@@ -7,8 +7,8 @@
     <ProjectGuid>{22BB1D14-86FD-4192-91A4-BF762A35BF85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSSettings</RootNamespace>
-    <AssemblyName>OpenYSSettings</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>1.08_Settings</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

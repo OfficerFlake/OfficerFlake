@@ -7,8 +7,8 @@
     <ProjectGuid>{9D0D870C-93E5-4BAA-8387-200A0CC2395D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSEquations</RootNamespace>
-    <AssemblyName>OpenYSEquations</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Equations</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>

@@ -7,8 +7,8 @@
     <ProjectGuid>{9377B52B-3CD6-4EDD-AA19-1C1AE0CC59A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSYSTypes</RootNamespace>
-    <AssemblyName>OpenYSYSTypes</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_YSTypes</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -7,8 +7,8 @@
     <ProjectGuid>{EED61364-9B4C-48D8-9FA3-117E3FE3EAA4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSObjectFactory</RootNamespace>
-    <AssemblyName>OpenYSObjectFactory</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>1.06_ObjectFactory</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

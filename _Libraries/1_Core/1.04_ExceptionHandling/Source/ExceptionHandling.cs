@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
 
@@ -36,7 +37,8 @@ namespace Com.OfficerFlake.Libraries
 		    {
 			    output += "&e    Method: &6" + Frame.GetMethod().Name + "\n";
 			    output += "&e        Line:   &6" + Frame.GetFileLineNumber() + "&e, Column: &6" + Frame.GetFileColumnNumber() + "\n";
-		    }
+			    output += "&e        File:   &6" + Path.GetFileName(Frame.GetFileName()) + "\n";
+			}
 		    output += "&eEND TRACE.";
 		    return output;
 	    }

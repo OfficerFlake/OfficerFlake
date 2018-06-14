@@ -7,8 +7,8 @@
     <ProjectGuid>{E3529CF0-4AD1-494B-8BBC-B313CB608A79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSConnection</RootNamespace>
-    <AssemblyName>OpenYSConnection</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Connection</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

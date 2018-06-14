@@ -7,8 +7,8 @@
     <ProjectGuid>{BB8DD7CB-3E53-4E98-907E-115AD4FADFB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSExtensions</RootNamespace>
-    <AssemblyName>OpenYSExtensions</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>1.07_Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

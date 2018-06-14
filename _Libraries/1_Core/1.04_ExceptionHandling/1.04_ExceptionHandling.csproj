@@ -7,8 +7,8 @@
     <ProjectGuid>{091E7A9F-085E-427A-8679-07C1E4490D7B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSExceptionHandling</RootNamespace>
-    <AssemblyName>OpenYSExceptionHandling</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>1.04_ExceptionHandling</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

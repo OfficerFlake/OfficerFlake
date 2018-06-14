@@ -7,8 +7,8 @@
     <ProjectGuid>{1AA42ED0-FE51-4F6F-893D-0833CCFD9D5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSLSTFile</RootNamespace>
-    <AssemblyName>OpenYSLSTFile</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_LSTFile</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

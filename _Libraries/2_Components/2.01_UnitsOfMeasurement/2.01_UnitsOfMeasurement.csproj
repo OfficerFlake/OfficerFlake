@@ -7,8 +7,8 @@
     <ProjectGuid>{BEB82D31-C638-420B-B388-F79D599F2A3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSUnitsOfMeasurement</RootNamespace>
-    <AssemblyName>OpenYSUnitsOfMeasurement</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_UnitsOfMeasurement</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -11,10 +11,10 @@ namespace Com.OfficerFlake.Libraries.Networking
     public class OpenYSServer : IServer
     {
 		#region Start/Stop
-		public bool Start(uint TCPPort, uint UDPPort, bool isProxyMode = false)
+		public bool Start(bool isProxyMode = false)
 		{
-			_TCPPort = TCPPort;
-			_UDPPort = UDPPort;
+			_TCPPort = SettingsLibrary.Settings.Server.ListeningPorts.TCP;
+			_UDPPort = SettingsLibrary.Settings.Server.ListeningPorts.UDP;
 			IsProxyMode = isProxyMode;
 			TCPListener = new TcpListener(IPAddress.Any, (Int32)_TCPPort);
 			UDPEndPoint = new IPEndPoint(IPAddress.Any, (Int32)_UDPPort);
@@ -129,7 +129,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 	{
 		private static IServer server = new OpenYSServer();
 
-		public static bool Start(uint TCPPort = 7915, uint UDPPort = 7916, bool IsProxyMode = false) => server.Start(TCPPort, UDPPort, IsProxyMode);
+		public static bool Start(bool IsProxyMode = false) => server.Start(IsProxyMode);
 		public static bool Stop() => server.Stop();
 		public static bool IsShuttingDown => server.IsShuttingDown;
 	}

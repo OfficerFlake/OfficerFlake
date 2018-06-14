@@ -10,5 +10,6 @@ namespace DeveloperAttributes
 	{
 		public const string Username = "<Username>";
 		public const string Email = "<Email>";
+		public const string BuildVersion = "<Custom Build>"
 	}
 }

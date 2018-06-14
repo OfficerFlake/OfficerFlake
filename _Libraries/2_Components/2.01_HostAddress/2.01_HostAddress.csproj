@@ -7,8 +7,8 @@
     <ProjectGuid>{BB1331F4-9E8C-4086-9E80-FB0F98903372}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HostAddress</RootNamespace>
-    <AssemblyName>HostAddress</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_HostAddress</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

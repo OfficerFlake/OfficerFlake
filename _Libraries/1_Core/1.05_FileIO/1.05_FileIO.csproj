@@ -7,8 +7,8 @@
     <ProjectGuid>{EB3F7295-FEA3-4EC4-BE07-C9EE2DD776E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSFileIO</RootNamespace>
-    <AssemblyName>OpenYSFileIO</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>1.05_FileIO</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

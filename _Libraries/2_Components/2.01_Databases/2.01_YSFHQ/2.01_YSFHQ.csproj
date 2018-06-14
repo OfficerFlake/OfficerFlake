@@ -7,8 +7,8 @@
     <ProjectGuid>{9AF66488-66D0-4BFE-96C7-B436E3733480}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSYSFHQ</RootNamespace>
-    <AssemblyName>OpenYSYSFHQ</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_YSFHQ</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

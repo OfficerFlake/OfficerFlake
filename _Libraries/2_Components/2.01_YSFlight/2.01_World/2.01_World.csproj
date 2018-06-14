@@ -7,8 +7,8 @@
     <ProjectGuid>{3460E682-D1FE-4CE5-8134-168B9C1D8FEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSWorld</RootNamespace>
-    <AssemblyName>OpenYSWorld</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_World</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

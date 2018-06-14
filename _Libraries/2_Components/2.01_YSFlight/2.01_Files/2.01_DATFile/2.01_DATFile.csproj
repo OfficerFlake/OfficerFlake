@@ -7,8 +7,8 @@
     <ProjectGuid>{183CC3FE-296E-4518-82E3-AD59B6D092B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSDATFile</RootNamespace>
-    <AssemblyName>OpenYSDATFile</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_DATFile</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

@@ -7,8 +7,8 @@
     <ProjectGuid>{9E97A54F-D837-4B90-B1A0-48F1ABFE1F6B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSColor</RootNamespace>
-    <AssemblyName>OpenYSColor</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Color</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

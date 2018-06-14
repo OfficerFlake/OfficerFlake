@@ -187,22 +187,29 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 		#region Run Server
 		private static void MainProgram()
 		{
-			#region Load World
-			Console.AddInformationMessage("Loading World");
+			Console.AddInformationMessage("Starting OpenYS Version: " + DeveloperAttributes.DeveloperInfo.BuildVersion);
 
+			#region Load Settings
+			Console.AddInformationMessage("Loading Settings...");
+			SettingsHandler.LoadAll();
+			Console.AddInformationMessage("Settings Loading Complete.");
+			#endregion
+			#region Load MetaData
+			Console.AddInformationMessage("Loading YSFlight MetaData from \"" + Settings.YSFlight.Directory + "\".");
 			Metadata.LoadAll();
-
+			Console.AddInformationMessage("YSFlight Metadata Loading Complete.");
+			#endregion
+			#region Load World
+			Console.AddInformationMessage("Loading World from Field: \"" + Settings.Options.FieldName + "\".");
 			World.Load(Settings.Options.FieldName);
-
 			Console.AddInformationMessage("World Loading Complete!");
 			#endregion
-			Console.AddInformationMessage("");
 			#region Start Server
-			Console.AddInformationMessage("Starting Server...");
+			Console.AddInformationMessage("Starting OpenYS Server...");
 			Server.Start();
-			Console.AddInformationMessage("Now Listening on Port 7915!");
+			Console.AddInformationMessage("OpenYS Server Startup Complete. Now listening for clients on Port " + Settings.Server.ListeningPorts.TCP);
 			#endregion
-			Console.AddInformationMessage("");
+
 			Console.AddInformationMessage("--------");
 
 			OpenYSServerModeUserInterface.WaitForClose();

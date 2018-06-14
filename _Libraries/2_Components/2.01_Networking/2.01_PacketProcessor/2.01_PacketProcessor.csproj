@@ -7,8 +7,8 @@
     <ProjectGuid>{4825E8AF-F859-47E0-A1BB-C936604C72EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSPacketProcessor</RootNamespace>
-    <AssemblyName>OpenYSPacketProcessor</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_PacketProcessor</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

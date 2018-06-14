@@ -7,8 +7,8 @@
     <ProjectGuid>{24009F81-9D6A-48D7-B8D1-EBB599A4D260}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenYSStatistics</RootNamespace>
-    <AssemblyName>OpenYSStatistics</AssemblyName>
+    <RootNamespace>OpenYS</RootNamespace>
+    <AssemblyName>2.01_Statistics</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
