@@ -187,6 +187,7 @@ namespace Com.OfficerFlake.Executables.Testing
 			Console.AddInformationMessage("Testing Interface Ready");
 			Console.AddInformationMessage("----");
 			SettingsHandler.LoadAll();
+			SettingsHandler.SaveAll();
 			OpenYSServerModeUserInterface.WaitForClose();
 		}
 		#endregion

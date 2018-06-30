@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Permissions;
@@ -474,82 +475,27 @@ namespace Com.OfficerFlake.Libraries
 				#endregion
 			}
 
+			private static void FindContents(List<String> OutputStringList, PropertyInfo CurrentProperty, object CurrentObject, string CurrentName)
+			{
+				PropertyInfo[] ClassProperties = CurrentProperty.PropertyType.GetProperties();
+				List<object> ClassObjects = new List<object>();
+				foreach (PropertyInfo thisPropertyInfo in ClassProperties.Where(x => x.PropertyType.IsNestedPublic))
+				{
+					ClassObjects.Add(thisPropertyInfo.GetValue(CurrentObject));
+					FindContents(OutputStringList, thisPropertyInfo, thisPropertyInfo.GetValue(CurrentObject), CurrentName + (CurrentName.Length > 0 ? "." : "") + thisPropertyInfo.Name);
+				}
+				foreach (PropertyInfo thisPropertyInfo in ClassProperties.Where(x => !x.PropertyType.IsNestedPublic))
+				{
+					OutputStringList.Add((CurrentName + "." + thisPropertyInfo.Name).ResizeOnRight(64, ' ') + "\t" + thisPropertyInfo.GetValue(CurrentObject).ToString());
+				}
+				return;
+			}
 			public static bool SaveAll()
 			{
-				//TODO: [4] Rewrite Settings.SaveAll to use TXT File.
-
-				SettingsFileWatcher.EnableRaisingEvents = false;
-				FileInfo File = new FileInfo("./Settings.xlsx");
-				//This framework is a real pain in the ARSE!
-				//It uses non zero based indexes!
-				//using (ExcelPackage xlPackage = new ExcelPackage(File))
-				//{
-				//	// get the first worksheet in the workbook
-				//	ExcelWorksheet worksheet = xlPackage.Workbook.Worksheets[1];
-				//	for (int i = 4; i < 1024; i++)
-				//	{
-				//		object _Key = worksheet.Cells[i, 1].Value;
-				//		string Key = _Key == null ? "" : _Key.ToString();
-				//		if (Key == "")
-				//		{
-				//			continue;
-				//		}
-				//		object _Val = worksheet.Cells[i, 2].Value;
-				//		string Val = _Val == null ? "" : _Val.ToString();
-				//		object NewVal = SettingsHandler._GetDirect(Key);
-				//		if (NewVal == null)
-				//		{
-				//			Log.Warning(("&3Save Fail: " + Key).Resize(System.Console.WindowWidth));
-				//			NewVal = Val;
-				//		}
-				//		if (NewVal.GetType() == typeof(IPAddress))
-				//		{
-				//			IPAddress _IP = (IPAddress)NewVal;
-				//			IPAddress[] _Matches = new IPAddress[0];
-				//			bool NetIsUp = false;
-				//			try
-				//			{
-				//				Ping ping = new Ping();
-
-				//				//ping googles dns server to determine if the net connection is available!
-				//				PingReply pingStatus = ping.Send(IPAddress.Parse("8.8.8.8"));
-
-				//				if (pingStatus.Status == IPStatus.Success)
-				//				{
-				//					NetIsUp = true;
-				//				}
-				//			}
-				//			catch
-				//			{
-				//			}
-
-				//			try
-				//			{
-				//				if (NetIsUp) _Matches = Dns.GetHostAddresses(Val);
-				//			}
-				//			catch
-				//			{
-				//				//No net connection, can't resolve...
-				//			}
-				//			if (!NetIsUp) continue; //can't verify the IP Address, let's leave it the way it is for now...
-				//			if (_Matches.Select(x => x.ToString()).Contains(_IP.ToString())) continue; //no change required!
-				//			else worksheet.Cells[i, 2].Value = NewVal;
-				//			continue;
-				//		}
-				//		if (NewVal.ToString() == Val) continue;
-				//		worksheet.Cells[i, 2].Value = NewVal;
-				//	}
-				//	xlPackage.Save();
-
-				//} // the using statement calls Dispose() which closes the package.
-				//try
-				//{
-				//	SettingsFileWatcher.EnableRaisingEvents = true;
-				//}
-				//catch
-				//{
-				//	//Path not of legal form? Stop watching...
-				//}
+				List<String> OutputList = new List<string>();
+				PropertyInfo SettingsProperties = typeof(SettingsLibrary).GetProperty("Settings", BindingFlags.Public | BindingFlags.Static);
+				FindContents(OutputList, SettingsProperties, Settings, "");
+				File.WriteAllLines(@"./Settings.DAT", OutputList);
 				return true;
 			}
 

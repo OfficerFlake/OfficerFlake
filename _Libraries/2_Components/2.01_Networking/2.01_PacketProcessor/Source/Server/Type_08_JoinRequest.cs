@@ -53,12 +53,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Check For Requested STP
 				//Check if Server has STP - deny if it doesn't!
-				if (!World.AllStartPositions.Select(x=>x.Identify).Contains(JoinRequest.StartPositionIdentify))
+				if (!World.AllStartPositions.Select(x=>x.Identify.ToUpperInvariant()).Contains(JoinRequest.StartPositionIdentify.ToUpperInvariant()))
 				{
 					//Reject the join request - don't have the start position requested!
 					IPacket_10_JoinRequestDenied JoinDenied = ObjectFactory.CreatePacket10JoinRequestDenied();
 					thisConnection.Send(JoinDenied);
 					thisConnection.SendMessage("Join request denied - Server does not have that start position installed!");
+
 					thisConnection.JoinRequestPending = false;
 					return false;
 				}
@@ -77,7 +78,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					return false;
 				}
 
-				//TODO : Cache Aircraft!
+				//TODO: Cache Aircraft!
 				//CachedData.Aircraft CachedAircraft = MetaAircraft.Cache();
 				#endregion
 
