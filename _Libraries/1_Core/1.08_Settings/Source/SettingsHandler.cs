@@ -436,7 +436,11 @@ namespace Com.OfficerFlake.Libraries
 			{
 				#region Settings Not Found on Disk
 
-				if (!System.IO.File.Exists(@"./Settings.Dat")) return false;
+				if (!System.IO.File.Exists(@"./Settings.Dat"))
+				{
+					SaveAll(); //Dump the file to the disk for future use!
+					return false;
+				}
 
 				#endregion
 
