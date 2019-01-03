@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,13 +48,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 		#region DataFlow
 		#region Connect
-
-	    public bool Connect(Socket incomingSocket, bool isProxyMode = false)
+		public bool Connect(Socket incomingSocket, bool isProxyMode = false)
 	    {
 			ConnectionNumber = ConnectionIDIncrementer++;
 		    IsProxyMode = isProxyMode;
-			SetTCPSocket(incomingSocket).ConfigureAwait(false);
-		    if (isProxyMode) CreateProxySocket().ConfigureAwait(false);
+			SetTCPSocketClientStream(incomingSocket).ConfigureAwait(false);
+		    if (isProxyMode) CreateHostSocket().ConfigureAwait(false);
 			AddToServerList();
 		    return true;
 	    }
@@ -63,33 +61,50 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 		#region Sockets
 		#region TCP/IP
+		#region Socket Setup
 		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		private Socket TCPSocket = BlankTCPSocket;
-	    private Socket ProxyServerSocket = BlankTCPSocket;
-		private async Task<bool> SetTCPSocket(Socket incomingSocket)
-		{
-			if (TCPSocket == BlankTCPSocket)
-			{
-				TCPSocket = incomingSocket;
-				//TCPStartToRecieveNewPacket();
-				await TCPGetPacket();
-				return true;
-			}
-			return false;
-		}
-	    private async Task<bool> CreateProxySocket()
+		#region Client
+		private Socket TCPSocketClientStream = BlankTCPSocket;
+	    private async Task<bool> SetTCPSocketClientStream(Socket incomingSocket)
 	    {
-		    if (ProxyServerSocket == BlankTCPSocket)
+		    if (TCPSocketClientStream == BlankTCPSocket)
 		    {
-			    ProxyServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			    ProxyServerSocket.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
-			    await ProxyGetPacket();
+			    TCPSocketClientStream = incomingSocket;
+			    //TCPStartToRecieveNewPacket();
+			    TCPGetPacket(TCPSocketClientStream);
 			    return true;
 		    }
 		    return false;
 	    }
+		#endregion
+		#region Host
+		private Socket TCPSocketHostStream = BlankTCPSocket;
+	    private async Task<bool> SetTCPSocketHostStream(Socket incomingSocket)
+	    {
+		    if (TCPSocketHostStream == BlankTCPSocket)
+		    {
+			    TCPSocketHostStream = incomingSocket;
+			    //TCPStartToRecieveNewPacket();
+			    await TCPGetPacket(TCPSocketHostStream);
+			    return true;
+		    }
+		    return false;
+	    }
+		private async Task<bool> CreateHostSocket()
+	    {
+		    if (TCPSocketHostStream == BlankTCPSocket)
+		    {
+			    TCPSocketHostStream = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			    TCPSocketHostStream.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
+			    await TCPGetPacket(TCPSocketHostStream);
+			    return true;
+		    }
+		    return false;
+	    }
+		#endregion
+		#endregion
 		#region Recieve
-		private UInt32 TCPGetPacketHeader()
+		private UInt32 TCPGetPacketHeader(Socket _TCPSocket)
 		{
 			byte[] sizeBuffer = new byte[4];
 			goto Receive;
@@ -98,7 +113,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			Receive:
 			try
 			{
-				TCPSocket.Receive(sizeBuffer, 4, SocketFlags.None);
+				_TCPSocket.Receive(sizeBuffer, 4, SocketFlags.None);
 				goto Convert;
 			}
 			catch (ArgumentNullException)
@@ -143,14 +158,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return 0;
 		}
-		private byte[] TCPGetPacketBody(UInt32 size)
+		private byte[] TCPGetPacketBody(UInt32 size, Socket _TCPSocket)
 		{
 			byte[] bodyBuffer = new byte[size];
 
 			//Get Data.
 			try
 			{
-				TCPSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
+				_TCPSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
 			}
 			catch (ArgumentNullException)
 			{
@@ -174,7 +189,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return bodyBuffer;
 		}
-		private async Task<IPacket> TCPGetPacketAsync()
+		private async Task<IPacket> TCPGetPacketAsync(Socket _TCPSocket)
 		{
 			#region Init
 			IPacket output = null;
@@ -185,7 +200,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			#region GetData
 			try
 			{
-				size = await Task.Run(() => TCPGetPacketHeader());
+				size = await Task.Run(() => TCPGetPacketHeader(_TCPSocket));
 				goto Body;
 			}
 			catch (ArgumentNullException)
@@ -197,7 +212,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			Body:
 			try
 			{
-				body = await Task.Run(() => TCPGetPacketBody(size));
+				body = await Task.Run(() => TCPGetPacketBody(size, _TCPSocket));
 				goto PrepareType;
 			}
 			catch (ArgumentNullException)
@@ -237,7 +252,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			catch (ArgumentException)
 			{
-				//start index would not fit insidde array.
+				//start index would not fit inside array.
 			}
 			return output;
 			#endregion
@@ -280,10 +295,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			#endregion
 		}
-		private async Task TCPGetPacket()
+		private async Task TCPGetPacket(Socket _TCPSocket)
 		{
 			IPacket receivedPacket = null;
-			receivedPacket = await TCPGetPacketAsync();
+			receivedPacket = await TCPGetPacketAsync(_TCPSocket);
 			if (receivedPacket == null)
 			{
 				//Disconnect! Got Nothing!
@@ -297,216 +312,24 @@ namespace Com.OfficerFlake.Libraries.Networking
 				loginPacket.Data = receivedPacket.Data;
 				User.UserName = (loginPacket.Username ?? ("nameless_" + DateTime.Now.InStandardForm().hhmmss)).AsRichTextString();
 			}
-			if (IsProxyMode) ProxyServerSocket.Send(receivedPacket.Serialise());
-			else ProcessPacket(receivedPacket);
-			TCPGetPacket().ConfigureAwait(false);
-		}
-
-		private UInt32 ProxyGetPacketHeader()
-		{
-			byte[] sizeBuffer = new byte[4];
-			goto Receive;
-
-			//Get Data.
-			Receive:
-			try
+			if (_TCPSocket == TCPSocketClientStream)
 			{
-				ProxyServerSocket.Receive(sizeBuffer, 4, SocketFlags.None);
-				goto Convert;
+				ProcessPacketClientStream(receivedPacket);
 			}
-			catch (ArgumentNullException)
+			else
 			{
-				//buffer is null.
+				ProcessPacketHostStream(receivedPacket);
 			}
-			catch (ArgumentOutOfRangeException)
-			{
-				//size exceeds buffer.
-			}
-			catch (SocketException)
-			{
-				//WinSock Error.
-			}
-			catch (ObjectDisposedException)
-			{
-				//Socket Closed.
-			}
-			catch (System.Security.SecurityException)
-			{
-				//Caller in Stack doesn't have permissions.
-			}
-			return 0;
-
-			//Convert Data.
-			Convert:
-			try
-			{
-				return BitConverter.ToUInt32(sizeBuffer, 0);
-			}
-			catch (ArgumentNullException)
-			{
-				//sizeBuffer is Null.
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-				//StartIndex outside bounds of array.
-			}
-			catch (ArgumentException)
-			{
-				//StartIndex != 0
-			}
-			return 0;
-		}
-		private byte[] ProxyGetPacketBody(UInt32 size)
-		{
-			byte[] bodyBuffer = new byte[size];
-
-			//Get Data.
-			try
-			{
-				ProxyServerSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
-			}
-			catch (ArgumentNullException)
-			{
-				//buffer is null.
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-				//size exceeds buffer.
-			}
-			catch (SocketException)
-			{
-				//WinSock Error.
-			}
-			catch (ObjectDisposedException)
-			{
-				//Socket Closed.
-			}
-			catch (System.Security.SecurityException)
-			{
-				//Caller in Stack doesn't have permissions.
-			}
-			return bodyBuffer;
-		}
-		private async Task<IPacket> ProxyGetPacketAsync()
-		{
-			#region Init
-			IPacket output = null;
-
-			UInt32 size;
-			byte[] body;
-			#endregion
-			#region GetData
-			try
-			{
-				size = await Task.Run(() => ProxyGetPacketHeader());
-				goto Body;
-			}
-			catch (ArgumentNullException)
-			{
-				//thisPacket is Null.
-			}
-			return output;
-
-			Body:
-			try
-			{
-				body = await Task.Run(() => ProxyGetPacketBody(size));
-				goto PrepareType;
-			}
-			catch (ArgumentNullException)
-			{
-				//thisPacket is Null.
-			}
-			return output;
-			#endregion
-			#region Type
-			PrepareType:
-			byte[] typeBuffer;
-			try
-			{
-				typeBuffer = body.Take(4).ToArray();
-				goto ConvertType;
-			}
-			catch (ArgumentNullException)
-			{
-				//body is null.
-			}
-			return output;
-
-			ConvertType:
-			UInt32 type;
-			try
-			{
-				type = BitConverter.ToUInt32(typeBuffer, 0);
-				goto PrepareData;
-			}
-			catch (ArgumentNullException)
-			{
-				//typebuffer is null.
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-				//start index not 0.
-			}
-			catch (ArgumentException)
-			{
-				//start index would not fit insidde array.
-			}
-			return output;
-			#endregion
-			#region Data
-			PrepareData:
-			byte[] data;
-			try
-			{
-				data = body.Skip(4).ToArray();
-				goto Combine;
-			}
-			catch (ArgumentNullException)
-			{
-				//body is null.
-			}
-			return output;
-			#endregion
-			#region BuildPacket
-			Combine:
-			try
-			{
-				output = ObjectFactory.CreateGenericPacket();
-				output.ResizeData((int)size);
-				output.Type = type;
-				output.Data = data;
-				return output;
-			}
-			catch (ArgumentNullException)
-			{
-				//output is null.
-				output = null;
-				return output;
-			}
-			#endregion
-		}
-		private async Task ProxyGetPacket()
-		{
-			IPacket receivedPacket = null;
-			receivedPacket = await ProxyGetPacketAsync();
-			if (receivedPacket == null)
-			{
-				//Disconnect! Got Nothing!
-				Disconnect("End of datastream.");
-
-				return;
-			}
-			Send(receivedPacket);
-			ProxyGetPacket().ConfigureAwait(false);
+			TCPGetPacket(_TCPSocket).ConfigureAwait(false);
 		}
 		#endregion
 		#region Send
-		private bool TCPSend(IPacket thisPacket)
+		#region Any Socket
+		private bool TCPSend(IPacket thisPacket, Socket _TCPSocket)
 		{
 			try
 			{
-				TCPSocket.Send(thisPacket.Serialise());
+				_TCPSocket.Send(thisPacket.Serialise());
 				if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
 				{
 					if (Logger.PacketInspector.DataDirection == DataDirection.ServerToClient)
@@ -530,24 +353,24 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-	    public bool Send(IPacket Input)
-	    {
-		    return TCPSend(Input);
+	    public bool Send(IPacket Input, Socket _TCPSocket)
+		{
+		    return TCPSend(Input, _TCPSocket);
 	    }
-		public bool SendMessage(string Input)
+		public bool SendMessage(string Input, Socket _TCPSocket)
 	    {
 		    IPacket_32_ServerMessage thisChatMessage = ObjectFactory.CreatePacket32ServerMessage(Input);
-		    return TCPSend(thisChatMessage);
+		    return TCPSend(thisChatMessage, _TCPSocket);
 	    }
-	    public bool SendMessage(IPacket_32_ChatMessage Input)
+	    public bool SendMessage(IPacket_32_ChatMessage Input, Socket _TCPSocket)
 	    {
-		    return TCPSend(Input);
+		    return TCPSend(Input, _TCPSocket);
 	    }
-		public async Task<bool> SendAsync(IPacket thisPacket)
+		public async Task<bool> SendAsync(IPacket thisPacket, Socket _TCPSocket)
 		{
 			try
 			{
-				return await Task.Run(() => TCPSend(thisPacket));
+				return await Task.Run(() => TCPSend(thisPacket, _TCPSocket));
 			}
 			catch (ArgumentNullException)
 			{
@@ -555,11 +378,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-	    public async Task<bool> SendMessageAsync(string Message)
+	    public async Task<bool> SendMessageAsync(string Message, Socket _TCPSocket)
 	    {
 			try
 		    {
-			    return await Task.Run(() => SendMessage(Message));
+			    return await Task.Run(() => SendMessage(Message, _TCPSocket));
 		    }
 		    catch (ArgumentNullException)
 		    {
@@ -567,6 +390,43 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    }
 		    return false;
 		}
+		#endregion
+		#region ToClientStream
+		public bool SendToClientStream(IPacket Input)
+	    {
+		    return Send(Input, TCPSocketClientStream);
+	    }
+	    public bool SendToClientStream(string message)
+	    {
+		    return SendMessage(message, TCPSocketClientStream);
+	    }
+		public async Task<bool> SendToClientStreamAsync(IPacket Input)
+	    {
+		    return await SendAsync(Input, TCPSocketClientStream);
+	    }
+	    public async Task<bool> SendToClientStreamAsync(string message)
+	    {
+		    return await SendMessageAsync(message, TCPSocketClientStream);
+	    }
+		#endregion
+	    #region ToHostStream
+	    public bool SendToHostStream(IPacket Input)
+	    {
+		    return Send(Input, TCPSocketHostStream);
+	    }
+	    public bool SendToHostStream(string message)
+	    {
+		    return SendMessage(message, TCPSocketHostStream);
+	    }
+	    public async Task<bool> SendToHostStreamAsync(IPacket Input)
+	    {
+		    return await SendAsync(Input, TCPSocketHostStream);
+	    }
+	    public async Task<bool> SendToHostStreamAsync(string message)
+	    {
+		    return await SendMessageAsync(message, TCPSocketHostStream);
+	    }
+	    #endregion
 		#endregion
 		#endregion
 		#region UDP
@@ -586,7 +446,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    }
 
 		    //Action Packet.
-		    thisConncetion.ProcessPacket(thisPacket);
+		    thisConncetion.ProcessPacketClientStream(thisPacket);
 	    }
 		#endregion
 		#region Wait For A Packet
@@ -595,6 +455,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			public PacketWaiter(UInt32 type)
 			{
 				RequireType = type;
+
 			}
 
 			public UInt32 RequireType { get; }
@@ -611,7 +472,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 					DataExpected = dataExpected;
 				}
 			}
-
 			public IPacket RecievedPacket { get; set; } = null;
 
 			#region Require
@@ -803,28 +663,39 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				if (resends >= 3) return false;
 
-				Send(resend);
+				SendToClientStreamAsync(resend);
 				resends++;
 			}
 			return true;
 		}
 		#endregion
-
 		#region Set Up Packet Processor
+		#region Dummy Processor
 		public delegate Task<bool> DelegatePacketProcessor(Connection thisConnection, IPacket thisPacket);
 	    private static Task<bool> DummyPacketProcessor(Connection thisConnection, IPacket thisPacket)
 	    {
 		    throw new NotImplementedException();
 	    }
-	    private static DelegatePacketProcessor PacketProcessor = DummyPacketProcessor;
-	    public static bool SetPacketProcessor(DelegatePacketProcessor thisPacketProcessor)
+		#endregion
+		#region ClientStream
+		private static DelegatePacketProcessor PacketProcessorClientStream = DummyPacketProcessor;
+	    public static bool SetPacketProcessorClientStream(DelegatePacketProcessor thisPacketProcessor)
 	    {
-		    PacketProcessor = thisPacketProcessor;
+		    PacketProcessorClientStream = thisPacketProcessor;
 		    return true;
 	    }
 		#endregion
+		#region HostStream
+		private static DelegatePacketProcessor PacketProcessorHostStream = DummyPacketProcessor;
+		public static bool SetPacketProcessorHostStream(DelegatePacketProcessor thisPacketProcessor)
+	    {
+		    PacketProcessorHostStream = thisPacketProcessor;
+		    return true;
+	    }
+		#endregion
+		#endregion
 		#region Process Packet
-		private async Task ProcessPacket(IPacket thisPacket)
+		private async Task ProcessPacketClientStream(IPacket thisPacket)
 		{
 			if (thisPacket == null)
 			{
@@ -836,17 +707,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 				PacketWaiter thisWaiter = PacketWaiters[i];
 				if (thisPacket.Type == thisWaiter.RequireType)
 				{
-					if (thisWaiter.RequireType == 6)
-					{
-						int z = 0;
-					}
 					thisWaiter.CheckIfReceived(thisPacket);
 				}
 			}
 
 			try
 			{
-				await Task.Run(() => PacketProcessor(this, thisPacket));
+				await Task.Run(() => PacketProcessorClientStream(this, thisPacket));
 			}
 			catch (NotImplementedException e)
 			{
@@ -856,9 +723,31 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (Exception e)
 			{
 				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-				this.SendMessageAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
+				this.SendToClientStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
 			}
 		}
+	    private async Task ProcessPacketHostStream(IPacket thisPacket)
+	    {
+		    if (thisPacket == null)
+		    {
+			    return;
+		    }
+
+		    try
+		    {
+			    await Task.Run(() => PacketProcessorHostStream(this, thisPacket));
+		    }
+		    catch (NotImplementedException e)
+		    {
+			    Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " is not yet implemented.");
+			    //this.SendMessageAsync("Sorry, that feature or packet is not implemented yet! Please try something else...");
+		    }
+		    catch (Exception e)
+		    {
+			    Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
+			    this.SendToHostStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
+		    }
+	    }
 		#endregion
 		#endregion
 
@@ -869,25 +758,25 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    Logger.Console.AddInformationMessage("&c" + this.User.UserName.ToUnformattedSystemString() + " left the server.");
 		    foreach (IConnection otherConnection in Connections.AllConnections.Exclude(this))
 		    {
-			    otherConnection.SendMessageAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+			    otherConnection.SendToClientStreamAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
 		    }
-			SendMessageAsync("Disconnected from the server.").ConfigureAwait(false);
-		    SendMessageAsync("Disconnection reason: " + reason).ConfigureAwait(false);
-			if (TCPSocket.Connected)
+		    SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
+		    SendToClientStreamAsync("Disconnection reason: " + reason).ConfigureAwait(false);
+			if (TCPSocketClientStream.Connected)
 		    {
 			    try
 			    {
-				    TCPSocket.Disconnect(false);
+				    TCPSocketClientStream.Disconnect(false);
 			    }
 			    catch
 			    {
 			    }
 		    }
-		    if (IsProxyMode & ProxyServerSocket.Connected)
+		    if (IsProxyMode & TCPSocketHostStream.Connected)
 		    {
 			    try
 			    {
-				    ProxyServerSocket.Disconnect(false);
+				    TCPSocketHostStream.Disconnect(false);
 			    }
 			    catch
 			    {
@@ -895,8 +784,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    }
 			try
 		    {
-			    TCPSocket.Dispose();
-		    }
+			    TCPSocketClientStream.Dispose();
+			    TCPSocketHostStream.Dispose();
+			}
 		    catch
 		    {
 		    }

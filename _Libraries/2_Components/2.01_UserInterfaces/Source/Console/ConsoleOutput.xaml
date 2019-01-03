@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.ConsoleOutput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userInterfaces="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces"
+             mc:Ignorable="d" 
+             d:DesignWidth="520" d:DesignHeight="376">
+	<ScrollViewer
+		x:Name="ConsoleOutputScrollViewer">
+		<Grid
+			x:Name="ConsoleOutputGrid"
+			Background="#161616"
+			Margin="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="DatestampColumn" Width="62"/>
+				<ColumnDefinition x:Name="TimestampColumn" Width="50"/>
+				<ColumnDefinition x:Name="TypeColumn" Width="70"/>
+				<ColumnDefinition x:Name="UserColumn" Width="100"/>
+				<ColumnDefinition x:Name="StringColumn" Width="*"/>
+			</Grid.ColumnDefinitions>
+		</Grid>
+	</ScrollViewer>
+</UserControl>

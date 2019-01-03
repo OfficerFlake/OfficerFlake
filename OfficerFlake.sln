@@ -135,6 +135,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.01_BuildEnvironment", "_L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.01_HostAddress", "_Libraries\2_Components\2.01_HostAddress\2.01_HostAddress.csproj", "{BB1331F4-9E8C-4086-9E80-FB0F98903372}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.01_Images", "2.01_Images", "{8D3FACDA-7963-49D9-B9F5-F00C547780DB}"
+	ProjectSection(SolutionItems) = preProject
+		_Libraries\2_Components\2.01_Images\Cloud.png = _Libraries\2_Components\2.01_Images\Cloud.png
+		_Libraries\2_Components\2.01_Images\Compass.png = _Libraries\2_Components\2.01_Images\Compass.png
+		_Libraries\2_Components\2.01_Images\Inspect.png = _Libraries\2_Components\2.01_Images\Inspect.png
+		_Libraries\2_Components\2.01_Images\Moon.png = _Libraries\2_Components\2.01_Images\Moon.png
+		_Libraries\2_Components\2.01_Images\Sun.png = _Libraries\2_Components\2.01_Images\Sun.png
+		_Libraries\2_Components\2.01_Images\Wind.png = _Libraries\2_Components\2.01_Images\Wind.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -477,6 +487,7 @@ Global
 		{183CC3FE-296E-4518-82E3-AD59B6D092B0} = {B0E7687E-B54C-429E-BDEF-473C12A1E2EB}
 		{B8DC8F84-F514-4175-8F15-C271FB0862B7} = {9653CA2C-ED6E-479F-8C84-E5C8029404D8}
 		{BB1331F4-9E8C-4086-9E80-FB0F98903372} = {49C7C96E-F161-4278-9846-685F5DB44CAC}
+		{8D3FACDA-7963-49D9-B9F5-F00C547780DB} = {65AF4794-AADD-4029-B4A3-EFAA1FE0F2FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E5D15688-AE67-4A81-B42E-29A6D9E25018}

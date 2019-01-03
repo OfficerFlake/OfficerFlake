@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media.TextFormatting;
-using System.Windows.Threading;
-using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces
 {

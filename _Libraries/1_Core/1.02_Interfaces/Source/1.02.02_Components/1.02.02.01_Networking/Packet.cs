@@ -363,9 +363,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		UInt32 ID { get; set; }
 		UInt16 Version { get; set; }
-		List<Packet_36_WeaponLoadingDescription> Weapons { get; set; }
+		List<IPacket_36_WeaponLoadingDescription> Weapons { get; set; }
 	}
-	public interface Packet_36_WeaponLoadingDescription
+	public interface IPacket_36_WeaponLoadingDescription
 	{
 		Packet_OrdinanceType WeaponType { get; set; }
 		UInt16 Ammo { get; set; }

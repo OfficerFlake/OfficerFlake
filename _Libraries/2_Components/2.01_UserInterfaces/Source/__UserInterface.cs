@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces
@@ -52,9 +49,26 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		public static bool Instantiated => (Instance != null);
 		public static bool Shutdown()
 		{
+			Instance?.Application.Dispatcher.Invoke(() =>
+			{
+				foreach (Window thisWindow in Windows)
+				{
+
+					try
+					{
+						thisWindow.Close();
+					}
+					catch (Exception e)
+					{
+						Logger.Debug.AddErrorMessage(e, "Error shutting down");
+					}
+				}
+			});
 			Instance.Dispose();
 			return true;
 		}
+
+		public static List<Window> Windows = new List<Window>();
 
 		#region Create/Dispose
 		private UserInterfaceSingleton()
@@ -92,6 +106,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			{
 				output = new T();
 			});
+			Windows.Add(output);
 			return output;
 		}
 		public static bool CloseWindow(OYS_Window window)
@@ -100,6 +115,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			{
 				window.Close();
 			});
+			Windows.Remove(window);
 			return true;
 		}
 		public static bool WaitForWindowCreation(OYS_Window window, Int32 Timeout = Int32.MaxValue)

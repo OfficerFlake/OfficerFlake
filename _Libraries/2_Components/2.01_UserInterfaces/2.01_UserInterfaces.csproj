@@ -90,17 +90,22 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Source\ConsoleInput.xaml.cs">
+    <Compile Include="Source\Console\ConsoleInput.xaml.cs">
       <DependentUpon>ConsoleInput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\ConsoleOutput.xaml.cs">
+    <Compile Include="Source\Console\ConsoleOutput.xaml.cs">
       <DependentUpon>ConsoleOutput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\ConsoleUserList.xaml.cs">
+    <Compile Include="Source\Console\ConsoleUserList.xaml.cs">
       <DependentUpon>ConsoleUserList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Converters.cs" />
     <Compile Include="Source\Extensions.cs" />
+    <Compile Include="Source\Icons\BaseIcon.xaml.cs">
+      <DependentUpon>BaseIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Icons\PacketInspector.xaml.cs">
+      <DependentUpon>PacketInspector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -124,17 +129,25 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Source\ConsoleInput.xaml">
+    <Page Include="Source\Console\ConsoleInput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\ConsoleOutput.xaml">
+    <Page Include="Source\Console\ConsoleOutput.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\ConsoleUserList.xaml">
+    <Page Include="Source\Console\ConsoleUserList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Source\Icons\BaseIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Icons\PacketInspector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +200,12 @@
     <Resource Include="..\2.01_Icons\OpenYS.ico">
       <Link>OpenYS.ico</Link>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconBase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Inspect.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Messaging;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Extensions;
 
@@ -295,6 +291,12 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			Int32.TryParse((sender as TextBox)?.Text ?? "0", out TargetEndPosition);
 			if (LastPacket != null) RecalculatePacket();
 		}
+
+		private void PacketInspectorUserInterface_OnClosing(object sender, CancelEventArgs e)
+		{
+			e.Cancel = true;
+			Visibility = Visibility.Hidden;
+		}
 	}
 
 	/// <summary>
@@ -311,6 +313,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Show/Hide
 		public static void Show() => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.Show());
 		public static void Hide() => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.Hide());
+		public static Boolean IsVisible => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.IsVisible);
 		#endregion
 		#region Wait Load/Close
 		public static bool WaitForCreation(int timeout = Int32.MaxValue) => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.WaitForCreation(timeout));

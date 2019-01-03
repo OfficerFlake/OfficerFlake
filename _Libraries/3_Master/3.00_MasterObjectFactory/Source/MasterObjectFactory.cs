@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using Com.OfficerFlake.Libraries.Color;
 using Com.OfficerFlake.Libraries.Database;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.IO;
 using Com.OfficerFlake.Libraries.Math;
 using Com.OfficerFlake.Libraries.Math.CoordinateSystems;
 using Com.OfficerFlake.Libraries.Math.Statistics;
@@ -14,9 +14,8 @@ using Com.OfficerFlake.Libraries.Networking.Packets;
 using Com.OfficerFlake.Libraries.RichText;
 using Com.OfficerFlake.Libraries.UnitsOfMeasurement;
 using Com.OfficerFlake.Libraries.YSFlight;
-using Com.OfficerFlake.Libraries.YSFlight.Files.DAT;
-using Com.OfficerFlake.Libraries.YSFlight.Files.LST;
 using Com.OfficerFlake.Libraries.YSFlight.Types;
+using File = Com.OfficerFlake.Libraries.YSFlight.Files.DAT.File;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -35,6 +34,7 @@ namespace Com.OfficerFlake.Libraries
 			//ObjectFactory has direct access.
 			#endregion
 			#region 3_FileIO
+			//TODO: [4] Implement Interface IFile
 			public IFile CreateFileReference(string filename) => throw new NotImplementedException();
 			#endregion
 			#region 4_ObjectFactory
@@ -128,7 +128,7 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_27_ResendAirRequest CreatePacket27ResendAirRequest() => new Type_27_ResendAirRequest();
 			public IPacket_28_ResendGroundRequest CreatePacket28ResendGroundRequest() => new Type_28_ResendGroundRequest();
 			public IPacket_29_NetcodeVersion CreatePacket29NetcodeVersion() => new Type_29_NetcodeVersion();
-			public IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => throw new NotImplementedException();
+			public IPacket_30_AircraftCommand CreatePacket30AircraftCommand() => new Type_30_AircraftCommand();
 			public IPacket_31_MissilesOption CreatePacket31MissilesOption() => new Type_31_MissilesOption();
 			public IPacket_32_ChatMessage CreatePacket32ChatMessage(IUser user, string message) => new Type_32_ChatMessage(user, message);
 			public IPacket_32_ServerMessage CreatePacket32ServerMessage(string message) => new Type_32_ServerMessage(message);
@@ -315,6 +315,7 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region YSFlight
 			public IDATFile CreateDATFileReference(string filename) => new File(filename);
+			//TODO: [4] Implement Interface ILSTFile
 			public ILSTFile CreateLSTFileReference(string filename) => throw new NotImplementedException();
 
 			public IYSTypeAircraftCategory CreateYSTypeAircraftCategory(string[] values) => new AircraftCategory(values);

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Com.OfficerFlake.Libraries.Interfaces;
-
-namespace Com.OfficerFlake.Libraries.YSFlight
+﻿namespace Com.OfficerFlake.Libraries.YSFlight
 {
     public static partial class Metadata
     {

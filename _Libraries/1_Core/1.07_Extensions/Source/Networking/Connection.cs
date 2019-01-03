@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Interfaces;
 
@@ -59,9 +57,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 		public static async Task<bool> SendAsync(this List<IConnection> connections, IPacket thisPacket)
 		{
 			List<Task<bool>> tasks = new List<Task<bool>>();
-			foreach (IConnection thisConnection in connections)
+			foreach (IConnection otherConnection in connections)
 			{
-				tasks.Add(thisConnection.SendAsync(thisPacket));
+				tasks.Add(otherConnection.SendToClientStreamAsync(thisPacket));
 			}
 			bool AnyErrors = false;
 			foreach (Task<bool> thisTask in tasks)
@@ -75,9 +73,9 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			List<Task<bool>> tasks = new List<Task<bool>>();
 			IPacket_32_ChatMessage chatMessage = ObjectFactory.CreatePacket32ChatMessage(Users.Console, message);
 
-			foreach (IConnection thisConnection in connections)
+			foreach (IConnection otherConnection in connections)
 			{
-				tasks.Add(thisConnection.SendAsync(chatMessage));
+				tasks.Add(otherConnection.SendToClientStreamAsync(chatMessage));
 			}
 			bool AnyErrors = false;
 			foreach (Task<bool> thisTask in tasks)

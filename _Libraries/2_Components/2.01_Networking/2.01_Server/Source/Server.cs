@@ -127,7 +127,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 	public static class Server
 	{
-		private static IServer server = new OpenYSServer();
+		private static readonly IServer server = new OpenYSServer();
 
 		public static bool Start(bool IsProxyMode = false) => server.Start(IsProxyMode);
 		public static bool Stop() => server.Stop();

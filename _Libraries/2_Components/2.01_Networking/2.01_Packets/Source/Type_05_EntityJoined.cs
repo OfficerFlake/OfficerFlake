@@ -164,7 +164,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
-		public Boolean IsOwnedByThisClient
+		public Boolean IsOwnedByThisConnection
 		{
 			get => (OwnerType == Packet_05OwnerType.Self);
 			set

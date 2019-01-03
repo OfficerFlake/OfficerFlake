@@ -1,23 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries;
-using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.Logger;
-
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UserInterfaces;
-using Com.OfficerFlake.Libraries.YSFlight;
-
 using Console = Com.OfficerFlake.Libraries.Logger.Console;
-using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
 namespace Com.OfficerFlake.Executables.ProxyMode
@@ -169,7 +160,8 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			MasterObjectFactory.LinkMasterFactory();
 			#endregion
 			#region Link Interacting Components
-			Connection.SetPacketProcessor(PacketProcessor.Server.Process);
+			Connection.SetPacketProcessorClientStream(PacketProcessor.ProxyServerClientStream.Process);
+			Connection.SetPacketProcessorHostStream(PacketProcessor.ProxyServerHostStream.Process);
 			#endregion
 			#region LINK UI LAST!
 			UserInterface.Initialise();
@@ -197,8 +189,9 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			#region Start Server
 			Console.AddInformationMessage("Starting Proxy Server...");
 			Server.Start(IsProxyMode: true);
-			Console.AddInformationMessage("Now Listening on Port 7915!");
-			Console.AddInformationMessage("Clients will be sent to:" + SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.ToString() + ":" + SettingsLibrary.Settings.Server.ProxyServer.DestinationPort + "!");
+			Console.AddInformationMessage("Now Listening for TCP Traffic on Port " + Settings.Server.ListeningPorts.TCP +  "!");
+			Console.AddInformationMessage("Now Listening for UDP Traffic on Port " + Settings.Server.ListeningPorts.UDP + "!");
+			Console.AddInformationMessage("Clients will be sent to:" + SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress + ":" + SettingsLibrary.Settings.Server.ProxyServer.DestinationPort + "!");
 			#endregion
 
 			Console.AddInformationMessage("");
@@ -207,6 +200,7 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			OpenYSPacketInspectorUserInterface.CloseWindow();
 
 			Server.Stop();
+			UserInterface.Shutdown();
 		}
 		#endregion
 	}

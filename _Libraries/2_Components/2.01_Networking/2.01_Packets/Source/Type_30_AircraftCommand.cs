@@ -1,17 +1,18 @@
 ﻿using System;
+using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_30_AircraftCommand : GenericPacket
+	public class Type_30_AircraftCommand : GenericPacket, IPacket_30_AircraftCommand
 	{
 		public Type_30_AircraftCommand() : base(30)
 		{
 		}
 
-		public Int32 ID
+		public UInt32 ID
 		{
-			get => GetInt32(0);
-			set => SetInt32(0, value);
+			get => GetUInt32(0);
+			set => SetUInt32(0, value);
 		}
 
 		public String Command
@@ -31,7 +32,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				SetString(4, value.Length + _arg.Length, value + " " + _arg + "\0");
 			}
 		}
-		public String Argument
+		public String Parameters
 		{
 			get
 			{

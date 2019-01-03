@@ -40,7 +40,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			public static int FuelTank = 12;
 		}
 
-		public class WeaponDescription : Packet_36_WeaponLoadingDescription
+		public class WeaponDescription : IPacket_36_WeaponLoadingDescription
 		{
 			public Packet_OrdinanceType WeaponType { get; set; } = Packet_OrdinanceType.Null;
 			public UInt16 Ammo { get; set; } = 0;
@@ -51,11 +51,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				Ammo = _ammo;
 			}
 		}
-		public List<Packet_36_WeaponLoadingDescription> Weapons
+		public List<IPacket_36_WeaponLoadingDescription> Weapons
 		{
 			get
 			{
-				List<Packet_36_WeaponLoadingDescription> _WeaponsInfoOutput = new List<Packet_36_WeaponLoadingDescription>();
+				List<IPacket_36_WeaponLoadingDescription> _WeaponsInfoOutput = new List<IPacket_36_WeaponLoadingDescription>();
 				for (int i = 6; i <= Data.Length - 4; i += 4)
 				{
 					Packet_OrdinanceType subOrdinanceType = Packet_OrdinanceType.Null;
@@ -159,15 +159,15 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public bool AddWeapon(Packet_OrdinanceType _WeaponType, ushort _Ammo)
 		{
-			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
+			List<IPacket_36_WeaponLoadingDescription> UpdateInfo = Weapons;
 			UpdateInfo.Add(new WeaponDescription(_WeaponType, _Ammo));
 			Weapons = UpdateInfo;
 			return true;
 		}
 		public bool RemoveWeapon(Packet_OrdinanceType _WeaponType)
 		{
-			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
-			List<Packet_36_WeaponLoadingDescription> WeaponsToRemove = Weapons.Where(x => x.WeaponType == _WeaponType).ToList();
+			List<IPacket_36_WeaponLoadingDescription> UpdateInfo = Weapons;
+			List<IPacket_36_WeaponLoadingDescription> WeaponsToRemove = Weapons.Where(x => x.WeaponType == _WeaponType).ToList();
 			UpdateInfo.RemoveAll(x => x.WeaponType == _WeaponType);
 			for (int i = 0; i < WeaponsToRemove.Count - 1; i++)
 			{
@@ -178,7 +178,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		}
 		public bool RemoveAllWeapon(Packet_OrdinanceType _WeaponType)
 		{
-			List<Packet_36_WeaponLoadingDescription> UpdateInfo = Weapons;
+			List<IPacket_36_WeaponLoadingDescription> UpdateInfo = Weapons;
 			UpdateInfo.RemoveAll(x => x.WeaponType == _WeaponType);
 			Weapons = UpdateInfo;
 			return true;

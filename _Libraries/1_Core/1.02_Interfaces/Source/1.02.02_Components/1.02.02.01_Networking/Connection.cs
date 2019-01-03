@@ -30,11 +30,20 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		void GivePacket(IPacket thisPacket);
 		List<IPacket> Last5Packets { get; }
 
-		bool Send(IPacket packet);
-		Task<bool> SendAsync(IPacket packet);
-		bool SendMessage(string message);
-		Task<bool> SendMessageAsync(string message);
+		bool Send(IPacket packet, Socket socket);
+		Task<bool> SendAsync(IPacket packet, Socket socket);
+		bool SendMessage(string message, Socket socket);
+		Task<bool> SendMessageAsync(string message, Socket socket);
 
+		bool SendToClientStream(IPacket Input);
+		bool SendToClientStream(string message);
+		Task<bool> SendToClientStreamAsync(IPacket Input);
+		Task<bool> SendToClientStreamAsync(string message);
+
+		bool SendToHostStream(IPacket Input);
+		bool SendToHostStream(string message);
+		Task<bool> SendToHostStreamAsync(IPacket Input);
+		Task<bool> SendToHostStreamAsync(string message);
 
 		IPacketWaiter CreatePacketWaiter(int type);
 		bool GetResponseOrResend(IPacketWaiter waiter, IPacket resendPacket);

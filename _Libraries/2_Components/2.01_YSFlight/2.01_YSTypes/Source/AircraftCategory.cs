@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Com.OfficerFlake.Libraries.Interfaces;
+﻿using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Types
 {

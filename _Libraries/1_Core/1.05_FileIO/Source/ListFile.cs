@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.IO
 	{
 		public new List<IListFileLine> Contents { get; set; }
 
-		protected ListFile(string filename) : base(filename)
+		public ListFile(string filename) : base(filename)
         {
         }
 
