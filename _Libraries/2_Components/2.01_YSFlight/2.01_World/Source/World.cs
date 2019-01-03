@@ -22,12 +22,21 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 				public void CreateVehicle()
 				{
-					Extensions.YSFlight.World.Vehicles.Add(this);
+					lock (Extensions.YSFlight.World.Vehicles)
+					{
+						lock (Extensions.YSFlight.World.Vehicles)
+						{
+							Extensions.YSFlight.World.Vehicles.Add(this);
+						}
+					}
 					Logger.Debug.AddSummaryMessage("&aAdded Vehicle: [" + this.ID + "]" + this.Identify);
 				}
 				public void DestroyVehicle()
 				{
-					Extensions.YSFlight.World.Vehicles.RemoveAll(x=> x == this);
+					lock (Extensions.YSFlight.World.Vehicles)
+					{
+						Extensions.YSFlight.World.Vehicles.RemoveAll(x => x == this);
+					}
 					Logger.Debug.AddSummaryMessage("&cRemoved Vehicle: [" + this.ID + "]" + this.Identify);
 				}
 
@@ -978,7 +987,6 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								continue;
 							}
 							continue;
-							continue;
 						}
 						if (ThisLine.ToUpperInvariant().StartsWith("ID"))
 						{
@@ -1123,7 +1131,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			foreach (Objects.Ground ThisGround in Objects.RootScenery.GroundObjects)
 			{
-				Extensions.YSFlight.World.Vehicles.Add(ThisGround);
+				lock (Extensions.YSFlight.World.Vehicles)
+				{
+					Extensions.YSFlight.World.Vehicles.Add(ThisGround);
+				}
 			}
 			#region DEBUG: Added GroundObjects from RootScenery to World.Ground.AllGrounds
 			{

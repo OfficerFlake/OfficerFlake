@@ -134,6 +134,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IPacket_49_SkyColor CreatePacket49SkyColor();
 		IPacket_50_GroundColor CreatePacket50GroundColor();
 		IPacket_64_UserPacket CreatePacket64UserPacket();
+		IPacket_64_00_Null CreatePacket64_00Null();
+		IPacket_64_01_OYSVersion CreatePacket64_01OYSVersion();
+		IPacket_64_11_FormationFlightData CreatePacket64_11FormationFlightData(short version);
 
 		//PacketProcessor
 

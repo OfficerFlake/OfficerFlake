@@ -42,6 +42,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    public IWorldVehicle Vehicle { get; set; } = Extensions.YSFlight.World.NoVehicle;
 	    public bool JoinRequestPending { get; set; } = false;
 		#endregion
+		#region FormationTarget
+		public IWorldVehicle FormationTargetVehicle { get; set; } = YSFlight.World.NoVehicle;
+		#endregion
 
 		public List<IPacket> Last5Packets { get; } = new List<IPacket>();
 		#endregion
@@ -53,6 +56,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			ConnectionNumber = ConnectionIDIncrementer++;
 		    IsProxyMode = isProxyMode;
 			SetTCPSocketClientStream(incomingSocket).ConfigureAwait(false);
+
 		    if (isProxyMode) CreateHostSocket().ConfigureAwait(false);
 			AddToServerList();
 		    return true;
@@ -302,7 +306,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			if (receivedPacket == null)
 			{
 				//Disconnect! Got Nothing!
-				Disconnect("End of datastream.");
+				this.Disconnect("End of datastream.");
 
 				return;
 			}
@@ -755,12 +759,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public bool Disconnect(string reason)
 	    {
 		    RemoveFromServerList();
-		    Logger.Console.AddInformationMessage("&c" + this.User.UserName.ToUnformattedSystemString() + " left the server.");
+			Logger.Console.AddInformationMessage("&c" + User.UserName.ToUnformattedSystemString() + " left the server.");
 		    foreach (IConnection otherConnection in Connections.AllConnections.Exclude(this))
 		    {
 			    otherConnection.SendToClientStreamAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
 		    }
-		    SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
+			SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
 		    SendToClientStreamAsync("Disconnection reason: " + reason).ConfigureAwait(false);
 			if (TCPSocketClientStream.Connected)
 		    {

@@ -136,6 +136,9 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_49_SkyColor CreatePacket49SkyColor() => throw new NotImplementedException();
 			public IPacket_50_GroundColor CreatePacket50GroundColor() => throw new NotImplementedException();
 			public IPacket_64_UserPacket CreatePacket64UserPacket() => throw new NotImplementedException();
+			public IPacket_64_00_Null CreatePacket64_00Null() => throw new NotImplementedException();
+			public IPacket_64_01_OYSVersion CreatePacket64_01OYSVersion() => throw new NotImplementedException();
+			public IPacket_64_11_FormationFlightData CreatePacket64_11FormationFlightData(short version) => throw new NotImplementedException();
 
 			//PacketProcessor
 

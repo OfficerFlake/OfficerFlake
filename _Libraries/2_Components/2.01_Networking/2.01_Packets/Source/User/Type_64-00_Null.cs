@@ -3,11 +3,12 @@ using Com.OfficerFlake.Libraries.Interfaces;
 
 namespace Com.OfficerFlake.Libraries.Networking.Packets
 {
-	public class Type_64_UserPacket : GenericPacket, IPacket_64_UserPacket
+	public class Type_64_00_Null : GenericPacket, IPacket_64_00_Null
 	{
-		public Type_64_UserPacket() : base(64)
+		public Type_64_00_Null() : base(64)
 		{
-			ResizeData(0);
+			ResizeData(4);
+			UserPacketHeader = 0;
 		}
 
 		public UInt32 UserPacketHeader

@@ -48,7 +48,6 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 				}
 				catch
 				{
-					int i = 0;
 				}
 			}
 		}
@@ -136,10 +135,6 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			}
 			#endregion
 
-			if (AssemblyToLoad == null)
-			{
-				int i = 0;
-			}
 			return AssemblyToLoad;
 		}
 
@@ -199,7 +194,9 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			#region Start Server
 			Console.AddInformationMessage("Starting OpenYS Server...");
 			Server.Start();
-			Console.AddInformationMessage("OpenYS Server Startup Complete. Now listening for clients on Port " + Settings.Server.ListeningPorts.TCP);
+			Console.AddInformationMessage("OpenYS Server Startup Complete.");
+			Console.AddInformationMessage("Now listening for TCP Traffic on Port: " + Settings.Server.ListeningPorts.TCP + "!");
+			Console.AddInformationMessage("Now Listening for UDP Traffic on Port: " + Settings.Server.ListeningPorts.UDP + "!");
 			#endregion
 
 			Console.AddInformationMessage("--------");

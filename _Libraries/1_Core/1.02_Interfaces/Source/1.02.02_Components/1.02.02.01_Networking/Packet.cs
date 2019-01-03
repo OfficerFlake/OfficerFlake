@@ -444,5 +444,16 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IPacket_64_UserPacket : IPacket
 	{
+		UInt32 UserPacketHeader { get; set; }
+	}
+	public interface IPacket_64_00_Null : IPacket_64_UserPacket
+	{
+	}
+	public interface IPacket_64_01_OYSVersion : IPacket_64_UserPacket
+	{
+		UInt32 OYSVersion { get; set; }
+	}
+	public interface IPacket_64_11_FormationFlightData : IPacket_11_FlightData, IPacket_64_UserPacket
+	{
 	}
 }

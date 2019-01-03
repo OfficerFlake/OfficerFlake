@@ -1306,5 +1306,15 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				}
 			}
 		}
+
+		public IPacket_64_11_FormationFlightData ConvertTo_IPacket_64_11_FormationFlightData(IWorldVehicle FormationTarget)
+		{
+			IPacket_64_11_FormationFlightData FlightDataOutput = ObjectFactory.CreatePacket64_11FormationFlightData((short)Version);
+			Data.CopyTo(FlightDataOutput.Data, 4);
+			FlightDataOutput.PosX = (PosX.ToMeters().RawValue - FormationTarget.Position.X.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosY = (PosY.ToMeters().RawValue - FormationTarget.Position.Y.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosZ = (PosZ.ToMeters().RawValue - FormationTarget.Position.Z.ToMeters().RawValue).Meters();
+			return FlightDataOutput;
+		}
 	}
 }

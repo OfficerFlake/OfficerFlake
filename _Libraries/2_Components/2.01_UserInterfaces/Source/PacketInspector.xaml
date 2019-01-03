@@ -38,22 +38,22 @@
 					</ComboBoxItem>
 				</ComboBox>
 			</StackPanel>
-			<StackPanel x:Name="DirectionStackPanel">
-				<TextBlock x:Name="DirectionTextBlock"
-						   Text="Direction"
+			<StackPanel x:Name="DataStreamStackPanel">
+				<TextBlock x:Name="DataStreamTextBlock"
+						   Text="DataStream"
 						   TextAlignment="Center"
 						   Width="100"
 						   HorizontalAlignment="Center"
 						   Padding="10, 0"/>
-				<ComboBox x:Name="DirectionSelector"
+				<ComboBox x:Name="DataStreamSelector"
 						  HorizontalAlignment="Center"
 						  SelectionChanged="DirectionSelector_OnSelectionChanged">
-				<ComboBoxItem HorizontalAlignment="Center"
-							  IsSelected="True">
-					Server->Client
-				</ComboBoxItem>
 				<ComboBoxItem HorizontalAlignment="Center">
-					Client->Server
+					HostStream
+				</ComboBoxItem>
+				<ComboBoxItem HorizontalAlignment="Center"
+				              IsSelected="True">
+					ClientStream
 				</ComboBoxItem>
 			</ComboBox>
 			</StackPanel>
@@ -116,12 +116,14 @@
 					           Width="100"
 					           TextAlignment="Center"
 					           Text="Binary"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="BinaryTextBox"
 							 Width="100"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 				</StackPanel>
@@ -132,24 +134,28 @@
 				<StackPanel Width="50">
 					<TextBlock x:Name="SByteTextBlock"
 					           Text="SByte"
-					           HorizontalAlignment="Center"
+					           Foreground="#AAAAAA"
+							   HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="SByteTextBox"
 					         Width="50"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
 				<StackPanel Width="50">
 					<TextBlock x:Name="ByteTextBlock"
 				           Text="Byte"
+					       Foreground="#AAAAAA"
 				           HorizontalAlignment="Center"
 				           Padding="10, 0"/>
 					<TextBox x:Name="ByteTextBox"
 					         Width="50"
 					         TextAlignment="Center"
 							 Text="0"
+					         Foreground="#AAAAAA"
 							 HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 				</StackPanel>
@@ -162,12 +168,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 							   Text="Int16"
+					           Foreground="#AAAAAA"
 							   HorizontalAlignment="Center"
 							   Padding="10, 0"/>
 					<TextBox x:Name="Int16TextBox"
 							 Width="50"
 							 TextAlignment="Center"
 							 Text="0"
+					         Foreground="#AAAAAA"
 							 HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 				</StackPanel>
@@ -176,12 +184,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 							   Text="UInt16"
+					           Foreground="#AAAAAA"
 							   HorizontalAlignment="Center"
 							   Padding="10, 0"/>
 					<TextBox x:Name="UInt16TextBox"
 							 Width="50"
 							 TextAlignment="Center"
 							 Text="0"
+					         Foreground="#AAAAAA"
 							 HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 				</StackPanel>
@@ -194,12 +204,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 							   Text="Int32"
+					           Foreground="#AAAAAA"
 							   HorizontalAlignment="Center"
 							   Padding="10, 0"/>
 					<TextBox x:Name="Int32TextBox"
 					         Width="50"
 					         TextAlignment="Center"
 							 Text="0"
+					         Foreground="#AAAAAA"
 							 HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 				</StackPanel>
@@ -208,12 +220,14 @@
 							   Width="50"
 							   TextAlignment="Center"
 							   Text="UInt32"
+					           Foreground="#AAAAAA"
 							   HorizontalAlignment="Center"
 							   Padding="10, 0"/>
 					<TextBox x:Name="UInt32TextBox"
 							 Width="50"
 							 TextAlignment="Center"
 							 Text="0"
+					         Foreground="#AAAAAA"
 							 HorizontalAlignment="Center"
 							 IsReadOnly="True"/>
 			</StackPanel>
@@ -226,12 +240,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 					           Text="Int64"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="Int64TextBox"
 					         Width="50"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
@@ -240,12 +256,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 					           Text="UInt64"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="UInt64TextBox"
 					         Width="50"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
@@ -258,12 +276,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 					           Text="Single"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="SingleTextBox"
 					         Width="50"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
@@ -272,12 +292,14 @@
 					           Width="50"
 					           TextAlignment="Center"
 					           Text="Double"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="DoubleTextBox"
 					         Width="50"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
@@ -290,12 +312,14 @@
 					           Width="100"
 					           TextAlignment="Center"
 					           Text="String"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="StringTextBox"
 					         Width="100"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>
@@ -309,12 +333,14 @@
 					           Width="100"
 					           TextAlignment="Center"
 					           Text="Raw"
+					           Foreground="#AAAAAA"
 					           HorizontalAlignment="Center"
 					           Padding="10, 0"/>
 					<TextBox x:Name="RawTextBox"
 					         Width="100"
 					         TextAlignment="Center"
 					         Text="0"
+					         Foreground="#AAAAAA"
 					         HorizontalAlignment="Center"
 					         IsReadOnly="True"/>
 				</StackPanel>

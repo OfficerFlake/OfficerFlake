@@ -151,6 +151,9 @@ namespace Com.OfficerFlake.Libraries
 			public IPacket_49_SkyColor CreatePacket49SkyColor() => new Type_49_SkyColor();
 			public IPacket_50_GroundColor CreatePacket50GroundColor() => new Type_50_GroundColor();
 			public IPacket_64_UserPacket CreatePacket64UserPacket() => new Type_64_UserPacket();
+			public IPacket_64_00_Null CreatePacket64_00Null() => new Type_64_00_Null();
+			public IPacket_64_01_OYSVersion CreatePacket64_01OYSVersion() => new Type_64_01_OYSVersion();
+			public IPacket_64_11_FormationFlightData CreatePacket64_11FormationFlightData(short version) => new Type_64_11_FormationFlightData(version);
 
 			//PacketProcessor
 

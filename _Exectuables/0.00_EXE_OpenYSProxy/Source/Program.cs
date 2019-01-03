@@ -46,7 +46,6 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 				}
 				catch
 				{
-					int i = 0;
 				}
 			}
 		}
@@ -134,10 +133,6 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			}
 			#endregion
 
-			if (AssemblyToLoad == null)
-			{
-				int i = 0;
-			}
 			return AssemblyToLoad;
 		}
 
@@ -189,9 +184,9 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			#region Start Server
 			Console.AddInformationMessage("Starting Proxy Server...");
 			Server.Start(IsProxyMode: true);
-			Console.AddInformationMessage("Now Listening for TCP Traffic on Port " + Settings.Server.ListeningPorts.TCP +  "!");
-			Console.AddInformationMessage("Now Listening for UDP Traffic on Port " + Settings.Server.ListeningPorts.UDP + "!");
-			Console.AddInformationMessage("Clients will be sent to:" + SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress + ":" + SettingsLibrary.Settings.Server.ProxyServer.DestinationPort + "!");
+			Console.AddInformationMessage("Now listening for TCP Traffic on Port: " + Settings.Server.ListeningPorts.TCP + "!");
+			Console.AddInformationMessage("Now Listening for UDP Traffic on Port: " + Settings.Server.ListeningPorts.UDP + "!");
+			Console.AddInformationMessage("Clients will be sent to " + SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress + ":" + SettingsLibrary.Settings.Server.ProxyServer.DestinationPort + "!");
 			#endregion
 
 			Console.AddInformationMessage("");

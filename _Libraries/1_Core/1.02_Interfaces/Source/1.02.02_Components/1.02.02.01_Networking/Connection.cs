@@ -21,6 +21,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		FlightStatus FlightStatus { get; set; }
 		Boolean IsFlying { get; }
 		IWorldVehicle Vehicle { get; set; }
+		IWorldVehicle FormationTargetVehicle { get; set; }
 
 		Boolean JoinRequestPending { get; set; }
 

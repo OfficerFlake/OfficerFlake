@@ -9,6 +9,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_19_RemoveGround(IConnection thisConnection, IPacket_19_RemoveGround packet)
 			{
+				lock (Extensions.YSFlight.World.Vehicles)
+				{
+					Extensions.YSFlight.World.Vehicles.RemoveAll(x => x.ID == packet.ID);
+				}
+				Logger.Debug.AddSummaryMessage("Removed Vehicle(G) by Proxy: " + packet.ID);
 				return thisConnection.SendToClientStream(packet);
 			}
 		}

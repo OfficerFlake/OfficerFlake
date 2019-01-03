@@ -273,9 +273,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		}
 		private void DirectionSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Server->Client";
-			ServerToClient = (text == "Server->Client");
-			int test = 0;
+			var text = ((sender as ComboBox)?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "HostStream";
+			ServerToClient = (text == "HostStream");
 		}
 		private void TypeTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
 		{
