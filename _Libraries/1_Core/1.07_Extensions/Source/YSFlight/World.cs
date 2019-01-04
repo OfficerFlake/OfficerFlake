@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Com.OfficerFlake.Libraries.Interfaces;
@@ -14,15 +15,15 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			public static UInt32 GetNextID() => ++CurrentID;
 
 			public static List<IWorldVehicle> Vehicles { get; } = new List<IWorldVehicle>();
-			public static List<IWorldAircraft> AllAircraft => Vehicles.OfType<IWorldAircraft>().ToList();
-			public static List<IWorldGround> AllGrounds => Vehicles.OfType<IWorldGround>().ToList();
+			public static List<IWorldVehicle> AllAircraft => Vehicles.Where(x=>x.VehicleType == Packet_05VehicleType.Aircraft).ToList();
+			public static List<IWorldVehicle> AllGrounds => Vehicles.Where(x => x.VehicleType == Packet_05VehicleType.Ground).ToList();
 			public static IWorldVehicle NoVehicle { get; } = ObjectFactory.CreateVehicle();
 
 			public static IWorldVehicle GetClosestVehicle(IWorldVehicle TargetVehicle)
 			{
 				IWorldVehicle ClosestVehicle = null;
 				Double Distance = Double.MaxValue;
-				foreach (IWorldVehicle thisVehicle in Vehicles)
+				foreach (IWorldVehicle thisVehicle in AllAircraft.Where(x=>x.ID != TargetVehicle.ID))
 				{
 					if (ClosestVehicle == null)
 					{
@@ -47,7 +48,7 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			{
 				IWorldVehicle ClosestVehicle = null;
 				Double Distance = Double.MaxValue;
-				foreach (IWorldVehicle thisVehicle in Vehicles)
+				foreach (IWorldVehicle thisVehicle in AllAircraft.Where(x => x.ID != TargetVehicle.ID))
 				{
 					if (ClosestVehicle == null)
 					{

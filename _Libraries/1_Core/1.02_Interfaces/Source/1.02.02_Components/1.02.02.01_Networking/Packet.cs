@@ -145,7 +145,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IPacket_11_FlightData : IPacket
 	{
-		ITime Timestamp { get; set; }
+		ITimeSpan Timestamp { get; set; }
 		UInt32 ID { get; set; }
 		UInt16 Version { get; set; }
 		IDistance PosX { get; set; }
@@ -194,8 +194,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Single AnimThrustVector { get; set; }
 		Single AnimThrustReverse { get; set; }
 		Single AnimBombBay { get; set; }
-
-}
+		IPacket_64_11_FormationFlightData ConvertTo_IPacket_64_11_FormationFlightData(IWorldVehicle FormationTarget);
+	}
 	public interface IPacket_12_LeaveFlight : IPacket
 	{
 		UInt32 ID { get; set; }
@@ -455,5 +455,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IPacket_64_11_FormationFlightData : IPacket_11_FlightData, IPacket_64_UserPacket
 	{
+		UInt32 FormationTargetID { get; set; }
+		IPacket_11_FlightData ConvertTo_IPacket_11_FlightData();
 	}
 }

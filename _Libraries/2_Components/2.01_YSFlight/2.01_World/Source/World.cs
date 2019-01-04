@@ -52,9 +52,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					set; } = 0;
 				public UInt32 IFF { get; set; } = 0;
 				public UInt32 Strength { get; set; } = 10;
+				public IDistance HitRadius { get; set; } = 0.Meters();
 
 				public ICoordinate3 Position { get; set; } = ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 				public IOrientation3 Attitude { get; set; } = ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
+
+				public IVector3<ISpeed> VelocityPosition { get; set; } = ObjectFactory.CreateVector3((ISpeed) 0.MetersPerSecond(), (ISpeed) 0.MetersPerSecond(), (ISpeed) 0.MetersPerSecond());
+				public IVector3<IAngle> VelocityAttitude { get; set; } = ObjectFactory.CreateVector3((IAngle)0.Degrees(), (IAngle)0.Degrees(), (IAngle)0.Degrees());
 
 				public void Update(IPacket_05_AddVehicle packet)
 				{
@@ -75,6 +79,13 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 					Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
 					Attitude = ObjectFactory.CreateOrientation3(packet.HdgH, packet.HdgP, packet.HdgB);
+					VelocityPosition = ObjectFactory.CreateVector3(packet.V_PosX, packet.V_PosY, packet.V_PosZ);
+					VelocityAttitude = ObjectFactory.CreateVector3(packet.V_HdgH, packet.V_HdgP, packet.V_HdgB);
+				}
+				public void Update(IPacket_64_11_FormationFlightData packet)
+				{
+					IPacket_11_FlightData flightData = packet.ConvertTo_IPacket_11_FlightData();
+					if (flightData != null) Update(flightData);
 				}
 
 				public IPacket_05_AddVehicle GetJoinPacket()

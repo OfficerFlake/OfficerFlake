@@ -13,6 +13,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 				lock (Extensions.YSFlight.World.Vehicles) //Enum is volatile and will crash if we try and add to while enumerating.
 				{
 					IWorldVehicle newVehicle = ObjectFactory.CreateVehicle();
+					lock (Extensions.YSFlight.World.Vehicles)
+					{
+						Extensions.YSFlight.World.Vehicles.Add(newVehicle);
+					}
 					newVehicle.Update(packet);
 					if (Extensions.YSFlight.World.Vehicles.Select(x => x.ID).Contains(packet.ID))
 					{
@@ -29,6 +33,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					{
 						Extensions.YSFlight.World.Vehicles.Add(newVehicle);
 					}
+					if (packet.OwnerType == Packet_05OwnerType.Self) thisConnection.Vehicle = newVehicle;
 					return thisConnection.SendToClientStream(packet);
 				}
 			}

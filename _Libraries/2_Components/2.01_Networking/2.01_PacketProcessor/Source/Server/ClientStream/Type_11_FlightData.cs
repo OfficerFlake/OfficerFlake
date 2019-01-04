@@ -1,5 +1,6 @@
 ﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -10,6 +11,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			private static bool Process_Type_11_FlightData(IConnection thisConnection, IPacket_11_FlightData packet)
 			{
 				if (packet.ID != thisConnection.Vehicle.ID) return true;
+				Debug.AddDetailMessage("Flight Data packet received from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID);
 				thisConnection.Vehicle.Update(packet);
 				foreach (IConnection otherConnection in Connections.LoggedIn.Exclude(thisConnection))
 				{

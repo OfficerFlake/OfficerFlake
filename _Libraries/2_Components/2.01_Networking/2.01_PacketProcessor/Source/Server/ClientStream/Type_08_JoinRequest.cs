@@ -84,6 +84,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Assign Vehicle
 				thisConnection.Vehicle = ObjectFactory.CreateAircraft();
+				lock (Extensions.YSFlight.World.Vehicles)
+				{
+					Extensions.YSFlight.World.Vehicles.Add(thisConnection.Vehicle);
+				}
 				thisConnection.Vehicle.Owner = thisConnection.User;
 				thisConnection.Vehicle.MetaData = MetaAircraft;
 				#endregion
@@ -119,7 +123,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				FlightData.Strength = CachedAircraft.CachedData.Strength;
 				FlightData.AnimThrottle = StartPosition.Throttle;
 				if (StartPosition.GearDown) FlightData.AnimGear = 1.0f;
-				FlightData.Timestamp = 0.Seconds().ToTime();
+				FlightData.Timestamp = 0.Seconds().ToTimeSpan();
 				FlightData.PosX = EntityJoined.PosX;
 				FlightData.PosY = EntityJoined.PosY;
 				FlightData.PosZ = EntityJoined.PosZ;
@@ -187,6 +191,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 					//return false;
 				}
 				thisConnection.JoinRequestPending = false;
+				thisConnection.FlightStatus = FlightStatus.Flying;
+				thisConnection.SendToClientStream("You have been assigned flight number: " + EntityJoined.ID);
 				#endregion
 
 				#region Send Others Join Data

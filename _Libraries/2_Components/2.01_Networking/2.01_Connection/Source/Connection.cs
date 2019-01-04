@@ -42,9 +42,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    public IWorldVehicle Vehicle { get; set; } = Extensions.YSFlight.World.NoVehicle;
 	    public bool JoinRequestPending { get; set; } = false;
 		#endregion
-		#region FormationTarget
-		public IWorldVehicle FormationTargetVehicle { get; set; } = YSFlight.World.NoVehicle;
-		#endregion
 
 		public List<IPacket> Last5Packets { get; } = new List<IPacket>();
 		#endregion
@@ -759,12 +756,34 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public bool Disconnect(string reason)
 	    {
 		    RemoveFromServerList();
+		    LoginState = LoginStatus.Disconnected;
 			Logger.Console.AddInformationMessage("&c" + User.UserName.ToUnformattedSystemString() + " left the server.");
 		    foreach (IConnection otherConnection in Connections.AllConnections.Exclude(this))
 		    {
+			    if (Vehicle != null & Vehicle != YSFlight.World.NoVehicle)
+			    {
+				    if (Vehicle is IWorldAircraft)
+				    {
+						IPacket_13_RemoveAircraft RemoveAircraft = ObjectFactory.CreatePacket13RemoveAircraft();
+					    RemoveAircraft.ID = Vehicle.ID;
+					    otherConnection.SendToClientStreamAsync(RemoveAircraft);
+					}
+				    if (Vehicle is IWorldGround)
+				    {
+						IPacket_19_RemoveGround RemoveGround = ObjectFactory.CreatePacket19RemoveGround();
+					    RemoveGround.ID = Vehicle.ID;
+					    otherConnection.SendToClientStreamAsync(RemoveGround);
+					}
+			    }
 			    otherConnection.SendToClientStreamAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
 		    }
-			SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
+		    if (Vehicle != null & Vehicle != YSFlight.World.NoVehicle)
+		    {
+				Vehicle.DestroyVehicle();
+			    Vehicle = YSFlight.World.NoVehicle;
+			    FlightStatus = FlightStatus.Idle;
+		    }
+		    SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
 		    SendToClientStreamAsync("Disconnection reason: " + reason).ConfigureAwait(false);
 			if (TCPSocketClientStream.Connected)
 		    {

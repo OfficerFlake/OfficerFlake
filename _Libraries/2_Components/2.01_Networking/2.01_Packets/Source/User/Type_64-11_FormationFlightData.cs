@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
 
@@ -10,7 +11,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 		{
 			Initialise(3);
 		}
-		public Type_64_11_FormationFlightData(short version) : base(11)
+		public Type_64_11_FormationFlightData(short version) : base(64)
 		{
 			Initialise(version);
 		}
@@ -35,22 +36,28 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			set { SetUInt32(0, value); }
 		}
 
-		public ITime Timestamp
+		public UInt32 FormationTargetID
 		{
-			get => GetSingle(0 + 4).Seconds().ToTime();
-			set => SetSingle(0 + 4, (Single)value.Second.RawValue);
+			get { return GetUInt32(4); }
+			set { SetUInt32(4, value); }
+		}
+
+		public ITimeSpan Timestamp
+		{
+			get => GetSingle(0 + 8).Seconds().ToTimeSpan();
+			set => SetSingle(0 + 8, (Single)value.TotalSeconds().RawValue);
 		}
 
 		public UInt32 ID
 		{
-			get => GetUInt32(4 + 4);
-			set => SetUInt32(4 + 4, value);
+			get => GetUInt32(4 + 8);
+			set => SetUInt32(4 + 8, value);
 		}
 
 		public UInt16 Version
 		{
-			get => GetUInt16(8 + 4);
-			set => SetUInt16(8 + 4, value);
+			get => GetUInt16(8 + 8);
+			set => SetUInt16(8 + 8, value);
 		}
 
 		public IDistance PosX
@@ -60,11 +67,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(12 + 4).Meters();
+						return GetSingle(12 + 8).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(10 + 4).Meters();
+						return GetSingle(10 + 8).Meters();
 					default:
 						return 0.Meters();
 				}
@@ -74,12 +81,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(12 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(12 + 8, (Single)value.ToMeters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(10 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(10 + 8, (Single)value.ToMeters().RawValue);
 						break;
 				}
 			}
@@ -91,11 +98,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(16 + 4).Meters();
+						return GetSingle(16 + 8).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(14 + 4).Meters();
+						return GetSingle(14 + 8).Meters();
 					default:
 						return 0.Meters();
 				}
@@ -105,12 +112,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(16 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(16 + 8, (Single)value.ToMeters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(14 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(14 + 8, (Single)value.ToMeters().RawValue);
 						break;
 				}
 			}
@@ -122,11 +129,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(20 + 4).Meters();
+						return GetSingle(20 + 8).Meters();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSingle(18 + 4).Meters();
+						return GetSingle(18 + 8).Meters();
 					default:
 						return 0.Meters();
 				}
@@ -136,12 +143,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(20 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(20 + 8, (Single)value.ToMeters().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSingle(18 + 4, (Single)value.ToMeters().RawValue);
+						SetSingle(18 + 8, (Single)value.ToMeters().RawValue);
 						break;
 				}
 			}
@@ -154,11 +161,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(24 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(24 + 8) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(22 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(22 + 8) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -168,12 +175,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(24 + 4, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(24 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(22 + 4, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(22 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}
@@ -185,11 +192,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(26 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(26 + 8) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(24 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(24 + 8) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -216,11 +223,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(28 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(28 + 8) / 32767f * Math.PI).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(26 + 4) / 32767f * Math.PI).Radians();
+						return (GetInt16(26 + 8) / 32767f * Math.PI).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -230,12 +237,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(28 + 4, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(28 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(26 + 4, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(26 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}
@@ -248,11 +255,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(30 + 4) / 10).MetersPerSecond();
+						return (GetInt16(30 + 8) / 10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(28 + 4) / 10).MetersPerSecond();
+						return (GetInt16(28 + 8) / 10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -262,12 +269,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(30 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(30 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(28 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(28 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}
@@ -279,11 +286,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(32 + 4) / 10).MetersPerSecond();
+						return (GetInt16(32 + 8) / 10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(30 + 4) / 10).MetersPerSecond();
+						return (GetInt16(30 + 8) / 10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -293,12 +300,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(32 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(32 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(30 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(30 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}
@@ -310,11 +317,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (GetInt16(34 + 4) / 10).MetersPerSecond();
+						return (GetInt16(34 + 8) / 10).MetersPerSecond();
 					case 4:
 						goto case 5;
 					case 5:
-						return (GetInt16(32 + 4) / 10).MetersPerSecond();
+						return (GetInt16(32 + 8) / 10).MetersPerSecond();
 					default:
 						return 0.MetersPerSecond();
 				}
@@ -324,12 +331,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(34 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(34 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(32 + 4, (Int16)(value.ToMetersPerSecond().RawValue * 10));
+						SetInt16(32 + 8, (Int16)(value.ToMetersPerSecond().RawValue * 10));
 						break;
 				}
 			}
@@ -342,11 +349,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(79 + 4).Radians();
+						return GetSingle(79 + 8).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(34 + 4).Radians();
+						return GetInt16(34 + 8).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -356,12 +363,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(79 + 4, (Single)value.ToRadians().RawValue);
+						SetSingle(79 + 8, (Single)value.ToRadians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(34 + 4, (Int16)value.ToRadians().RawValue);
+						SetInt16(34 + 8, (Int16)value.ToRadians().RawValue);
 						break;
 				}
 			}
@@ -373,11 +380,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(83 + 4).Radians();
+						return GetSingle(83 + 8).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(36 + 4).Radians();
+						return GetInt16(36 + 8).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -387,12 +394,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(83 + 4, (Single)value.ToRadians().RawValue);
+						SetSingle(83 + 8, (Single)value.ToRadians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(36 + 4, (Int16)value.ToRadians().RawValue);
+						SetInt16(36 + 8, (Int16)value.ToRadians().RawValue);
 						break;
 				}
 			}
@@ -404,11 +411,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(87 + 4).Radians();
+						return GetSingle(87 + 8).Radians();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt16(38 + 4).Radians();
+						return GetInt16(38 + 8).Radians();
 					default:
 						return 0.Radians();
 				}
@@ -418,12 +425,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(87 + 4, (Single)value.ToRadians().RawValue);
+						SetSingle(87 + 8, (Single)value.ToRadians().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(38 + 4, (Int16)value.ToRadians().RawValue);
+						SetInt16(38 + 8, (Int16)value.ToRadians().RawValue);
 						break;
 				}
 			}
@@ -436,11 +443,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return (Single)(GetInt16(42 + 4) / 10d);
+						return (Single)(GetInt16(42 + 8) / 10d);
 					case 4:
 						goto case 5;
 					case 5:
-						return (Single)(GetByte(62 + 4) / 10d);
+						return (Single)(GetByte(62 + 8) / 10d);
 					default:
 						return 0;
 				}
@@ -450,12 +457,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(42 + 4, (Int16)(value * 10));
+						SetInt16(42 + 8, (Int16)(value * 10));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(62 + 4, (byte)(value * 10));
+						SetByte(62 + 8, (byte)(value * 10));
 						break;
 				}
 			}
@@ -468,11 +475,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetUInt16(44 + 4);
+						return GetUInt16(44 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetUInt16(54 + 4);
+						return GetUInt16(54 + 8);
 					default:
 						return 0;
 				}
@@ -482,12 +489,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetUInt16(44 + 4, value);
+						SetUInt16(44 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetUInt16(54 + 4, value);
+						SetUInt16(54 + 8, value);
 						break;
 				}
 			}
@@ -499,11 +506,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetUInt16(46 + 4);
+						return GetUInt16(46 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(58 + 4);
+						return GetByte(58 + 8);
 					default:
 						return 0;
 				}
@@ -513,12 +520,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetUInt16(46 + 4, value);
+						SetUInt16(46 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(58 + 4, (byte)value);
+						SetByte(58 + 8, (byte)value);
 						break;
 				}
 			}
@@ -530,11 +537,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetUInt16(48 + 4);
+						return GetUInt16(48 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(59 + 4);
+						return GetByte(59 + 8);
 					default:
 						return 0;
 				}
@@ -544,12 +551,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetUInt16(48 + 4, value);
+						SetUInt16(48 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(59 + 4, (byte)value);
+						SetByte(59 + 8, (byte)value);
 						break;
 				}
 			}
@@ -561,11 +568,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetUInt16(50 + 4);
+						return GetUInt16(50 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(60 + 4);
+						return GetByte(60 + 8);
 					default:
 						return 0;
 				}
@@ -575,12 +582,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetUInt16(50 + 4, value);
+						SetUInt16(50 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(60 + 4, (byte)value);
+						SetByte(60 + 8, (byte)value);
 						break;
 				}
 			}
@@ -593,11 +600,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetInt16(52 + 4).KiloGrams();
+						return GetInt16(52 + 8).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(40 + 4).KiloGrams();
+						return GetByte(40 + 8).KiloGrams();
 					default:
 						return 0.KiloGrams();
 				}
@@ -607,12 +614,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(52 + 4, (Int16)value.ToKiloGrams().RawValue);
+						SetInt16(52 + 8, (Int16)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(40 + 4, (byte)value.ToKiloGrams().RawValue);
+						SetByte(40 + 8, (byte)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}
@@ -624,11 +631,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(54 + 4).KiloGrams();
+						return GetSingle(54 + 8).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(42 + 4).KiloGrams();
+						return GetInt32(42 + 8).KiloGrams();
 					default:
 						return 0.KiloGrams();
 				}
@@ -638,12 +645,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(54 + 4, (Single)value.ToKiloGrams().RawValue);
+						SetSingle(54 + 8, (Single)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(42 + 4, (int)value.ToKiloGrams().RawValue);
+						SetInt32(42 + 8, (int)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}
@@ -655,11 +662,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSingle(48 + 4).KiloGrams();
+						return GetSingle(48 + 8).KiloGrams();
 					case 4:
 						goto case 5;
 					case 5:
-						return GetInt32(46 + 4).KiloGrams();
+						return GetInt32(46 + 8).KiloGrams();
 					default:
 						return 0.KiloGrams();
 				}
@@ -669,12 +676,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSingle(48 + 4, (Single)value.ToKiloGrams().RawValue);
+						SetSingle(48 + 8, (Single)value.ToKiloGrams().RawValue);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt32(46 + 4, (int)value.ToKiloGrams().RawValue);
+						SetInt32(46 + 8, (int)value.ToKiloGrams().RawValue);
 						break;
 				}
 			}
@@ -686,11 +693,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			{
 				if (Version == 3)
 				{
-					return GetUInt16(62 + 4);
+					return GetUInt16(62 + 8);
 				}
 				if (Version == 4 | Version == 5)
 				{
-					return GetByte(61 + 4);
+					return GetByte(61 + 8);
 				}
 				return 0;
 			}
@@ -698,11 +705,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			{
 				if (Version == 3)
 				{
-					SetUInt16(62 + 4, value);
+					SetUInt16(62 + 8, value);
 				}
 				if (Version == 4 | Version == 5)
 				{
-					SetByte(61 + 4, (byte)value);
+					SetByte(61 + 8, (byte)value);
 				}
 			}
 		}
@@ -714,11 +721,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(64 + 4);
+						return GetByte(64 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(48 + 4);
+						return GetByte(48 + 8);
 					default:
 						return 0;
 				}
@@ -728,12 +735,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(64 + 4, value);
+						SetByte(64 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(48 + 4, value);
+						SetByte(48 + 8, value);
 						break;
 				}
 			}
@@ -746,11 +753,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(65 + 4) / 100f;
+						return GetByte(65 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(49 + 4) / 100f;
+						return GetByte(49 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -760,12 +767,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(65 + 4, (byte)(value * 100));
+						SetByte(65 + 8, (byte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(49 + 4, (byte)(value * 100));
+						SetByte(49 + 8, (byte)(value * 100));
 						break;
 				}
 			}
@@ -778,11 +785,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(66 + 4) / 255f;
+						return GetByte(66 + 8) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)((GetByte(50 + 4) & 240) / 16) / 15f;
+						return (byte)((GetByte(50 + 8) & 240) / 16) / 15f;
 					default:
 						return 0;
 				}
@@ -792,12 +799,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(66 + 4, (byte)(value * 255));
+						SetByte(66 + 8, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(50 + 4, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimGear * 15))));
+						SetByte(50 + 8, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimGear * 15))));
 						break;
 				}
 			}
@@ -809,11 +816,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(67 + 4) / 255f;
+						return GetByte(67 + 8) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(50 + 4) & 15) / 15f;
+						return (byte)(GetByte(50 + 8) & 15) / 15f;
 					default:
 						return 0;
 				}
@@ -823,12 +830,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(67 + 4, (byte)(value * 255));
+						SetByte(67 + 8, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(50 + 4, (byte)((byte)(AnimBoards * 16 * 15) | ((byte)(value * 15) & 15)));
+						SetByte(50 + 8, (byte)((byte)(AnimBoards * 16 * 15) | ((byte)(value * 15) & 15)));
 						break;
 				}
 			}
@@ -840,11 +847,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(68 + 4) / 255f;
+						return GetByte(68 + 8) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)((GetByte(51 + 4) & 240) / 16) / 15f;
+						return (byte)((GetByte(51 + 8) & 240) / 16) / 15f;
 					default:
 						return 0;
 				}
@@ -854,12 +861,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(68 + 4, (byte)(value * 255));
+						SetByte(68 + 8, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(51 + 4, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimGear * 15))));
+						SetByte(51 + 8, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimGear * 15))));
 						break;
 				}
 			}
@@ -871,11 +878,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(69 + 4) / 255f;
+						return GetByte(69 + 8) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(51 + 4) & 15) / 15f;
+						return (byte)(GetByte(51 + 8) & 15) / 15f;
 					default:
 						return 0;
 				}
@@ -885,12 +892,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(69 + 4, (byte)(value * 255));
+						SetByte(69 + 8, (byte)(value * 255));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(51 + 4, (byte)((byte)(AnimBoards * 16 * 15) | ((byte)(value * 15) & 15)));
+						SetByte(51 + 8, (byte)((byte)(AnimBoards * 16 * 15) | ((byte)(value * 15) & 15)));
 						break;
 				}
 			}
@@ -903,11 +910,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(70 + 4);
+						return GetByte(70 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(52 + 4);
+						return GetByte(52 + 8);
 					default:
 						return 0;
 				}
@@ -917,12 +924,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(70 + 4, value);
+						SetByte(70 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(52 + 4, value);
+						SetByte(52 + 8, value);
 						break;
 				}
 			}
@@ -1007,11 +1014,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(71 + 4);
+						return GetByte(71 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(53 + 4);
+						return GetByte(53 + 8);
 					default:
 						return 0;
 				}
@@ -1021,12 +1028,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(71 + 4, value);
+						SetByte(71 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(53 + 4, value);
+						SetByte(53 + 8, value);
 						break;
 				}
 			}
@@ -1039,11 +1046,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(72 + 4) / 100f;
+						return GetByte(72 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetByte(63 + 4) / 100f;
+						return GetByte(63 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -1053,12 +1060,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(72 + 4, (Byte)(value * 100));
+						SetByte(72 + 8, (Byte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(63 + 4, (Byte)(value * 100));
+						SetByte(63 + 8, (Byte)(value * 100));
 						break;
 				}
 			}
@@ -1070,11 +1077,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(73 + 4) / 100f;
+						return GetSByte(73 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(64 + 4) / 100f;
+						return GetSByte(64 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -1084,12 +1091,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(73 + 4, (SByte)(value * 100));
+						SetSByte(73 + 8, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(64 + 4, (SByte)(value * 100));
+						SetSByte(64 + 8, (SByte)(value * 100));
 						break;
 				}
 			}
@@ -1101,11 +1108,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(74 + 4) / 100f;
+						return GetSByte(74 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(65 + 4) / 100f;
+						return GetSByte(65 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -1115,12 +1122,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(74 + 4, (SByte)(value * 100));
+						SetSByte(74 + 8, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(65 + 4, (SByte)(value * 100));
+						SetSByte(65 + 8, (SByte)(value * 100));
 						break;
 				}
 			}
@@ -1132,11 +1139,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(75 + 4) / 100f;
+						return GetSByte(75 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(66 + 4) / 100f;
+						return GetSByte(66 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -1146,12 +1153,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(75 + 4, (SByte)(value * 100));
+						SetSByte(75 + 8, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(66 + 4, (SByte)(value * 100));
+						SetSByte(66 + 8, (SByte)(value * 100));
 						break;
 				}
 			}
@@ -1163,11 +1170,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetSByte(76 + 4) / 100f;
+						return GetSByte(76 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return GetSByte(67 + 4) / 100f;
+						return GetSByte(67 + 8) / 100f;
 					default:
 						return 0;
 				}
@@ -1177,12 +1184,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetSByte(76 + 4, (SByte)(value * 100));
+						SetSByte(76 + 8, (SByte)(value * 100));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetSByte(67 + 4, (SByte)(value * 100));
+						SetSByte(67 + 8, (SByte)(value * 100));
 						break;
 				}
 			}
@@ -1195,11 +1202,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetUInt16(77 + 4);
+						return GetUInt16(77 + 8);
 					case 4:
 						goto case 5;
 					case 5:
-						return GetUInt16(56 + 4);
+						return GetUInt16(56 + 8);
 					default:
 						return 0;
 				}
@@ -1209,12 +1216,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetUInt16(77 + 4, value);
+						SetUInt16(77 + 8, value);
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetUInt16(56 + 4, value);
+						SetUInt16(56 + 8, value);
 						break;
 				}
 			}
@@ -1227,11 +1234,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(91 + 4) / 100f;
+						return GetByte(91 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(68 + 4) & 240) / 16 / 15f;
+						return (byte)(GetByte(68 + 8) & 240) / 16 / 15f;
 					default:
 						return 0;
 				}
@@ -1241,12 +1248,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(91 + 4, (Byte)(value * 16 * 15));
+						SetByte(91 + 8, (Byte)(value * 16 * 15));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(68 + 4, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimThrustReverse * 15))));
+						SetByte(68 + 8, (byte)(((byte)(value * 15 * 16) & 240) | ((byte)(AnimThrustReverse * 15))));
 						break;
 				}
 			}
@@ -1258,11 +1265,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(92 + 4) / 100f;
+						return GetByte(92 + 8) / 100f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(68 + 4) & 15) / 15f;
+						return (byte)(GetByte(68 + 8) & 15) / 15f;
 					default:
 						return 0;
 				}
@@ -1272,12 +1279,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(92 + 4, (byte)(value * 15));
+						SetByte(92 + 8, (byte)(value * 15));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(68 + 4, (byte)((byte)(AnimThrustVector * 16 * 15) | ((byte)(value * 15) & 15)));
+						SetByte(68 + 8, (byte)((byte)(AnimThrustVector * 16 * 15) | ((byte)(value * 15) & 15)));
 						break;
 				}
 			}
@@ -1290,11 +1297,11 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						return GetByte(93 + 4) / 255f;
+						return GetByte(93 + 8) / 255f;
 					case 4:
 						goto case 5;
 					case 5:
-						return (byte)(GetByte(69 + 4) & 240) / 16 / 15f;
+						return (byte)(GetByte(69 + 8) & 240) / 16 / 15f;
 					default:
 						return 0;
 				}
@@ -1304,25 +1311,36 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetByte(93 + 4, (Byte)(value * 16 * 15));
+						SetByte(93 + 8, (Byte)(value * 16 * 15));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetByte(69 + 4, (byte)(((byte)(value * 15 * 16) & 240) | (GetByte(69 + 4) & 15)));
+						SetByte(69 + 8, (byte)(((byte)(value * 15 * 16) & 240) | (GetByte(69 + 8) & 15)));
 						break;
 				}
 			}
 		}
 
-		public IPacket_11_FlightData ConvertTo_IPacket_11_FlightData(IWorldVehicle FormationTarget)
+		public IPacket_64_11_FormationFlightData ConvertTo_IPacket_64_11_FormationFlightData(IWorldVehicle FormationTarget)
 		{
+			return this;
+		}
+
+		public IPacket_11_FlightData ConvertTo_IPacket_11_FlightData()
+		{
+			if (!YSFlight.World.Vehicles.Select(x => x.ID).Contains(FormationTargetID))
+			{
+				//ID not valid, ignore.
+				return null;
+			}
+			IWorldVehicle FormationTarget = YSFlight.World.Vehicles.First(x => x.ID == FormationTargetID);
 			IPacket_11_FlightData FlightDataOutput = ObjectFactory.CreatePacket11FlightData((short)Version);
-			FlightDataOutput.ResizeData(FlightDataOutput.Data.Length + 4);
-			Data.CopyTo(FlightDataOutput.Data, 0);
-			FlightDataOutput.PosX = (PosX.ToMeters().RawValue - FormationTarget.Position.X.ToMeters().RawValue).Meters();
-			FlightDataOutput.PosY = (PosY.ToMeters().RawValue - FormationTarget.Position.Y.ToMeters().RawValue).Meters();
-			FlightDataOutput.PosZ = (PosZ.ToMeters().RawValue - FormationTarget.Position.Z.ToMeters().RawValue).Meters();
+			FlightDataOutput.ResizeData(Data.Length - 8);
+			Data.Skip(8).ToArray().CopyTo(FlightDataOutput.Data, 0);
+			FlightDataOutput.PosX = (FormationTarget.Position.X.ToMeters().RawValue - PosX.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosY = (FormationTarget.Position.Y.ToMeters().RawValue - PosY.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosZ = (FormationTarget.Position.Z.ToMeters().RawValue - PosZ.ToMeters().RawValue).Meters();
 			return FlightDataOutput;
 		}
 	}

@@ -106,14 +106,11 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public static implicit operator System.TimeSpan(OYSTimeSpan thisTimeSpan)
 			{
-				System.DateTime output = new System.DateTime(
-					(int)thisTimeSpan.Years.RawValue,
-					(int)thisTimeSpan.Months.RawValue,
-					(int)thisTimeSpan.Days.RawValue,
+				return new System.TimeSpan(
+					(int)(thisTimeSpan.Years.RawValue * 365 + thisTimeSpan.Months.RawValue * 12 + thisTimeSpan.Days.RawValue),
 					(int)thisTimeSpan.Hours.RawValue,
 					(int)thisTimeSpan.Minutes.RawValue,
 					(int)thisTimeSpan.Seconds.RawValue);
-				return output - new System.DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
 			}
 			public static implicit operator OYSTimeSpan(System.TimeSpan thisTimeSpan)
 			{

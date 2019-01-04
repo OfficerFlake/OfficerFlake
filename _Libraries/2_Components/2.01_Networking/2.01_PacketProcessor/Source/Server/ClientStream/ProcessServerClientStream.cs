@@ -233,6 +233,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 						packet.Data = thisPacket.Data;
 						return Process_Type_50_GroundColor(thisConnection, packet);
 					}
+					case 64:
+					{
+						IPacket_64_UserPacket packet = ObjectFactory.CreatePacket64UserPacket();
+						packet.Data = thisPacket.Data;
+						return Process_Type_64_UserPacket(thisConnection, packet);
+					}
 					default:
 					{
 						break;

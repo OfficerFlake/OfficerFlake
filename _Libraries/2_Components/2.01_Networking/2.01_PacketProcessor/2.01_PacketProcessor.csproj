@@ -141,8 +141,12 @@
     <Compile Include="Source\Proxy\HostStream\Type_48_FogColor.cs" />
     <Compile Include="Source\Proxy\HostStream\Type_49_SkyColor.cs" />
     <Compile Include="Source\Proxy\HostStream\Type_50_GroundColor.cs" />
-    <Compile Include="Source\Server\ClientStream\ProcessServerUpstream.cs" />
+    <Compile Include="Source\Server\ClientStream\ProcessServerClientStream.cs" />
     <Compile Include="Source\Server\ClientStream\Type_01_Login.cs" />
+    <Compile Include="Source\Server\ClientStream\Type_64_11_FormationFlightData.cs" />
+    <Compile Include="Source\Server\ClientStream\Type_64_01_OYSVersion.cs" />
+    <Compile Include="Source\Server\ClientStream\Type_64_00_Null.cs" />
+    <Compile Include="Source\Server\ClientStream\Type_64_UserPacket.cs" />
     <Compile Include="Source\Server\ClientStream\Type_03_Error.cs" />
     <Compile Include="Source\Server\ClientStream\Type_04_Field.cs" />
     <Compile Include="Source\Server\ClientStream\Type_05_AddVehicle.cs" />

@@ -13,6 +13,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		UInt32 Strength { get; set; }
 		UInt32 IFF { get; set; }
 		UInt32 ID { get; set; }
+		IDistance HitRadius { get; set; }
 
 		Packet_05VehicleType VehicleType { get; set; }
 
@@ -21,6 +22,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
+		IVector3<ISpeed> VelocityPosition { get; set; }
+		IVector3<IAngle> VelocityAttitude { get; set; }
 
 		IPacket_05_AddVehicle GetJoinPacket();
 

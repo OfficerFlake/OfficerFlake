@@ -135,9 +135,9 @@ namespace Com.OfficerFlake.Libraries
 		public static IPacket_49_SkyColor CreatePacket49SkyColor() => objectFactory.CreatePacket49SkyColor();
 		public static IPacket_50_GroundColor CreatePacket50GroundColor() => objectFactory.CreatePacket50GroundColor();
 		public static IPacket_64_UserPacket CreatePacket64UserPacket() => objectFactory.CreatePacket64UserPacket();
-		public static IPacket_64_00_Null CreatePacket64_00Null() => throw new NotImplementedException();
-		public static IPacket_64_01_OYSVersion CreatePacket64_01OYSVersion() => throw new NotImplementedException();
-		public static IPacket_64_11_FormationFlightData CreatePacket64_11FormationFlightData(short version) => throw new NotImplementedException();
+		public static IPacket_64_00_Null CreatePacket64_00Null() => objectFactory.CreatePacket64_00Null();
+		public static IPacket_64_01_OYSVersion CreatePacket64_01OYSVersion() => objectFactory.CreatePacket64_01OYSVersion();
+		public static IPacket_64_11_FormationFlightData CreatePacket64_11FormationFlightData(short version) => objectFactory.CreatePacket64_11FormationFlightData(version);
 
 		//PacketProcessor
 

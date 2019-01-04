@@ -38,6 +38,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 					if (Settings.Flight.Leave.Notification) otherconnection.SendToClientStreamAsync(thisConnection.User.UserName.ToUnformattedSystemString() + " left the aircraft.");
 				}
+				lock (Extensions.YSFlight.World.Vehicles)
+				{
+					Extensions.YSFlight.World.Vehicles.RemoveAll(x=>x == thisConnection.Vehicle);
+				}
 				thisConnection.Vehicle.DestroyVehicle();
 				thisConnection.Vehicle = World.NoVehicle;
 				thisConnection.FlightStatus = FlightStatus.Idle;
