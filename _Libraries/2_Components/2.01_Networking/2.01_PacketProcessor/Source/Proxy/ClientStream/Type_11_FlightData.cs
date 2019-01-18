@@ -34,13 +34,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 					formationPacket.PosX = 0.Meters();
 					formationPacket.PosY = 0.Meters();
 					formationPacket.PosZ = 0.Meters();
+					formationPacket.HdgH = ClosestVehicle.Attitude.H;
+					formationPacket.HdgP = ClosestVehicle.Attitude.P;
+					formationPacket.HdgB = ClosestVehicle.Attitude.B;
 					formationPacket.V_PosX = ClosestVehicle.VelocityPosition.X;
 					formationPacket.V_PosY = ClosestVehicle.VelocityPosition.Y;
 					formationPacket.V_PosZ = ClosestVehicle.VelocityPosition.Z;
 					formationPacket.V_HdgH = ClosestVehicle.VelocityAttitude.X;
 					formationPacket.V_HdgP = ClosestVehicle.VelocityAttitude.Y;
 					formationPacket.V_HdgB = ClosestVehicle.VelocityAttitude.Z;
-					formationPacket.AnimSmoke = (formationPacket.Timestamp.TotalSeconds().RawValue % 2) > 0;
+					formationPacket.AnimSmoke = (((int)(formationPacket.Timestamp.TotalSeconds().RawValue)) % 2) > 0;
 
 					Debug.AddDetailMessage("Formation Data Packet Created by Client: " + thisConnection.ConnectionNumber + ", ID: " + formationPacket.ID + ", Target: " + formationPacket.FormationTargetID);
 					return thisConnection.SendToHostStream(formationPacket);

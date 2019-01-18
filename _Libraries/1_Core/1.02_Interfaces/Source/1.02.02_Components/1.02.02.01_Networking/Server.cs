@@ -4,6 +4,7 @@
 	{
 		bool Start(bool IsProxyMode);
 		bool Stop();
+		ITimeSpan UpTime { get; }
 		bool IsShuttingDown { get; }
 	}
 }

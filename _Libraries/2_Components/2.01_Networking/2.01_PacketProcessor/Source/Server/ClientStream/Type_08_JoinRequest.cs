@@ -2,7 +2,7 @@
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-
+using Com.OfficerFlake.Libraries.Logger;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 using static Com.OfficerFlake.Libraries.Extensions.YSFlight;
 
@@ -14,6 +14,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_08_JoinRequest(IConnection thisConnection, IPacket_08_JoinRequest packet)
 			{
+				var ServerUpTime = ObjectFactory.ServerUpTime.TotalSeconds().RawValue;
+				var ClientUpTime = thisConnection.LoginTime.TotalSeconds().RawValue;
+
 				#region Join Request Pending
 				if (thisConnection.JoinRequestPending)
 				{
@@ -89,6 +92,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 					Extensions.YSFlight.World.Vehicles.Add(thisConnection.Vehicle);
 				}
 				thisConnection.Vehicle.Owner = thisConnection.User;
+				thisConnection.Vehicle.Connection = thisConnection;
+				Debug.AddDetailMessage("Assigned Vehicle " + thisConnection.Vehicle.ID + " to connection " + thisConnection.ConnectionNumber);
 				thisConnection.Vehicle.MetaData = MetaAircraft;
 				#endregion
 
@@ -123,7 +128,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				FlightData.Strength = CachedAircraft.CachedData.Strength;
 				FlightData.AnimThrottle = StartPosition.Throttle;
 				if (StartPosition.GearDown) FlightData.AnimGear = 1.0f;
-				FlightData.Timestamp = 0.Seconds().ToTimeSpan();
+				FlightData.Timestamp = (/*ServerUpTime - */ ClientUpTime).Seconds().ToTimeSpan();
 				FlightData.PosX = EntityJoined.PosX;
 				FlightData.PosY = EntityJoined.PosY;
 				FlightData.PosZ = EntityJoined.PosZ;

@@ -44,7 +44,7 @@ namespace Com.OfficerFlake.Libraries
 			}
 			public ISecond TotalSeconds()
 			{
-				return new Second(((System.TimeSpan)this).TotalSeconds);
+				return new Second(((System.TimeSpan)this).TotalMilliseconds/1000d);
 			}
 			#endregion
 			#region CTOR
@@ -65,7 +65,11 @@ namespace Com.OfficerFlake.Libraries
 				Days = new Day((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Day - (new DateTime(2018, 01, 01, 0, 0, 0).Day));
 				Hours = new Hour((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Hour - (new DateTime(2018, 01, 01, 0, 0, 0).Hour));
 				Minutes = new Minute((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Minute - (new DateTime(2018, 01, 01, 0, 0, 0).Minute));
-				Seconds = new Second((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Second - (new DateTime(2018, 01, 01, 0, 0, 0).Second));
+				Seconds = new Second(
+					(new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Second - (new DateTime(2018, 01, 01, 0, 0, 0).Second)
+					+
+					((new DateTime(2018, 01, 01, 0, 0, 0) + timespan).Millisecond - (new DateTime(2018, 01, 01, 0, 0, 0).Millisecond))/1000d
+					);
 			}
 			public OYSTimeSpan(string date)
 			{
@@ -110,7 +114,7 @@ namespace Com.OfficerFlake.Libraries
 					(int)(thisTimeSpan.Years.RawValue * 365 + thisTimeSpan.Months.RawValue * 12 + thisTimeSpan.Days.RawValue),
 					(int)thisTimeSpan.Hours.RawValue,
 					(int)thisTimeSpan.Minutes.RawValue,
-					(int)thisTimeSpan.Seconds.RawValue);
+					(int)thisTimeSpan.Seconds.RawValue, (int)(thisTimeSpan.Seconds.RawValue*1000%1000));
 			}
 			public static implicit operator OYSTimeSpan(System.TimeSpan thisTimeSpan)
 			{

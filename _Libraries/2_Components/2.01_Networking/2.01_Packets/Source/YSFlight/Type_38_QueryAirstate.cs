@@ -16,8 +16,7 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 
 		public UInt32 AircraftCount
 		{
-			get => GetUInt32(0);
-			set => SetUInt32(0, value);
+			get => (uint)AircraftIDs.Length;
 		}
 		public UInt32[] AircraftIDs
 		{
@@ -32,12 +31,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			}
 			set
 			{
-				ResizeData(0);
-				for (int i = 4; i <= value.Length - 1; i += 1)
+				ResizeData(4+value.Length*4);
+				SetUInt32(0, (uint) value.Length);
+				for (int i = 0; i <= value.Length-1; i += 1)
 				{
-					SetUInt32(i*4,value[i]);
+					SetUInt32(4+i*4,value[i]);
 				}
-				AircraftCount = (UInt32)(value.Length);
 			}
 		}
 	}

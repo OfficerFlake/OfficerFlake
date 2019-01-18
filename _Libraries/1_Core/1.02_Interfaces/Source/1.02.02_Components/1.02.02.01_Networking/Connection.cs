@@ -9,6 +9,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	{
 		IUser User { get; set; }
 		UInt32 Version { get; set; }
+		double Ping { get; set; }
+		void StartPingTester();
 
 		UInt32 ConnectionNumber { get; }
 		ConnectionType ConnectionType { get; set; }
@@ -17,6 +19,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		LoginStatus LoginState { get; set; }
 		Boolean IsLoggingIn { get; }
 		Boolean IsLoggedIn { get; }
+
+		ITimeSpan LoginTime { get; }
 
 		FlightStatus FlightStatus { get; set; }
 		Boolean IsFlying { get; }

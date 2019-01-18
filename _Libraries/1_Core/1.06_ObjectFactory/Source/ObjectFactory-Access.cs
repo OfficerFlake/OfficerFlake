@@ -144,6 +144,7 @@ namespace Com.OfficerFlake.Libraries
 		//Server
 		public static Boolean ServerStart() => objectFactory.ServerStart();
 		public static Boolean ServerStop() => objectFactory.ServerStop();
+		public static ITimeSpan ServerUpTime => objectFactory.ServerUpTime;
 		#endregion
 		#region RichText
 		public static IRichTextElement CreateRichTextElement(IFormattingDescriptor preformatting) => objectFactory.CreateRichTextElement(preformatting);

@@ -160,6 +160,7 @@ namespace Com.OfficerFlake.Libraries
 			//Server
 			public Boolean ServerStart() => Networking.Server.Start();
 			public Boolean ServerStop() => Networking.Server.Stop();
+			public ITimeSpan ServerUpTime => Networking.Server.UpTime;
 			#endregion
 			#region RichText
 			public IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating) => new RichText.RichTextString.MessageElement(preFormmating);

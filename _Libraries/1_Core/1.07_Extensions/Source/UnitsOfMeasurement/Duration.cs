@@ -125,7 +125,8 @@ namespace Com.OfficerFlake.Libraries.Extensions
 
 		public static ITimeSpan ToTimeSpan(this System.TimeSpan timeSpan) => ObjectFactory.CreateTimeSpan(timeSpan);
 		#region [Duration].ToTimeSpan
-		public static ITimeSpan ToTimeSpan(this ISecond input) => ObjectFactory.CreateTimeSpan(new System.TimeSpan(0, 0, 0, (int)input.RawValue));
+
+		public static ITimeSpan ToTimeSpan(this ISecond input) => ObjectFactory.CreateTimeSpan(new System.TimeSpan(0, 0, 0, 0, (int)(input.RawValue * 1000)));
 		public static ITimeSpan ToTimeSpan(this IMinute input) => ObjectFactory.CreateTimeSpan(new System.TimeSpan(0, 0, (int)input.RawValue, 0));
 		public static ITimeSpan ToTimeSpan(this IHour input) => ObjectFactory.CreateTimeSpan(new System.TimeSpan(0, (int)input.RawValue, 0, 0));
 		public static ITimeSpan ToTimeSpan(this IDay input) => ObjectFactory.CreateTimeSpan(new System.TimeSpan((int)input.RawValue, 0, 0, 0));

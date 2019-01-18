@@ -49,6 +49,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    }
 		    return IsShuttingDown;
 	    }
+
+	    private IDateTime _StartTime { get; set; } = DateTime.Now.ToDateTime();
+
+	    public ITimeSpan UpTime
+	    {
+		    get => (DateTime.Now - _StartTime.ToSystemDateTime()).ToTimeSpan();
+	    }
+
 	    public bool IsShuttingDown { get; private set; }
 		public bool IsProxyMode { get; private set; }
 		#endregion
@@ -132,5 +140,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 		public static bool Start(bool IsProxyMode = false) => server.Start(IsProxyMode);
 		public static bool Stop() => server.Stop();
 		public static bool IsShuttingDown => server.IsShuttingDown;
+		public static ITimeSpan UpTime => server.UpTime;
 	}
 }

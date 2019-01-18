@@ -386,7 +386,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 	}
 	public interface IPacket_38_QueryAirstate : IPacket
 	{
-		UInt32 AircraftCount { get; set; }
+		UInt32 AircraftCount { get; }
 		UInt32[] AircraftIDs { get; set; }
 	}
 	public interface IPacket_39_WeaponsOption : IPacket

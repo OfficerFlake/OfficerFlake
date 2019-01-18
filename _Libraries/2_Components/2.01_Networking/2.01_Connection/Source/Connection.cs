@@ -11,100 +11,142 @@ using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
-    public class Connection : IConnection
-    {
+	public class Connection : IConnection
+	{
 		#region Properties
-	    public IUser User { get; set; } = ObjectFactory.CreateUser(ObjectFactory.CreateRichTextString("<Unknown User>"));
-	    public UInt32 Version { get; set; } = 0;
 
-	    #region ConnectionNumber
-	    private static uint ConnectionIDIncrementer = 0;
-	    public UInt32 ConnectionNumber
-	    {
-		    get;
-		    private set;
-	    }
-	    #endregion
+		public IUser User { get; set; } = ObjectFactory.CreateUser(ObjectFactory.CreateRichTextString("<Unknown User>"));
+		public UInt32 Version { get; set; } = 0;
+		public double Ping { get; set; } = 300;
+
+		#region ConnectionNumber
+
+		private static uint ConnectionIDIncrementer = 0;
+		public UInt32 ConnectionNumber { get; private set; }
+
+		#endregion
+
 		#region ConnectionType
-	    public ConnectionType ConnectionType { get; set; }= ConnectionType.YSFlight;
-	    public bool IsConnected { get; set; } = false;
-	    public bool IsProxyMode { get; private set; } = false;
+
+		public ConnectionType ConnectionType { get; set; } = ConnectionType.YSFlight;
+		public bool IsConnected { get; set; } = false;
+		public bool IsProxyMode { get; private set; } = false;
+
 		#endregion
 
 		#region LoginStatus
+
 		public LoginStatus LoginState { get; set; } = LoginStatus.Disconnected;
-	    public bool IsLoggingIn => LoginState == LoginStatus.LoggingIn;
-	    public bool IsLoggedIn => LoginState == LoginStatus.LoggedIn;
+		public bool IsLoggingIn => LoginState == LoginStatus.LoggingIn;
+		public bool IsLoggedIn => LoginState == LoginStatus.LoggedIn;
+
 		#endregion
+
+		#region LoginTime
+
+		public ITimeSpan LoginTime { get; private set; }
+
+		#endregion
+
 		#region FlightStatus
-	    public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
+
+		public FlightStatus FlightStatus { get; set; } = FlightStatus.Idle;
 		public bool IsFlying => FlightStatus == FlightStatus.Flying;
-	    public IWorldVehicle Vehicle { get; set; } = Extensions.YSFlight.World.NoVehicle;
-	    public bool JoinRequestPending { get; set; } = false;
+		public IWorldVehicle Vehicle { get; set; } = Extensions.YSFlight.World.NoVehicle;
+		public bool JoinRequestPending { get; set; } = false;
+
 		#endregion
 
 		public List<IPacket> Last5Packets { get; } = new List<IPacket>();
+
 		#endregion
 
 		#region DataFlow
-		#region Connect
-		public bool Connect(Socket incomingSocket, bool isProxyMode = false)
-	    {
-			ConnectionNumber = ConnectionIDIncrementer++;
-		    IsProxyMode = isProxyMode;
-			SetTCPSocketClientStream(incomingSocket).ConfigureAwait(false);
 
-		    if (isProxyMode) CreateHostSocket().ConfigureAwait(false);
+		#region Connect
+
+		public bool Connect(Socket incomingSocket, bool isProxyMode = false)
+		{
+			ConnectionNumber = ConnectionIDIncrementer++;
+			IsProxyMode = isProxyMode;
+			if (isProxyMode) _ = CreateHostSocket();
 			AddToServerList();
-		    return true;
-	    }
+			LoginTime = ObjectFactory.ServerUpTime;
+
+			_ = SetTCPSocketClientStream(incomingSocket);
+			return true;
+		}
+
 		#endregion
 
 		#region Sockets
+
 		#region TCP/IP
+
 		#region Socket Setup
+
 		private static Socket BlankTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
 		#region Client
+
 		private Socket TCPSocketClientStream = BlankTCPSocket;
-	    private async Task<bool> SetTCPSocketClientStream(Socket incomingSocket)
-	    {
-		    if (TCPSocketClientStream == BlankTCPSocket)
-		    {
-			    TCPSocketClientStream = incomingSocket;
-			    //TCPStartToRecieveNewPacket();
-			    TCPGetPacket(TCPSocketClientStream);
-			    return true;
-		    }
-		    return false;
-	    }
+
+		private async Task<bool> SetTCPSocketClientStream(Socket incomingSocket)
+		{
+			if (TCPSocketClientStream == BlankTCPSocket)
+			{
+				TCPSocketClientStream = incomingSocket;
+				//TCPStartToRecieveNewPacket();
+				TCPGetPacket(TCPSocketClientStream);
+				return true;
+			}
+			return false;
+		}
+
 		#endregion
+
 		#region Host
+
 		private Socket TCPSocketHostStream = BlankTCPSocket;
-	    private async Task<bool> SetTCPSocketHostStream(Socket incomingSocket)
-	    {
-		    if (TCPSocketHostStream == BlankTCPSocket)
-		    {
-			    TCPSocketHostStream = incomingSocket;
-			    //TCPStartToRecieveNewPacket();
-			    await TCPGetPacket(TCPSocketHostStream);
-			    return true;
-		    }
-		    return false;
-	    }
+
+		private async Task<bool> SetTCPSocketHostStream(Socket incomingSocket)
+		{
+			if (TCPSocketHostStream == BlankTCPSocket)
+			{
+				TCPSocketHostStream = incomingSocket;
+				//TCPStartToRecieveNewPacket();
+				await TCPGetPacket(TCPSocketHostStream);
+				return true;
+			}
+			return false;
+		}
+
 		private async Task<bool> CreateHostSocket()
-	    {
-		    if (TCPSocketHostStream == BlankTCPSocket)
-		    {
-			    TCPSocketHostStream = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			    TCPSocketHostStream.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress, (int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
-			    await TCPGetPacket(TCPSocketHostStream);
-			    return true;
-		    }
-		    return false;
-	    }
+		{
+			if (TCPSocketHostStream == BlankTCPSocket)
+			{
+				TCPSocketHostStream = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+				try
+				{
+					TCPSocketHostStream.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress,
+						(int) SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
+				}
+				catch (Exception e)
+				{
+					Debug.AddErrorMessage(e, "Error connecting HostAddress");
+				}
+				_ = TCPGetPacket(TCPSocketHostStream);
+				return true;
+			}
+			return false;
+		}
+
 		#endregion
+
 		#endregion
+
 		#region Recieve
+
 		private UInt32 TCPGetPacketHeader(Socket _TCPSocket)
 		{
 			byte[] sizeBuffer = new byte[4];
@@ -159,6 +201,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return 0;
 		}
+
 		private byte[] TCPGetPacketBody(UInt32 size, Socket _TCPSocket)
 		{
 			byte[] bodyBuffer = new byte[size];
@@ -166,7 +209,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			//Get Data.
 			try
 			{
-				_TCPSocket.Receive(bodyBuffer, (int)size, SocketFlags.None);
+				_TCPSocket.Receive(bodyBuffer, (int) size, SocketFlags.None);
 			}
 			catch (ArgumentNullException)
 			{
@@ -190,15 +233,20 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return bodyBuffer;
 		}
+
 		private async Task<IPacket> TCPGetPacketAsync(Socket _TCPSocket)
 		{
 			#region Init
+
 			IPacket output = null;
 
 			UInt32 size;
 			byte[] body;
+
 			#endregion
+
 			#region GetData
+
 			try
 			{
 				size = await Task.Run(() => TCPGetPacketHeader(_TCPSocket));
@@ -221,8 +269,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//thisPacket is Null.
 			}
 			return output;
+
 			#endregion
+
 			#region Type
+
 			PrepareType:
 			byte[] typeBuffer;
 			try
@@ -256,8 +307,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//start index would not fit inside array.
 			}
 			return output;
+
 			#endregion
+
 			#region Data
+
 			PrepareData:
 			byte[] data;
 			try
@@ -270,13 +324,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//body is null.
 			}
 			return output;
+
 			#endregion
+
 			#region BuildPacket
+
 			Combine:
 			try
 			{
 				output = ObjectFactory.CreateGenericPacket();
-				output.ResizeData((int)size);
+				output.ResizeData((int) size);
 				output.Type = type;
 				output.Data = data;
 				if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
@@ -294,8 +351,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 				output = null;
 				return output;
 			}
+
 			#endregion
 		}
+
 		private async Task TCPGetPacket(Socket _TCPSocket)
 		{
 			IPacket receivedPacket = null;
@@ -315,17 +374,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			if (_TCPSocket == TCPSocketClientStream)
 			{
-				ProcessPacketClientStream(receivedPacket);
+				_ = ProcessPacketClientStream(receivedPacket);
 			}
 			else
 			{
-				ProcessPacketHostStream(receivedPacket);
+				_ = ProcessPacketHostStream(receivedPacket);
 			}
-			TCPGetPacket(_TCPSocket).ConfigureAwait(false);
+			_ = TCPGetPacket(_TCPSocket);
 		}
+
 		#endregion
+
 		#region Send
+
 		#region Any Socket
+
 		private bool TCPSend(IPacket thisPacket, Socket _TCPSocket)
 		{
 			try
@@ -340,33 +403,44 @@ namespace Com.OfficerFlake.Libraries.Networking
 				}
 				return true;
 			}
-			catch (ArgumentNullException)
+			catch (ArgumentNullException e)
 			{
 				//Packet is Null.
+				Debug.AddErrorMessage(e, "Trying to send a Null packet.");
 			}
-			catch (SocketException)
+			catch (SocketException e)
 			{
 				//WinSock in Error state.
+				Debug.AddErrorMessage(e, "WinSock is in an error state.");
 			}
-			catch (ObjectDisposedException)
+			catch (ObjectDisposedException e)
 			{
 				//Socket closed/disposed.
+				Debug.AddErrorMessage(e, "Socket has been disposed.");
+			}
+			catch (Exception e)
+			{
+				Debug.AddErrorMessage(e, "Exception in TCPSend.");
 			}
 			return false;
 		}
-	    public bool Send(IPacket Input, Socket _TCPSocket)
+
+		public bool Send(IPacket Input, Socket _TCPSocket)
 		{
-		    return TCPSend(Input, _TCPSocket);
-	    }
+			return TCPSend(Input, _TCPSocket);
+		}
+
 		public bool SendMessage(string Input, Socket _TCPSocket)
-	    {
-		    IPacket_32_ServerMessage thisChatMessage = ObjectFactory.CreatePacket32ServerMessage(Input);
-		    return TCPSend(thisChatMessage, _TCPSocket);
-	    }
-	    public bool SendMessage(IPacket_32_ChatMessage Input, Socket _TCPSocket)
-	    {
-		    return TCPSend(Input, _TCPSocket);
-	    }
+		{
+			IPacket_32_ServerMessage thisChatMessage = ObjectFactory.CreatePacket32ServerMessage(Input);
+			return TCPSend(thisChatMessage, _TCPSocket);
+		}
+
+		public bool SendMessage(IPacket_32_ChatMessage Input, Socket _TCPSocket)
+		{
+			return TCPSend(Input, _TCPSocket);
+		}
+
 		public async Task<bool> SendAsync(IPacket thisPacket, Socket _TCPSocket)
 		{
 			try
@@ -379,55 +453,152 @@ namespace Com.OfficerFlake.Libraries.Networking
 			}
 			return false;
 		}
-	    public async Task<bool> SendMessageAsync(string Message, Socket _TCPSocket)
-	    {
+
+		public async Task<bool> SendMessageAsync(string Message, Socket _TCPSocket)
+		{
 			try
-		    {
-			    return await Task.Run(() => SendMessage(Message, _TCPSocket));
-		    }
-		    catch (ArgumentNullException)
-		    {
-			    //thisPacket is Null.
-		    }
-		    return false;
+			{
+				return await Task.Run(() => SendMessage(Message, _TCPSocket));
+			}
+			catch (ArgumentNullException)
+			{
+				//thisPacket is Null.
+			}
+			return false;
 		}
+
 		#endregion
+
 		#region ToClientStream
+
 		public bool SendToClientStream(IPacket Input)
-	    {
-		    return Send(Input, TCPSocketClientStream);
-	    }
-	    public bool SendToClientStream(string message)
-	    {
-		    return SendMessage(message, TCPSocketClientStream);
-	    }
+		{
+			return Send(Input, TCPSocketClientStream);
+		}
+
+		public bool SendToClientStream(string message)
+		{
+			return SendMessage(message, TCPSocketClientStream);
+		}
+
 		public async Task<bool> SendToClientStreamAsync(IPacket Input)
-	    {
-		    return await SendAsync(Input, TCPSocketClientStream);
-	    }
-	    public async Task<bool> SendToClientStreamAsync(string message)
-	    {
-		    return await SendMessageAsync(message, TCPSocketClientStream);
-	    }
+		{
+			return await SendAsync(Input, TCPSocketClientStream);
+		}
+
+		public async Task<bool> SendToClientStreamAsync(string message)
+		{
+			return await SendMessageAsync(message, TCPSocketClientStream);
+		}
+
 		#endregion
-	    #region ToHostStream
-	    public bool SendToHostStream(IPacket Input)
-	    {
-		    return Send(Input, TCPSocketHostStream);
-	    }
-	    public bool SendToHostStream(string message)
-	    {
-		    return SendMessage(message, TCPSocketHostStream);
-	    }
-	    public async Task<bool> SendToHostStreamAsync(IPacket Input)
-	    {
-		    return await SendAsync(Input, TCPSocketHostStream);
-	    }
-	    public async Task<bool> SendToHostStreamAsync(string message)
-	    {
-		    return await SendMessageAsync(message, TCPSocketHostStream);
-	    }
-	    #endregion
+
+		#region ToHostStream
+
+		public bool SendToHostStream(IPacket Input)
+		{
+			return Send(Input, TCPSocketHostStream);
+		}
+
+		public bool SendToHostStream(string message)
+		{
+			return SendMessage(message, TCPSocketHostStream);
+		}
+
+		public async Task<bool> SendToHostStreamAsync(IPacket Input)
+		{
+			return await SendAsync(Input, TCPSocketHostStream);
+		}
+
+		public async Task<bool> SendToHostStreamAsync(string message)
+		{
+			return await SendMessageAsync(message, TCPSocketHostStream);
+		}
+
+		#endregion
+
+		#endregion
+
+		#region Ping Tester
+
+		public void StartPingTester()
+		{
+			_ = Task.Run(PingTest);
+		}
+		private async Task<bool> PingTest()
+		{
+			const int PingInterval = 3000;
+			const double PingMaxDelta = 0.40;
+			const int PingMargin = 20;
+
+			if (Ping < 1) Ping = 1;
+			
+			if (IsLoggedIn)
+			{
+				DateTime PingStartTime = DateTime.Now;
+
+				#region Send PrepareSimulation(16)
+
+				//Build Prepare Simulation (16)
+				IPacket_16_PrepareSimulation PrepareSimulation = ObjectFactory.CreatePacket16PrepareSimulation();
+
+				IPacketWaiter packetWaiter_AcknowledgePrepareSimulation = CreatePacketWaiter(6);
+				packetWaiter_AcknowledgePrepareSimulation.Require(0, 7);
+				packetWaiter_AcknowledgePrepareSimulation.StartListening();
+
+				//Send Prepare Simulation (16)
+				SendToClientStream(PrepareSimulation);
+				LoginState = LoginStatus.LoggedIn;
+
+				#endregion
+
+				#region Get PrepareSimulation(06:07)
+
+				if (!GetResponseOrResend(packetWaiter_AcknowledgePrepareSimulation, PrepareSimulation))
+				{
+					if (!IsConnected)
+					{
+						return false;
+					}
+					else
+					{
+						await Task.Delay(PingInterval);
+						Debug.AddDetailMessage("Ping Check for Connection " + ConnectionNumber + " Failed. Trying Again...");
+						_ = Task.Run(PingTest);
+						return false;
+					}
+				}
+
+				#endregion
+
+				DateTime PingEndTime = DateTime.Now;
+				double PingAdjustmentRatio = ((((PingEndTime - PingStartTime).TotalMilliseconds/2)-Ping) / Ping);
+				if (PingAdjustmentRatio > PingMaxDelta) PingAdjustmentRatio = PingMaxDelta;
+				if (PingAdjustmentRatio < -PingMaxDelta) PingAdjustmentRatio = -PingMaxDelta;
+				PingAdjustmentRatio = Math.Abs(PingAdjustmentRatio);
+
+				double OldPing = Ping;
+				double NewPing = (PingEndTime - PingStartTime).TotalMilliseconds / 2;
+
+				if (Math.Abs((NewPing - OldPing) / OldPing) > 5d && Math.Abs(OldPing - NewPing) > PingMargin)
+				{
+					//SendToClientStream("Ping Overrun " + Math.Round(NewPing, 3) + "ms");
+				}
+				else
+				{
+					Ping = (OldPing) * (PingAdjustmentRatio) +
+					       (NewPing) * (1 - PingAdjustmentRatio);
+					if (Ping < 1) Ping = 1;
+					//SendToClientStream("Your Ping is " + Math.Round(Ping, 3) + "ms");
+				}
+				
+			}
+
+			await Task.Delay(PingInterval);
+			_ = Task.Run(PingTest);
+			return true;
+		}
+
 		#endregion
 		#endregion
 		#region UDP
@@ -724,7 +895,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (Exception e)
 			{
 				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-				this.SendToClientStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
+				_ = this.SendToClientStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
 			}
 		}
 	    private async Task ProcessPacketHostStream(IPacket thisPacket)
@@ -746,7 +917,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    catch (Exception e)
 		    {
 			    Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-			    this.SendToHostStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!").ConfigureAwait(false);
+			    _ = this.SendToHostStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
 		    }
 	    }
 		#endregion
@@ -775,7 +946,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					    otherConnection.SendToClientStreamAsync(RemoveGround);
 					}
 			    }
-			    otherConnection.SendToClientStreamAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.").ConfigureAwait(false);
+			    _ = otherConnection.SendToClientStreamAsync(this.User.UserName.ToUnformattedSystemString() + " left the server.");
 		    }
 		    if (Vehicle != null & Vehicle != YSFlight.World.NoVehicle)
 		    {
@@ -783,8 +954,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 			    Vehicle = YSFlight.World.NoVehicle;
 			    FlightStatus = FlightStatus.Idle;
 		    }
-		    SendToClientStreamAsync("Disconnected from the server.").ConfigureAwait(false);
-		    SendToClientStreamAsync("Disconnection reason: " + reason).ConfigureAwait(false);
+		    _ = SendToClientStreamAsync("Disconnected from the server.");
+		    _ = SendToClientStreamAsync("Disconnection reason: " + reason);
 			if (TCPSocketClientStream.Connected)
 		    {
 			    try
@@ -831,7 +1002,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 	    public Connection(Socket incomingSocket, bool isProxyMode = false)
 	    {
-		    Connect(incomingSocket, isProxyMode);
+
+			Connect(incomingSocket, isProxyMode);
 		}
 	    ~Connection()
 	    {

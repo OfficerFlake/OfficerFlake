@@ -8,6 +8,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		void CreateVehicle();
 		void DestroyVehicle();
 
+		ITimeSpan TimeStamp { get; }
 		String Identify { get; set; }
 		String Tag { get; set; }
 		UInt32 Strength { get; set; }
@@ -18,6 +19,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Packet_05VehicleType VehicleType { get; set; }
 
 		IUser Owner { get; set; }
+		IConnection Connection { get; set; }
 		IMetaDataVehicle MetaData { get; set; }
 
 		ICoordinate3 Position { get; set; }

@@ -145,6 +145,7 @@ namespace Com.OfficerFlake.Libraries
 			//Server
 			public Boolean ServerStart() => throw new NotImplementedException();
 			public Boolean ServerStop() => throw new NotImplementedException();
+			public ITimeSpan ServerUpTime => throw new NotImplementedException();
 			#endregion
 			#region RichText
 			public IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating) => throw new NotImplementedException();

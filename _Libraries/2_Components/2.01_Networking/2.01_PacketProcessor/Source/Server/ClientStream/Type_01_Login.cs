@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -526,6 +529,44 @@ namespace Com.OfficerFlake.Libraries.Networking
 				*/
 				#endregion
 
+				DateTime PingStartTime = DateTime.Now;
+
+				#region Send PrepareSimulation(16)
+
+				//Build Prepare Simulation (16)
+				PrepareSimulation = ObjectFactory.CreatePacket16PrepareSimulation();
+
+				packetWaiter_AcknowledgePrepareSimulation = thisConnection.CreatePacketWaiter(6);
+				packetWaiter_AcknowledgePrepareSimulation.Require(0, 7);
+				packetWaiter_AcknowledgePrepareSimulation.StartListening();
+
+				//Send Prepare Simulation (16)
+				thisConnection.SendToClientStream(PrepareSimulation);
+				thisConnection.LoginState = LoginStatus.LoggedIn;
+
+				#endregion
+
+				#region Get PrepareSimulation(06:07)
+
+				if (!thisConnection.GetResponseOrResend(packetWaiter_AcknowledgePrepareSimulation, PrepareSimulation))
+				{
+					if (!thisConnection.IsConnected)
+					{
+						return false;
+					}
+					else
+					{
+						Debug.AddDetailMessage("Ping Check for Connection " + thisConnection.ConnectionNumber + " Failed. Trying Again...");
+						thisConnection.StartPingTester();
+						return false;
+					}
+				}
+
+				#endregion
+
+				DateTime PingEndTime = DateTime.Now;
+				thisConnection.Ping = (PingEndTime - PingStartTime).TotalSeconds;
+				thisConnection.StartPingTester();
 				return true;
 			}
 		}

@@ -18,6 +18,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				public Vehicle()
 				{
 					ID = Extensions.YSFlight.World.GetNextID();
+					Debug.AddDetailMessage("Created Vehicle with ID: " + ID);
 				}
 
 				public void CreateVehicle()
@@ -40,11 +41,15 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					Logger.Debug.AddSummaryMessage("&cRemoved Vehicle: [" + this.ID + "]" + this.Identify);
 				}
 
+				public ITimeSpan TimeStamp { get; private set; } = 0.Seconds().ToTimeSpan();
+				private DateTime LastUpdate { get; set; } = DateTime.Now;
+
 				public String Identify { get; set; } = "NULL";
 				public String Tag { get; set; } = "";
 
 				public IMetaDataVehicle MetaData { get; set; } = Extensions.YSFlight.MetaData.Aircraft.None;
 				public IUser Owner { get; set; } = Users.None;
+				public IConnection Connection { get; set; } = null;
 
 				public Packet_05VehicleType VehicleType { get; set; } = Packet_05VehicleType.Aircraft;
 
@@ -75,9 +80,18 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				}
 				public void Update(IPacket_11_FlightData packet)
 				{
+					if (packet.Timestamp.TotalSeconds().RawValue < TimeStamp.TotalSeconds().RawValue) return;
+					LastUpdate = DateTime.Now;
 					Strength = packet.Strength;
+					double delta_seconds = (Connection?.Ping/1000d ?? 0) * 2;
+					Debug.AddDetailMessage("Delta time: " + delta_seconds);
+					var ex_x = packet.PosX.ToMeters().RawValue + (packet.V_PosX.ToMetersPerSecond().RawValue * delta_seconds);
+					var ex_y = packet.PosY.ToMeters().RawValue + (packet.V_PosY.ToMetersPerSecond().RawValue * delta_seconds);
+					var ex_z = packet.PosZ.ToMeters().RawValue + (packet.V_PosZ.ToMetersPerSecond().RawValue * delta_seconds);
 
-					Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
+					TimeStamp = packet.Timestamp;
+					//Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
+					Position = ObjectFactory.CreateCoordinate3(ex_x.Meters(), ex_y.Meters(), ex_z.Meters());
 					Attitude = ObjectFactory.CreateOrientation3(packet.HdgH, packet.HdgP, packet.HdgB);
 					VelocityPosition = ObjectFactory.CreateVector3(packet.V_PosX, packet.V_PosY, packet.V_PosZ);
 					VelocityAttitude = ObjectFactory.CreateVector3(packet.V_HdgH, packet.V_HdgP, packet.V_HdgB);
@@ -86,6 +100,22 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				{
 					IPacket_11_FlightData flightData = packet.ConvertTo_IPacket_11_FlightData();
 					if (flightData != null) Update(flightData);
+				}
+
+				public ICoordinate3 GetCurrentPositionEstimate()
+				{
+
+					double delta_seconds = (DateTime.Now - LastUpdate).TotalSeconds;
+
+					Debug.AddDetailMessage("Delta time: " + delta_seconds);
+
+					var ex_x = Position.X.ToMeters().RawValue + (VelocityPosition.X.ToMetersPerSecond().RawValue * delta_seconds);
+					var ex_y = Position.Y.ToMeters().RawValue + (VelocityPosition.Y.ToMetersPerSecond().RawValue * delta_seconds);
+					var ex_z = Position.Z.ToMeters().RawValue + (VelocityPosition.Z.ToMetersPerSecond().RawValue * delta_seconds);
+
+					ICoordinate3 NewPosition = ObjectFactory.CreateCoordinate3(ex_x.Meters(), ex_y.Meters(), ex_z.Meters());
+
+					return NewPosition;
 				}
 
 				public IPacket_05_AddVehicle GetJoinPacket()

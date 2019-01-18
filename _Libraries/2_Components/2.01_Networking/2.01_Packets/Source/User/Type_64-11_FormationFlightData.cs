@@ -206,12 +206,12 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				switch (Version)
 				{
 					case 3:
-						SetInt16(26, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(26 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 					case 4:
 						goto case 5;
 					case 5:
-						SetInt16(24, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
+						SetInt16(24 + 8, (Int16)(value.ToRadians().RawValue / Math.PI * 32767f));
 						break;
 				}
 			}

@@ -143,6 +143,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		//Server
 		Boolean ServerStart();
 		Boolean ServerStop();
+		ITimeSpan ServerUpTime { get; }
 		#endregion
 		#region RichText
 		IRichTextElement CreateRichTextElement(IFormattingDescriptor preFormmating);
