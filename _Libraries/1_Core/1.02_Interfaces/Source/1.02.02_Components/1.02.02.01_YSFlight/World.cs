@@ -22,6 +22,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		IConnection Connection { get; set; }
 		IMetaDataVehicle MetaData { get; set; }
 
+		ICoordinate3 GetCurrentPositionEstimate();
 		ICoordinate3 Position { get; set; }
 		IOrientation3 Attitude { get; set; }
 		IVector3<ISpeed> VelocityPosition { get; set; }

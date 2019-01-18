@@ -1338,9 +1338,10 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 			IPacket_11_FlightData FlightDataOutput = ObjectFactory.CreatePacket11FlightData((short)Version);
 			FlightDataOutput.ResizeData(Data.Length - 8);
 			Data.Skip(8).ToArray().CopyTo(FlightDataOutput.Data, 0);
-			FlightDataOutput.PosX = (FormationTarget.Position.X.ToMeters().RawValue - PosX.ToMeters().RawValue).Meters();
-			FlightDataOutput.PosY = (FormationTarget.Position.Y.ToMeters().RawValue - PosY.ToMeters().RawValue).Meters();
-			FlightDataOutput.PosZ = (FormationTarget.Position.Z.ToMeters().RawValue - PosZ.ToMeters().RawValue).Meters();
+			ICoordinate3 EstimatedPosition = FormationTarget.GetCurrentPositionEstimate();
+			FlightDataOutput.PosX = (EstimatedPosition.X.ToMeters().RawValue - PosX.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosY = (EstimatedPosition.Y.ToMeters().RawValue - PosY.ToMeters().RawValue).Meters();
+			FlightDataOutput.PosZ = (EstimatedPosition.Z.ToMeters().RawValue - PosZ.ToMeters().RawValue).Meters();
 			return FlightDataOutput;
 		}
 	}

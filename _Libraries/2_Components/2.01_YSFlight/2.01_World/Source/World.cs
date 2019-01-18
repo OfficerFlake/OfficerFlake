@@ -83,15 +83,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					if (packet.Timestamp.TotalSeconds().RawValue < TimeStamp.TotalSeconds().RawValue) return;
 					LastUpdate = DateTime.Now;
 					Strength = packet.Strength;
-					double delta_seconds = (Connection?.Ping/1000d ?? 0) * 2;
-					Debug.AddDetailMessage("Delta time: " + delta_seconds);
-					var ex_x = packet.PosX.ToMeters().RawValue + (packet.V_PosX.ToMetersPerSecond().RawValue * delta_seconds);
-					var ex_y = packet.PosY.ToMeters().RawValue + (packet.V_PosY.ToMetersPerSecond().RawValue * delta_seconds);
-					var ex_z = packet.PosZ.ToMeters().RawValue + (packet.V_PosZ.ToMetersPerSecond().RawValue * delta_seconds);
-
 					TimeStamp = packet.Timestamp;
-					//Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
-					Position = ObjectFactory.CreateCoordinate3(ex_x.Meters(), ex_y.Meters(), ex_z.Meters());
+					Position = ObjectFactory.CreateCoordinate3(packet.PosX, packet.PosY, packet.PosZ);
 					Attitude = ObjectFactory.CreateOrientation3(packet.HdgH, packet.HdgP, packet.HdgB);
 					VelocityPosition = ObjectFactory.CreateVector3(packet.V_PosX, packet.V_PosY, packet.V_PosZ);
 					VelocityAttitude = ObjectFactory.CreateVector3(packet.V_HdgH, packet.V_HdgP, packet.V_HdgB);
