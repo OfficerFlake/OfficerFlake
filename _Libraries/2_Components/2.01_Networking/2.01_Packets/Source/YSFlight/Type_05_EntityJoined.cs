@@ -173,8 +173,23 @@ namespace Com.OfficerFlake.Libraries.Networking.Packets
 				else OwnerType = Packet_05OwnerType.Other;
 			}
 		}
+	    public IDistance HitRadius
+	    {
+	        get => ((double)GetSingle(112)).Meters();
+	        set => SetSingle(112, (Single)value.ToMeters().RawValue);
+	    }
+	    public Boolean IsHelicopter
+	    {
+	        get => GetUInt16(116) == 0;
+	        set => SetUInt16(116, (ushort)(value ? 1 : 0));
+	    }
+	    public Packet_05Category Category
+	    {
+	        get => (Packet_05Category) GetUInt16(118);
+	        set => SetUInt16(118, (ushort)value);
+	    }
 
-		public String OwnerName
+        public String OwnerName
 		{
 			get => GetString(124, 16);
 			set => SetString(124, 16, value);

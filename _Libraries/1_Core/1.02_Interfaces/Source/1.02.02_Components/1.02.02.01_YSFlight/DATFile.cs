@@ -12,9 +12,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface IDATFileCached
 	{
-		IMass WeightOfFuel { get; }
-		UInt16 AmmoGun { get; }
-		UInt16 Strength { get; }
+		IMass WEIGFUEL { get; }
+        IDistance HTRADIUS { get; }
+		UInt16 INITIGUN { get; }
+		UInt16 STRENGTH { get; }
 	}
 
 	public interface IDATFileProperty

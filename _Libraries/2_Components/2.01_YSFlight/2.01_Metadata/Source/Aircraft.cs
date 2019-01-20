@@ -82,6 +82,12 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 				Identify = identify;
 			}
 
+		    public IDATFile LoadDATFile()
+		    {
+		        IDATFile DatFile = ObjectFactory.CreateDATFileReference(SettingsLibrary.Settings.YSFlight.Directory + Path_0_PropertiesFile);
+		        return DatFile;
+		    }
+
 			#region Load All
 			/// <summary>
 			/// Searches the YSFlightDirectory for the Aircraft Folder, and loads all Aircraft Lists from it.

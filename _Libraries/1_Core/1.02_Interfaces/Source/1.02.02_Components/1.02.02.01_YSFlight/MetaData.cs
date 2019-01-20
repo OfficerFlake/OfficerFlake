@@ -12,6 +12,7 @@
 	}
 	public interface IMetaDataAircraft : IMetaDataVehicle, IListFileLine
 	{
+	    IDATFile LoadDATFile();
 	}
 	public interface IMetaDataGround : IMetaDataVehicle, IListFileLine
 	{

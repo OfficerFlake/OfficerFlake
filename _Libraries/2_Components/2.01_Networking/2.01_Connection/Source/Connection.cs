@@ -527,9 +527,9 @@ namespace Com.OfficerFlake.Libraries.Networking
 		}
 		private async Task<bool> PingTest()
 		{
-			const int PingInterval = 3000;
-			const double PingMaxDelta = 0.40;
-			const int PingMargin = 20;
+			const int PingWaitInterval = 30000;
+			const double PingMaxDeltaPercent = 0.40;
+			const int PingAllowableMillisecondVariance = 20;
 
 			if (Ping < 1) Ping = 1;
 			
@@ -562,7 +562,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					else
 					{
-						await Task.Delay(PingInterval);
+						await Task.Delay(PingWaitInterval);
 						Debug.AddDetailMessage("Ping Check for Connection " + ConnectionNumber + " Failed. Trying Again...");
 						_ = Task.Run(PingTest);
 						return false;
@@ -573,14 +573,14 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				DateTime PingEndTime = DateTime.Now;
 				double PingAdjustmentRatio = ((((PingEndTime - PingStartTime).TotalMilliseconds/2)-Ping) / Ping);
-				if (PingAdjustmentRatio > PingMaxDelta) PingAdjustmentRatio = PingMaxDelta;
-				if (PingAdjustmentRatio < -PingMaxDelta) PingAdjustmentRatio = -PingMaxDelta;
+				if (PingAdjustmentRatio > PingMaxDeltaPercent) PingAdjustmentRatio = PingMaxDeltaPercent;
+				if (PingAdjustmentRatio < -PingMaxDeltaPercent) PingAdjustmentRatio = -PingMaxDeltaPercent;
 				PingAdjustmentRatio = Math.Abs(PingAdjustmentRatio);
 
 				double OldPing = Ping;
 				double NewPing = (PingEndTime - PingStartTime).TotalMilliseconds / 2;
 
-				if (Math.Abs((NewPing - OldPing) / OldPing) > 5d && Math.Abs(OldPing - NewPing) > PingMargin)
+				if (Math.Abs((NewPing - OldPing) / OldPing) > 5d && Math.Abs(OldPing - NewPing) > PingAllowableMillisecondVariance)
 				{
 					//SendToClientStream("Ping Overrun " + Math.Round(NewPing, 3) + "ms");
 				}
@@ -594,7 +594,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				
 			}
 
-			await Task.Delay(PingInterval);
+			await Task.Delay(PingWaitInterval);
 			_ = Task.Run(PingTest);
 			return true;
 		}

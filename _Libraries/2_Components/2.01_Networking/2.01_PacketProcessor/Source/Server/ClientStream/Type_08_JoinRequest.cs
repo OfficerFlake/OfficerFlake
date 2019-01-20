@@ -71,6 +71,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Check For Requested Aircraft
 				IMetaDataAircraft MetaAircraft = MetaData.Aircraft.FindByName(JoinRequest.AircraftIdentify);
+			    IDATFile CachedAircraft = MetaAircraft.LoadDATFile();
 				if (MetaAircraft == MetaData.Aircraft.None)
 				{
 					//Reject the join request - don't have the aircraft requested!
@@ -80,9 +81,6 @@ namespace Com.OfficerFlake.Libraries.Networking
 					thisConnection.JoinRequestPending = false;
 					return false;
 				}
-
-				//TODO: [4] Cache Aircraft!
-				//CachedData.Aircraft CachedAircraft = MetaAircraft.Cache();
 				#endregion
 
 				#region Assign Vehicle
@@ -112,20 +110,18 @@ namespace Com.OfficerFlake.Libraries.Networking
 				EntityJoined.Identify = JoinRequest.AircraftIdentify;
 				EntityJoined.OwnerName = thisConnection.User.UserName.ToUnformattedSystemString();
 				EntityJoined.OwnerType = Packet_05OwnerType.Self;
+			    EntityJoined.HitRadius = CachedAircraft.CachedData.HTRADIUS;
 				#endregion
 
 				#region Build Flight Data Packet
 				IPacket_11_FlightData FlightData = ObjectFactory.CreatePacket11FlightData(3);
 				FlightData.ID = EntityJoined.ID;
 
-				IDATFile CachedAircraft = ObjectFactory.CreateDATFileReference(Settings.YSFlight.Directory + MetaAircraft.Path_0_PropertiesFile);
-				CachedAircraft.Load();
-
-				FlightData.WeightFuel = (CachedAircraft.CachedData.WeightOfFuel.ToKiloGrams().RawValue * (JoinRequest.FuelPercent)).KiloGrams();
+				FlightData.WeightFuel = (CachedAircraft.CachedData.WEIGFUEL.ToKiloGrams().RawValue * (JoinRequest.FuelPercent)).KiloGrams();
 				FlightData.WeightSmokeOil = 100.KiloGrams();
-				FlightData.AmmoGUN = CachedAircraft.CachedData.AmmoGun;
+				FlightData.AmmoGUN = CachedAircraft.CachedData.INITIGUN;
 				if (!Settings.Options.AllowUnguidedWeapons) FlightData.AmmoGUN = 0;
-				FlightData.Strength = CachedAircraft.CachedData.Strength;
+				FlightData.Strength = CachedAircraft.CachedData.STRENGTH;
 				FlightData.AnimThrottle = StartPosition.Throttle;
 				if (StartPosition.GearDown) FlightData.AnimGear = 1.0f;
 				FlightData.Timestamp = (/*ServerUpTime - */ ClientUpTime).Seconds().ToTimeSpan();

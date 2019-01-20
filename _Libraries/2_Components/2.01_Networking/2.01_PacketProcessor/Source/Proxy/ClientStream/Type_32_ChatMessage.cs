@@ -11,22 +11,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_32_ChatMessage(IConnection thisConnection, IPacket_32_ChatMessage packet)
 			{
-				//TODO: TestPoint
-				if (packet.Message.StartsWith("/Target "))
-				{
-					UInt32 target = 0;
-					try
-					{
-						string strTarget = packet.Message.Split(' ')[1];
-						target = UInt32.Parse(strTarget);
-						thisConnection.SendToClientStream("Target: " + target);
-					}
-					catch
-					{
-						thisConnection.SendToClientStream("Target Cleared.");
-					}
-					return true;
-				}
+				//TODO: [4] User Interface for Formation Client
+				//TODO: [3] Executable for Formation Client
 				return thisConnection.SendToHostStream(packet);
 			}
 		}

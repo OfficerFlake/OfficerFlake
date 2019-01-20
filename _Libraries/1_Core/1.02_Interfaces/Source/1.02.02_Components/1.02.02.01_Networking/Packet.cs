@@ -109,7 +109,10 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		String Identify { get; set; }
 		Packet_05OwnerType OwnerType { get; set; }
 		String OwnerName { get; set; }
-	}
+	    IDistance HitRadius { get; set; }
+	    Boolean IsHelicopter { get; set; }
+	    Packet_05Category Category { get; set; }
+    }
 	public enum Packet_05VehicleType
 	{
 		Aircraft,
@@ -120,7 +123,21 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		Self,
 		Other
 	}
-	public interface IPacket_06_Acknowledgement : IPacket
+    public enum Packet_05Category
+    {
+        Normal,
+        Utility,
+        Category,
+        Fighter,
+        Attacker,
+        Trainer,
+        Bomber,
+        WW2Fighter,
+        WW2Attacker,
+        WW2Bomber,
+        WW2DiveBomber
+    }
+    public interface IPacket_06_Acknowledgement : IPacket
 	{
 		UInt32[] Arguments { get; set; }
 	}

@@ -19,55 +19,38 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			public static List<IWorldVehicle> AllGrounds => Vehicles.Where(x => x.VehicleType == Packet_05VehicleType.Ground).ToList();
 			public static IWorldVehicle NoVehicle { get; } = ObjectFactory.CreateVehicle();
 
-			public static IWorldVehicle GetClosestVehicle(IWorldVehicle TargetVehicle)
+			public static IWorldVehicle GetClosestVehicle(IWorldVehicle TargetVehicle, double WithinDistance = Double.MaxValue)
 			{
 				IWorldVehicle ClosestVehicle = null;
 				Double Distance = Double.MaxValue;
 				foreach (IWorldVehicle thisVehicle in AllAircraft.Where(x=>x.ID != TargetVehicle.ID))
 				{
-					if (ClosestVehicle == null)
-					{
-						ClosestVehicle = thisVehicle;
-						continue;
-					}
 					double newDistance =
 						Math.Sqrt(
 							Math.Pow(TargetVehicle.Position.X.ToMeters().RawValue - thisVehicle.Position.X.ToMeters().RawValue, 2) +
 							Math.Pow(TargetVehicle.Position.Y.ToMeters().RawValue - thisVehicle.Position.Y.ToMeters().RawValue, 2) +
 							Math.Pow(TargetVehicle.Position.Z.ToMeters().RawValue - thisVehicle.Position.Z.ToMeters().RawValue, 2)
 						);
-					if (newDistance < Distance)
+					if (newDistance < Distance & newDistance <= WithinDistance)
 					{
 						ClosestVehicle = thisVehicle;
 						Distance = newDistance;
 					}
-				}
+                }
 				return ClosestVehicle;
 			}
-			public static Double GetClosestVehicleDistance(IWorldVehicle TargetVehicle)
+			public static Double GetClosestVehicleDistance(IWorldVehicle TargetVehicle, double WithinDistance = Double.MaxValue)
 			{
-				IWorldVehicle ClosestVehicle = null;
-				Double Distance = Double.MaxValue;
-				foreach (IWorldVehicle thisVehicle in AllAircraft.Where(x => x.ID != TargetVehicle.ID))
-				{
-					if (ClosestVehicle == null)
-					{
-						ClosestVehicle = thisVehicle;
-						continue;
-					}
-					double newDistance =
-						Math.Sqrt(
-							Math.Pow(TargetVehicle.Position.X.ToMeters().RawValue - thisVehicle.Position.X.ToMeters().RawValue, 2) +
-							Math.Pow(TargetVehicle.Position.Y.ToMeters().RawValue - thisVehicle.Position.Y.ToMeters().RawValue, 2) +
-							Math.Pow(TargetVehicle.Position.Z.ToMeters().RawValue - thisVehicle.Position.Z.ToMeters().RawValue, 2)
-						);
-					if (newDistance < Distance)
-					{
-						ClosestVehicle = thisVehicle;
-						Distance = newDistance;
-					}
-				}
-				return Distance;
+			    Double Distance = Double.MaxValue;
+                IWorldVehicle ClosestVehicle = GetClosestVehicle(TargetVehicle, WithinDistance);
+			    if (ClosestVehicle == null) return Distance;
+			    Distance = Math.Sqrt
+                (
+			        Math.Pow(TargetVehicle.Position.X.ToMeters().RawValue - ClosestVehicle.Position.X.ToMeters().RawValue, 2) +
+			        Math.Pow(TargetVehicle.Position.Y.ToMeters().RawValue - ClosestVehicle.Position.Y.ToMeters().RawValue, 2) +
+			        Math.Pow(TargetVehicle.Position.Z.ToMeters().RawValue - ClosestVehicle.Position.Z.ToMeters().RawValue, 2)
+			    );
+                return Distance;
 			}
 
 			public static List<IWorldScenery> AllScenerys { get; } = new List<IWorldScenery>();

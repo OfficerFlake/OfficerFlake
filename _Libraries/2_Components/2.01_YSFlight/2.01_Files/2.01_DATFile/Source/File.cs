@@ -16,6 +16,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 	    public File(string filename) : base(filename)
 	    {
 		    Contents = new List<IDATFileProperty>();
+	        Load();
 			CachedData = new _CachedData(this);
 	    }
 		#endregion
@@ -27,28 +28,25 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 	    {
 		    private File Parent = null;
 
-		    public UInt16 AmmoGun => (UInt16)((Parent?.Contents?.Last(x => x is INITIGUN) as INITIGUN)?.Value ?? 0);
-			public UInt16 Strength => (UInt16)((Parent?.Contents?.Last(x => x is STRENGTH) as STRENGTH)?.Value ?? 1);
-
 			public _CachedData(File parent)
 		    {
 			    Parent = parent;
 		    }
 
-			//public Boolean AAMSLOT_ = false;
-			//public Boolean AAMVISIB = false;
-		    public Boolean HasAfterburner => (Parent?.Contents?.Last(x => x is AFTBURNR) as AFTBURNR)?.Value ?? false;
+			public Boolean AAMSLOT_ => false;
+			public Boolean AAMVISIB => false;
+		    public Boolean AFTBURNR => (Parent?.Contents?.Last(x => x is AFTBURNR) as AFTBURNR)?.Value ?? false;
 			public Int32 NumAGMSlots => (Parent?.Contents?.Count(x => x is AGMSLOT_)) ?? 0;
-			//public Boolean AGMVISIB = false;
+			public Boolean AGMVISIB => false;
 		    public String AircraftClass => (Parent?.Contents?.Last(x => x is AIRCLASS) as AIRCLASS)?.Value ?? "UNKNOWN";
 			public Boolean HasArrestor => ((Parent?.Contents?.Count(x => x is ARRESTER)) ?? 0) > 0;
 		    public ICoordinate3 PositionArrestor => (Parent?.Contents?.Last(x => x is ARRESTER) as ARRESTER)?.Value ?? ObjectFactory.CreateCoordinate3(0.Meters(), 0.Meters(), 0.Meters());
 			public IOrientation3 DefaultAttitude => (Parent?.Contents?.Last(x => x is ATTITUDE) as ATTITUDE)?.Value ?? ObjectFactory.CreateOrientation3(0.Degrees(), 0.Degrees(), 0.Degrees());
-			//public Boolean AUTOCALC => false;
+			public Boolean AUTOCALC => false;
 		    public Single RadarCrossSectionBombBay => (Parent?.Contents?.Last(x => x is BMBAYRCS) as BMBAYRCS)?.Value ?? 1;
-			//public Boolean BOMBSLOT => false;
-		    //public Boolean BOMINBAY => false;
-		    //public Boolean BOMVISIB => false;
+			public Boolean BOMBSLOT => false;
+		    public Boolean BOMINBAY => false;
+		    public Boolean BOMVISIB => false;
 		    public Boolean CATEGORY => false;
 		    public Boolean CDBYFLAP => false;
 			public Boolean CDBYGEAR => false;
@@ -92,14 +90,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			public Boolean GUNSIGHT => false;
 		    public Boolean HASSPOIL => false;
 		    public Boolean HRDPOINT => false;
-		    public Boolean HTRADIUS => false;
+		    public IDistance HTRADIUS => (Parent?.Contents?.Last(x => x is HTRADIUS) as HTRADIUS)?.Value ?? 0.Meters();
 			public Boolean IDENTIFY => false;
 		    public Boolean INITAAMM => false;
 		    public Boolean INITBOMB => false;
 			public Boolean INITFUEL => false;
 			public Boolean INITIAAM => false;
 			public Boolean INITIAGM => false;
-			public Boolean INITIGUN => false;
+			public UInt16 INITIGUN => (UInt16)((Parent?.Contents?.Last(x => x is INITIGUN) as INITIGUN)?.Value ?? 0);
 			public Boolean INITLOAD => false;
 			public Boolean INITRCKT => false;
 			public Boolean INITSPED => false;
@@ -161,7 +159,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 		    public Boolean SMOKEGEN => false;
 			public Boolean SMOKEOIL => false;
 			public Boolean STALHORN => false;
-		    public Boolean STRENGTH => false;
+		    public UInt16 STRENGTH => (UInt16)((Parent?.Contents?.Last(x => x is STRENGTH) as STRENGTH)?.Value ?? 1);
 			public Boolean SUBSTNAM => false;
 		    public Boolean THRAFTBN => false;
 			public Boolean THRMILIT => false;
@@ -190,8 +188,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 			public Boolean VGWSPED2 => false;
 			public Boolean VRGMNOSE => false;
 		    public Boolean WEAPONCH => false;
-		    public Boolean WEIGFUEL => false;
-		    public IMass WeightOfFuel => (Parent?.Contents?.Last(x => x is WEIGFUEL) as WEIGFUEL)?.Value ?? 0.KiloGrams();
+		    public IMass WEIGFUEL => (Parent?.Contents?.Last(x => x is WEIGFUEL) as WEIGFUEL)?.Value ?? 0.KiloGrams();
 			public Boolean WEIGHCLN => false;
 			public Boolean WEIGLOAD => false;
 			public Boolean WHELGEAR => false;

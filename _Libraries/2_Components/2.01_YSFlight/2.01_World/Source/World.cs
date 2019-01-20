@@ -70,6 +70,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 					Identify = packet.Identify;
 					Tag = packet.OwnerName;
 					VehicleType = packet.VehicleType;
+				    HitRadius = packet.HitRadius;
 
 					ID = packet.ID;
 					IFF = packet.IFF;
@@ -100,7 +101,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 					double delta_seconds = (DateTime.Now - LastUpdate).TotalSeconds;
 
-					Debug.AddDetailMessage("Delta time: " + delta_seconds);
+					//Debug.AddDetailMessage("Delta time: " + delta_seconds);
 
 					var ex_x = Position.X.ToMeters().RawValue + (VelocityPosition.X.ToMetersPerSecond().RawValue * delta_seconds);
 					var ex_y = Position.Y.ToMeters().RawValue + (VelocityPosition.Y.ToMetersPerSecond().RawValue * delta_seconds);
