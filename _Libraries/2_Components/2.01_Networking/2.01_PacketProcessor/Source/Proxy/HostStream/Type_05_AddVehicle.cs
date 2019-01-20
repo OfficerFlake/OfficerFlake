@@ -17,8 +17,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 					{
 						Extensions.YSFlight.World.Vehicles.Add(newVehicle);
 					}
-					newVehicle.Update(packet);
-					if (Extensions.YSFlight.World.Vehicles.Select(x => x.ID).Contains(packet.ID))
+                    newVehicle.Update(packet);
+                    if (Extensions.YSFlight.World.Vehicles.Select(x => x.ID).Contains(packet.ID))
 					{
 						lock (Extensions.YSFlight.World.Vehicles)
 						{

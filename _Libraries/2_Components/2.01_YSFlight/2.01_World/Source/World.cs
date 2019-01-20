@@ -138,7 +138,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			public class Aircraft : Vehicle, IWorldAircraft
 			{
-				public Aircraft()
+				public Aircraft() : base()
 				{
 					VehicleType = Packet_05VehicleType.Aircraft;
 				}
@@ -147,8 +147,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 			public class Ground : Vehicle, IWorldGround
 			{
-				public Ground()
-				{
+				public Ground() : base()
+                {
 					VehicleType = Packet_05VehicleType.Ground;
 				}
 			}

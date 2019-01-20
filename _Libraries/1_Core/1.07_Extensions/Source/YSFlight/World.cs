@@ -19,11 +19,12 @@ namespace Com.OfficerFlake.Libraries.Extensions
 			public static List<IWorldVehicle> AllGrounds => Vehicles.Where(x => x.VehicleType == Packet_05VehicleType.Ground).ToList();
 			public static IWorldVehicle NoVehicle { get; } = ObjectFactory.CreateVehicle();
 
-			public static IWorldVehicle GetClosestVehicle(IWorldVehicle TargetVehicle, double WithinDistance = Double.MaxValue)
+			public static IWorldVehicle GetClosestVehicle(IWorldVehicle TargetVehicle, double WithinDistance = Double.MaxValue, IWorldVehicle[] WithinVehicles = null)
 			{
-				IWorldVehicle ClosestVehicle = null;
+			    if (WithinVehicles == null) WithinVehicles = AllAircraft.Where(x => x.ID != TargetVehicle.ID).ToArray();
+                IWorldVehicle ClosestVehicle = null;
 				Double Distance = Double.MaxValue;
-				foreach (IWorldVehicle thisVehicle in AllAircraft.Where(x=>x.ID != TargetVehicle.ID))
+				foreach (IWorldVehicle thisVehicle in WithinVehicles)
 				{
 					double newDistance =
 						Math.Sqrt(
