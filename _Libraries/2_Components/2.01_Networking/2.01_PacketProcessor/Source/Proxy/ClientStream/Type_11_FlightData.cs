@@ -112,10 +112,10 @@ namespace Com.OfficerFlake.Libraries.Networking
                     #region In Formation - Send Packet 64-11
                     UInt32 ClosestVehicleID = FormationTarget.ID;
 					IPacket_64_11_FormationFlightData formationPacket = packet.ConvertTo_IPacket_64_11_FormationFlightData(FormationTarget);
-
-					formationPacket.PosX = (FormationTarget.Position.X.ToMeters().RawValue - packet.PosX.ToMeters().RawValue).Meters();
-					formationPacket.PosY = (FormationTarget.Position.Y.ToMeters().RawValue - packet.PosY.ToMeters().RawValue).Meters();
-                    formationPacket.PosZ = (FormationTarget.Position.Z.ToMeters().RawValue - packet.PosZ.ToMeters().RawValue).Meters();
+				    ICoordinate3 FormationTargetEstimatedPosition = FormationTarget.GetCurrentPositionEstimate();
+					formationPacket.PosX = (FormationTargetEstimatedPosition.X.ToMeters().RawValue - packet.PosX.ToMeters().RawValue).Meters();
+					formationPacket.PosY = (FormationTargetEstimatedPosition.Y.ToMeters().RawValue - packet.PosY.ToMeters().RawValue).Meters();
+                    formationPacket.PosZ = (FormationTargetEstimatedPosition.Z.ToMeters().RawValue - packet.PosZ.ToMeters().RawValue).Meters();
                     //formationPacket.HdgH = ClosestVehicle.Attitude.H;
                     //formationPacket.HdgP = ClosestVehicle.Attitude.P;
                     //formationPacket.HdgB = ClosestVehicle.Attitude.B;
