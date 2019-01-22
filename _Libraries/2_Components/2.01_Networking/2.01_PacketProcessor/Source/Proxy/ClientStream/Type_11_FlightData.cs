@@ -142,8 +142,8 @@ namespace Com.OfficerFlake.Libraries.Networking
                     #endregion
                 }
                 //Debug.AddDetailMessage("Packet 11 received from client in Proxy Mode doesn't belong to that clients registered vehicle. Not Sending It!");
-			    return true;
-			    //return thisConnection.SendToHostStream(packet);
+			    //return true;
+			    return thisConnection.SendToHostStream(packet);
 			}
 		}
 	}
