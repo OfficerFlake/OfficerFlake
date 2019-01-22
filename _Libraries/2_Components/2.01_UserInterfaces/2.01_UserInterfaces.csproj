@@ -100,11 +100,14 @@
       <DependentUpon>ConsoleUserList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Extensions.cs" />
-    <Compile Include="Source\FormationClient\FormationClient.xaml.cs">
-      <DependentUpon>FormationClient.xaml</DependentUpon>
+    <Compile Include="Source\FormationInspector\FormationInspector.xaml.cs">
+      <DependentUpon>FormationInspector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Icons\BaseIcon.xaml.cs">
       <DependentUpon>BaseIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Icons\FormationInspector.xaml.cs">
+      <DependentUpon>FormationInspector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Icons\QuestionMark.xaml.cs">
       <DependentUpon>QuestionMark.xaml</DependentUpon>
@@ -153,13 +156,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\FormationClient\FormationClient.xaml">
+    <Page Include="Source\FormationInspector\FormationInspector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Icons\BaseIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Icons\FormationInspector.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Source\Icons\QuestionMark.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -230,12 +237,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="IconBase.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Inspect.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Maximise.png" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +244,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="QuestionMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FormationInspector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PacketInspector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="IconBaseDisabled.png" />
+    <Resource Include="IconBaseEnabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

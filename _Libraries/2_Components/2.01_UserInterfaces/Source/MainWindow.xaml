@@ -22,6 +22,7 @@
 		<Border x:Name="Buttons" Grid.Row="1" Background="#161616">
 			<StackPanel Orientation="Horizontal">
 				<icons:PacketInspector/>
+                <icons:FormationInspector/>
 			</StackPanel>
 		</Border>
 		<Grid Grid.Row="2">

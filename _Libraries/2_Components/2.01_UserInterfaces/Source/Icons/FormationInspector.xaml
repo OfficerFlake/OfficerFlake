@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.Icons.BaseIcon"
+﻿<UserControl x:Class="Com.OfficerFlake.Libraries.UserInterfaces.Icons.FormationInspector"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:Com.OfficerFlake.Libraries.UserInterfaces.Icons"
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="32">
-	<Image x:Name="BaseIconImage"
-        Source="/2.01_UserInterfaces;component/IconBaseEnabled.png" Stretch="Fill"/>
+    <Grid
+		MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp">
+		<local:BaseIcon/>
+		<Image Source="/2.01_UserInterfaces;component/FormationInspector.png" Stretch="Fill"/>
+	</Grid>
 </UserControl>

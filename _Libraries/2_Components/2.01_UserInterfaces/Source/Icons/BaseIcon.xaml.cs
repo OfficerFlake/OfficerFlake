@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces.Icons
 {
@@ -11,5 +12,15 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces.Icons
 		{
 			InitializeComponent();
 		}
-	}
+
+	    public void Enable()
+	    {
+	        BaseIconImage.Source = new ImageSourceConverter().ConvertFromString("pack://application:,,,/2.01_UserInterfaces;component/IconBaseEnabled.png") as ImageSource;
+	    }
+
+	    public void Disable()
+	    {
+	        BaseIconImage.Source = new ImageSourceConverter().ConvertFromString("pack://application:,,,/2.01_UserInterfaces;component/IconBaseDisabled.png") as ImageSource;
+	    }
+    }
 }
