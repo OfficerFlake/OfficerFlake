@@ -100,8 +100,20 @@
       <DependentUpon>ConsoleUserList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Extensions.cs" />
+    <Compile Include="Source\FormationClient\FormationClient.xaml.cs">
+      <DependentUpon>FormationClient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Icons\BaseIcon.xaml.cs">
       <DependentUpon>BaseIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Icons\QuestionMark.xaml.cs">
+      <DependentUpon>QuestionMark.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Icons\FormationClientMaximise.xaml.cs">
+      <DependentUpon>FormationClientMaximise.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Icons\FormationClientMinimise.xaml.cs">
+      <DependentUpon>FormationClientMinimise.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Icons\PacketInspector.xaml.cs">
       <DependentUpon>PacketInspector.xaml</DependentUpon>
@@ -141,9 +153,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Source\FormationClient\FormationClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\Icons\BaseIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Icons\QuestionMark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Source\Icons\FormationClientMaximise.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Source\Icons\FormationClientMinimise.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Source\Icons\PacketInspector.xaml">
       <SubType>Designer</SubType>
@@ -206,6 +234,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Inspect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Maximise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Minimise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="QuestionMark.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
