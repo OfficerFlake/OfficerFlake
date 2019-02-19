@@ -73,7 +73,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		#endregion
 		#region Networking
 		//Connection
-		IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode);
+		IConnection CreateConnection();
 
 		//HostAddress
 		IHostAddress CreateHostAddress(IPAddress IP);

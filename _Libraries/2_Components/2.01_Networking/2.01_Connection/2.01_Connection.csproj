@@ -65,7 +65,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Connection.cs" />
+    <Compile Include="Source\Instance\Connection-4-Process.cs" />
+    <Compile Include="Source\Instance\Connection-5-Disconnect.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\__Setup_Client.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\___Static.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\__Setup_Host.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\_Receive.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\_Send.cs" />
+    <Compile Include="Source\Instance\Sockets\TCPIP\PingTester.cs" />
+    <Compile Include="Source\Instance\Connection-2-Connect.cs" />
+    <Compile Include="Source\Instance\Connection-6-Destructor.cs" />
+    <Compile Include="Source\Instance\Connection-1-Constructor.cs" />
+    <Compile Include="Source\Class\Connection-List.cs" />
+    <Compile Include="Source\Instance\Connection---Properties.cs" />
+    <Compile Include="Source\Instance\Sockets\UDP\Connection-3-Sockets.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\1_Core\1.01_BuildEnvironment\1.01_BuildEnvironment\1.01_BuildEnvironment.csproj">

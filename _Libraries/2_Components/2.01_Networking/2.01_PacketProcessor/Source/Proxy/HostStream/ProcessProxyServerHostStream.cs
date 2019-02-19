@@ -7,7 +7,7 @@ namespace Com.OfficerFlake.Libraries.Networking
     {
 	    public static partial class ProxyServerHostStream
 		{
-		    public static async Task<bool> Process(IConnection thisConnection, IPacket thisPacket)
+		    public static bool Process(IConnection thisConnection, IPacket thisPacket)
 		    {
 			    switch (thisPacket.Type)
 				{

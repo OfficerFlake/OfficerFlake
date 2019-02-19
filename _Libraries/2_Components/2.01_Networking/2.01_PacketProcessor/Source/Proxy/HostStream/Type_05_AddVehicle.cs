@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -34,7 +35,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 						Extensions.YSFlight.World.Vehicles.Add(newVehicle);
 					}
 					if (packet.OwnerType == Packet_05OwnerType.Self) thisConnection.Vehicle = newVehicle;
-					return thisConnection.SendToClientStream(packet);
+				    if (packet.OwnerName.Contains("#1")) FormationInspector.UpdateClientFormationHost(1, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#2")) FormationInspector.UpdateClientFormationHost(2, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#3")) FormationInspector.UpdateClientFormationHost(3, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#4")) FormationInspector.UpdateClientFormationHost(4, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#5")) FormationInspector.UpdateClientFormationHost(5, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#6")) FormationInspector.UpdateClientFormationHost(6, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#7")) FormationInspector.UpdateClientFormationHost(7, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#8")) FormationInspector.UpdateClientFormationHost(8, packet.OwnerName, (int)packet.ID);
+				    if (packet.OwnerName.Contains("#9")) FormationInspector.UpdateClientFormationHost(9, packet.OwnerName, (int)packet.ID);
+                    return thisConnection.SendToClientStream(packet);
 				}
 			}
 		}

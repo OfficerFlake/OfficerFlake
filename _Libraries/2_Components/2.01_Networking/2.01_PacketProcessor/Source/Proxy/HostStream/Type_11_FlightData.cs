@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -14,7 +15,15 @@ namespace Com.OfficerFlake.Libraries.Networking
 				{
 					YSFlight.World.Vehicles.First(x => x.ID == packet.ID).Update(packet);
 				}
-				return thisConnection.SendToClientStream(packet);
+			    if (thisConnection.Vehicle?.ID == packet.ID)
+			    {
+                    Debug.AddDetailMessage("Got a Flight Data packet from the host that belongs to this connection. Ignoring it.");
+			        return true;
+			    }
+			    else
+			    {
+			        return thisConnection.SendToClientStream(packet);
+			    }
 			}
 		}
 	}

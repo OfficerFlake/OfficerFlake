@@ -163,7 +163,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeJoinPacket, EntityJoined))
 				{
 					thisConnection.SendToClientStream("Expected an acknowledge Join Data Reply and didn't get an answer. Disconnecting...");
-					foreach (var thisConnectionLast5Packet in thisConnection.Last5Packets)
+					foreach (var thisConnectionLast5Packet in thisConnection.Last5PacketsReceived)
 					{
 						Logger.Debug.AddDetailMessage("&aIn Packet (" + thisConnectionLast5Packet.Type + ")\n" +
 						                              thisConnectionLast5Packet.Serialise().ToHexString() + "\n" +

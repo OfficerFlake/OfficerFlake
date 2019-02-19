@@ -86,6 +86,7 @@ namespace Com.OfficerFlake.Libraries.Networking
                     #endregion
                     //Get the first vehicle off that list.
 				    IWorldVehicle FormationTarget = null;
+				    int FormationTargetPositionNumber = 0;
 				    Double FormationTargetDistance = double.MaxValue;
 				    foreach (IWorldVehicle potentialTargetVehicle in CompatableVehiclesList)
 				    {
@@ -98,7 +99,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 				        if (FormationTargetDistance <= thisConnection.Vehicle.HitRadius.ToMeters().RawValue * HitRadiusMaximumFormationRange)
 				        {
 				            FormationTarget = potentialTargetVehicle;
-				            break;
+                            if (potentialTargetVehicle.Tag.Contains("#9")) FormationTargetPositionNumber = 9;
+				            if (potentialTargetVehicle.Tag.Contains("#8")) FormationTargetPositionNumber = 8;
+				            if (potentialTargetVehicle.Tag.Contains("#7")) FormationTargetPositionNumber = 7;
+				            if (potentialTargetVehicle.Tag.Contains("#6")) FormationTargetPositionNumber = 6;
+				            if (potentialTargetVehicle.Tag.Contains("#5")) FormationTargetPositionNumber = 5;
+				            if (potentialTargetVehicle.Tag.Contains("#4")) FormationTargetPositionNumber = 4;
+				            if (potentialTargetVehicle.Tag.Contains("#3")) FormationTargetPositionNumber = 3;
+				            if (potentialTargetVehicle.Tag.Contains("#2")) FormationTargetPositionNumber = 2;
+				            if (potentialTargetVehicle.Tag.Contains("#1")) FormationTargetPositionNumber = 1;
+                            break;
 				        }
                     }
                     #endregion
@@ -106,8 +116,9 @@ namespace Com.OfficerFlake.Libraries.Networking
                     if (FormationTarget == null)
 					{
 						Debug.AddDetailMessage("Formation Data Packet NOT created by Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID);
-						return thisConnection.SendToHostStream(packet);
-					}
+					    if (thisFormationPosition != 0) FormationInspector.UpdateClientFormationPosition(thisFormationPosition, null, packet.PosX.ToMeters().RawValue, packet.PosY.ToMeters().RawValue, packet.PosZ.ToMeters().RawValue);
+					    return thisConnection.SendToHostStream(packet);
+                    }
                     #endregion
                     #region In Formation - Send Packet 64-11
                     UInt32 ClosestVehicleID = FormationTarget.ID;
@@ -138,12 +149,13 @@ namespace Com.OfficerFlake.Libraries.Networking
                                            Math.Round(formationPacket.PosZ.RawValue, 2) + ")."
 
                         );
-					return thisConnection.SendToHostStream(formationPacket);
+				    if (thisFormationPosition != 0) FormationInspector.UpdateClientFormationPosition(thisFormationPosition, FormationTargetPositionNumber, formationPacket.PosX.ToMeters().RawValue, formationPacket.PosY.ToMeters().RawValue, formationPacket.PosZ.ToMeters().RawValue);
+                    return thisConnection.SendToHostStream(formationPacket);
                     #endregion
                 }
-                //Debug.AddDetailMessage("Packet 11 received from client in Proxy Mode doesn't belong to that clients registered vehicle. Not Sending It!");
-			    //return true;
-			    return thisConnection.SendToHostStream(packet);
+                Debug.AddDetailMessage("Packet 11 received from client in Proxy Mode doesn't belong to that clients registered vehicle. Not Sending It!");
+			    return true;
+			    //return thisConnection.SendToHostStream(packet);
 			}
 		}
 	}

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries;
+using Com.OfficerFlake.Libraries.Logger;
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UserInterfaces;
 using Console = Com.OfficerFlake.Libraries.Logger.Console;
@@ -161,13 +162,15 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			#region LINK UI LAST!
 			UserInterface.Initialise();
 			OpenYSServerModeUserInterface.CreateWindow();
+		    OpenYSServerModeUserInterface.ChangeTitle("OpenYS - Proxy Mode");
 			OpenYSPacketInspectorUserInterface.CreateWindow();
 			OpenYSPacketInspectorUserInterface.LinkPacketInspector();
-			OpenYSServerModeUserInterface.LinkDebug();
+		    OpenYSFormationInspectorUserInterface.CreateWindow();
+		    OpenYSFormationInspectorUserInterface.LinkFormationInspector();
+            OpenYSServerModeUserInterface.LinkDebug();
 			OpenYSServerModeUserInterface.LinkConsole();
 			#endregion
 			OpenYSServerModeUserInterface.Show();
-			OpenYSPacketInspectorUserInterface.Show();
 			#endregion
 		}
 		#endregion
@@ -182,6 +185,7 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			Console.AddInformationMessage("Settings Loading Complete.");
 			#endregion
 			#region Start Server
+            FormationInspector.UpdateHostAddressFromSettings();
 			Console.AddInformationMessage("Starting Proxy Server...");
 			Server.Start(IsProxyMode: true);
 			Console.AddInformationMessage("Now listening for TCP Traffic on Port: " + Settings.Server.ListeningPorts.TCP + "!");

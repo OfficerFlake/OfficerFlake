@@ -90,7 +90,7 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region Networking
 			//Connection
-			public IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode) => new Connection(TCPSocket, isProxyMode);
+			public IConnection CreateConnection() => new Connection();
 
 			//HostAddress
 			public IHostAddress CreateHostAddress(IPAddress IP) => new HostAddress(IP);

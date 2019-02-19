@@ -10,7 +10,11 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_11_FlightData(IConnection thisConnection, IPacket_11_FlightData packet)
 			{
-				if (packet.ID != thisConnection.Vehicle.ID) return true;
+			    if (packet.ID != thisConnection.Vehicle.ID)
+			    {
+			        Debug.AddDetailMessage("Packet 11 received from client in Server Mode doesn't belong to that clients registered vehicle. Not Sending It!");
+			        return true;
+                }
 				//Debug.AddDetailMessage("Flight Data packet received from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID + ", Timestamp" + packet.Timestamp.TotalSeconds().RawValue);
 				thisConnection.Vehicle.Update(packet);
 				packet.PosX = thisConnection.Vehicle.Position.X;

@@ -74,7 +74,7 @@ namespace Com.OfficerFlake.Libraries
 		#endregion
 		#region Networking
 		//Connection
-		public static IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode = false) => objectFactory.CreateConnection(TCPSocket, isProxyMode);
+		public static IConnection CreateConnection() => objectFactory.CreateConnection();
 
 		//HostAddress
 		public static IHostAddress CreateHostAddress(IPAddress IP) => objectFactory.CreateHostAddress(IP);

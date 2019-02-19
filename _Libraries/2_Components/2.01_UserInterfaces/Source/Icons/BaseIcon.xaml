@@ -7,5 +7,5 @@
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="32">
 	<Image x:Name="BaseIconImage"
-        Source="/2.01_UserInterfaces;component/IconBaseEnabled.png" Stretch="Fill"/>
+        Source="/2.01_UserInterfaces;component/Icons/IconBaseEnabled.png" Stretch="Fill"/>
 </UserControl>

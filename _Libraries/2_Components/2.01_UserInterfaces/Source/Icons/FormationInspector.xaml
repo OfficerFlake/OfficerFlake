@@ -9,6 +9,6 @@
     <Grid
 		MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp">
 		<local:BaseIcon/>
-		<Image Source="/2.01_UserInterfaces;component/FormationInspector.png" Stretch="Fill"/>
+        <Image Source="/2.01_UserInterfaces;component/Icons/FormationInspector.png" Stretch="Fill"/>
 	</Grid>
 </UserControl>

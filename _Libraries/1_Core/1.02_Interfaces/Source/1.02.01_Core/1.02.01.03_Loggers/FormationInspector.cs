@@ -55,5 +55,9 @@ namespace Com.OfficerFlake.Libraries.Interfaces
         /// </param>
         void UpdateClientFormationPosition(int formationPositionNumber, int? targetPositionNumber, double? xPosition, double? yPosition, double? zPosition); //Target can be null for absolute, X Y Z may be null to return to blanks.
 
-    }
+        /// <summary>
+        /// Loads the host address textbox data from the settings library.
+        /// </summary>
+	    void UpdateHostAddressFromSettings();
+	}
 }

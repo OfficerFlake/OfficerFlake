@@ -36,6 +36,10 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 			Visibility = Visibility.Hidden;
 			base.Hide();
 		}
+	    public void ChangeTitle(string newTitle)
+	    {
+	        Dispatcher.Invoke(() => Title = newTitle);
+	    }
 		#endregion
 	}
 	public class UserInterfaceSingleton : IDisposable

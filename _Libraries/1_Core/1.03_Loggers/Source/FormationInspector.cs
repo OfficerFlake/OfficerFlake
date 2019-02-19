@@ -15,6 +15,11 @@ namespace Com.OfficerFlake.Libraries.Logger
             System.Diagnostics.Debug.WriteLine("Formation Position " + formationPositionNumber + " updated position details: TargetID:" + (targetPositionNumber?.ToString() ?? "--") + ", xPos:" + (xPosition?.ToString() ?? "-----") + ", yPos:" + (yPosition?.ToString() ?? "-----") + ", zPos:" + (zPosition?.ToString() ?? "-----"));
             return;
         }
+
+        public void UpdateHostAddressFromSettings()
+        {
+            System.Diagnostics.Debug.WriteLine("FormationInspector HostAddressUpdateFromSettings was called, but there is nothing to update in the default class.");
+        }
     }
 	public static class FormationInspector
 	{
@@ -27,5 +32,7 @@ namespace Com.OfficerFlake.Libraries.Logger
 
 		public static void UpdateClientFormationHost(int formationPositionNumber, string username, int? flightId) => _formationInspector.UpdateClientFormationHost(formationPositionNumber, username, flightId);
 		public static void UpdateClientFormationPosition(int formationPositionNumber, int? targetPositionNumber, double? xPosition, double? yPosition, double? zPosition) => _formationInspector.UpdateClientFormationPosition(formationPositionNumber, targetPositionNumber, xPosition, yPosition, zPosition);
+	    public static void UpdateHostAddressFromSettings() => _formationInspector.UpdateHostAddressFromSettings();
+
 	}
 }

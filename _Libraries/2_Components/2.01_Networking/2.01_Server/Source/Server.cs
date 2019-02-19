@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
+using Com.OfficerFlake.Libraries.Logger;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -67,22 +68,48 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 	    private bool TCPAcceptNewConnection()
 	    {
-		    if (IsShuttingDown) return false;
-		    try
+	        if (IsShuttingDown)
+	        {
+	            Debug.AddDetailMessage("TCPAcceptNewConnection cancelled as IsShuttingDown");
+                return false;
+	        }
+
+	        Socket newSocket;
+            try
 		    {
-			    Socket newSocket = TCPListener.AcceptSocket();
-			    IConnection newConnection = ObjectFactory.CreateConnection(newSocket, IsProxyMode);
-		    }
-		    catch (SocketException)
+		        Debug.AddDetailMessage("Waiting for a new client to connect...");
+                newSocket = TCPListener.AcceptSocket();
+		        Debug.AddDetailMessage("A new client just connected! Ready to start the connection phase.");
+            }
+		    catch (SocketException e)
 		    {
-			    return false;
+		        Debug.AddErrorMessage(e, "SocketException in TCPAcceptNewConnection");
+                return false;
 		    }
-		    catch (InvalidOperationException)
+		    catch (InvalidOperationException e)
 		    {
-			    return false;
+		        Debug.AddErrorMessage(e, "InvalidOperationException in TCPAcceptNewConnection");
+                return false;
 		    }
-		    Task.Run(() => TCPAcceptNewConnection());
-		    return true;
+
+	        Debug.AddDetailMessage("New client is being created.");
+	        IConnection newConnection = ObjectFactory.CreateConnection();
+	        Debug.AddDetailMessage("New client has been created.");
+
+	        Debug.AddDetailMessage("New client is starting an async call to connect.");
+            _ = Task.Run(() => newConnection.Connect(newSocket, IsProxyMode));
+	        Debug.AddDetailMessage("New client has started it's async call to connect.");
+
+            try
+	        {
+	            Task.Run(() => TCPAcceptNewConnection());
+	        }
+	        catch (ArgumentNullException e)
+	        {
+	            Debug.AddErrorMessage(e, "ArgumentNullException in TCPAcceptNewConnection when trying to restart the task.");
+	            return false;
+            }
+	        return true;
 	    }
 	    #endregion
 		#region UDP

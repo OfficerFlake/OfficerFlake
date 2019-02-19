@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Com.OfficerFlake.Libraries;
+using Com.OfficerFlake.Libraries.Logger;
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UserInterfaces;
 using Com.OfficerFlake.Libraries.YSFlight;
@@ -162,9 +163,12 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			#region LINK UI LAST!
 			UserInterface.Initialise();
 			OpenYSServerModeUserInterface.CreateWindow();
-			OpenYSPacketInspectorUserInterface.CreateWindow();
+		    OpenYSServerModeUserInterface.ChangeTitle("OpenYS - Server Mode");
+            OpenYSPacketInspectorUserInterface.CreateWindow();
 			OpenYSPacketInspectorUserInterface.LinkPacketInspector();
-			OpenYSServerModeUserInterface.LinkDebug();
+		    OpenYSFormationInspectorUserInterface.CreateWindow();
+		    OpenYSFormationInspectorUserInterface.LinkFormationInspector();
+            OpenYSServerModeUserInterface.LinkDebug();
 			OpenYSServerModeUserInterface.LinkConsole();
 			#endregion
 			OpenYSServerModeUserInterface.Show();
@@ -180,9 +184,10 @@ namespace Com.OfficerFlake.Executables.ProxyMode
 			Console.AddInformationMessage("Loading Settings...");
 			SettingsHandler.LoadAll();
 			Console.AddInformationMessage("Settings Loading Complete.");
-			#endregion
-			#region Load MetaData
-			Console.AddInformationMessage("Loading YSFlight MetaData from \"" + Settings.YSFlight.Directory + "\".");
+		    FormationInspector.UpdateHostAddressFromSettings();
+            #endregion
+            #region Load MetaData
+            Console.AddInformationMessage("Loading YSFlight MetaData from \"" + Settings.YSFlight.Directory + "\".");
 			Metadata.LoadAll();
 			Console.AddInformationMessage("YSFlight Metadata Loading Complete.");
 			#endregion

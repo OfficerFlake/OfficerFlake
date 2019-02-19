@@ -75,7 +75,7 @@ namespace Com.OfficerFlake.Libraries
 			#endregion
 			#region Networking
 			//Connection
-			public IConnection CreateConnection(Socket TCPSocket, Boolean isProxyMode) => throw new NotImplementedException();
+			public IConnection CreateConnection() => throw new NotImplementedException();
 
 			//HostAddress
 			public IHostAddress CreateHostAddress(IPAddress IP) => throw new NotImplementedException();

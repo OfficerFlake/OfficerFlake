@@ -9,6 +9,6 @@
     <Grid
 		MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp">
         <!--<local:BaseIcon/>-->
-        <Image Source="/2.01_UserInterfaces;component/Minimise.png" Stretch="Fill"/>
+        <Image Source="/2.01_UserInterfaces;component/Icons/Minimise.png" Stretch="Fill"/>
 	</Grid>
 </UserControl>

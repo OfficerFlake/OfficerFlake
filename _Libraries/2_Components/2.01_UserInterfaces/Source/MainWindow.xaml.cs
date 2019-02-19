@@ -55,6 +55,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Show/Hide
 		public static void Show() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.Show());
 		public static void Hide() => consoleWindow.Dispatcher.Invoke(() => consoleWindow.Hide());
+        public static void ChangeTitle(string newTitle) => consoleWindow.Dispatcher.Invoke(() => consoleWindow.ChangeTitle(newTitle));
 		#endregion
 		#region Wait Load/Close
 		public static bool WaitForCreation(int timeout = Int32.MaxValue) => consoleWindow.Dispatcher.Invoke(() => consoleWindow.WaitForCreation(timeout));

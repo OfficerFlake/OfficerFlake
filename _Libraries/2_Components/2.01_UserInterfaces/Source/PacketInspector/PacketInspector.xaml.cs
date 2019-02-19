@@ -312,7 +312,8 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Show/Hide
 		public static void Show() => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.Show());
 		public static void Hide() => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.Hide());
-		public static Boolean IsVisible => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.IsVisible);
+	    public static void ChangeTitle(string newTitle) => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.ChangeTitle(newTitle));
+        public static Boolean IsVisible => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.IsVisible);
 		#endregion
 		#region Wait Load/Close
 		public static bool WaitForCreation(int timeout = Int32.MaxValue) => packetInspectorWindow.Dispatcher.Invoke(() => packetInspectorWindow.WaitForCreation(timeout));

@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Background="#161616"
         Foreground="#f0f0f0"
-        Title="OpenYS Formation Client" Height="217" Width="390" ResizeMode="NoResize" BorderThickness="0" Icon="/2.01_UserInterfaces;component/OpenYS.ico"
-        Closing="FormationInspectorUserInterface_OnClosing">
+        Title="OpenYS Formation Client" Height="228" Width="393" ResizeMode="NoResize" BorderThickness="0"
+        Closing="FormationInspectorUserInterface_OnClosing" Icon="/2.01_UserInterfaces;component/Icons/OpenYS.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

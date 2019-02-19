@@ -9,6 +9,6 @@
     <Grid
 		MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp">
 		<!--<local:BaseIcon/>-->
-        <Image Source="/2.01_UserInterfaces;component/QuestionMark.png" Stretch="Fill"/>
+        <Image Source="/2.01_UserInterfaces;component/Icons/QuestionMark.png" Stretch="Fill"/>
 	</Grid>
 </UserControl>

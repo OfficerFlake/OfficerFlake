@@ -127,7 +127,7 @@
     <Compile Include="Source\MenuBar.xaml.cs">
       <DependentUpon>MenuBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\PacketInspector.xaml.cs">
+    <Compile Include="Source\PacketInspector\PacketInspector.xaml.cs">
       <DependentUpon>PacketInspector.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\__UserInterface.cs" />
@@ -192,7 +192,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\PacketInspector.xaml">
+    <Page Include="Source\PacketInspector\PacketInspector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -232,28 +232,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Maximise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Minimise.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\QuestionMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\FormationInspector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\PacketInspector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\IconBaseDisabled.png" />
+    <Resource Include="Icons\IconBaseEnabled.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="..\2.01_Icons\OpenYS.ico">
-      <Link>OpenYS.ico</Link>
+      <Link>Icons\OpenYS.ico</Link>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Maximise.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Minimise.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="QuestionMark.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="FormationInspector.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="PacketInspector.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="IconBaseDisabled.png" />
-    <Resource Include="IconBaseEnabled.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

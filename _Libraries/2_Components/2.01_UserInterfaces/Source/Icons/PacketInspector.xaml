@@ -9,6 +9,6 @@
     <Grid
 		MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp">
 		<local:BaseIcon/>
-		<Image Source="/2.01_UserInterfaces;component/Inspect.png" Stretch="Fill"/>
+		<Image Source="/2.01_UserInterfaces;component/Icons/PacketInspector.png" Stretch="Fill"/>
 	</Grid>
 </UserControl>

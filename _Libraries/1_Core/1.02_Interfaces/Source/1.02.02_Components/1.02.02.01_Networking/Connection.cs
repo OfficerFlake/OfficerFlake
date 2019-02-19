@@ -32,7 +32,7 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 		bool Disconnect(string Reason);
 
 		void GivePacket(IPacket thisPacket);
-		List<IPacket> Last5Packets { get; }
+		List<IPacket> Last5PacketsReceived { get; }
 
 		bool Send(IPacket packet, Socket socket);
 		Task<bool> SendAsync(IPacket packet, Socket socket);
