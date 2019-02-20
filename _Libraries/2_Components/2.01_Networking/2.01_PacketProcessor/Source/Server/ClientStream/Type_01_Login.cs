@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -149,7 +149,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#endregion
 
 				#region Inform Players
-				Logger.Console.AddInformationMessage("&a" + thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.");
+				Loggers.Console.AddInformationMessage("&a" + thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.");
 				foreach (IConnection otherConnection in Connections.AllConnections.Exclude(thisConnection))
 				{
 					otherConnection.SendToClientStreamAsync(thisConnection.User.UserName.ToUnformattedSystemString() + " joined the server.").ConfigureAwait(false);
@@ -165,19 +165,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 				//}
 				//Packets.Type_06_Acknowledgement AcknowledgeVersionPacket = new Packets.Type_06_Acknowledgement(9, 0);
 				IPacket_29_NetcodeVersion VersionPacket = ObjectFactory.CreatePacket29NetcodeVersion();
-				VersionPacket.Version = 20110207;
+				VersionPacket.Version = thisConnection.Version;
 
 				IPacketWaiter PacketWaiter_AcknowledgeVersionPacket = thisConnection.CreatePacketWaiter(6);
 				PacketWaiter_AcknowledgeVersionPacket.Require(0, (UInt32)9);
 				PacketWaiter_AcknowledgeVersionPacket.StartListening();
 
-				thisConnection.SendToClientStream(VersionPacket);
+			    Logger.AddDebugMessage("Connection " + thisConnection.ConnectionNumber + " Sending Version.");
+                thisConnection.SendToClientStream(VersionPacket);
+			    Logger.AddDebugMessage("Connection " + thisConnection.ConnectionNumber + " Send okay.");
 
-				#endregion
+                #endregion
 
-				#region Send MissilesOption (31)
+                #region Send MissilesOption (31)
 
-				IPacket_31_MissilesOption MissilesOption = ObjectFactory.CreatePacket31MissilesOption();
+                IPacket_31_MissilesOption MissilesOption = ObjectFactory.CreatePacket31MissilesOption();
 				MissilesOption.Enabled = true;
 
 				IPacketWaiter PacketWaiter_AcknowledgeMissileOption = thisConnection.CreatePacketWaiter(6);
@@ -363,6 +365,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				#region Send Entities(05)
 				//Create all the other players aircraft.
+                List<KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter>> EntitiesSent = new List<KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter>>();
+
 				for(int i = 0; i < Extensions.YSFlight.World.AllAircraft.Count; i++)
 				{
 					IWorldVehicle vehicle = Extensions.YSFlight.World.AllAircraft[i];
@@ -372,7 +376,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 					OtherJoinPacket.VehicleType = vehicle.VehicleType;
 
 					IPacketWaiter PacketWaiter_AcknowledgeOtherJoinPacket = thisConnection.CreatePacketWaiter(6);
-					if (OtherJoinPacket.VehicleType == Packet_05VehicleType.Aircraft)
+
+				    if (OtherJoinPacket.VehicleType == Packet_05VehicleType.Aircraft)
 					{
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 0);
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
@@ -382,19 +387,29 @@ namespace Com.OfficerFlake.Libraries.Networking
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
 					}
-					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
+
+				    EntitiesSent.Add(new KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter>(OtherJoinPacket, PacketWaiter_AcknowledgeOtherJoinPacket));
+
+                    PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
 					thisConnection.SendToClientStream(OtherJoinPacket);
 
-					if (!thisConnection.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
-					{
-						thisConnection.SendToClientStream("Expected a Other Entity Join Acknowldge for ID " + OtherJoinPacket.ID + " and didn't get an answer.");
-						//thisConnection.Disconnect();
-						//return false;
-					}
+					
 				}
 
-				//Create all the ground objects.
-				Percentage = 0;
+			    foreach (KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter> EntityJoinPair in EntitiesSent)
+			    {
+			        if (!thisConnection.GetResponseOrResend(EntityJoinPair.Value, EntityJoinPair.Key))
+			        {
+			            thisConnection.SendToClientStream("Expected a Other Entity Join Acknowldge for ID " + EntityJoinPair.Key.ID + " and didn't get an answer.");
+			            //thisConnection.Disconnect();
+			            //return false;
+			        }
+			    }
+
+                //Create all the ground objects.
+			    EntitiesSent = new List<KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter>>();
+
+                Percentage = 0;
 				List<IPacket_05_AddVehicle> JoinPackets = new List<IPacket_05_AddVehicle>();
 				List<IPacketWaiter> JoinWaiters = new List<IPacketWaiter>();
 				for (int i = 0; i < Extensions.YSFlight.World.AllGrounds.Count; i++)
@@ -432,24 +447,26 @@ namespace Com.OfficerFlake.Libraries.Networking
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(4, OtherJoinPacket.ID);
 					}
-					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
+				    EntitiesSent.Add(new KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter>(OtherJoinPacket, PacketWaiter_AcknowledgeOtherJoinPacket));
+
+                    PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
 					JoinWaiters.Add(PacketWaiter_AcknowledgeOtherJoinPacket);
 					thisConnection.SendToClientStream(OtherJoinPacket);
 				}
-				for (int i = 0; i < JoinPackets.Count; i++)
-				{
-					if (!thisConnection.GetResponseOrResend(JoinWaiters[i], JoinPackets[i]))
-					{
-						thisConnection.SendToClientStream("Expected a Other Entity Join Acknowldge for ID " + JoinPackets[i].ID + " and didn't get an answer.");
-						//thisConnection.Disconnect();
-						//return false;
-					}
-				}
-				#endregion
+			    foreach (KeyValuePair<IPacket_05_AddVehicle, IPacketWaiter> EntityJoinPair in EntitiesSent)
+			    {
+			        if (!thisConnection.GetResponseOrResend(EntityJoinPair.Value, EntityJoinPair.Key))
+			        {
+			            thisConnection.SendToClientStream("Expected a Other Entity Join Acknowldge for ID " + EntityJoinPair.Key.ID + " and didn't get an answer.");
+			            //thisConnection.Disconnect();
+			            //return false;
+			        }
+			    }
+                #endregion
 
-				#region Send PrepareSimulation(16)
-				//Build Prepare Simulation (16)
-				IPacket_16_PrepareSimulation PrepareSimulation = ObjectFactory.CreatePacket16PrepareSimulation();
+                #region Send PrepareSimulation(16)
+                //Build Prepare Simulation (16)
+                IPacket_16_PrepareSimulation PrepareSimulation = ObjectFactory.CreatePacket16PrepareSimulation();
 
 				IPacketWaiter packetWaiter_AcknowledgePrepareSimulation = thisConnection.CreatePacketWaiter(6);
 				packetWaiter_AcknowledgePrepareSimulation.Require(0, 7);
@@ -556,7 +573,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					else
 					{
-						Debug.AddDetailMessage("Ping Check for Connection " + thisConnection.ConnectionNumber + " Failed. Trying Again...");
+						Logger.AddDebugMessage("Ping Check for Connection " + thisConnection.ConnectionNumber + " Failed. Trying Again...");
 						thisConnection.StartPingTester();
 						return false;
 					}

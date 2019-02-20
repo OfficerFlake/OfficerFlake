@@ -55,6 +55,8 @@ namespace Com.OfficerFlake.Libraries.Interfaces
 
 	public interface IPacketWaiter
 	{
+        int UniqueID { get; }
+
 		IPacket RecievedPacket { get; set; }
 		UInt32 RequireType { get; }
 

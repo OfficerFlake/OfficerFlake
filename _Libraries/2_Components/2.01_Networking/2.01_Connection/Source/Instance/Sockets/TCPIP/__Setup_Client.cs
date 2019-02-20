@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -19,20 +19,20 @@ namespace Com.OfficerFlake.Libraries.Networking
 	        if (ClientStreamTCPSocket == BlankTCPSocket)
 	        {
                 ClientStreamTCPSocket = incomingSocket;
-	            Debug.AddDetailMessage("Connection " + ConnectionNumber + "  connected to income ClientSocket");
+	            Logger.AddDebugMessage("Connection " + ConnectionNumber + "  connected to income ClientSocket");
 	            return true;
 	        }
 	        else
 	        {
-	            Debug.AddDetailMessage("Connection " + ConnectionNumber + " 's call to CreateHostTCPSocket failed as the host socket is already occupied.");
+	            Logger.AddDebugMessage("Connection " + ConnectionNumber + " 's call to CreateHostTCPSocket failed as the host socket is already occupied.");
 	            return false;
 	        }
 	    }
 	    private bool StartClientStreamOnTCPSocket()
 	    {
-	        Debug.AddDetailMessage("Connection " + ConnectionNumber + "  starting ClientStream loop");
+	        Logger.AddDebugMessage("Connection " + ConnectionNumber + "  starting ClientStream loop");
 	        _ = Task.Run(() => StartTcpGetPacketAsyncLoop(ClientStreamTCPSocket));
-	        Debug.AddDetailMessage("Connection " + ConnectionNumber + "  started ClientStream loop");
+	        Logger.AddDebugMessage("Connection " + ConnectionNumber + "  started ClientStream loop");
 	        return true;
 	    }
 	}

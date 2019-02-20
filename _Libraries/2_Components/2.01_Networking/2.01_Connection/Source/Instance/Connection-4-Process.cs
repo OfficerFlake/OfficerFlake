@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -25,7 +25,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    }
 
 		    //Action Packet.
-		    _ = thisConncetion.ProcessPacketClientStream(thisPacket);
+		    _ = thisConncetion.ProcessPacketClientStreamAsync(thisPacket);
 	    }
 		#endregion
 		#region Wait For A Packet
@@ -33,9 +33,13 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			public PacketWaiter(UInt32 type)
 			{
+			    UniqueID = ++_idIncrementer;
 				RequireType = type;
-
+                Logger.AddDebugMessage("Created a packet waiter " + UniqueID + "  which requires TYPE == " + type);
 			}
+
+		    public static int _idIncrementer = 0;
+		    public int UniqueID { get; } = 0;
 
 			public UInt32 RequireType { get; }
 			public class PacketWaiterSegmentDescriptor : IPacketWaiterSegmentDescriptor
@@ -59,7 +63,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				PacketWaiterSegmentDescriptor thisDescriptor = new PacketWaiterSegmentDescriptor(start, description);
 				Required.Add(thisDescriptor);
-			}
+			    Logger.AddDebugMessage("packet waiter " + UniqueID + " also requires: " + thisDescriptor.Start + ":" + thisDescriptor.End + ", " + thisDescriptor.DataExpected.ToHexString());
+            }
 			public void Require(int start, Byte description)
 			{
 				Require(start, new byte[] { description });
@@ -112,7 +117,8 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				PacketWaiterSegmentDescriptor thisDescriptor = new PacketWaiterSegmentDescriptor(start, description);
 				Desired.Add(thisDescriptor);
-			}
+			    Logger.AddDebugMessage("packet waiter " + UniqueID + " also desires: " + thisDescriptor.Start + ":" + thisDescriptor.End + ", " + thisDescriptor.DataExpected.ToHexString());
+            }
 			public void Desire(int start, Byte description)
 			{
 				Desire(start, new byte[] { description });
@@ -164,12 +170,22 @@ namespace Com.OfficerFlake.Libraries.Networking
 			public bool IsReceived => Received.WaitOne(0);
 			public bool StartListening()
 			{
-				if (RecievedPacket != null) return false;
-				if (!PacketWaiters.Contains(this)) PacketWaiters.Add(this);
+			    if (RecievedPacket != null)
+			    {
+                    Logger.AddDebugMessage("packet waiter received before waiter started.");
+			        MarkReceived();
+                    return false;
+			    }
+			    if (!PacketWaiters.Contains(this))
+			    {
+			        Logger.AddDebugMessage("packet waiter " + UniqueID + " has started listening...");
+                    PacketWaiters.Add(this);
+			    }
 				return true;
 			}
 			private void MarkReceived()
 			{
+                Logger.AddDebugMessage("Packet Waiter " + UniqueID + " is fullfilled(" + RecievedPacket.Type + "): " + (RecievedPacket?.Data.ToHexString() ?? "<ERR?>"));
 				Received.Set();
 				PacketWaiters.RemoveAll(x => x == this);
 			}
@@ -240,8 +256,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 			int resends = 0;
 			while (!response.WaitUntilReceived(3000))
 			{
-				if (resends >= 3) return false;
-
+			    if (resends >= 3)
+			    {
+			        Logger.AddDebugMessage("NO RESPONSE for Packet waiter " + response.UniqueID + " (" + response.RequireType + ")! Giving up!");
+                    return false;
+			    }
+                Logger.AddDebugMessage("Failed to get a response for Packet waiter " + response.UniqueID + " (" + response.RequireType + "), resending...");
 				_ = SendToClientStreamAsync(resend);
 				resends++;
 			}
@@ -274,13 +294,17 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#endregion
 		#endregion
 		#region Process Packet
-		private async Task ProcessPacketClientStream(IPacket thisPacket)
+		private async Task ProcessPacketClientStreamAsync(IPacket thisPacket)
 		{
-			if (thisPacket == null)
-			{
-				return;
-			}
+		    //Null Packet, Ignore.
+            if (thisPacket == null)
+		    {
+		        return;
+		    }
 
+            Logger.AddDebugMessage("Received Packet(" + thisPacket.Type + "): " + thisPacket.Data.ToHexString());
+
+		    //Update Waiters.
 			for (int i = 0; i < PacketWaiters.Count; i++)
 			{
 				PacketWaiter thisWaiter = PacketWaiters[i];
@@ -290,6 +314,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				}
 			}
 
+            //Run through Processor.
 			try
 			{
 				await Task.Run(() => PacketProcessorClientStream(this, thisPacket));
@@ -302,10 +327,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			catch (Exception e)
 			{
 				Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-				_ = this.SendToClientStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
+				_ = this.SendToClientStreamAsync("There was an error processing one of your packets. You haven't been disconnected, but you might have problems on the server from here!");
 			}
 		}
-	    private async Task ProcessPacketHostStream(IPacket thisPacket)
+	    private async Task ProcessPacketHostStreamAsync(IPacket thisPacket)
 	    {
 		    if (thisPacket == null)
 		    {
@@ -324,7 +349,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    catch (Exception e)
 		    {
 			    Debug.AddErrorMessage(e, "Packet Processing for type " + thisPacket.Type + " encountered an error.");
-			    _ = this.SendToHostStreamAsync("There was an error processing on of your packets. You haven't been disconnected, but you might have problems on the server from here!");
+			    _ = this.SendToHostStreamAsync("There was an error processing one of your packets. You haven't been disconnected, but you might have problems on the server from here!");
 		    }
 	    }
 		#endregion

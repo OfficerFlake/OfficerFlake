@@ -8,7 +8,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		{
 			private static bool Process_Type_03_Error(IConnection thisConnection, IPacket_03_Error packet)
 			{
-				Logger.Debug.AddSummaryMessage(thisConnection.User.UserName.ToInternallyFormattedSystemString() + " sends an error code (" + packet.ErrorCode + ")");
+				Loggers.Debug.AddSummaryMessage(thisConnection.User.UserName.ToInternallyFormattedSystemString() + " sends an error code (" + packet.ErrorCode + ")");
 				return true;
 			}
 		}

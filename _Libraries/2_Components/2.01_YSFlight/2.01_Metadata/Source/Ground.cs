@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
@@ -182,8 +182,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							if (NewMetaGround.Path_0_PropertiesFile.Length < 3)
 							{
 								string message = "Incomplete line in Ground List: " + thisGroundListFile + ".";
-								Debug.AddDetailMessage(message);
-								Debug.AddDetailMessage("----" + thisLine);
+								Logger.AddDebugMessage(message);
+								Logger.AddDebugMessage("----" + thisLine);
 								loadingErrors++;
 								continue;
 							}
@@ -191,7 +191,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							Extensions.YSFlight.MetaData.Grounds.List.Add(NewMetaGround);
 						}
-						Debug.AddDetailMessage("Loaded GroundLST: " + thisGroundListFile);
+						Logger.AddDebugMessage("Loaded GroundLST: " + thisGroundListFile);
 						#endregion
 					}
 					#endregion
@@ -224,7 +224,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								{
 									string message = "Ground DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaGround.Path_0_PropertiesFile + ".";
 									Debug.AddWarningMessage(message);
-									Debug.AddDetailMessage("---Line Contents (" + CurrentLineNumber + "): " + ThisLine);
+									Logger.AddDebugMessage("---Line Contents (" + CurrentLineNumber + "): " + ThisLine);
 									loadingErrors++;
 									continue;
 								}

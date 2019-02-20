@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.IO
 {

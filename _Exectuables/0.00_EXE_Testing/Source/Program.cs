@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Com.OfficerFlake.Libraries;
 using Com.OfficerFlake.Libraries.Networking;
 using Com.OfficerFlake.Libraries.UserInterfaces;
-using Console = Com.OfficerFlake.Libraries.Logger.Console;
+using Console = Com.OfficerFlake.Libraries.Loggers.Console;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 
 namespace Com.OfficerFlake.Executables.Testing

@@ -1,7 +1,7 @@
 ﻿using System;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -13,7 +13,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 				IPacket_11_FlightData FlightData = packet.ConvertTo_IPacket_11_FlightData();
 				if (packet.ID != thisConnection.Vehicle.ID) return true;
-				//Debug.AddDetailMessage("Formation Data Packet from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID + ", Target: " + packet.FormationTargetID + ", Timestamp" + packet.Timestamp.TotalSeconds().RawValue);
+				//Logger.AddDebugMessage("Formation Data Packet from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID + ", Target: " + packet.FormationTargetID + ", Timestamp" + packet.Timestamp.TotalSeconds().RawValue);
 				thisConnection.Vehicle.Update(FlightData);
 				FlightData.PosX = thisConnection.Vehicle.Position.X;
 				FlightData.PosY = thisConnection.Vehicle.Position.Y;

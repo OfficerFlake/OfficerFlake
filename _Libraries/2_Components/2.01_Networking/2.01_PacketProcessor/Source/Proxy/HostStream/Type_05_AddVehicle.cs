@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -28,7 +28,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					}
 					else
 					{
-						Logger.Debug.AddSummaryMessage("Added Vehicle by Proxy: " + packet.ID);
+						Loggers.Debug.AddSummaryMessage("Added Vehicle by Proxy: " + packet.ID);
 					}
 					lock (Extensions.YSFlight.World.Vehicles)
 					{

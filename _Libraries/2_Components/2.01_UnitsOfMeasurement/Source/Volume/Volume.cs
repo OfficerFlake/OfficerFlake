@@ -1,6 +1,6 @@
 ﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 {
@@ -119,8 +119,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			bool failed = !double.TryParse(extraction, out conversion);
 			if (failed)
 			{
-				Debug.AddDetailMessage("Measurement Input not successfully converted.");
-				Debug.AddDetailMessage("----" + capInput);
+				Logger.AddDebugMessage("Measurement Input not successfully converted.");
+				Logger.AddDebugMessage("----" + capInput);
 				output = new Volumes.Litre(0);
 				return false;
 			}
@@ -225,8 +225,8 @@ namespace Com.OfficerFlake.Libraries.UnitsOfMeasurement
 			#endregion
 		#region ... Conversion
 			#region Type Unrecognised
-			Debug.AddDetailMessage("No Type for input Volume conversion. Break here for details...");
-			Debug.AddDetailMessage("----" + capInput);
+			Logger.AddDebugMessage("No Type for input Volume conversion. Break here for details...");
+			Logger.AddDebugMessage("----" + capInput);
 			output = new Volumes.Litre(0);
 			return false;
 			#endregion

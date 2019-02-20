@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -70,16 +70,16 @@ namespace Com.OfficerFlake.Libraries.Networking
 	    {
 	        if (IsShuttingDown)
 	        {
-	            Debug.AddDetailMessage("TCPAcceptNewConnection cancelled as IsShuttingDown");
+	            Logger.AddDebugMessage("TCPAcceptNewConnection cancelled as IsShuttingDown");
                 return false;
 	        }
 
 	        Socket newSocket;
             try
 		    {
-		        Debug.AddDetailMessage("Waiting for a new client to connect...");
+		        Logger.AddDebugMessage("Waiting for a new client to connect...");
                 newSocket = TCPListener.AcceptSocket();
-		        Debug.AddDetailMessage("A new client just connected! Ready to start the connection phase.");
+		        Logger.AddDebugMessage("A new client just connected! Ready to start the connection phase.");
             }
 		    catch (SocketException e)
 		    {
@@ -92,13 +92,13 @@ namespace Com.OfficerFlake.Libraries.Networking
                 return false;
 		    }
 
-	        Debug.AddDetailMessage("New client is being created.");
+	        Logger.AddDebugMessage("New client is being created.");
 	        IConnection newConnection = ObjectFactory.CreateConnection();
-	        Debug.AddDetailMessage("New client has been created.");
+	        Logger.AddDebugMessage("New client has been created.");
 
-	        Debug.AddDetailMessage("New client is starting an async call to connect.");
+	        Logger.AddDebugMessage("New client is starting an async call to connect.");
             _ = Task.Run(() => newConnection.Connect(newSocket, IsProxyMode));
-	        Debug.AddDetailMessage("New client has started it's async call to connect.");
+	        Logger.AddDebugMessage("New client has started it's async call to connect.");
 
             try
 	        {

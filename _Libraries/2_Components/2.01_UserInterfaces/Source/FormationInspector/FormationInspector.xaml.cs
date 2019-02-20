@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces
 {
@@ -31,7 +31,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
         #region Methods
         public void LinkFormationInspector()
         {
-            Logger.FormationInspector.LinkFormationInspector(this);
+            Loggers.FormationInspector.LinkFormationInspector(this);
         }
         #endregion
 

@@ -19,11 +19,11 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Methods
 		public void LinkConsole()
 		{
-			Logger.Console.LinkConsole(ConsoleOutputView);
+			Loggers.Console.LinkConsole(ConsoleOutputView);
 		}
 		public void LinkDebug()
 		{
-			Logger.Debug.LinkDebug(ConsoleOutputView);
+			Loggers.Debug.LinkDebug(ConsoleOutputView);
 		}
 
 		public void ClearAllMessages()

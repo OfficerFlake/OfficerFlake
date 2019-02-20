@@ -38,7 +38,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 		#region Methods
 		public void LinkPacketInspector()
 		{
-			Logger.PacketInspector.LinkPacketInspector(this);
+			Loggers.PacketInspector.LinkPacketInspector(this);
 		}
 
 		public void UpdateClient(IConnection thisConnection)

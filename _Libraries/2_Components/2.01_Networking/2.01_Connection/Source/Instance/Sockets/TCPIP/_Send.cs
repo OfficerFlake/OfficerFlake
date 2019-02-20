@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -17,21 +17,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 		#region Any Socket
 		private bool TCPSend(IPacket thisPacket, Socket _TCPSocket)
 		{
-		    lock (_TCPSocket)
+		    //lock (_TCPSocket)
 		    {
-                Debug.AddDetailMessage("Connection " + ConnectionNumber + " entering lock for TCPSend.");
+                Logger.AddDebugMessage("Connection " + ConnectionNumber + " entering lock for TCPSend.");
 		        try
 		        {
 		            _TCPSocket.Send(thisPacket.Serialise());
-		            if (Logger.PacketInspector.Client == null | Logger.PacketInspector.Client == this)
+		            if (Loggers.PacketInspector.Client == null | Loggers.PacketInspector.Client == this)
 		            {
-		                if (Logger.PacketInspector.DataDirection == DataDirection.ServerToClient)
+		                if (Loggers.PacketInspector.DataDirection == DataDirection.ServerToClient)
 		                {
-		                    if (Logger.PacketInspector.Type == thisPacket.Type)
-		                        Logger.PacketInspector.UpdatePacket(thisPacket);
+		                    if (Loggers.PacketInspector.Type == thisPacket.Type)
+		                        Loggers.PacketInspector.UpdatePacket(thisPacket);
 		                }
 		            }
-		            Debug.AddDetailMessage("Connection " + ConnectionNumber + " exiting lock for TCPSend.");
+		            Logger.AddDebugMessage("Connection " + ConnectionNumber + " exiting lock for TCPSend.");
                     return true;
 		        }
 		        catch (ArgumentNullException e)
@@ -41,19 +41,21 @@ namespace Com.OfficerFlake.Libraries.Networking
 		        }
 		        catch (SocketException e)
 		        {
-		            //WinSock in Error state.
-		            Debug.AddErrorMessage(e, "WinSock is in an error state.");
-		        }
+                    //WinSock in Error state.
+                    //Debug.AddErrorMessage(e, "WinSock is in an error state.");
+                    Disconnect("End of Stream.");
+                }
 		        catch (ObjectDisposedException e)
 		        {
-		            //Socket closed/disposed.
-		            Debug.AddErrorMessage(e, "Socket has been disposed by the operating system.");
+                    //Socket closed/disposed.
+		            //Debug.AddErrorMessage(e, "Socket has been disposed by the operating system.");
+                    Disconnect("End of Stream.");
 		        }
 		        catch (Exception e)
 		        {
 		            Debug.AddErrorMessage(e, "Exception in TCPSend.");
 		        }
-		        Debug.AddDetailMessage("Connection " + ConnectionNumber + " exiting lock for TCPSend.");
+		        Logger.AddDebugMessage("Connection " + ConnectionNumber + " exiting lock for TCPSend.");
                 return false;
 		    }
 		}

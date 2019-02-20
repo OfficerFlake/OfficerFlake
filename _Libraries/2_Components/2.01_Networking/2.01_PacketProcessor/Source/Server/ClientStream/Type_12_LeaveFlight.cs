@@ -18,7 +18,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 
 				if (Settings.Flight.Join.Notification)
 				{
-					Logger.Console.AddInformationMessage("&9" + thisConnection.User.UserName.ToInternallyFormattedSystemString() + "&9 left the aircraft");
+					Loggers.Console.AddInformationMessage("&9" + thisConnection.User.UserName.ToInternallyFormattedSystemString() + "&9 left the aircraft");
 				}
 				foreach (IConnection otherconnection in Connections.AllConnections)
 				{

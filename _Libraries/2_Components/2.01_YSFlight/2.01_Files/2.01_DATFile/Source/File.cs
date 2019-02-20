@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Extensions;
 
@@ -1530,7 +1530,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.DAT
 		            }
 			        Error:
 		            {
-			            Debug.AddDetailMessage("BAD DAT COMMAND? : " + thisLine);
+			            Logger.AddDebugMessage("BAD DAT COMMAND? : " + thisLine);
 			            continue;
 		            }
 				}

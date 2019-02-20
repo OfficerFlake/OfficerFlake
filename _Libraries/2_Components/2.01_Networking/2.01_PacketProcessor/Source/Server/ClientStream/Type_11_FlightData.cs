@@ -1,6 +1,6 @@
 ﻿using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -12,10 +12,10 @@ namespace Com.OfficerFlake.Libraries.Networking
 			{
 			    if (packet.ID != thisConnection.Vehicle.ID)
 			    {
-			        Debug.AddDetailMessage("Packet 11 received from client in Server Mode doesn't belong to that clients registered vehicle. Not Sending It!");
+			        Logger.AddDebugMessage("Packet 11 received from client in Server Mode doesn't belong to that clients registered vehicle. Not Sending It!");
 			        return true;
                 }
-				//Debug.AddDetailMessage("Flight Data packet received from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID + ", Timestamp" + packet.Timestamp.TotalSeconds().RawValue);
+				//Logger.AddDebugMessage("Flight Data packet received from Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID + ", Timestamp" + packet.Timestamp.TotalSeconds().RawValue);
 				thisConnection.Vehicle.Update(packet);
 				packet.PosX = thisConnection.Vehicle.Position.X;
 				packet.PosY = thisConnection.Vehicle.Position.Y;

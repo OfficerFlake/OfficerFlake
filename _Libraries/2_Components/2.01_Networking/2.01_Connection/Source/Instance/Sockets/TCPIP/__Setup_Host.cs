@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -21,20 +21,20 @@ namespace Com.OfficerFlake.Libraries.Networking
 	            HostStreamTCPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 HostStreamTCPSocket.Connect(SettingsLibrary.Settings.Server.ProxyServer.DestinationAddress.IpAddress,
 	                (int)SettingsLibrary.Settings.Server.ProxyServer.DestinationPort);
-                Debug.AddDetailMessage("Connection " + ConnectionNumber + "  connected to HostAddress");
+                Logger.AddDebugMessage("Connection " + ConnectionNumber + "  connected to HostAddress");
 	            return true;
 	        }
 	        else
 	        {
-	            Debug.AddDetailMessage("Connection " + ConnectionNumber + " 's call to CreateHostTCPSocket failed as the host socket is already occupied.");
+	            Logger.AddDebugMessage("Connection " + ConnectionNumber + " 's call to CreateHostTCPSocket failed as the host socket is already occupied.");
 	            return false;
             }
 	    }
 	    private bool StartHostStreamTCPSocket()
 	    {
-	        Debug.AddDetailMessage("Connection " + ConnectionNumber + "  starting HostStream loop");
+	        Logger.AddDebugMessage("Connection " + ConnectionNumber + "  starting HostStream loop");
 	        _ = Task.Run(() => StartTcpGetPacketAsyncLoop(HostStreamTCPSocket));
-	        Debug.AddDetailMessage("Connection " + ConnectionNumber + "  started HostStream loop");
+	        Logger.AddDebugMessage("Connection " + ConnectionNumber + "  started HostStream loop");
 	        return true;
 	    }
 	}

@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -115,7 +115,7 @@ namespace Com.OfficerFlake.Libraries.Networking
                     #region Not In Formation - Send Packet 11
                     if (FormationTarget == null)
 					{
-						Debug.AddDetailMessage("Formation Data Packet NOT created by Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID);
+						Logger.AddDebugMessage("Formation Data Packet NOT created by Client: " + thisConnection.ConnectionNumber + ", ID: " + packet.ID);
 					    if (thisFormationPosition != 0) FormationInspector.UpdateClientFormationPosition(thisFormationPosition, null, packet.PosX.ToMeters().RawValue, packet.PosY.ToMeters().RawValue, packet.PosZ.ToMeters().RawValue);
 					    return thisConnection.SendToHostStream(packet);
                     }
@@ -137,8 +137,8 @@ namespace Com.OfficerFlake.Libraries.Networking
                     //formationPacket.V_HdgP = ClosestVehicle.VelocityAttitude.Y;
                     //formationPacket.V_HdgB = ClosestVehicle.VelocityAttitude.Z;
 
-					Debug.AddDetailMessage("Formation Data Packet Created by Client: " + thisConnection.ConnectionNumber + ", ID: " + formationPacket.ID + ", Target: " + formationPacket.FormationTargetID);
-				    Debug.AddDetailMessage
+					Logger.AddDebugMessage("Formation Data Packet Created by Client: " + thisConnection.ConnectionNumber + ", ID: " + formationPacket.ID + ", Target: " + formationPacket.FormationTargetID);
+				    Logger.AddDebugMessage
                         (
                         
                         "Client " + thisConnection.ConnectionNumber + " is " +
@@ -153,7 +153,7 @@ namespace Com.OfficerFlake.Libraries.Networking
                     return thisConnection.SendToHostStream(formationPacket);
                     #endregion
                 }
-                Debug.AddDetailMessage("Packet 11 received from client in Proxy Mode doesn't belong to that clients registered vehicle. Not Sending It!");
+                Logger.AddDebugMessage("Packet 11 received from client in Proxy Mode doesn't belong to that clients registered vehicle. Not Sending It!");
 			    return true;
 			    //return thisConnection.SendToHostStream(packet);
 			}

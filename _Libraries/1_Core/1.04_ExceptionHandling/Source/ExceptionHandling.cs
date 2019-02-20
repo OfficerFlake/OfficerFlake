@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Debug = Com.OfficerFlake.Libraries.Logger.Debug;
+using Debug = Com.OfficerFlake.Libraries.Loggers.Debug;
 
 namespace Com.OfficerFlake.Libraries
 {

@@ -13,7 +13,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				{
 					Extensions.YSFlight.World.Vehicles.RemoveAll(x => x.ID == packet.ID);
 				}
-				Logger.Debug.AddSummaryMessage("Removed Vehicle(G) by Proxy: " + packet.ID);
+				Loggers.Debug.AddSummaryMessage("Removed Vehicle(G) by Proxy: " + packet.ID);
 				return thisConnection.SendToClientStream(packet);
 			}
 		}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 		private void AddToServerList()
 	    {
 			Connections.AllConnections.Add(this);
-	        Debug.AddDetailMessage("Connection " + ConnectionNumber + "  has just been added to the server list.");
+	        Logger.AddDebugMessage("Connection " + ConnectionNumber + "  has just been added to the server list.");
         }
 
         /// <summary>
@@ -31,12 +31,12 @@ namespace Com.OfficerFlake.Libraries.Networking
 		    int numberRemoved = Connections.AllConnections.RemoveAll(x => x.ConnectionNumber == this.ConnectionNumber);
 	        if (numberRemoved > 0)
 	        {
-	            Debug.AddDetailMessage("All Clients of Connection Number " + ConnectionNumber +
+	            Logger.AddDebugMessage("All Clients of Connection Number " + ConnectionNumber +
 	                                   " have just been removed from the server list. There were " + numberRemoved + " removed in total.");
 	        }
 	        else
 	        {
-	            Debug.AddDetailMessage("RemoveFromServerList was called for Connection " + ConnectionNumber + ", however there were no matching clients in the server list to remove!");
+	            Logger.AddDebugMessage("RemoveFromServerList was called for Connection " + ConnectionNumber + ", however there were no matching clients in the server list to remove!");
 	        }
         }
 		#endregion

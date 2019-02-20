@@ -1,6 +1,6 @@
 using Com.OfficerFlake.Libraries.Interfaces;
 
-namespace Com.OfficerFlake.Libraries.Logger
+namespace Com.OfficerFlake.Libraries.Loggers
 {
     internal class DefaultFormationInspector : IFormationInspector
     {

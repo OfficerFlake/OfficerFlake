@@ -64,7 +64,7 @@ namespace Com.OfficerFlake.Libraries.UserInterfaces
 					}
 					catch (Exception e)
 					{
-						Logger.Debug.AddErrorMessage(e, "Error shutting down");
+						Loggers.Debug.AddErrorMessage(e, "Error shutting down");
 					}
 				}
 			});

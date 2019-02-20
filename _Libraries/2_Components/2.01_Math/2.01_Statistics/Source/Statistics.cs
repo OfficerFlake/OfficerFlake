@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Math.Statistics
 {
@@ -63,12 +63,12 @@ namespace Com.OfficerFlake.Libraries.Math.Statistics
 
         public void DebugShowStatistics()
         {
-            Debug.AddDetailMessage(Name + ": ");
-            Debug.AddDetailMessage("----MODE: " + Mode());
-            Debug.AddDetailMessage("----MEAN: " + Mean());
-            Debug.AddDetailMessage("----STDDEV: " + StandardDeviation());
-            Debug.AddDetailMessage("----MAX : " + Max());
-            Debug.AddDetailMessage("----MIN : " + Min());
+            Logger.AddDebugMessage(Name + ": ");
+            Logger.AddDebugMessage("----MODE: " + Mode());
+            Logger.AddDebugMessage("----MEAN: " + Mean());
+            Logger.AddDebugMessage("----STDDEV: " + StandardDeviation());
+            Logger.AddDebugMessage("----MAX : " + Max());
+            Logger.AddDebugMessage("----MIN : " + Min());
         }
     }
 }

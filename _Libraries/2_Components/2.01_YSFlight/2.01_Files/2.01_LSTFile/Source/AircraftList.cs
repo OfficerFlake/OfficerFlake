@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
 {
@@ -88,7 +88,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
             List<AircraftDefinition> Output = new List<AircraftDefinition>();
             var ysflightDirectory = @"C:/Program Files/YSFLIGHT.COM/YSFlight/";
             Load();
-            if (debugMode) Debug.AddDetailMessage("Testing definitions in LST file for validity...");
+            if (debugMode) Logger.AddDebugMessage("Testing definitions in LST file for validity...");
             var errors = 0;
             foreach (AircraftDefinition thisAircraftDefinition in List)
             {
@@ -101,10 +101,10 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                 Output.Add(thisAircraftDefinition);
                 continue;
                 Error:
-                if (debugMode) Debug.AddDetailMessage("\"" + thisAircraftDefinition.DataFilePath + "\" entry in (" + Filename + ") has files missing - DAT, Model or Collision File. Check the pack and ensure the addon exists in the defined file path address!");
+                if (debugMode) Logger.AddDebugMessage("\"" + thisAircraftDefinition.DataFilePath + "\" entry in (" + Filename + ") has files missing - DAT, Model or Collision File. Check the pack and ensure the addon exists in the defined file path address!");
                 errors++;
             }
-            if (debugMode) Debug.AddDetailMessage("LST file has " + errors + " errors. " + ((errors > 0) ? ":(" : ":D"));
+            if (debugMode) Logger.AddDebugMessage("LST file has " + errors + " errors. " + ((errors > 0) ? ":(" : ":D"));
             return Output.ToArray();
         }
 
@@ -135,7 +135,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight.Files.LST
                     Output.Add(thisAircraftDefinition);
                     continue;
                     Error:
-                        Debug.AddDetailMessage(thisAircraftDefinition.ToString() + " files missing.");
+                        Logger.AddDebugMessage(thisAircraftDefinition.ToString() + " files missing.");
                 }
             }
             return Output.ToArray();

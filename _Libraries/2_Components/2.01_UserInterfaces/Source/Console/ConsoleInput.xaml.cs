@@ -3,7 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Console = Com.OfficerFlake.Libraries.Logger.Console;
+using Console = Com.OfficerFlake.Libraries.Loggers.Console;
 
 namespace Com.OfficerFlake.Libraries.UserInterfaces
 {

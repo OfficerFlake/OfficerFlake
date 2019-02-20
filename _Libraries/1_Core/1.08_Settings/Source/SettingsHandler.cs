@@ -7,7 +7,7 @@ using System.Security.Permissions;
 
 using Com.OfficerFlake.Libraries.Interfaces;
 using Com.OfficerFlake.Libraries.Extensions;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries
 {
@@ -410,7 +410,7 @@ namespace Com.OfficerFlake.Libraries
 						#region Set the Field to the Converted Value
 
 						thisProperty.SetValue(TargetClass, valueToSet);
-						Debug.AddDetailMessage("Successfully Read Setting: \"" + command + "\".");
+						Logger.AddDebugMessage("Successfully Read Setting: \"" + command + "\".");
 						return true;
 
 						#endregion

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.YSFlight
 {
@@ -192,8 +192,8 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 							if (NewMetaAircraft.Path_0_PropertiesFile.Length < 3)
 							{
 								string message = "Incomplete line in Aircraft List: " + thisAircraftListFile + ".";
-								Debug.AddDetailMessage(message);
-								Debug.AddDetailMessage("----" + thisLine);
+								Logger.AddDebugMessage(message);
+								Logger.AddDebugMessage("----" + thisLine);
 								loadingErrors++;
 								continue;
 							}
@@ -201,7 +201,7 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 
 							Extensions.YSFlight.MetaData.Aircraft.List.Add(NewMetaAircraft);
 						}
-						Debug.AddDetailMessage("Loaded AircraftLST: " + thisAircraftListFile);
+						Logger.AddDebugMessage("Loaded AircraftLST: " + thisAircraftListFile);
 						#endregion
 					}
 					#endregion
@@ -235,14 +235,14 @@ namespace Com.OfficerFlake.Libraries.YSFlight
 								{
 									string message = "Aircraft DAT IDENTIFY Line broken, or string splitter broken: " + ThisMetaAircraft.Path_0_PropertiesFile + ".";
 									Debug.AddWarningMessage(message);
-									Debug.AddDetailMessage("---Line Contents (" + CurrentLineNumber + "): " + ThisLine);
+									Logger.AddDebugMessage("---Line Contents (" + CurrentLineNumber + "): " + ThisLine);
 									loadingErrors++;
 									continue;
 								}
 								string AircraftName = SplitLine[1];
 								AircraftName = AircraftName.Replace(@" ", @"_");
 								ThisMetaAircraft.Identify = AircraftName.ToUpperInvariant();
-								Debug.AddDetailMessage("Cached Aircraft Name: " + ThisMetaAircraft.Identify);
+								Logger.AddDebugMessage("Cached Aircraft Name: " + ThisMetaAircraft.Identify);
 							}
 							#endregion
 						}

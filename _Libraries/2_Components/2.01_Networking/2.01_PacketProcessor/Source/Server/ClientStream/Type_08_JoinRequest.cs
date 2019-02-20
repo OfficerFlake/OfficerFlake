@@ -2,7 +2,7 @@
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 using static Com.OfficerFlake.Libraries.SettingsLibrary;
 using static Com.OfficerFlake.Libraries.Extensions.YSFlight;
 
@@ -20,7 +20,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#region Join Request Pending
 				if (thisConnection.JoinRequestPending)
 				{
-					Logger.Debug.AddWarningMessage("Join Request already pending for " + thisConnection.User.UserName.ToInternallyFormattedSystemString() + ".");
+					Loggers.Debug.AddWarningMessage("Join Request already pending for " + thisConnection.User.UserName.ToInternallyFormattedSystemString() + ".");
 					thisConnection.SendToClientStream("Issue with last join request. Cancelling last join request...");
 					IPacket_10_JoinRequestDenied JoinDenied = ObjectFactory.CreatePacket10JoinRequestDenied();
 					thisConnection.SendToClientStream(JoinDenied);
@@ -91,7 +91,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				}
 				thisConnection.Vehicle.Owner = thisConnection.User;
 				thisConnection.Vehicle.Connection = thisConnection;
-				Debug.AddDetailMessage("Assigned Vehicle " + thisConnection.Vehicle.ID + " to connection " + thisConnection.ConnectionNumber);
+				Logger.AddDebugMessage("Assigned Vehicle " + thisConnection.Vehicle.ID + " to connection " + thisConnection.ConnectionNumber);
 				thisConnection.Vehicle.MetaData = MetaAircraft;
 				#endregion
 
@@ -165,7 +165,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 					thisConnection.SendToClientStream("Expected an acknowledge Join Data Reply and didn't get an answer. Disconnecting...");
 					foreach (var thisConnectionLast5Packet in thisConnection.Last5PacketsReceived)
 					{
-						Logger.Debug.AddDetailMessage("&aIn Packet (" + thisConnectionLast5Packet.Type + ")\n" +
+						Loggers.Logger.AddDebugMessage("&aIn Packet (" + thisConnectionLast5Packet.Type + ")\n" +
 						                              thisConnectionLast5Packet.Serialise().ToHexString() + "\n" +
 						                              thisConnectionLast5Packet.Serialise().ToSystemString());
 					}
@@ -199,7 +199,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				#region Send Others Join Data
 				if (Settings.Flight.Join.Notification)
 				{
-					Logger.Console.AddInformationMessage("&b" + thisConnection.User.UserName.ToInternallyFormattedSystemString() + "&b took off (" + EntityJoined.Identify + ")");
+					Loggers.Console.AddInformationMessage("&b" + thisConnection.User.UserName.ToInternallyFormattedSystemString() + "&b took off (" + EntityJoined.Identify + ")");
 				}
 				foreach (IConnection otherConnection in Connections.AllConnections.Exclude(thisConnection).ToArray())
 				{
@@ -222,7 +222,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 						PacketWaiter_AcknowledgeOtherJoinPacket.Require(0, 1);
 					}
 					PacketWaiter_AcknowledgeOtherJoinPacket.StartListening();
-					Logger.Console.AddInformationMessage("Sending Join Notification.");
+					Loggers.Console.AddInformationMessage("Sending Join Notification.");
 					otherConnection.SendToClientStreamAsync(OtherJoinPacket);
 
 					if (!otherConnection.GetResponseOrResend(PacketWaiter_AcknowledgeOtherJoinPacket, OtherJoinPacket))
@@ -231,7 +231,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 						//thisConnection.Disconnect();
 						//return false;
 					}
-					Logger.Console.AddInformationMessage("Sent Join Notification.");
+					Loggers.Console.AddInformationMessage("Sent Join Notification.");
 				}
 				#endregion
 				return true;

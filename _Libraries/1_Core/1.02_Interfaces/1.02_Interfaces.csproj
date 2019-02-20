@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\1.02.01_Core\1.02.01.01_BuildEnvironment\BuildEnvironment.cs" />
+    <Compile Include="Source\1.02.01_Core\1.02.01.03_Loggers\Logger.cs" />
     <Compile Include="Source\1.02.01_Core\1.02.01.03_Loggers\FormationInspector.cs" />
     <Compile Include="Source\1.02.01_Core\1.02.01.03_Loggers\Console.cs" />
     <Compile Include="Source\1.02.01_Core\1.02.01.03_Loggers\Debug.cs" />

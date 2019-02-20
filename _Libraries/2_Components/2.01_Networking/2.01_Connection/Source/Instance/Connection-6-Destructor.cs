@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -16,7 +16,7 @@ namespace Com.OfficerFlake.Libraries.Networking
         // 6) Garbage Collector removes the client from the list.
 	    ~Connection()
 	    {
-	        Debug.AddDetailMessage("Client object has been discarded by the runtime garbage collector.");
+	        Logger.AddDebugMessage("Client object has been discarded by the runtime garbage collector.");
             //This is currently being called!
         }
 	}

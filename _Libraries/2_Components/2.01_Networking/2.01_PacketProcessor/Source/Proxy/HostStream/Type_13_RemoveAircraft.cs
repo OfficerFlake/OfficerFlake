@@ -2,7 +2,7 @@
 using System.Linq;
 using Com.OfficerFlake.Libraries.Extensions;
 using Com.OfficerFlake.Libraries.Interfaces;
-using Com.OfficerFlake.Libraries.Logger;
+using Com.OfficerFlake.Libraries.Loggers;
 
 namespace Com.OfficerFlake.Libraries.Networking
 {
@@ -16,7 +16,7 @@ namespace Com.OfficerFlake.Libraries.Networking
 				{
 					Extensions.YSFlight.World.Vehicles.RemoveAll(x => x.ID == packet.ID);
 				}
-				Logger.Debug.AddSummaryMessage("Removed Vehicle(A) by Proxy: " + packet.ID);
+				Loggers.Debug.AddSummaryMessage("Removed Vehicle(A) by Proxy: " + packet.ID);
                 uint Id_at_01 = (Extensions.YSFlight.World.Vehicles.Any(x => x.Tag.Contains("#1")) ? (YSFlight.World.Vehicles.Last(y => y.Tag.Contains("#1")).ID) : 0);
                 uint Id_at_02 = (Extensions.YSFlight.World.Vehicles.Any(x => x.Tag.Contains("#2")) ? (YSFlight.World.Vehicles.Last(y => y.Tag.Contains("#2")).ID) : 0);
                 uint Id_at_03 = (Extensions.YSFlight.World.Vehicles.Any(x => x.Tag.Contains("#3")) ? (YSFlight.World.Vehicles.Last(y => y.Tag.Contains("#3")).ID) : 0);
